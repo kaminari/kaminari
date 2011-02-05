@@ -5,6 +5,13 @@ module Kaminari
 
     included do
       def self.inherited(kls)
+        # TERRIBLE HORRIBLE NO GOOD VERY BAD HACK: inheritable_attributes is not yet set here on AR 3.0
+        unless kls.default_scoping
+          new_inheritable_attributes = Hash[inheritable_attributes.map do |key, value|
+            [key, value.duplicable? ? value.dup : value]
+          end]
+          kls.instance_variable_set('@inheritable_attributes', new_inheritable_attributes)
+        end
         kls.class_eval do
           # page(5)
           scope :page, lambda {|num|

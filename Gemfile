@@ -12,6 +12,7 @@ group :development do
   gem 'jeweler', '>= 1.5.2'
   gem 'rcov', '>= 0'
   gem 'rails', :git => 'git://github.com/rails/rails.git'
+#   gem 'rails', '>= 3.0.3'
   gem 'rack', :git => 'git://github.com/rack/rack.git'
   gem 'arel', :git => 'git://github.com/rails/arel.git'
   gem 'rspec-rails', :git => 'git://github.com/rspec/rspec-rails.git'# 2.4.1 needed
