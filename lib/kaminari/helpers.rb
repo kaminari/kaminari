@@ -1,99 +1,105 @@
 module Kaminari
   module Helpers
     class Tag
-      def initialize(renderer)
-        @renderer = renderer
+      def initialize(renderer, options = {})
+        @renderer, @options = renderer, renderer.options.merge(options)
       end
 
-      def method_missing(meth, *args, &blk)
-        @renderer.send meth, *args, &blk
-      end
-    end
-
-    class PrevLink < Tag
-      def to_s
-        content_tag :span, :class => 'prev' do
-          link_to_if (current_page > 1), prev_label, page_url_for(current_page - 1), :class => 'prev', :rel => 'prev'
-        end
-      end
-    end
-
-    class NextLink < Tag
-      def to_s
-        content_tag :span, :class => 'prev' do
-          link_to_if (current_page < num_pages), next_label, page_url_for(current_page + 1), :class => 'next', :rel => 'next'
-        end
-      end
-    end
-
-    class PageLink < Tag
-      def initialize(page, renderer)
-        super renderer
-        @page = page
-      end
-
-      def to_s
-        content_tag :span, :class => "#{style}#{@page == current_page ? ' current' : ''}" do
-          link_to_unless_current @page.to_s, page_url_for(@page)
-        end
-      end
-    end
-
-    #TODO
-    class FirstPageLink < Tag
-    end
-
-    #TODO
-    class LastPageLink < Tag
-    end
-
-    #TODO
-    class CurrentPage < Tag
-    end
-
-    class TruncatedSpan < Tag
-      def to_s
-        content_tag :span, truncate, :class => style
-      end
-    end
-
-    class PaginationRenderer
-      attr_reader :prev_label, :next_label, :left, :window, :right, :truncate, :style, :current_page, :num_pages
-
-      def initialize(scope, options, template)
-        @scope, @template = scope, template
-        @prev_label, @next_label, @left, @window, @right, @truncate, @style = (options[:prev] || '&laquo; Prev'.html_safe), (options[:next] || 'Next &raquo;'.html_safe), (options[:left] || 2), (options[:window] || 5), (options[:right] || 2), (options[:truncate] || '...'), (options[:style] || 'page')
-        @current_page, @num_pages = scope.current_page, scope.num_pages
-      end
-
-      def to_s
-        content_tag :div, :class => 'pagination' do
-          [].tap {|tags|
-            tags << PrevLink.new(self)
-            (1..num_pages).each do |i|
-              if (i <= left) || ((num_pages - i) < right) || ((i - current_page).abs < window)
-                tags << PageLink.new(i, self)
-              else
-                tags << TruncatedSpan.new(self) unless tags.last.is_a? TruncatedSpan
-              end
-            end
-            tags << NextLink.new(self)
-          }.join("\n").html_safe
-        end
+      def to_s(locals = {})
+        @renderer.render :partial => "kaminari/#{self.class.name.demodulize.underscore}", :locals => @options.merge(locals)
       end
 
       private
       def page_url_for(page)
-        @template.url_for params.merge(:page => (page <= 1 ? nil : page))
+        @renderer.url_for @renderer.params.merge(:page => (page <= 1 ? nil : page))
+      end
+    end
+
+    class PrevSpan < Tag
+    end
+
+    class PrevLink < Tag
+      def to_s
+        super :prev_url => page_url_for(@options[:current_page] - 1)
+      end
+    end
+
+    class NextSpan < Tag
+    end
+
+    class NextLink < Tag
+      def to_s
+        super :next_url => page_url_for(@options[:current_page] + 1)
+      end
+    end
+
+    class PageLink < Tag
+      def to_s
+        super :page_url => page_url_for(@options[:page])
+      end
+    end
+
+    class CurrentPage < Tag
+      def to_s
+        super :page_url => page_url_for(@options[:page])
+      end
+    end
+
+    class FirstPageLink < PageLink
+    end
+
+    class LastPageLink < PageLink
+    end
+
+    class TruncatedSpan < Tag
+    end
+
+    class PaginationRenderer
+      attr_reader :options
+
+      def initialize(template, options)
+        @template, @options = template, options
+        @left, @window, @right = (options[:left] || options[:outer_window] || 1), (options[:window] || options[:inner_window] || 4), (options[:right] || options[:outer_window] || 1)
       end
 
+      def to_s
+        @template.content_tag :div, :class => 'pagination' do
+          tagify.join("\n").html_safe
+        end
+      end
+
+      def tagify
+        num_pages, current_page, left, window, right = @options[:num_pages], @options[:current_page], @left, @window, @right
+
+        tags = []
+        tags << (current_page > 1 ? PrevLink.new(self) : PrevSpan.new(self))
+        1.upto(num_pages) do |i|
+          if i == current_page
+            tags << CurrentPage.new(self, :page => i)
+          elsif (i <= left + 1) || ((num_pages - i) <= right) || ((i - current_page).abs <= window)
+            case i
+            when 1
+              tags << FirstPageLink.new(self, :page => i)
+            when num_pages
+              tags << LastPageLink.new(self, :page => i)
+            else
+              tags << PageLink.new(self, :page => i)
+            end
+          else
+            tags << TruncatedSpan.new(self) unless tags.last.is_a? TruncatedSpan
+          end
+        end
+        tags << (num_pages > current_page ? NextLink.new(self) : NextSpan.new(self))
+      end
+
+      private
       def method_missing(meth, *args, &blk)
         @template.send meth, *args, &blk
       end
     end
 
     def paginate(scope, options = {}, &block)
-      PaginationRenderer.new scope, options, self
+      PaginationRenderer.new self, options.reverse_merge(:current_page => scope.current_page, :num_pages => scope.num_pages)
     end
   end
 end
