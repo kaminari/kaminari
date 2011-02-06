@@ -1,7 +1,7 @@
 module Kaminari
   module ActiveRecord
     extend ActiveSupport::Concern
-    PER_PAGE = 10
+    PER_PAGE = 25
 
     included do
       def self.inherited(kls)
@@ -17,7 +17,7 @@ module Kaminari
           scope :page, lambda {|num|
             offset(PER_PAGE * ([num.to_i, 1].max - 1)).limit(PER_PAGE)
           } do
-            # page(3).per(20)
+            # page(3).per(10)
             def per(num)
               offset(offset_value / limit_value * num).limit(num)
             end
