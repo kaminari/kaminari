@@ -10,9 +10,9 @@ describe 'Kaminari::Helpers::PaginationRenderer' do
     end
     r
   end
-  describe '#tagify' do
+  describe '#tagify_links' do
     def tags_with(options)
-      PaginationRenderer.new(renderer, options).tagify
+      PaginationRenderer.new(renderer, options).tagify_links
     end
 
     context 'first page' do

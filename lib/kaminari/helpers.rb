@@ -65,7 +65,7 @@ module Kaminari
         @left, @window, @right = (options[:left] || options[:outer_window] || 1), (options[:window] || options[:inner_window] || 4), (options[:right] || options[:outer_window] || 1)
       end
 
-      def tagify
+      def tagify_links
         num_pages, current_page, left, window, right = @options[:num_pages], @options[:current_page], @left, @window, @right
 
         tags = []
@@ -91,7 +91,7 @@ module Kaminari
 
       def to_s
         suppress_logging_render_partial do
-          @template.content_for :kaminari_paginator_tags, tagify.join("\n").html_safe
+          @template.content_for :kaminari_paginator_tags, tagify_links.join("\n").html_safe
           Paginator.new(self).to_s
         end
       end
