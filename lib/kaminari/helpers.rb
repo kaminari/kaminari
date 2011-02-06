@@ -54,20 +54,15 @@ module Kaminari
     class TruncatedSpan < Tag
     end
 
+    class Paginator < Tag
+    end
+
     class PaginationRenderer
       attr_reader :options
 
       def initialize(template, options)
         @template, @options = template, options
         @left, @window, @right = (options[:left] || options[:outer_window] || 1), (options[:window] || options[:inner_window] || 4), (options[:right] || options[:outer_window] || 1)
-      end
-
-      def to_s
-        suppress_logging_render_partial do
-          @template.content_tag :div, :class => 'pagination' do
-            tagify.join("\n").html_safe
-          end
-        end
       end
 
       def tagify
@@ -92,6 +87,13 @@ module Kaminari
           end
         end
         tags << (num_pages > current_page ? NextLink.new(self) : NextSpan.new(self))
+      end
+
+      def to_s
+        suppress_logging_render_partial do
+          @template.content_for :kaminari_paginator_tags, tagify.join("\n").html_safe
+          Paginator.new(self).to_s
+        end
       end
 
       private
