@@ -1,7 +1,5 @@
 * partialize the outer div
 
-* suppress logging when rendering each partial
-
 * add generator option to copy particular template
 
 * add Haml generator

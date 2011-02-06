@@ -63,8 +63,10 @@ module Kaminari
       end
 
       def to_s
-        @template.content_tag :div, :class => 'pagination' do
-          tagify.join("\n").html_safe
+        suppress_logging_render_partial do
+          @template.content_tag :div, :class => 'pagination' do
+            tagify.join("\n").html_safe
+          end
         end
       end
 
@@ -95,6 +97,25 @@ module Kaminari
       private
       def method_missing(meth, *args, &blk)
         @template.send meth, *args, &blk
+      end
+
+      def suppress_logging_render_partial(&blk)
+        if subscriber = ActionView::LogSubscriber.log_subscribers.detect {|ls| ls.is_a? ActionView::LogSubscriber}
+          class << subscriber
+            alias_method :render_partial_with_logging, :render_partial
+            # do nothing
+            def render_partial(event)
+            end
+          end
+          ret = blk.call
+          class << subscriber
+            alias_method :render_partial, :render_partial_with_logging
+            undef :render_partial_with_logging
+          end
+          ret
+        else
+          blk.call
+        end
       end
     end
 
