@@ -1,19 +1,81 @@
-= kaminari
+= Kaminari
 
-Description goes here.
+A Scope & Engine based clean and powerful and customizable and sophisticated paginator for Rails 3
 
-== Contributing to kaminari
- 
-* Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet
-* Check out the issue tracker to make sure someone already hasn't requested it and/or contributed it
-* Fork the project
-* Start a feature/bugfix branch
-* Commit and push until you are happy with your contribution
-* Make sure to add tests for it. This is important so I don't break it in a future version unintentionally.
-* Please try not to mess with the Rakefile, version, or history. If you want to have your own version, or is otherwise necessary, that is fine, but please isolate to its own commit so I can cherry-pick around it.
+
+== Features
+
+* Clean
+Does not globally pollute Array, Hash, Object or AR::Base.
+
+* Easy to use
+Just bundle the gem, then your models are ready to be paginated. No configuration. Don't have to define anything in your models or helpers.
+
+* Scope based simple API
+Everything is method chainable. No Hash for the query. You know, that's the Rails 3 way.
+No special collection class or something for the paginated values but uses a general AR::Relation instance. So, of course you can chain any other conditions before or after the paginator scope.
+
+* Engine based customizable helper
+As the whole pagination helper is basically just a collection of links and non-links, Kaminari renders each of them through its own partial template inside the Engine. So, you can easily modify their behaviour or style or whatever by overriding partial templates.
+
+
+== Rails versions
+
+3.0.x and 3.1
+
+
+== Install
+
+Put this line in your Gemfile:
+  gem 'kaminari'
+
+Then bundle:
+  % bundle
+
+
+== Usage
+
+* Fetch the 7th page of the users (per_page = 10 by default)
+
+  @users = User.page(7)
+
+* Show a lot more users per each page (change the per_page value)
+
+  @users = User.page(7).per(30)
+
+* Typically, your controller code will look like this:
+
+  @users = User.page params[:page]
+
+* In your view
+
+  <%= paginate @users %>
+
+* Specify the "window" size
+
+  # "inner window" (4 by default)
+
+  <%= paginate @users, :window => 3 %>
+
+  # "outer window" (1 by default)
+
+  <%= paginate @users, :outer_window => 3 %>
+
+  # outer window can be separetely specified by "left", "right" (1 by default)
+
+  <%= paginate @users, :left => 0, :right => 2 %>
+
+* Customize the pagination helper
+
+  % rails g kaminari:views
+Then edit the partials in your app's app/views/kaminari/ directory.
+
+
+== Contributing to Kaminari
+
+* Fork, fix, then send me a pull request.
+
 
 == Copyright
 
-Copyright (c) 2011 Akira Matsuda. See LICENSE.txt for
-further details.
-
+Copyright (c) 2011 Akira Matsuda. See LICENSE.txt for further details.

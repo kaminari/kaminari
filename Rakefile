@@ -17,13 +17,13 @@ Jeweler::Tasks.new do |gem|
   gem.name = "kaminari"
   gem.homepage = "http://github.com/amatsuda/kaminari"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.summary = 'A pagnation engine plugin for Rails 3'
+  gem.description = 'Kaminari is a Scope & Engine based clean and powerful and customizable and sophisticated paginator for Rails 3'
   gem.email = "ronnie@dio.jp"
   gem.authors = ["Akira Matsuda"]
   # Include your dependencies below. Runtime dependencies are required when using your gem,
   # and development dependencies are only needed for development (ie running rake tasks, tests, etc)
-  #  gem.add_runtime_dependency 'jabber4r', '> 0.1'
+   gem.add_runtime_dependency 'rails', '>= 3.0.0'
   #  gem.add_development_dependency 'rspec', '> 1.2.3'
 end
 Jeweler::RubygemsDotOrgTasks.new
