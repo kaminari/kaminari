@@ -35,13 +35,13 @@ Then bundle:
 
 == Usage
 
-* Fetch the 7th page of the users (per_page = 10 by default)
+* Fetch the 7th page of the users (per_page = 25 by default)
 
   @users = User.page(7)
 
 * Show a lot more users per each page (change the per_page value)
 
-  @users = User.page(7).per(30)
+  @users = User.page(7).per(50)
 
 * Typically, your controller code will look like this:
 
