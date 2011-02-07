@@ -1,3 +1,7 @@
+== 0.7.0
+
+* Ajaxified paginator templates
+
 == 0.6.0
 
 * Hamlized paginator templates

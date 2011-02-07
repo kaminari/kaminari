@@ -71,6 +71,10 @@ Then bundle:
 
   <%= paginate @users, :left => 0, :right => 2 %>
 
+* Ajax links (crazy simple, but works perfectly!)
+
+  <%= paginate @users, :remote => true %>
+
 === Customizing the pagination helper
 
 * The generator

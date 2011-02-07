@@ -1,5 +1,3 @@
 * add generator option to copy particular template
 
-* add Ajax generator
-
 * I18n?
