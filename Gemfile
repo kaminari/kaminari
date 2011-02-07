@@ -6,7 +6,7 @@ source 'http://rubygems.org'
 # Add dependencies to develop your gem here.
 # Include everything needed to run rake, tests, features, etc.
 group :development do
-  gem 'rspec', '>= 2.4.0'
+  gem 'rspec', '>= 2.5.0'
   gem 'rr', '>= 1.0.2'
   gem 'bundler', '>= 1.0.0'
   gem 'jeweler', '>= 1.5.2'
@@ -15,7 +15,7 @@ group :development do
 #   gem 'rails', '>= 3.0.3'
   gem 'rack', :git => 'git://github.com/rack/rack.git'
   gem 'arel', :git => 'git://github.com/rails/arel.git'
-  gem 'rspec-rails', :git => 'git://github.com/rspec/rspec-rails.git'# 2.4.1 needed
+  gem 'rspec-rails', '>= 2.5.0'
   gem 'sqlite3', '>= 1.3.3'
   gem 'ruby-debug'
 end
