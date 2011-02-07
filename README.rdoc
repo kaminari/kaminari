@@ -12,7 +12,7 @@ Does not globally pollute Array, Hash, Object or AR::Base.
 Just bundle the gem, then your models are ready to be paginated. No configuration. Don't have to define anything in your models or helpers.
 
 * Scope based simple API
-Everything is method chainable. No Hash for the query. You know, that's the Rails 3 way.
+Everything is method chainable with less Hasheritis. You know, that's the Rails 3 way.
 No special collection class or something for the paginated values but uses a general AR::Relation instance. So, of course you can chain any other conditions before or after the paginator scope.
 
 * Engine based customizable helper
@@ -35,23 +35,29 @@ Then bundle:
 
 == Usage
 
+=== Query Basics
+
 * Fetch the 7th page of the users (per_page = 25 by default)
 
-  @users = User.page(7)
+  User.page(7)
 
 * Show a lot more users per each page (change the per_page value)
 
-  @users = User.page(7).per(50)
+  User.page(7).per(50)
+
+=== Controllers
 
 * Typically, your controller code will look like this:
 
-  @users = User.page params[:page]
+  @users = User.order(:name).page params[:page]
 
-* In your view
+=== Views
+
+* Just call the "paginate" helper
 
   <%= paginate @users %>
 
-* Specify the "window" size
+* Specifing the "window" size
 
   # "inner window" (4 by default)
 
@@ -65,10 +71,18 @@ Then bundle:
 
   <%= paginate @users, :left => 0, :right => 2 %>
 
-* Customize the pagination helper
+=== Customizing the pagination helper
+
+* The generator
 
   % rails g kaminari:views
 Then edit the partials in your app's app/views/kaminari/ directory.
+
+* For Haml users
+
+Haml templates generator is also available by adding "-e haml" option.
+
+  % rails g kaminari:views -e haml
 
 
 == Contributing to Kaminari
