@@ -91,6 +91,7 @@ module Kaminari
 
       def to_s
         suppress_logging_render_partial do
+          clear_content_for :kaminari_paginator_tags
           @template.content_for :kaminari_paginator_tags, tagify_links.join("\n").html_safe
           Paginator.new(self).to_s
         end
@@ -101,6 +102,7 @@ module Kaminari
         @template.send meth, *args, &blk
       end
 
+      # dirty hack
       def suppress_logging_render_partial(&blk)
         if subscriber = ActionView::LogSubscriber.log_subscribers.detect {|ls| ls.is_a? ActionView::LogSubscriber}
           class << subscriber
@@ -118,6 +120,11 @@ module Kaminari
         else
           blk.call
         end
+      end
+
+      # another dirty hack
+      def clear_content_for(name)
+        @template.instance_variable_get('@_content_for')[name] = ActiveSupport::SafeBuffer.new
       end
     end
 
