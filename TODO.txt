@@ -1,7 +1,5 @@
 * add generator option to copy particular template
 
-* add Haml generator
-
 * add Ajax generator
 
 * I18n?
