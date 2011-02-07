@@ -129,7 +129,7 @@ module Kaminari
     end
 
     def paginate(scope, options = {}, &block)
-      PaginationRenderer.new self, options.reverse_merge(:current_page => scope.current_page, :num_pages => scope.num_pages)
+      PaginationRenderer.new self, options.reverse_merge(:current_page => scope.current_page, :num_pages => scope.num_pages, :remote => false)
     end
   end
 end
