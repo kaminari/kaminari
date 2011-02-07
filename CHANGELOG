@@ -1,3 +1,7 @@
+== 0.6.0
+
+* Hamlized paginator templates
+
 == 0.5.0
 
 * reset content_for :kaminari_paginator_tags before rendering #1 [hsbt]

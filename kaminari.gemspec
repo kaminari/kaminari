@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{kaminari}
-  s.version = "0.5.0"
+  s.version = "0.6.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Akira Matsuda"]
@@ -28,15 +28,25 @@ Gem::Specification.new do |s|
     "TODO.txt",
     "VERSION",
     "app/views/kaminari/_current_page.html.erb",
+    "app/views/kaminari/_current_page.html.haml",
     "app/views/kaminari/_first_page_link.html.erb",
+    "app/views/kaminari/_first_page_link.html.haml",
     "app/views/kaminari/_last_page_link.html.erb",
+    "app/views/kaminari/_last_page_link.html.haml",
     "app/views/kaminari/_next_link.html.erb",
+    "app/views/kaminari/_next_link.html.haml",
     "app/views/kaminari/_next_span.html.erb",
+    "app/views/kaminari/_next_span.html.haml",
     "app/views/kaminari/_page_link.html.erb",
+    "app/views/kaminari/_page_link.html.haml",
     "app/views/kaminari/_paginator.html.erb",
+    "app/views/kaminari/_paginator.html.haml",
     "app/views/kaminari/_prev_link.html.erb",
+    "app/views/kaminari/_prev_link.html.haml",
     "app/views/kaminari/_prev_span.html.erb",
+    "app/views/kaminari/_prev_span.html.haml",
     "app/views/kaminari/_truncated_span.html.erb",
+    "app/views/kaminari/_truncated_span.html.haml",
     "kaminari.gemspec",
     "lib/generators/kaminari/views_generator.rb",
     "lib/kaminari.rb",
