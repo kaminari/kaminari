@@ -1,0 +1,19 @@
+== 0.5.0
+
+* reset content_for :kaminari_paginator_tags before rendering #1 [hsbt]
+
+== 0.4.0
+
+* partialize the outer div
+
+== 0.3.0
+
+* suppress logging when rendering each partial
+
+== 0.2.0
+
+* default PER_PAGE to 25 [hsbt]
+
+== 0.1.0
+
+* First release
