@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{kaminari}
-  s.version = "0.7.0"
+  s.version = "0.8.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Akira Matsuda"]
-  s.date = %q{2011-02-07}
+  s.date = %q{2011-02-08}
   s.description = %q{Kaminari is a Scope & Engine based clean and powerful and customizable and sophisticated paginator for Rails 3}
   s.email = %q{ronnie@dio.jp}
   s.extra_rdoc_files = [
@@ -54,11 +54,15 @@ Gem::Specification.new do |s|
     "lib/kaminari/engine.rb",
     "lib/kaminari/helpers.rb",
     "lib/kaminari/railtie.rb",
-    "spec/controllers/application_helper_spec.rb",
+    "spec/acceptance/acceptance_helper.rb",
+    "spec/acceptance/support/helpers.rb",
+    "spec/acceptance/support/paths.rb",
+    "spec/acceptance/users_spec.rb",
     "spec/helpers/helpers_spec.rb",
     "spec/models/scopes_spec.rb",
     "spec/spec_helper.rb",
     "spec/support/20110128122508_create_users.rb",
+    "spec/support/fake_app.rb",
     "spec/support/matchers.rb",
     "spec/support/user.rb"
   ]
@@ -68,11 +72,15 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.4.2}
   s.summary = %q{A pagnation engine plugin for Rails 3}
   s.test_files = [
-    "spec/controllers/application_helper_spec.rb",
+    "spec/acceptance/acceptance_helper.rb",
+    "spec/acceptance/support/helpers.rb",
+    "spec/acceptance/support/paths.rb",
+    "spec/acceptance/users_spec.rb",
     "spec/helpers/helpers_spec.rb",
     "spec/models/scopes_spec.rb",
     "spec/spec_helper.rb",
     "spec/support/20110128122508_create_users.rb",
+    "spec/support/fake_app.rb",
     "spec/support/matchers.rb",
     "spec/support/user.rb"
   ]
@@ -83,6 +91,8 @@ Gem::Specification.new do |s|
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_development_dependency(%q<rspec>, [">= 2.5.0"])
       s.add_development_dependency(%q<rr>, [">= 1.0.2"])
+      s.add_development_dependency(%q<steak>, [">= 1.1.0"])
+      s.add_development_dependency(%q<capybara>, [">= 0.4.1.1"])
       s.add_development_dependency(%q<bundler>, [">= 1.0.0"])
       s.add_development_dependency(%q<jeweler>, [">= 1.5.2"])
       s.add_development_dependency(%q<rcov>, [">= 0"])
@@ -96,6 +106,8 @@ Gem::Specification.new do |s|
     else
       s.add_dependency(%q<rspec>, [">= 2.5.0"])
       s.add_dependency(%q<rr>, [">= 1.0.2"])
+      s.add_dependency(%q<steak>, [">= 1.1.0"])
+      s.add_dependency(%q<capybara>, [">= 0.4.1.1"])
       s.add_dependency(%q<bundler>, [">= 1.0.0"])
       s.add_dependency(%q<jeweler>, [">= 1.5.2"])
       s.add_dependency(%q<rcov>, [">= 0"])
@@ -110,6 +122,8 @@ Gem::Specification.new do |s|
   else
     s.add_dependency(%q<rspec>, [">= 2.5.0"])
     s.add_dependency(%q<rr>, [">= 1.0.2"])
+    s.add_dependency(%q<steak>, [">= 1.1.0"])
+    s.add_dependency(%q<capybara>, [">= 0.4.1.1"])
     s.add_dependency(%q<bundler>, [">= 1.0.0"])
     s.add_dependency(%q<jeweler>, [">= 1.5.2"])
     s.add_dependency(%q<rcov>, [">= 0"])
