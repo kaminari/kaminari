@@ -67,6 +67,7 @@ module Kaminari
 
       def tagify_links
         num_pages, current_page, left, window, right = @options[:num_pages], @options[:current_page], @left, @window, @right
+        return [] if num_pages <= 1
 
         tags = []
         tags << (current_page > 1 ? PrevLink.new(self) : PrevSpan.new(self))
