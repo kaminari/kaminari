@@ -18,6 +18,9 @@ No special collection class or something for the paginated values but uses a gen
 * Engine based customizable helper
 As the whole pagination helper is basically just a collection of links and non-links, Kaminari renders each of them through its own partial template inside the Engine. So, you can easily modify their behaviour or style or whatever by overriding partial templates.
 
+* Modern
+The pagination helper outputs the HTML5 <nav> tag by default. Plus, the helper supports the Rails 3 unobtrusive Ajax.
+
 
 == Rails versions
 
@@ -56,18 +59,19 @@ Then bundle:
 * Just call the "paginate" helper
 
   <%= paginate @users %>
+This will render several "?page=N" pagination links surrounded by an HTML5 <nav> tag.
 
-* Specifing the "window" size
+=== Helper Options
 
-  # "inner window" (4 by default)
+* Specifing the "inner window" size (4 by default)
 
   <%= paginate @users, :window => 3 %>
 
-  # "outer window" (1 by default)
+* Specifing the "outer window" size (1 by default)
 
   <%= paginate @users, :outer_window => 3 %>
 
-  # outer window can be separetely specified by "left", "right" (1 by default)
+* outer window can be separetely specified by "left", "right" (1 by default)
 
   <%= paginate @users, :left => 0, :right => 2 %>
 

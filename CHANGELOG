@@ -1,3 +1,7 @@
+== 0.8.0
+
+* using HTML5 <nav> tag rather than <div> for the container tag
+
 == 0.7.0
 
 * Ajaxified paginator templates
