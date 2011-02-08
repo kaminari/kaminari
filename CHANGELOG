@@ -1,3 +1,10 @@
+== 0.9.0
+
+* added "per_page" to the template local variables #3 [hsbt]
+
+* show no contents when the current page is the only page (in other words,
+num_pages == 1) #2 [hsbt]
+
 == 0.8.0
 
 * using HTML5 <nav> tag rather than <div> for the container tag
