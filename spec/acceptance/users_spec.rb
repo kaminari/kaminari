@@ -7,7 +7,7 @@ feature 'Users' do
   scenario 'navigating by pagination links' do
     visit users_path
 
-    within 'div.pagination' do
+    within 'nav.pagination' do
       within 'span.page.current' do
         page.should have_content '1'
       end
@@ -16,7 +16,7 @@ feature 'Users' do
       end
     end
 
-    within 'div.pagination' do
+    within 'nav.pagination' do
       within 'span.page.current' do
         page.should have_content '2'
       end
@@ -25,7 +25,7 @@ feature 'Users' do
       end
     end
 
-    within 'div.pagination' do
+    within 'nav.pagination' do
       within 'span.page.current' do
         page.should have_content '4'
       end
@@ -34,7 +34,7 @@ feature 'Users' do
       end
     end
 
-    within 'div.pagination' do
+    within 'nav.pagination' do
       within 'span.page.current' do
         page.should have_content '3'
       end
