@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{kaminari}
-  s.version = "0.9.1"
+  s.version = "0.9.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Akira Matsuda"]
-  s.date = %q{2011-02-09}
+  s.date = %q{2011-02-10}
   s.description = %q{Kaminari is a Scope & Engine based clean and powerful and customizable and sophisticated paginator for Rails 3}
   s.email = %q{ronnie@dio.jp}
   s.extra_rdoc_files = [
@@ -47,6 +47,26 @@ Gem::Specification.new do |s|
     "app/views/kaminari/_prev_span.html.haml",
     "app/views/kaminari/_truncated_span.html.erb",
     "app/views/kaminari/_truncated_span.html.haml",
+    "app/views/kaminari/github/_current_page.html.erb",
+    "app/views/kaminari/github/_current_page.html.haml",
+    "app/views/kaminari/github/_first_page_link.html.erb",
+    "app/views/kaminari/github/_first_page_link.html.haml",
+    "app/views/kaminari/github/_last_page_link.html.erb",
+    "app/views/kaminari/github/_last_page_link.html.haml",
+    "app/views/kaminari/github/_next_link.html.erb",
+    "app/views/kaminari/github/_next_link.html.haml",
+    "app/views/kaminari/github/_next_span.html.erb",
+    "app/views/kaminari/github/_next_span.html.haml",
+    "app/views/kaminari/github/_page_link.html.erb",
+    "app/views/kaminari/github/_page_link.html.haml",
+    "app/views/kaminari/github/_paginator.html.erb",
+    "app/views/kaminari/github/_paginator.html.haml",
+    "app/views/kaminari/github/_prev_link.html.erb",
+    "app/views/kaminari/github/_prev_link.html.haml",
+    "app/views/kaminari/github/_prev_span.html.erb",
+    "app/views/kaminari/github/_prev_span.html.haml",
+    "app/views/kaminari/github/_truncated_span.html.erb",
+    "app/views/kaminari/github/_truncated_span.html.haml",
     "app/views/kaminari/google/_current_page.html.erb",
     "app/views/kaminari/google/_current_page.html.haml",
     "app/views/kaminari/google/_first_page_link.html.erb",
