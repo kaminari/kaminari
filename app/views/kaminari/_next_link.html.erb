@@ -6,5 +6,5 @@
   remote:        data-remote
 -%>
 <span class="next">
-  <%= link_to_if (current_page < num_pages), raw('Next &raquo;'), next_url, :class => 'next', :rel => 'next', :remote => remote %>
+  <%= link_to raw('Next &raquo;'), next_url, :class => 'next', :rel => 'next', :remote => remote %>
 </span>
