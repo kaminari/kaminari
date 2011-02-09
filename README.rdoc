@@ -81,16 +81,32 @@ This will render several "?page=N" pagination links surrounded by an HTML5 <nav>
 
 === Customizing the pagination helper
 
-* The generator
+Kaminari includes a handy template generator.
 
-  % rails g kaminari:views
+* The default generator
+
+  % rails g kaminari:views default
 Then edit the partials in your app's app/views/kaminari/ directory.
 
 * For Haml users
 
-Haml templates generator is also available by adding "-e haml" option.
+Haml templates generator is also available by adding "-e haml" option (this would actually be automatically invoked while the default template_engine is set to Haml).
 
-  % rails g kaminari:views -e haml
+  % rails g kaminari:views default -e haml
+
+* themes
+
+Kaminari is shipped with template themes in addition to the "default" one, which will help you creating a nice looking paginator.
+
+  % rails g kaminari:views THEME
+
+To see the full list of avaliable themes, just hit the generator without specifying THEME argument.
+  % rails g kaminari:views
+
+
+== Questions, Feedbacks
+
+Feel free to message me on Github (amatsuda) or Twitter (@a_matsuda)  :)
 
 
 == Contributing to Kaminari

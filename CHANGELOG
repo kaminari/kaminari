@@ -1,3 +1,7 @@
+== 0.9.1
+
+* googlish template theme
+
 == 0.9.0
 
 * added "per_page" to the template local variables #3 [hsbt]
