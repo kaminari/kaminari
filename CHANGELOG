@@ -1,3 +1,9 @@
+== 0.9.2
+
+* stop adding extra LF between templates when joining
+
+* githubish template theme [maztomo]
+
 == 0.9.1
 
 * googlish template theme [maztomo]
