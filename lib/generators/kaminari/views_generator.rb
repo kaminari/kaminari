@@ -15,7 +15,7 @@ rails g kaminari:views THEME [options]
         default: The default one.
                  This one is used internally while you don't override the partials.
         google:  Looks googlish! (note that this is just an example...)
-                 Make sure to specify a very big number (like 65536) for the "window" value.
+                 Try with this option  :window => 10, :outer_window => -1
         github:  A very simple one with only "Older" and "Newer" links.
 BANNER
       end
