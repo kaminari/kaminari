@@ -93,7 +93,7 @@ module Kaminari
       def to_s
         suppress_logging_render_partial do
           clear_content_for :kaminari_paginator_tags
-          @template.content_for :kaminari_paginator_tags, tagify_links.join("\n").html_safe
+          @template.content_for :kaminari_paginator_tags, tagify_links.join.html_safe
           Paginator.new(self).to_s
         end
       end
