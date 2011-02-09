@@ -1,0 +1,19 @@
+<%# available local variables:
+  current_page:  the page number of currently displayed page
+  num_pages:     total number of pages
+  per_page:      number of items to fetch per page
+  remote:        data-remote
+-%>
+<style>
+#nav a{display:block}
+#nav td{padding:0;text-align:center}
+.cur {font-weight:bold}
+.csb {background:url(http://www.google.co.jp/images/srpr/nav_logo27.png) no-repeat;overflow:hidden;background-position:0 0;height:40px;display:block}
+#nav {font-family: arial,sans-serif; font-size:small}
+#nav a:link {text-decoration:none; color:#4496d3}
+#nav a:hover {text-decoration:underline}
+#nav a:active {color:#c11}
+#nav a:visited {color:#2200C1}
+.b {font-weight:bold}
+</style>
+<table id="nav" style="border-collapse:collapse;text-align:left;direction:ltr;margin:17px auto 0"><tbody><tr valign="top"><%= content_for :kaminari_paginator_tags %></tr></tbody></table>
