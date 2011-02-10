@@ -5,7 +5,7 @@ module Kaminari
 
       class_option :template_engine, :type => :string, :aliases => '-e', :desc => 'Template engine for the views. Available options are "erb" and "haml".'
 
-      def self.banner
+      def self.banner #:nodoc:
         <<-BANNER.chomp
 rails g kaminari:views THEME [options]
 
@@ -21,7 +21,7 @@ BANNER
       end
 
       desc ''
-      def copy_views
+      def copy_views #:nodoc:
         Dir.glob(filename_pattern).map {|f| File.basename f}.each do |f|
           copy_file File.join([template_name.presence, f].compact), "app/views/kaminari/#{f}"
         end
