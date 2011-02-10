@@ -1,15 +1,38 @@
 module Kaminari
   module Helpers
     class Tag
+      def self.template_filename
+        name.demodulize.underscore
+      end
+
       def initialize(renderer, options = {})
         @renderer, @options = renderer, renderer.options.merge(options)
       end
 
       def to_s(locals = {})
-        @renderer.render :partial => @renderer.find_template_for(self.class), :locals => @options.merge(locals)
+        @renderer.render :partial => find_template, :locals => @options.merge(locals)
       end
 
       private
+      # OMG yet another super dirty hack
+      # this method finds
+      #   1. a template for the given class from app/views
+      #   2. a template for its parent class from app/views
+      #   3. the default one inside the engine
+      def find_template(klass = self.class)
+        if @renderer.resolver.find_all(*args_for_lookup(klass)).present?
+          "kaminari/#{klass.template_filename}"
+        elsif (parent = klass.ancestors[1]) == Tag
+          "kaminari/#{self.class.template_filename}"
+        else
+          find_template parent
+        end
+      end
+
+      def args_for_lookup(klass)
+        @renderer.context.send :args_for_lookup, klass.template_filename, 'kaminari', true, []
+      end
+
       def page_url_for(page)
         @renderer.url_for @renderer.params.merge(:page => (page <= 1 ? nil : page))
       end
@@ -90,29 +113,20 @@ module Kaminari
         tags << (num_pages > current_page ? NextLink.new(self) : NextSpan.new(self))
       end
 
+      def context
+        @template.instance_variable_get('@lookup_context')
+      end
+
+      def resolver
+        context.instance_variable_get('@view_paths').first
+      end
+
       def to_s
         suppress_logging_render_partial do
           clear_content_for :kaminari_paginator_tags
           @template.content_for :kaminari_paginator_tags, tagify_links.join.html_safe
           Paginator.new(self).to_s
         end
-      end
-
-      # OMG: yet another super dirty hack
-      # find a template for
-      #   1. self
-      #   2. parent classes
-      #   3. the default one in the engine
-      def find_template_for(klass)
-        context = @template.instance_variable_get('@_partial_renderer').instance_variable_get('@lookup_context')
-        resolver = context.instance_variable_get('@view_paths').first
-        klass.ancestors[0...klass.ancestors.index(Tag)].each do |k|
-          name = "#{k.name.demodulize.underscore}"
-          if resolver.find_all(*context.send(:args_for_lookup, name, 'kaminari', true, [])).present?
-            return "kaminari/#{name}"
-          end
-        end
-        "kaminari/#{self.class.name.demodulize.underscore}"
       end
 
       private
