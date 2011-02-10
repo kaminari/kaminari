@@ -30,7 +30,13 @@ module Kaminari
       end
 
       def args_for_lookup(klass)
-        @renderer.context.send :args_for_lookup, klass.template_filename, 'kaminari', true, []
+        if (method = @renderer.context.method :args_for_lookup).arity == 3
+          # 3.0
+          method.call klass.template_filename, 'kaminari', true
+        else
+          # 3.1
+          method.call klass.template_filename, 'kaminari', true, []
+        end
       end
 
       def page_url_for(page)
