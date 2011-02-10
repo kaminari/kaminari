@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{kaminari}
-  s.version = "0.9.2"
+  s.version = "0.9.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Akira Matsuda"]
-  s.date = %q{2011-02-10}
+  s.date = %q{2011-02-11}
   s.description = %q{Kaminari is a Scope & Engine based clean and powerful and customizable and sophisticated paginator for Rails 3}
   s.email = %q{ronnie@dio.jp}
   s.extra_rdoc_files = [
@@ -49,10 +49,6 @@ Gem::Specification.new do |s|
     "app/views/kaminari/_truncated_span.html.haml",
     "app/views/kaminari/github/_current_page.html.erb",
     "app/views/kaminari/github/_current_page.html.haml",
-    "app/views/kaminari/github/_first_page_link.html.erb",
-    "app/views/kaminari/github/_first_page_link.html.haml",
-    "app/views/kaminari/github/_last_page_link.html.erb",
-    "app/views/kaminari/github/_last_page_link.html.haml",
     "app/views/kaminari/github/_next_link.html.erb",
     "app/views/kaminari/github/_next_link.html.haml",
     "app/views/kaminari/github/_next_span.html.erb",
@@ -69,10 +65,6 @@ Gem::Specification.new do |s|
     "app/views/kaminari/github/_truncated_span.html.haml",
     "app/views/kaminari/google/_current_page.html.erb",
     "app/views/kaminari/google/_current_page.html.haml",
-    "app/views/kaminari/google/_first_page_link.html.erb",
-    "app/views/kaminari/google/_first_page_link.html.haml",
-    "app/views/kaminari/google/_last_page_link.html.erb",
-    "app/views/kaminari/google/_last_page_link.html.haml",
     "app/views/kaminari/google/_next_link.html.erb",
     "app/views/kaminari/google/_next_link.html.haml",
     "app/views/kaminari/google/_next_span.html.erb",
@@ -94,6 +86,7 @@ Gem::Specification.new do |s|
     "lib/kaminari/engine.rb",
     "lib/kaminari/helpers.rb",
     "lib/kaminari/railtie.rb",
+    "lib/kaminari/tags.rb",
     "spec/acceptance/acceptance_helper.rb",
     "spec/acceptance/support/helpers.rb",
     "spec/acceptance/support/paths.rb",
