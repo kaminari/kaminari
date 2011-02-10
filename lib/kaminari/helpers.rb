@@ -6,7 +6,7 @@ module Kaminari
       end
 
       def to_s(locals = {})
-        @renderer.render :partial => "kaminari/#{self.class.name.demodulize.underscore}", :locals => @options.merge(locals)
+        @renderer.render :partial => @renderer.find_template_for(self.class), :locals => @options.merge(locals)
       end
 
       private
@@ -96,6 +96,23 @@ module Kaminari
           @template.content_for :kaminari_paginator_tags, tagify_links.join.html_safe
           Paginator.new(self).to_s
         end
+      end
+
+      # OMG: yet another super dirty hack
+      # find a template for
+      #   1. self
+      #   2. parent classes
+      #   3. the default one in the engine
+      def find_template_for(klass)
+        context = @template.instance_variable_get('@_partial_renderer').instance_variable_get('@lookup_context')
+        resolver = context.instance_variable_get('@view_paths').first
+        klass.ancestors[0...klass.ancestors.index(Tag)].each do |k|
+          name = "#{k.name.demodulize.underscore}"
+          if resolver.find_all(*context.send(:args_for_lookup, name, 'kaminari', true, [])).present?
+            return "kaminari/#{name}"
+          end
+        end
+        "kaminari/#{self.class.name.demodulize.underscore}"
       end
 
       private
