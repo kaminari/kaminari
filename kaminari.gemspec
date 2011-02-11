@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{kaminari}
-  s.version = "0.9.3"
+  s.version = "0.9.4"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Akira Matsuda"]
@@ -92,6 +92,7 @@ Gem::Specification.new do |s|
     "spec/acceptance/support/paths.rb",
     "spec/acceptance/users_spec.rb",
     "spec/helpers/helpers_spec.rb",
+    "spec/helpers/tags_spec.rb",
     "spec/models/scopes_spec.rb",
     "spec/spec_helper.rb",
     "spec/support/20110128122508_create_users.rb",
@@ -110,6 +111,7 @@ Gem::Specification.new do |s|
     "spec/acceptance/support/paths.rb",
     "spec/acceptance/users_spec.rb",
     "spec/helpers/helpers_spec.rb",
+    "spec/helpers/tags_spec.rb",
     "spec/models/scopes_spec.rb",
     "spec/spec_helper.rb",
     "spec/support/20110128122508_create_users.rb",
