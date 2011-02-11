@@ -49,6 +49,14 @@ To show a lot more users per each page (change the per_page value)
   User.page(7).per(50)
 Note that the :per scope is not directly defined on the models but is just a method defined on the page scope. This is absolutely reasonable because you will never actually use "per_page" without specifying the "page" number.
 
+=== Configuring default per_page value for each model
+
+* paginates_per
+You can specify default per_page value per each model using the following declarative DSL.
+  class User
+    paginates_per 50
+  end
+
 === Controllers
 
 * the page parameter is in params[:page]

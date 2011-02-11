@@ -1,3 +1,12 @@
+== 0.9.6
+
+* added paginates_per method for setting default per_page value for each model
+in a declarative way
+  Example:
+  class Article < ActiveRecord::Base
+    paginates_per 10
+  end
+
 == 0.9.5
 
 * works on AR 3.0.0 and 3.0.1 now #4 [danillos]
