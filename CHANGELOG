@@ -1,9 +1,19 @@
+== 0.9.4
+
+* introduced module based tags
+  As a side effect of this internal change, I have to confess that this
+  version brings you a slight backword incompatibility on template API.
+  If you're using custom templates, be sure to update your exising templates.
+  To catch up the new API, you need to update %w[next_url prev_url page_url]
+  local variables to simple 'url' like this.
+    https://github.com/amatsuda/kaminari/commit/da88729
+
 == 0.9.3
 
 * improved template detection logic
   When a template for a tag could not be found in the app/views/kaminari/
-	directory, it searches the tag's ancestor template files before falling back
-	to engine's default template. This may help keeping your custom templates DRY.
+  directory, it searches the tag's ancestor template files before falling back
+  to engine's default template. This may help keeping your custom templates DRY.
 
 * simplified bundled template themes
 
