@@ -35,12 +35,9 @@ module Kaminari
         tags << (num_pages > current_page ? NextLink.new(self) : NextSpan.new(self))
       end
 
-      def context #:nodoc:
-        @template.instance_variable_get('@lookup_context')
-      end
-
-      def resolver #:nodoc:
-        context.instance_variable_get('@view_paths').first
+      def partial_exists?(name) #:nodoc:
+        resolver = context.instance_variable_get('@view_paths').first
+        resolver.find_all(*args_for_lookup(name)).present?
       end
 
       def to_s #:nodoc:
@@ -52,6 +49,20 @@ module Kaminari
       end
 
       private
+      def context
+        @template.instance_variable_get('@lookup_context')
+      end
+
+      def args_for_lookup(name)
+        if (method = context.method :args_for_lookup).arity == 3
+          # 3.0
+          method.call name, 'kaminari', true
+        else
+          # 3.1
+          method.call name, 'kaminari', true, []
+        end
+      end
+
       def method_missing(meth, *args, &blk)
         @template.send meth, *args, &blk
       end

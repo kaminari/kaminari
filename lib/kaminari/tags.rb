@@ -36,22 +36,12 @@ module Kaminari
       #   2. a template for its parent class from app/views
       #   3. the default one inside the engine
       def find_template(klass = self.class)
-        if @renderer.resolver.find_all(*args_for_lookup(klass)).present?
+        if @renderer.partial_exists? klass.template_filename
           "kaminari/#{klass.template_filename}"
         elsif (parent = klass.ancestors[1]) == Tag
           "kaminari/#{self.class.template_filename}"
         else
           find_template parent
-        end
-      end
-
-      def args_for_lookup(klass)
-        if (method = @renderer.context.method :args_for_lookup).arity == 3
-          # 3.0
-          method.call klass.template_filename, 'kaminari', true
-        else
-          # 3.1
-          method.call klass.template_filename, 'kaminari', true, []
         end
       end
 
