@@ -17,10 +17,6 @@ module Kaminari
     # template will be used.
     #   e.g.)  Paginator  ->  $GEM_HOME/kaminari-x.x.x/app/views/kaminari/_paginator.html.erb
     class Tag
-      def self.template_filename #:nodoc:
-        name.demodulize.underscore
-      end
-
       def initialize(renderer, options = {}) #:nodoc:
         @renderer, @options = renderer, renderer.options.merge(options)
       end
@@ -38,7 +34,7 @@ module Kaminari
       def find_template(klass = self.class)
         if @renderer.partial_exists? klass.template_filename
           "kaminari/#{klass.template_filename}"
-        elsif (parent = klass.ancestors[1]) == Tag
+        elsif (parent = klass.ancestors[1]) == Renderable
           "kaminari/#{self.class.template_filename}"
         else
           find_template parent
@@ -50,56 +46,109 @@ module Kaminari
       end
     end
 
+    module Renderable #:nodoc:
+      def self.included(base) #:nodoc:
+        base.extend ClassMethods
+      end
+      module ClassMethods #:nodoc:
+        def template_filename #:nodoc:
+          name.demodulize.underscore
+        end
+        def included(base) #:nodoc:
+          base.extend Renderable::ClassMethods
+        end
+      end
+    end
+
+    # Tag that contains a link
+    module Link
+      include Renderable
+      def url
+        raise 'Override url with the actual url value to be a Link.'
+      end
+      def to_s(locals = {}) #:nodoc:
+        super locals.merge(:url => url)
+      end
+    end
+
+    # Tag that doesn't contain a link
+    module NonLink
+      include Renderable
+    end
+
+    # Tag for a page
+    module Page
+      def page
+        raise 'Override page with the actual page value to be a Page.'
+      end
+      def to_s(locals = {}) #:nodoc:
+        super locals.merge(:page => page)
+      end
+    end
+
     # "Previous" without link
     class PrevSpan < Tag
+      include NonLink
     end
 
     # "Previous" with link
     class PrevLink < Tag
-      def to_s #:nodoc:
-        super :prev_url => page_url_for(@options[:current_page] - 1)
+      include Link
+      def url #:nodoc:
+        page_url_for @options[:current_page] - 1
       end
     end
 
     # "Next" without link
     class NextSpan < Tag
+      include NonLink
     end
 
     # "Next" with link
     class NextLink < Tag
-      def to_s #:nodoc:
-        super :next_url => page_url_for(@options[:current_page] + 1)
+      include Link
+      def url #:nodoc:
+        page_url_for @options[:current_page] + 1
       end
     end
 
-    # A link showing page number
+    # Link showing page number
     class PageLink < Tag
-      def to_s #:nodoc:
-        super :page_url => page_url_for(@options[:page])
+      include Page
+      include Link
+      def page #:nodoc:
+        @options[:page]
+      end
+      def url #:nodoc:
+        page_url_for page
       end
     end
 
-    # A non-link tag showing the current page number
+    # Non-link tag showing the current page number
     class CurrentPage < Tag
-      def to_s #:nodoc:
-        super :page_url => page_url_for(@options[:page])
+      include Page
+      include NonLink
+      def page #:nodoc:
+        @options[:page]
       end
     end
 
-    # A link with page number that appears at the leftmost
+    # Link with page number that appears at the leftmost
     class FirstPageLink < PageLink
     end
 
-    # A link with page number that appears at the rightmost
+    # Link with page number that appears at the rightmost
     class LastPageLink < PageLink
     end
 
-    # A non-link tag that stands for skipped pages...
+    # Non-link tag that stands for skipped pages...
     class TruncatedSpan < Tag
+      include NonLink
     end
 
     # The container tag
     class Paginator < Tag
+      include Renderable
     end
   end
 end
