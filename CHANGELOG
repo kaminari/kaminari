@@ -2,8 +2,8 @@
 
 * introduced module based tags
   As a side effect of this internal change, I have to confess that this
-  version brings you a slight backword incompatibility on template API.
-  If you're using custom templates, be sure to update your exising templates.
+  version brings you a slight backward incompatibility on template API.
+  If you're using custom templates, be sure to update your existing templates.
   To catch up the new API, you need to update %w[next_url prev_url page_url]
   local variables to simple 'url' like this.
     https://github.com/amatsuda/kaminari/commit/da88729

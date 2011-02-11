@@ -13,8 +13,8 @@ module Kaminari
     #   e.g.)  FirstPageLink  ->  app/views/kaminari/_first_page_link.html.erb
     #                         ->  app/views/kaminari/_page_link.html.erb
     #
-    # When no template were found in your app, finally the engine's pre insatalled
-    # template will be used.
+    # When no matching template were found in your app, finally the engine's pre
+    # installed template will be used.
     #   e.g.)  Paginator  ->  $GEM_HOME/kaminari-x.x.x/app/views/kaminari/_paginator.html.erb
     class Tag
       def initialize(renderer, options = {}) #:nodoc:
