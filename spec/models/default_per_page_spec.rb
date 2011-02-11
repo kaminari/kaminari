@@ -12,4 +12,13 @@ describe 'default per_page' do
     its(:limit_value) { should == 1326 }
     after { User.paginates_per nil }
   end
+
+  describe "default per_page value's independency per model" do
+    context "when User's default per_page was changed" do
+      before { User.paginates_per 1326 }
+      subject { Book.page 0 }
+      its(:limit_value) { should == 25 }
+      after { User.paginates_per nil }
+    end
+  end
 end
