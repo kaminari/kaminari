@@ -1,7 +1,7 @@
 module Kaminari
   module ActiveRecord
     extend ActiveSupport::Concern
-    PER_PAGE = 25
+    DEFAULT_PER_PAGE = 25
 
     included do
       def self.inherited(kls)
@@ -12,10 +12,12 @@ module Kaminari
           end]
           kls.instance_variable_set('@inheritable_attributes', new_inheritable_attributes)
         end
+
         kls.class_eval do
           # page(5)
           scope :page, lambda {|num|
-            limit(PER_PAGE).offset(PER_PAGE * ([num.to_i, 1].max - 1))
+            per_page = @_default_per_page || Kaminari::ActiveRecord::DEFAULT_PER_PAGE
+            limit(per_page).offset(per_page * ([num.to_i, 1].max - 1))
           } do
             # page(3).per(10)
             def per(num)
@@ -29,6 +31,14 @@ module Kaminari
             def current_page
               (offset_value / limit_value) + 1
             end
+          end
+
+          # overrides the default per_page value per model
+          #   class Article < ActiveRecord::Base
+          #     paginates_per 10
+          #   end
+          def self.paginates_per(val)
+            @_default_per_page = val
           end
         end
       end
