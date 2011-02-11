@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{kaminari}
-  s.version = "0.9.5"
+  s.version = "0.9.6"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Akira Matsuda"]
-  s.date = %q{2011-02-11}
+  s.date = %q{2011-02-12}
   s.description = %q{Kaminari is a Scope & Engine based clean and powerful and customizable and sophisticated paginator for Rails 3}
   s.email = %q{ronnie@dio.jp}
   s.extra_rdoc_files = [
@@ -91,14 +91,13 @@ Gem::Specification.new do |s|
     "spec/acceptance/support/helpers.rb",
     "spec/acceptance/support/paths.rb",
     "spec/acceptance/users_spec.rb",
+    "spec/fake_app.rb",
     "spec/helpers/helpers_spec.rb",
     "spec/helpers/tags_spec.rb",
+    "spec/models/default_per_page_spec.rb",
     "spec/models/scopes_spec.rb",
     "spec/spec_helper.rb",
-    "spec/support/20110128122508_create_users.rb",
-    "spec/support/fake_app.rb",
-    "spec/support/matchers.rb",
-    "spec/support/user.rb"
+    "spec/support/matchers.rb"
   ]
   s.homepage = %q{http://github.com/amatsuda/kaminari}
   s.licenses = ["MIT"]
@@ -110,14 +109,13 @@ Gem::Specification.new do |s|
     "spec/acceptance/support/helpers.rb",
     "spec/acceptance/support/paths.rb",
     "spec/acceptance/users_spec.rb",
+    "spec/fake_app.rb",
     "spec/helpers/helpers_spec.rb",
     "spec/helpers/tags_spec.rb",
+    "spec/models/default_per_page_spec.rb",
     "spec/models/scopes_spec.rb",
     "spec/spec_helper.rb",
-    "spec/support/20110128122508_create_users.rb",
-    "spec/support/fake_app.rb",
-    "spec/support/matchers.rb",
-    "spec/support/user.rb"
+    "spec/support/matchers.rb"
   ]
 
   if s.respond_to? :specification_version then
