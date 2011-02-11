@@ -15,11 +15,11 @@ module Kaminari
         kls.class_eval do
           # page(5)
           scope :page, lambda {|num|
-            offset(PER_PAGE * ([num.to_i, 1].max - 1)).limit(PER_PAGE)
+            limit(PER_PAGE).offset(PER_PAGE * ([num.to_i, 1].max - 1))
           } do
             # page(3).per(10)
             def per(num)
-              offset(offset_value / limit_value * num).limit(num)
+              limit(num).offset(offset_value / limit_value * num)
             end
 
             def num_pages
