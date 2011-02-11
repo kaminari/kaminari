@@ -1,3 +1,7 @@
+== 0.9.5
+
+* works on AR 3.0.0 and 3.0.1 now #4 [danillos]
+
 == 0.9.4
 
 * introduced module based tags
