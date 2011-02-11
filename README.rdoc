@@ -112,6 +112,11 @@ To see the full list of avaliable themes, just hit the generator without specify
   % rails g kaminari:views
 
 
+== For more information
+
+Check out Kaminari recipes on the GitHub Wiki.
+https://github.com/amatsuda/kaminari/wiki/Kaminari-recipes
+
 == Questions, Feedbacks
 
 Feel free to message me on Github (amatsuda) or Twitter (@a_matsuda)  ☇☇☇  :)
