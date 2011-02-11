@@ -53,7 +53,7 @@ Note that the :per scope is not directly defined on the models but is just a met
 
 * paginates_per
 You can specify default per_page value per each model using the following declarative DSL.
-  class User
+  class User < ActiveRecord::Base
     paginates_per 50
   end
 
