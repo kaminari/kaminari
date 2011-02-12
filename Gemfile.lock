@@ -1,18 +1,18 @@
 GIT
   remote: git://github.com/rack/rack.git
-  revision: 1c2715778d3753dce4d8df19e3d3cc698aed20c6
+  revision: e3ffeac0dc04bb8d5994b7923bf12e55d549a279
   specs:
     rack (1.2.1)
 
 GIT
   remote: git://github.com/rails/arel.git
-  revision: 4d92a6b33476a5b324188bd86dfa5b5d3f4dcd3a
+  revision: dbc86c0f2c2fc3c8bacf35c67fb8e0967b0a8980
   specs:
     arel (2.0.7.beta.20110121165657)
 
 GIT
   remote: git://github.com/rails/rails.git
-  revision: 7a774259010acec2a3b4c85e1a4b3289e4010ba8
+  revision: 829de9d98e59f9b083ed96a9031cd9841c83ae47
   specs:
     actionmailer (3.1.0.beta)
       actionpack (= 3.1.0.beta)
@@ -62,7 +62,7 @@ GEM
     abstract (1.0.0)
     bcrypt-ruby (2.1.4)
     builder (3.0.0)
-    capybara (0.4.1.1)
+    capybara (0.4.1.2)
       celerity (>= 0.7.9)
       culerity (>= 0.2.4)
       mime-types (>= 1.16)
@@ -72,7 +72,7 @@ GEM
       selenium-webdriver (>= 0.0.27)
       xpath (~> 0.1.3)
     celerity (0.8.7)
-    childprocess (0.1.6)
+    childprocess (0.1.7)
       ffi (~> 0.6.3)
     columnize (0.3.2)
     culerity (0.2.15)
