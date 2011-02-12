@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{kaminari}
-  s.version = "0.9.7"
+  s.version = "0.9.8"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Akira Matsuda"]
@@ -25,7 +25,6 @@ Gem::Specification.new do |s|
     "LICENSE.txt",
     "README.rdoc",
     "Rakefile",
-    "TODO.txt",
     "VERSION",
     "app/views/kaminari/_current_page.html.erb",
     "app/views/kaminari/_current_page.html.haml",
@@ -47,6 +46,7 @@ Gem::Specification.new do |s|
     "app/views/kaminari/_prev_span.html.haml",
     "app/views/kaminari/_truncated_span.html.erb",
     "app/views/kaminari/_truncated_span.html.haml",
+    "config/locales/kaminari.yml",
     "kaminari.gemspec",
     "lib/generators/kaminari/views_generator.rb",
     "lib/kaminari.rb",
