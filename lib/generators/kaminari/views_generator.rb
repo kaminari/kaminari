@@ -36,13 +36,17 @@ BANNER
 
       private
       def self.themes
-        @themes ||= open ALL_API do |json|
+        begin
+          @themes ||= open ALL_API do |json|
 #         open File.join File.dirname(__FILE__), '../../../spec/generators/sample.json' do |json|
-          files = ActiveSupport::JSON.decode(json)['blobs']
-          hash = files.group_by {|fn, _| fn[0...(fn.index('/') || 0)]}.delete_if {|fn, _| fn.blank?}
-          hash.map do |name, files|
-            Theme.new name, files
+            files = ActiveSupport::JSON.decode(json)['blobs']
+            hash = files.group_by {|fn, _| fn[0...(fn.index('/') || 0)]}.delete_if {|fn, _| fn.blank?}
+            hash.map do |name, files|
+              Theme.new name, files
+            end
           end
+        rescue SocketError
+          []
         end
       end
 
