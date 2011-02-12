@@ -1,3 +1,8 @@
+== 0.9.8
+
+* I18n for the partials
+  [:previous, :next, :truncate] are externalized to the I18n resource.
+
 == 0.9.7
 
 * moved template themes to another repo

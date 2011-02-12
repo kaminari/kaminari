@@ -89,6 +89,18 @@ This would output something like 1 ...(snip)... 18 19 20 while having 20 pages i
 This would add data-remote="true" to all the links inside.
   <%= paginate @users, :remote => true %>
 
+=== I18n and labels
+
+The default labels for 'previous', '...' and 'next' are rendered through I18n API.
+So, for example, if you want to change the "prev_label" to '<-', add it to a YAML file in your Rails.root/config/locales directory. Keys and the default values are the following.
+
+  en:
+    views:
+      pagination:
+        previous: "&laquo; Prev"
+        next: "Next &raquo;"
+        truncate: "..."
+
 === Customizing the pagination helper
 
 Kaminari includes a handy template generator.
@@ -114,7 +126,7 @@ To see the full list of avaliable themes, take a look at the themes repository, 
 
 == For more information
 
-Check out Kaminari recipes on the GitHub Wiki.
+Check out Kaminari recipes on the GitHub Wiki for more advanced tips and techniques.
 https://github.com/amatsuda/kaminari/wiki/Kaminari-recipes
 
 == Questions, Feedbacks
