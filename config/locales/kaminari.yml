@@ -1,0 +1,8 @@
+# Sample localization file for Kaminari. You can override these values in your app's locales file if you want.
+
+en:
+  views:
+    pagination:
+      previous: "&laquo; Prev"
+      next: "Next &raquo;"
+      truncate: "..."
