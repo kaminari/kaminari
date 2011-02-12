@@ -1,5 +1,8 @@
 module Kaminari
   module Generators
+    SHOW_API = 'http://github.com/api/v2/json/blob/show/amatsuda/kaminari_themes'
+    ALL_API  = 'http://github.com/api/v2/json/blob/all/amatsuda/kaminari_themes/master'
+
     class ViewsGenerator < Rails::Generators::NamedBase
       source_root File.expand_path('../../../../app/views/kaminari', __FILE__)
 
@@ -12,28 +15,80 @@ rails g kaminari:views THEME [options]
     Copies all paginator partial templates to your application.
     You can choose a template THEME by specifying one from the list below:
 
-        default: The default one.
-                 This one is used internally while you don't override the partials.
-        google:  Looks googlish! (note that this is just an example...)
-                 Try with this option  :window => 10, :outer_window => -1
-        github:  A very simple one with only "Older" and "Newer" links.
+        - default
+            The default one.
+            This one is used internally while you don't override the partials.
+#{themes.map {|t| "        - #{t.name}\n#{t.description}"}.join("\n")}
 BANNER
       end
 
       desc ''
-      def copy_views #:nodoc:
-        Dir.glob(filename_pattern).map {|f| File.basename f}.each do |f|
-          copy_file File.join([template_name.presence, f].compact), "app/views/kaminari/#{f}"
+      def copy_or_fetch #:nodoc:
+        return copy_default_views if file_name == 'default'
+
+        themes = self.class.themes
+        if theme = themes.detect {|t| t.name == file_name}
+          download_templates theme
+        else
+          say %Q[no such theme: #{file_name}\n  avaliable themes: #{themes.map(&:name).join ", "}]
         end
       end
 
       private
-      def template_name
-        (f = file_name.downcase) == 'default' ? '' : f
+      def self.themes
+        @themes ||= open ALL_API do |json|
+#         open File.join File.dirname(__FILE__), '../../../spec/generators/sample.json' do |json|
+          files = ActiveSupport::JSON.decode(json)['blobs']
+          hash = files.group_by {|fn, _| fn[0...(fn.index('/') || 0)]}.delete_if {|fn, _| fn.blank?}
+          hash.map do |name, files|
+            Theme.new name, files
+          end
+        end
       end
 
-      def filename_pattern
-        File.join self.class.source_root, template_name, "*.html.#{options[:template_engine].try(:to_s).try(:downcase) || 'erb'}"
+      def download_templates(theme)
+        theme.templates_for(template_engine).each do |template|
+          say "      downloading #{template.name} from kaminari_themes..."
+          get "#{SHOW_API}/#{template.sha}", "app/views/kaminari/#{template.basename}"
+        end
+      end
+
+      def copy_default_views
+        filename_pattern = File.join self.class.source_root, "*.html.#{template_engine}"
+        Dir.glob(filename_pattern).map {|f| File.basename f}.each do |f|
+          copy_file f, "app/views/kaminari/#{f}"
+        end
+      end
+
+      def template_engine
+        options[:template_engine].try(:to_s).try(:downcase) || 'erb'
+      end
+    end
+
+    Template = Struct.new(:name, :sha) do
+      def engine #:nodoc:
+        File.extname(name).sub /^\./, ''
+      end
+
+      def basename #:nodoc:
+        File.basename name
+      end
+    end
+
+    class Theme
+      attr_accessor :name
+      def initialize(name, templates) #:nodoc:
+        @name, @templates = name, templates.map {|f| Template.new *f}
+      end
+
+      def description #:nodoc:
+        file = @templates.detect {|t| t.name == "#{name}/DESCRIPTION"}
+        return "#{' ' * 12}#{name}" unless file
+        open("#{SHOW_API}/#{file.sha}").read.chomp.gsub /^/, ' ' * 12
+      end
+
+      def templates_for(template_engine) #:nodoc:
+        @templates.select {|t| t.engine == template_engine}
       end
     end
   end
