@@ -1,3 +1,8 @@
+== 0.9.7
+
+* moved template themes to another repo
+  https://github.com/amatsuda/kaminari_themes
+
 == 0.9.6
 
 * added paginates_per method for setting default per_page value for each model

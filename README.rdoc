@@ -105,10 +105,10 @@ Haml templates generator is also available by adding "-e haml" option (this woul
   % rails g kaminari:views default -e haml
 
 * themes
-Kaminari is shipped with template themes in addition to the "default" one, which will help you creating a nice looking paginator.
+The generator has the ability to fetch several sample template themes from the external repository (https://github.com/amatsuda/kaminari_themes) in addition to the bundled "default" one, which will help you creating a nice looking paginator.
   % rails g kaminari:views THEME
 
-To see the full list of avaliable themes, just hit the generator without specifying THEME argument.
+To see the full list of avaliable themes, take a look at the themes repository, or just hit the generator without specifying THEME argument.
   % rails g kaminari:views
 
 
