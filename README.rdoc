@@ -12,10 +12,10 @@ Does not globally pollute Array, Hash, Object or AR::Base.
 Just bundle the gem, then your models are ready to be paginated. No configuration. Don't have to define anything in your models or helpers.
 
 * Scope based simple API
-Everything is method chainable with less Hasheritis. You know, that's the Rails 3 way.
+Everything is method chainable with less "Hasheritis". You know, that's the Rails 3 way.
 No special collection class or something for the paginated values but uses a general AR::Relation instance. So, of course you can chain any other conditions before or after the paginator scope.
 
-* Engine based customizable helper
+* Engine based I18n aware customizable helper
 As the whole pagination helper is basically just a collection of links and non-links, Kaminari renders each of them through its own partial template inside the Engine. So, you can easily modify their behaviour or style or whatever by overriding partial templates.
 
 * Modern
@@ -91,8 +91,8 @@ This would add data-remote="true" to all the links inside.
 
 === I18n and labels
 
-The default labels for 'previous', '...' and 'next' are rendered through I18n API.
-So, for example, if you want to change the "prev_label" to '<-', add it to a YAML file in your Rails.root/config/locales directory. Keys and the default values are the following.
+The default labels for 'previous', '...' and 'next' are stored in the I18n yaml inside the engine, and rendered through I18n API. You can switch the label value per I18n.locale for your internationalized application.
+Keys and the default values are the following. You can override them by adding to a YAML file in your Rails.root/config/locales directory.
 
   en:
     views:
