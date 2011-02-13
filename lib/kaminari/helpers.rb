@@ -3,10 +3,11 @@ require File.join(File.dirname(__FILE__), 'tags')
 module Kaminari
   module Helpers
     class PaginationRenderer
-      attr_reader :options
+      attr_reader :options, :params
 
       def initialize(template, options) #:nodoc:
         @template, @options = template, options
+        @params = options[:params] ? template.params.merge(options.delete :params) : template.params
         @left, @window, @right = (options[:left] || options[:outer_window] || 1), (options[:window] || options[:inner_window] || 4), (options[:right] || options[:outer_window] || 1)
       end
 
@@ -104,6 +105,7 @@ module Kaminari
     # * <tt>:outer_window</tt> - The "outer window" size (1 by default).
     # * <tt>:left</tt> - The "left outer window" size (1 by default).
     # * <tt>:right</tt> - The "right outer window" size (1 by default).
+    # * <tt>:params</tt> - url_for parameters for the links (:controller, :action, etc.)
     # * <tt>:remote</tt> - Ajax? (false by default)
     # * <tt>:ANY_OTHER_VALUES</tt> - Any other hash key & values would be directly passed into each tag as :locals value.
     def paginate(scope, options = {}, &block)

@@ -2,7 +2,7 @@ require File.expand_path('../spec_helper', File.dirname(__FILE__))
 include Kaminari::Helpers
 
 describe 'Kaminari::Helpers::PaginationRenderer' do
-  let :renderer do
+  let :template do
     stub(r = Object.new) do
       render.with_any_args
       params { {} }
@@ -10,9 +10,15 @@ describe 'Kaminari::Helpers::PaginationRenderer' do
     end
     r
   end
+
+  describe '#params' do
+    subject { PaginationRenderer.new(template, :params => {:controller => 'foo', :action => 'bar'}) }
+    its(:params) { should == {:controller => 'foo', :action => 'bar'} }
+  end
+
   describe '#tagify_links' do
     def tags_with(options)
-      PaginationRenderer.new(renderer, options).tagify_links
+      PaginationRenderer.new(template, options).tagify_links
     end
 
     context '1 page in total' do
