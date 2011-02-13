@@ -60,11 +60,24 @@ module Kaminari
       end
     end
 
+    # A page
+    module Page
+      include Renderable
+      # target page number
+      def page
+        raise 'Override page with the actual page value to be a Page.'
+      end
+      def to_s(locals = {}) #:nodoc:
+        super locals.merge(:page => page)
+      end
+    end
+
     # Tag that contains a link
     module Link
       include Renderable
+      include Page
       def url
-        raise 'Override url with the actual url value to be a Link.'
+        page_url_for page
       end
       def to_s(locals = {}) #:nodoc:
         super locals.merge(:url => url)
@@ -76,39 +89,43 @@ module Kaminari
       include Renderable
     end
 
-    # Tag for a page
-    module Page
-      def page
-        raise 'Override page with the actual page value to be a Page.'
-      end
-      def to_s(locals = {}) #:nodoc:
-        super locals.merge(:page => page)
-      end
+    # The "previous" page of the current page
+    module Prev
+      include Renderable
     end
 
     # "Previous" without link
     class PrevSpan < Tag
       include NonLink
+      include Prev
     end
 
     # "Previous" with link
     class PrevLink < Tag
       include Link
-      def url #:nodoc:
-        page_url_for @options[:current_page] - 1
+      include Prev
+      def page #:nodoc:
+        @options[:current_page] - 1
       end
+    end
+
+    # The "next" page of the current page
+    module Next
+      include Renderable
     end
 
     # "Next" without link
     class NextSpan < Tag
       include NonLink
+      include Next
     end
 
     # "Next" with link
     class NextLink < Tag
       include Link
-      def url #:nodoc:
-        page_url_for @options[:current_page] + 1
+      include Next
+      def page #:nodoc:
+        @options[:current_page] + 1
       end
     end
 
@@ -118,9 +135,6 @@ module Kaminari
       include Link
       def page #:nodoc:
         @options[:page]
-      end
-      def url #:nodoc:
-        page_url_for page
       end
     end
 
