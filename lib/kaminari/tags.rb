@@ -29,8 +29,8 @@ module Kaminari
       def self.ancestor_renderables
         arr = []
         ancestors.each do |klass|
-          arr << klass if klass != Renderable
           return arr if klass == Tag
+          arr << klass if klass != Renderable
         end
       end
 
