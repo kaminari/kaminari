@@ -85,6 +85,10 @@ This would output something like 1 2 3 4 ...(snip)... 17 18 19 20 while having 2
 This would output something like 1 ...(snip)... 18 19 20 while having 20 pages in total.
   <%= paginate @users, :left => 0, :right => 2 %>
 
+* extra parameters (:params) for the links
+This would modify each link's url_option. :controller and :action would be the usual keys.
+  <%= paginate @users, :params => {:controller => 'foo', :action => 'bar'}
+
 * Ajax links (crazy simple, but works perfectly!)
 This would add data-remote="true" to all the links inside.
   <%= paginate @users, :remote => true %>

@@ -1,3 +1,12 @@
+== 0.9.9
+
+* :params option for the helper [yomukaku_memo]
+  You can override each link's url_for option by this option
+	Example:
+	= paginate @users, :params => {:controller => 'users', :action => 'index2'}
+
+* refactor tags
+
 == 0.9.8
 
 * I18n for the partials
