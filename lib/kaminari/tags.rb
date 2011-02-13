@@ -26,19 +26,24 @@ module Kaminari
       end
 
       private
+      def self.ancestor_renderables
+        arr = []
+        ancestors.each do |klass|
+          arr << klass if klass != Renderable
+          return arr if klass == Tag
+        end
+      end
+
       # OMG yet another super dirty hack
       # this method finds
       #   1. a template for the given class from app/views
       #   2. a template for its parent class from app/views
       #   3. the default one inside the engine
-      def find_template(klass = self.class)
-        if @renderer.partial_exists? klass.template_filename
-          "kaminari/#{klass.template_filename}"
-        elsif (parent = klass.ancestors[1]) == Renderable
-          "kaminari/#{self.class.template_filename}"
-        else
-          find_template parent
+      def find_template
+        self.class.ancestor_renderables.each do |klass|
+          return "kaminari/#{klass.template_filename}" if @renderer.partial_exists? klass.template_filename
         end
+        "kaminari/#{self.class.template_filename}"
       end
 
       def page_url_for(page)
