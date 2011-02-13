@@ -86,7 +86,7 @@ This would output something like 1 ...(snip)... 18 19 20 while having 20 pages i
   <%= paginate @users, :left => 0, :right => 2 %>
 
 * extra parameters (:params) for the links
-This would modify each link's url_option. :controller and :action would be the usual keys.
+This would modify each link's url_option. :controller and :action might be the keys in common.
   <%= paginate @users, :params => {:controller => 'foo', :action => 'bar'}
 
 * Ajax links (crazy simple, but works perfectly!)
