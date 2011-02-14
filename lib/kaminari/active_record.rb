@@ -25,7 +25,7 @@ module Kaminari
             end
 
             def num_pages
-              (except(:offset, :limit).count.to_f / limit_value).ceil
+              (except(:offset, :limit, :includes).count.to_f / limit_value).ceil
             end
 
             def current_page
