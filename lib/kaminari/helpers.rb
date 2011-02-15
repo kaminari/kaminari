@@ -37,10 +37,7 @@ module Kaminari
       end
 
       def compose_tags(&block) #:nodoc:
-        num_pages, current_page = @options[:num_pages], @options[:current_page]
-        return [] if num_pages <= 1
-
-        instance_eval &block
+        instance_eval &block if @options[:num_pages] > 1
       end
 
       def partial_exists?(name) #:nodoc:
