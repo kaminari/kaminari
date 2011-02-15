@@ -12,7 +12,13 @@
       <% if page.current? -%>
         <%= current_page_tag %>
       <% elsif page.left_outer? || page.right_outer? || page.inside_window? -%>
-        <%= page_link_tag %>
+        <% if page.first? -%>
+          <%= first_page_link_tag %>
+        <% elsif page.last? -%>
+          <%= last_page_link_tag %>
+        <% else -%>
+          <%= page_link_tag %>
+        <% end -%>
       <% elsif !page.was_truncated? -%>
         <%= truncated_span_tag %>
       <% end -%>

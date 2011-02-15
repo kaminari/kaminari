@@ -13,19 +13,12 @@ module Kaminari
         @left, @window, @right = (options[:left] || options[:outer_window] || 1), (options[:window] || options[:inner_window] || 4), (options[:right] || options[:outer_window] || 1)
       end
 
-      def current_page_tag
-        @last = CurrentPage.new self, :page => @page
-      end
-
-      def page_link_tag
-        @last = case @page
-        when 1
-          FirstPageLink
-        when @options[:num_pages]
-          LastPageLink
-        else
-          PageLink
-        end.new self, :page => @page
+      %w[current_page first_page_link last_page_link page_link].each do |tag|
+        eval <<-DEF
+          def #{tag}_tag
+            @last = #{tag.classify}.new self, :page => @page
+          end
+        DEF
       end
 
       %w[prev_link prev_span next_link next_span truncated_span].each do |tag|
@@ -107,6 +100,14 @@ module Kaminari
 
         def current?
           @page == @renderer.options[:current_page]
+        end
+
+        def first?
+          @page == 1
+        end
+
+        def last?
+          @page == @renderer.options[:num_pages]
         end
 
         def left_outer?
