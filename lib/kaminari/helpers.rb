@@ -3,7 +3,7 @@ require File.join(File.dirname(__FILE__), 'tags')
 module Kaminari
   module Helpers
     class PaginationRenderer
-      attr_reader :options, :params
+      attr_reader :options, :params, :left, :window, :right
 
       def initialize(template, options) #:nodoc:
         @template, @options = template, options
@@ -11,19 +11,19 @@ module Kaminari
         @left, @window, @right = (options[:left] || options[:outer_window] || 1), (options[:window] || options[:inner_window] || 4), (options[:right] || options[:outer_window] || 1)
       end
 
-      def current_page(page)
-        CurrentPage.new self, :page => page
+      def current_page
+        CurrentPage.new self, :page => @page
       end
 
-      def page_link(page)
-        case page
+      def page_link
+        case @page
         when 1
           FirstPageLink
         when @options[:num_pages]
           LastPageLink
         else
           PageLink
-        end.new self, :page => page
+        end.new self, :page => @page
       end
 
       %w[prev_link prev_span next_link next_span truncated_span].each do |tag|
@@ -34,17 +34,24 @@ module Kaminari
         DEF
       end
 
+      def each_page
+        1.upto(@options[:num_pages]) do |i|
+          @page = i
+          yield PageProxy.new(self, i)
+        end
+      end
+
       def tagify_links #:nodoc:
-        num_pages, current_page, left, window, right = @options[:num_pages], @options[:current_page], @left, @window, @right
+        num_pages, current_page = @options[:num_pages], @options[:current_page]
         return [] if num_pages <= 1
 
         tags = []
         tags << (current_page > 1 ? prev_link : prev_span)
-        1.upto(num_pages) do |i|
-          if i == current_page
-            tags << current_page(i)
-          elsif (i <= left + 1) || ((num_pages - i) <= right) || ((i - current_page).abs <= window)
-            tags << page_link(i)
+        each_page do |page|
+          if page.current?
+            tags << current_page()
+          elsif page.left_outer? || page.right_outer? || page.inside_window?
+            tags << page_link
           else
             tags << truncated_span unless tags.last.is_a? TruncatedSpan
           end
@@ -107,6 +114,28 @@ module Kaminari
       # another dirty hack
       def clear_content_for(name)
         @template.instance_variable_get('@_content_for')[name] = ActiveSupport::SafeBuffer.new
+      end
+
+      class PageProxy
+        def initialize(renderer, page)
+          @renderer, @page = renderer, page
+        end
+
+        def current?
+          @page == @renderer.options[:current_page]
+        end
+
+        def left_outer?
+          @page <= @renderer.left + 1
+        end
+
+        def right_outer?
+          @renderer.options[:num_pages] - @page <= @renderer.right
+        end
+
+        def inside_window?
+          (@page - @renderer.options[:current_page]).abs <= @renderer.window
+        end
       end
     end
 
