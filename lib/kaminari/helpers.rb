@@ -7,16 +7,18 @@ module Kaminari
 
       def initialize(template, options) #:nodoc:
         @template, @options = template, options
+        # so that this Renderer instance can actually "render". Black magic?
+        @output_buffer = @template.instance_variable_get('@output_buffer')
         @params = options[:params] ? template.params.merge(options.delete :params) : template.params
         @left, @window, @right = (options[:left] || options[:outer_window] || 1), (options[:window] || options[:inner_window] || 4), (options[:right] || options[:outer_window] || 1)
       end
 
-      def current_page
+      def current_page_tag
         @last = CurrentPage.new self, :page => @page
       end
 
-      def page_link
-        case @page
+      def page_link_tag
+        @last = case @page
         when 1
           FirstPageLink
         when @options[:num_pages]
@@ -28,7 +30,7 @@ module Kaminari
 
       %w[prev_link prev_span next_link next_span truncated_span].each do |tag|
         eval <<-DEF
-          def #{tag}
+          def #{tag}_tag
             @last = #{tag.classify}.new self
           end
         DEF
@@ -41,22 +43,11 @@ module Kaminari
         end
       end
 
-      def tagify_links #:nodoc:
+      def compose_tags(&block) #:nodoc:
         num_pages, current_page = @options[:num_pages], @options[:current_page]
         return [] if num_pages <= 1
 
-        tags = []
-        tags << (current_page > 1 ? prev_link : prev_span)
-        each_page do |page|
-          if page.current?
-            tags << current_page()
-          elsif page.left_outer? || page.right_outer? || page.inside_window?
-            tags << page_link
-          else
-            tags << truncated_span unless page.was_truncated?
-          end
-        end
-        tags << (num_pages > current_page ? next_link : next_span)
+        instance_eval &block
       end
 
       def partial_exists?(name) #:nodoc:
@@ -66,8 +57,6 @@ module Kaminari
 
       def to_s #:nodoc:
         suppress_logging_render_partial do
-          clear_content_for :kaminari_paginator_tags
-          @template.content_for :kaminari_paginator_tags, tagify_links.join.html_safe
           Paginator.new(self).to_s
         end
       end
@@ -109,11 +98,6 @@ module Kaminari
         else
           blk.call
         end
-      end
-
-      # another dirty hack
-      def clear_content_for(name)
-        @template.instance_variable_get('@_content_for')[name] = ActiveSupport::SafeBuffer.new
       end
 
       class PageProxy

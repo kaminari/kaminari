@@ -168,6 +168,10 @@ module Kaminari
     # The container tag
     class Paginator < Tag
       include Renderable
+
+      def to_s(locals = {}) #:nodoc:
+        super locals.merge(:renderer => @renderer)
+      end
     end
   end
 end

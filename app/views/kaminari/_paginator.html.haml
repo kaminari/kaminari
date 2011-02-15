@@ -4,5 +4,14 @@
     num_pages:     total number of pages
     per_page:      number of items to fetch per page
     remote:        data-remote
-%nav.pagination
-  = content_for :kaminari_paginator_tags
+- paginator.compose_tags do
+  %nav.pagination
+    = current_page > 1 ? prev_link_tag : prev_span_tag
+    - each_page do |page|
+      - if page.current?
+        = current_page_tag
+      - elsif page.left_outer? || page.right_outer? || page.inside_window?
+        = page_link_tag
+      - elsif !page.was_truncated?
+        = truncated_span_tag
+    = num_pages > current_page ? next_link_tag : next_span_tag
