@@ -12,7 +12,7 @@ module Kaminari
       end
 
       def current_page
-        CurrentPage.new self, :page => @page
+        @last = CurrentPage.new self, :page => @page
       end
 
       def page_link
@@ -29,7 +29,7 @@ module Kaminari
       %w[prev_link prev_span next_link next_span truncated_span].each do |tag|
         eval <<-DEF
           def #{tag}
-            #{tag.classify}.new self
+            @last = #{tag.classify}.new self
           end
         DEF
       end
@@ -37,7 +37,7 @@ module Kaminari
       def each_page
         1.upto(@options[:num_pages]) do |i|
           @page = i
-          yield PageProxy.new(self, i)
+          yield PageProxy.new(self, i, @last)
         end
       end
 
@@ -53,7 +53,7 @@ module Kaminari
           elsif page.left_outer? || page.right_outer? || page.inside_window?
             tags << page_link
           else
-            tags << truncated_span unless tags.last.is_a? TruncatedSpan
+            tags << truncated_span unless page.was_truncated?
           end
         end
         tags << (num_pages > current_page ? next_link : next_span)
@@ -117,8 +117,8 @@ module Kaminari
       end
 
       class PageProxy
-        def initialize(renderer, page)
-          @renderer, @page = renderer, page
+        def initialize(renderer, page, last)
+          @renderer, @page, @last = renderer, page, last
         end
 
         def current?
@@ -135,6 +135,10 @@ module Kaminari
 
         def inside_window?
           (@page - @renderer.options[:current_page]).abs <= @renderer.window
+        end
+
+        def was_truncated?
+          @last.is_a? TruncatedSpan
         end
       end
     end
