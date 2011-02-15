@@ -16,12 +16,12 @@ module Kaminari
         kls.class_eval do
           # page(5)
           scope :page, lambda {|num|
-            per_page = @_default_per_page || Kaminari::ActiveRecord::DEFAULT_PER_PAGE
-            limit(per_page).offset(per_page * ([num.to_i, 1].max - 1))
+            limit(default_per_page).offset(default_per_page * ([num.to_i, 1].max - 1))
           } do
             # page(3).per(10)
             def per(num)
-              limit(num).offset(offset_value / limit_value * num)
+              num = default_per_page if num.to_i == 0
+              limit(num.to_i).offset(offset_value / limit_value * num.to_i)
             end
 
             def num_pages
@@ -39,6 +39,10 @@ module Kaminari
           #   end
           def self.paginates_per(val)
             @_default_per_page = val
+          end
+
+          def self.default_per_page
+            @_default_per_page || Kaminari::ActiveRecord::DEFAULT_PER_PAGE
           end
         end
       end

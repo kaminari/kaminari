@@ -66,6 +66,11 @@ describe Kaminari::ActiveRecord do
       subject { User.page(50).per(65536) }
       its(:num_pages) { should == 1 }
     end
+
+    context 'per 0 (using default)' do
+      subject { User.page(50).per(0) }
+      its(:num_pages) { should == 4 }
+    end
   end
 
   describe '#current_page' do
