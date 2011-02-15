@@ -11,29 +11,45 @@ module Kaminari
         @left, @window, @right = (options[:left] || options[:outer_window] || 1), (options[:window] || options[:inner_window] || 4), (options[:right] || options[:outer_window] || 1)
       end
 
+      def current_page(page)
+        CurrentPage.new self, :page => page
+      end
+
+      def page_link(page)
+        case page
+        when 1
+          FirstPageLink
+        when @options[:num_pages]
+          LastPageLink
+        else
+          PageLink
+        end.new self, :page => page
+      end
+
+      %w[prev_link prev_span next_link next_span truncated_span].each do |tag|
+        eval <<-DEF
+          def #{tag}
+            #{tag.classify}.new self
+          end
+        DEF
+      end
+
       def tagify_links #:nodoc:
         num_pages, current_page, left, window, right = @options[:num_pages], @options[:current_page], @left, @window, @right
         return [] if num_pages <= 1
 
         tags = []
-        tags << (current_page > 1 ? PrevLink.new(self) : PrevSpan.new(self))
+        tags << (current_page > 1 ? prev_link : prev_span)
         1.upto(num_pages) do |i|
           if i == current_page
-            tags << CurrentPage.new(self, :page => i)
+            tags << current_page(i)
           elsif (i <= left + 1) || ((num_pages - i) <= right) || ((i - current_page).abs <= window)
-            case i
-            when 1
-              tags << FirstPageLink.new(self, :page => i)
-            when num_pages
-              tags << LastPageLink.new(self, :page => i)
-            else
-              tags << PageLink.new(self, :page => i)
-            end
+            tags << page_link(i)
           else
-            tags << TruncatedSpan.new(self) unless tags.last.is_a? TruncatedSpan
+            tags << truncated_span unless tags.last.is_a? TruncatedSpan
           end
         end
-        tags << (num_pages > current_page ? NextLink.new(self) : NextSpan.new(self))
+        tags << (num_pages > current_page ? next_link : next_span)
       end
 
       def partial_exists?(name) #:nodoc:
