@@ -20,8 +20,11 @@ module Kaminari
           } do
             # page(3).per(10)
             def per(num)
-              num = default_per_page if num.to_i == 0
-              limit(num.to_i).offset(offset_value / limit_value * num.to_i)
+              if (n = num.to_i) <= 0
+                self
+              else
+                limit(n).offset(offset_value / limit_value * n)
+              end
             end
 
             def num_pages
