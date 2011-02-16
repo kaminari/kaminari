@@ -4,7 +4,7 @@ module Kaminari
     DEFAULT_PER_PAGE = 25
 
     included do
-      def self.inherited(kls)
+      def self.inherited(kls) #:nodoc:
         # TERRIBLE HORRIBLE NO GOOD VERY BAD HACK: inheritable_attributes is not yet set here on AR 3.0
         unless kls.default_scoping
           new_inheritable_attributes = Hash[inheritable_attributes.map do |key, value|
@@ -14,11 +14,13 @@ module Kaminari
         end
 
         kls.class_eval do
-          # page(5)
+          # Fetch the values at the specified page number
+          #   Model.page(5)
           scope :page, lambda {|num|
             limit(default_per_page).offset(default_per_page * ([num.to_i, 1].max - 1))
           } do
-            # page(3).per(10)
+            # Specify the <tt>per_page</tt> value for the preceding <tt>page</tt> scope
+            #   Model.page(3).per(10)
             def per(num)
               if (n = num.to_i) <= 0
                 self
@@ -27,16 +29,18 @@ module Kaminari
               end
             end
 
+            # Total number of pages
             def num_pages
               (except(:offset, :limit).count.to_f / limit_value).ceil
             end
 
+            # Current page number
             def current_page
               (offset_value / limit_value) + 1
             end
           end
 
-          # overrides the default per_page value per model
+          # Overrides the default per_page value per model
           #   class Article < ActiveRecord::Base
           #     paginates_per 10
           #   end
@@ -44,6 +48,8 @@ module Kaminari
             @_default_per_page = val
           end
 
+          # This model's default per_page value
+          # returns 25 unless explicitly overridden via <tt>paginates_per</tt>
           def self.default_per_page
             @_default_per_page || Kaminari::ActiveRecord::DEFAULT_PER_PAGE
           end
