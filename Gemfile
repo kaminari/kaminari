@@ -20,4 +20,6 @@ group :development do
   gem 'rspec-rails', '>= 2.5.0'
   gem 'sqlite3', '>= 1.3.3'
   gem 'ruby-debug'
+  gem 'mongoid', '2.0.0.rc.7'
+  gem 'bson_ext', '~> 1.2'
 end
