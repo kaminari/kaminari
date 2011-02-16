@@ -79,6 +79,7 @@ module Kaminari
       # render given block as a view template
       def render(&block)
         instance_eval &block if @options[:num_pages] > 1
+        nil
       end
 
       # enumerate each page providing PageProxy object as the block parameter

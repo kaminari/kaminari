@@ -6,7 +6,7 @@
     remote:        data-remote
     paginator:     the paginator that renders the pagination tags inside
 -%>
-<% paginator.render do -%>
+<%= paginator.render do -%>
   <nav class='pagination'>
     <%= current_page > 1 ? prev_link_tag : prev_span_tag %>
     <% each_page do |page| -%>
