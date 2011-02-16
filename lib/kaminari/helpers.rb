@@ -60,7 +60,7 @@ module Kaminari
           method.call name, 'kaminari', true
         else
           # 3.1
-          method.call name, 'kaminari', true, []
+          method.call name, ['kaminari'], true, []
         end
       end
 
