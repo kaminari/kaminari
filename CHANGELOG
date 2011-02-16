@@ -1,3 +1,11 @@
+== 0.9.10
+
+* the per() method accepts String, zero and minus value now #7 [koic]
+  This enables you to do something like this:
+	Model.page(params[:page]).per(params[:per])
+
+* Added support for Gem Testers (http://gem-testers.org/) #8 [joealba]
+
 == 0.9.9
 
 * :params option for the helper [yomukaku_memo]
