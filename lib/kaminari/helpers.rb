@@ -2,6 +2,7 @@ require File.join(File.dirname(__FILE__), 'tags')
 
 module Kaminari
   module Helpers
+    # Wraps the template context and helps each tag render itselves
     class TemplateWrapper
       attr_reader :options, :params
       delegate :render, :url_for, :to => :@template
@@ -16,7 +17,7 @@ module Kaminari
         resolver.find_all(*args_for_lookup(name)).present?
       end
 
-      def output_buffer
+      def output_buffer #:nodoc:
         @template.instance_variable_get('@output_buffer')
       end
 
@@ -34,19 +35,34 @@ module Kaminari
           method.call name, 'kaminari', true, []
         end
       end
+    end
 
-      def method_missing(meth, *args, &blk)
-        @template.send meth, *args, &blk
+    # The main class that controlls the whole process
+    class PaginationRenderer
+      def initialize(template, options) #:nodoc:
+        @window_options = {}.tap do |h|
+          h[:window] = options.delete(:window) || options.delete(:inner_window) || 4
+          outer_window = options.delete(:outer_window)
+          h[:left] = options.delete(:left) || outer_window || 1
+          h[:right] = options.delete(:right) || outer_window || 1
+        end
+        @template = TemplateWrapper.new(template, options)
       end
 
+      def to_s #:nodoc:
+        suppress_logging_render_partial do
+          Paginator.new(@template, @window_options).to_s
+        end
+      end
+
+      private
       # dirty hack
       def suppress_logging_render_partial(&blk)
         if subscriber = ActionView::LogSubscriber.log_subscribers.detect {|ls| ls.is_a? ActionView::LogSubscriber}
           class << subscriber
             alias_method :render_partial_with_logging, :render_partial
             # do nothing
-            def render_partial(event)
-            end
+            def render_partial(event); end
           end
           ret = blk.call
           class << subscriber

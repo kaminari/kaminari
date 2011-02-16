@@ -76,10 +76,12 @@ module Kaminari
         @output_buffer = @template.output_buffer
       end
 
-      def compose_tags(&block) #:nodoc:
+      # render given block as a view template
+      def render(&block)
         instance_eval &block if @options[:num_pages] > 1
       end
 
+      # enumerate each page providing PageProxy object as the block parameter
       def each_page
         1.upto(@options[:num_pages]) do |i|
           @page = i
@@ -107,35 +109,48 @@ module Kaminari
         super window_options.merge :paginator => self
       end
 
+      # Wraps a "page number" and provides some utility methods
       class PageProxy
-        def initialize(options, page, last)
+        def initialize(options, page, last) #:nodoc:
           @options, @page, @last = options, page, last
         end
 
+        # the page number
+        def number
+          @page
+        end
+
+        # current page or not
         def current?
           @page == @options[:current_page]
         end
 
+        # the first page or not
         def first?
           @page == 1
         end
 
+        # the last page or not
         def last?
           @page == @options[:num_pages]
         end
 
+        # within the left outer window or not
         def left_outer?
           @page <= @options[:left] + 1
         end
 
+        # within the right outer window or not
         def right_outer?
           @options[:num_pages] - @page <= @options[:right]
         end
 
+        # inside the inner window or not
         def inside_window?
           (@page - @options[:current_page]).abs <= @options[:window]
         end
 
+        # The last rendered tag was "truncated" or not
         def was_truncated?
           @last.is_a? TruncatedSpan
         end
