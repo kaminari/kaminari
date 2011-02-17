@@ -17,12 +17,12 @@ module Kaminari
     # installed template will be used.
     #   e.g.)  Paginator  ->  $GEM_HOME/kaminari-x.x.x/app/views/kaminari/_paginator.html.erb
     class Tag
-      def initialize(renderer, options = {}) #:nodoc:
-        @renderer, @options = renderer, renderer.options.merge(options)
+      def initialize(template, options = {}) #:nodoc:
+        @template, @options = template, template.options.merge(options)
       end
 
       def to_s(locals = {}) #:nodoc:
-        @renderer.render :partial => find_template, :locals => @options.merge(locals)
+        @template.render :partial => find_template, :locals => @options.merge(locals)
       end
 
       private
@@ -41,13 +41,13 @@ module Kaminari
       #   3. the default one inside the engine
       def find_template
         self.class.ancestor_renderables.each do |klass|
-          return "kaminari/#{klass.template_filename}" if @renderer.partial_exists? klass.template_filename
+          return "kaminari/#{klass.template_filename}" if @template.partial_exists? klass.template_filename
         end
         "kaminari/#{self.class.template_filename}"
       end
 
       def page_url_for(page)
-        @renderer.url_for @renderer.params.merge(:page => (page <= 1 ? nil : page))
+        @template.url_for @template.params.merge(:page => (page <= 1 ? nil : page))
       end
     end
 
@@ -61,6 +61,99 @@ module Kaminari
         end
         def included(base) #:nodoc:
           base.extend Renderable::ClassMethods
+        end
+      end
+    end
+
+    # The container tag
+    class Paginator < Tag
+      include Renderable
+      attr_reader :options
+
+      def initialize(template, window_options) #:nodoc:
+        @template, @options = template, window_options.reverse_merge(template.options)
+        # so that this instance can actually "render". Black magic?
+        @output_buffer = @template.output_buffer
+      end
+
+      # render given block as a view template
+      def render(&block)
+        instance_eval &block if @options[:num_pages] > 1
+        nil
+      end
+
+      # enumerate each page providing PageProxy object as the block parameter
+      def each_page
+        1.upto(@options[:num_pages]) do |i|
+          @page = i
+          yield PageProxy.new(options, i, @last)
+        end
+      end
+
+      %w[current_page first_page_link last_page_link page_link].each do |tag|
+        eval <<-DEF
+          def #{tag}_tag
+            @last = #{tag.classify}.new @template, :page => @page
+          end
+        DEF
+      end
+
+      %w[prev_link prev_span next_link next_span truncated_span].each do |tag|
+        eval <<-DEF
+          def #{tag}_tag
+            @last = #{tag.classify}.new @template
+          end
+        DEF
+      end
+
+      def to_s(window_options = {}) #:nodoc:
+        super window_options.merge :paginator => self
+      end
+
+      # Wraps a "page number" and provides some utility methods
+      class PageProxy
+        def initialize(options, page, last) #:nodoc:
+          @options, @page, @last = options, page, last
+        end
+
+        # the page number
+        def number
+          @page
+        end
+
+        # current page or not
+        def current?
+          @page == @options[:current_page]
+        end
+
+        # the first page or not
+        def first?
+          @page == 1
+        end
+
+        # the last page or not
+        def last?
+          @page == @options[:num_pages]
+        end
+
+        # within the left outer window or not
+        def left_outer?
+          @page <= @options[:left] + 1
+        end
+
+        # within the right outer window or not
+        def right_outer?
+          @options[:num_pages] - @page <= @options[:right]
+        end
+
+        # inside the inner window or not
+        def inside_window?
+          (@page - @options[:current_page]).abs <= @options[:window]
+        end
+
+        # The last rendered tag was "truncated" or not
+        def was_truncated?
+          @last.is_a? TruncatedSpan
         end
       end
     end
@@ -163,11 +256,6 @@ module Kaminari
     # Non-link tag that stands for skipped pages...
     class TruncatedSpan < Tag
       include NonLink
-    end
-
-    # The container tag
-    class Paginator < Tag
-      include Renderable
     end
   end
 end

@@ -2,38 +2,14 @@ require File.join(File.dirname(__FILE__), 'tags')
 
 module Kaminari
   module Helpers
-    class PaginationRenderer
+    # Wraps the template context and helps each tag render itselves
+    class TemplateWrapper
       attr_reader :options, :params
+      delegate :render, :url_for, :to => :@template
 
       def initialize(template, options) #:nodoc:
         @template, @options = template, options
         @params = options[:params] ? template.params.merge(options.delete :params) : template.params
-        @left, @window, @right = (options[:left] || options[:outer_window] || 1), (options[:window] || options[:inner_window] || 4), (options[:right] || options[:outer_window] || 1)
-      end
-
-      def tagify_links #:nodoc:
-        num_pages, current_page, left, window, right = @options[:num_pages], @options[:current_page], @left, @window, @right
-        return [] if num_pages <= 1
-
-        tags = []
-        tags << (current_page > 1 ? PrevLink.new(self) : PrevSpan.new(self))
-        1.upto(num_pages) do |i|
-          if i == current_page
-            tags << CurrentPage.new(self, :page => i)
-          elsif (i <= left + 1) || ((num_pages - i) <= right) || ((i - current_page).abs <= window)
-            case i
-            when 1
-              tags << FirstPageLink.new(self, :page => i)
-            when num_pages
-              tags << LastPageLink.new(self, :page => i)
-            else
-              tags << PageLink.new(self, :page => i)
-            end
-          else
-            tags << TruncatedSpan.new(self) unless tags.last.is_a? TruncatedSpan
-          end
-        end
-        tags << (num_pages > current_page ? NextLink.new(self) : NextSpan.new(self))
       end
 
       def partial_exists?(name) #:nodoc:
@@ -41,12 +17,8 @@ module Kaminari
         resolver.find_all(*args_for_lookup(name)).present?
       end
 
-      def to_s #:nodoc:
-        suppress_logging_render_partial do
-          clear_content_for :kaminari_paginator_tags
-          @template.content_for :kaminari_paginator_tags, tagify_links.join.html_safe
-          Paginator.new(self).to_s
-        end
+      def output_buffer #:nodoc:
+        @template.instance_variable_get('@output_buffer')
       end
 
       private
@@ -63,19 +35,34 @@ module Kaminari
           method.call name, ['kaminari'], true, []
         end
       end
+    end
 
-      def method_missing(meth, *args, &blk)
-        @template.send meth, *args, &blk
+    # The main class that controlls the whole process
+    class PaginationRenderer
+      def initialize(template, options) #:nodoc:
+        @window_options = {}.tap do |h|
+          h[:window] = options.delete(:window) || options.delete(:inner_window) || 4
+          outer_window = options.delete(:outer_window)
+          h[:left] = options.delete(:left) || outer_window || 1
+          h[:right] = options.delete(:right) || outer_window || 1
+        end
+        @template = TemplateWrapper.new(template, options)
       end
 
+      def to_s #:nodoc:
+        suppress_logging_render_partial do
+          Paginator.new(@template, @window_options).to_s
+        end
+      end
+
+      private
       # dirty hack
       def suppress_logging_render_partial(&blk)
         if subscriber = ActionView::LogSubscriber.log_subscribers.detect {|ls| ls.is_a? ActionView::LogSubscriber}
           class << subscriber
             alias_method :render_partial_with_logging, :render_partial
             # do nothing
-            def render_partial(event)
-            end
+            def render_partial(event); end
           end
           ret = blk.call
           class << subscriber
@@ -86,11 +73,6 @@ module Kaminari
         else
           blk.call
         end
-      end
-
-      # another dirty hack
-      def clear_content_for(name)
-        @template.instance_variable_get('@_content_for')[name] = ActiveSupport::SafeBuffer.new
       end
     end
 

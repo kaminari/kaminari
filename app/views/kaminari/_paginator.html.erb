@@ -4,7 +4,26 @@
     num_pages:     total number of pages
     per_page:      number of items to fetch per page
     remote:        data-remote
+    paginator:     the paginator that renders the pagination tags inside
 -%>
-<nav class='pagination'>
-  <%= content_for :kaminari_paginator_tags %>
-</nav>
+<%= paginator.render do -%>
+  <nav class='pagination'>
+    <%= current_page > 1 ? prev_link_tag : prev_span_tag %>
+    <% each_page do |page| -%>
+      <% if page.current? -%>
+        <%= current_page_tag %>
+      <% elsif page.left_outer? || page.right_outer? || page.inside_window? -%>
+        <% if page.first? -%>
+          <%= first_page_link_tag %>
+        <% elsif page.last? -%>
+          <%= last_page_link_tag %>
+        <% else -%>
+          <%= page_link_tag %>
+        <% end -%>
+      <% elsif !page.was_truncated? -%>
+        <%= truncated_span_tag %>
+      <% end -%>
+    <% end -%>
+    <%= num_pages > current_page ? next_link_tag : next_span_tag %>
+  </nav>
+<% end -%>
