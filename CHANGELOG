@@ -1,3 +1,13 @@
+== 0.9.12
+
+* Moved the whole pagination logic to the paginator partial so that users can
+touch it
+  Note: You need to update your _paginator.html.* if you've already customized
+	it. If you haven't overridden _paginator.html.* files, then probably
+	there're nothing you have to do.
+	See this commit for the example:
+		https://github.com/amatsuda/kaminari_themes/commit/2dfb41c
+
 == 0.9.10
 
 * the per() method accepts String, zero and minus value now #7 [koic]
