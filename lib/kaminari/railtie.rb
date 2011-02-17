@@ -11,10 +11,8 @@ module Kaminari
       end
       if defined? ::Mongoid
         require File.join(File.dirname(__FILE__), 'mongoid')
-        require File.join(File.dirname(__FILE__), 'mongoid/criteria')
-        require File.join(File.dirname(__FILE__), 'mongoid/document')
-        ::Mongoid::Criteria.send :include, Kaminari::Mongoid::Criteria
         ::Mongoid::Document.send :include, Kaminari::Mongoid::Document
+        ::Mongoid::Criteria.send :include, Kaminari::Mongoid::Criteria
       end
       ::ActionView::Base.send :include, Kaminari::Helpers
     end
