@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{kaminari}
-  s.version = "0.9.9"
+  s.version = "0.9.12"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Akira Matsuda"]
-  s.date = %q{2011-02-13}
+  s.date = %q{2011-02-17}
   s.description = %q{Kaminari is a Scope & Engine based clean and powerful and customizable and sophisticated paginator for Rails 3}
   s.email = %q{ronnie@dio.jp}
   s.extra_rdoc_files = [
@@ -18,6 +18,7 @@ Gem::Specification.new do |s|
   ]
   s.files = [
     ".document",
+    ".gemtest",
     ".rspec",
     "CHANGELOG",
     "Gemfile",

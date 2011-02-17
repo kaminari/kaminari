@@ -66,6 +66,21 @@ describe Kaminari::ActiveRecord do
       subject { User.page(50).per(65536) }
       its(:num_pages) { should == 1 }
     end
+
+    context 'per 0 (using default)' do
+      subject { User.page(50).per(0) }
+      its(:num_pages) { should == 4 }
+    end
+
+    context 'per -1 (using default)' do
+      subject { User.page(5).per(-1) }
+      its(:num_pages) { should == 4 }
+    end
+
+    context 'per "String value that can not be converted into Number" (using default)' do
+      subject { User.page(5).per('aho') }
+      its(:num_pages) { should == 4 }
+    end
   end
 
   describe '#current_page' do
