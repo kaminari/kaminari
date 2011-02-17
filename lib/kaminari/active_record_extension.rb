@@ -1,5 +1,5 @@
 module Kaminari
-  module ActiveRecord
+  module ActiveRecordExtension
     extend ActiveSupport::Concern
     DEFAULT_PER_PAGE = 25
 
@@ -51,7 +51,7 @@ module Kaminari
           # This model's default per_page value
           # returns 25 unless explicitly overridden via <tt>paginates_per</tt>
           def self.default_per_page
-            @_default_per_page || Kaminari::ActiveRecord::DEFAULT_PER_PAGE
+            @_default_per_page || Kaminari::ActiveRecordExtension::DEFAULT_PER_PAGE
           end
         end
       end

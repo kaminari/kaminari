@@ -1,6 +1,6 @@
 require File.expand_path('../spec_helper', File.dirname(__FILE__))
 
-describe Kaminari::ActiveRecord do
+describe Kaminari::ActiveRecordExtension do
   before :all do
     User.delete_all
     1.upto(100) {|i| User.create! :name => "user#{'%03d' % i}" }

@@ -1,5 +1,5 @@
 module Kaminari
-  module Mongoid
+  module MongoidExtension
     DEFAULT_PER_PAGE = 25
 
     module Criteria
@@ -55,7 +55,7 @@ module Kaminari
         # This model's default per_page value
         # returns 25 unless explicitly overridden via <tt>paginates_per</tt>
         def self.default_per_page
-          @_default_per_page || Kaminari::Mongoid::DEFAULT_PER_PAGE
+          @_default_per_page || Kaminari::MongoidExtension::DEFAULT_PER_PAGE
         end
       end
     end
