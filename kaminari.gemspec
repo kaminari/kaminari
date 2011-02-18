@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{kaminari}
-  s.version = "0.9.12"
+  s.version = "0.9.13"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Akira Matsuda"]
-  s.date = %q{2011-02-17}
+  s.date = %q{2011-02-18}
   s.description = %q{Kaminari is a Scope & Engine based clean and powerful and customizable and sophisticated paginator for Rails 3}
   s.email = %q{ronnie@dio.jp}
   s.extra_rdoc_files = [
@@ -51,9 +51,10 @@ Gem::Specification.new do |s|
     "kaminari.gemspec",
     "lib/generators/kaminari/views_generator.rb",
     "lib/kaminari.rb",
-    "lib/kaminari/active_record.rb",
+    "lib/kaminari/active_record_extension.rb",
     "lib/kaminari/engine.rb",
     "lib/kaminari/helpers.rb",
+    "lib/kaminari/mongoid_extension.rb",
     "lib/kaminari/railtie.rb",
     "lib/kaminari/tags.rb",
     "spec/acceptance/acceptance_helper.rb",
@@ -64,6 +65,7 @@ Gem::Specification.new do |s|
     "spec/helpers/helpers_spec.rb",
     "spec/helpers/tags_spec.rb",
     "spec/models/default_per_page_spec.rb",
+    "spec/models/mongoid_spec.rb",
     "spec/models/scopes_spec.rb",
     "spec/spec_helper.rb",
     "spec/support/matchers.rb"
@@ -82,6 +84,7 @@ Gem::Specification.new do |s|
     "spec/helpers/helpers_spec.rb",
     "spec/helpers/tags_spec.rb",
     "spec/models/default_per_page_spec.rb",
+    "spec/models/mongoid_spec.rb",
     "spec/models/scopes_spec.rb",
     "spec/spec_helper.rb",
     "spec/support/matchers.rb"
@@ -104,6 +107,8 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<rspec-rails>, [">= 2.5.0"])
       s.add_development_dependency(%q<sqlite3>, [">= 1.3.3"])
       s.add_development_dependency(%q<ruby-debug>, [">= 0"])
+      s.add_development_dependency(%q<mongoid>, ["= 2.0.0.rc.7"])
+      s.add_development_dependency(%q<bson_ext>, ["~> 1.2"])
       s.add_runtime_dependency(%q<rails>, [">= 3.0.0"])
     else
       s.add_dependency(%q<rspec>, [">= 2.5.0"])
@@ -119,6 +124,8 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<rspec-rails>, [">= 2.5.0"])
       s.add_dependency(%q<sqlite3>, [">= 1.3.3"])
       s.add_dependency(%q<ruby-debug>, [">= 0"])
+      s.add_dependency(%q<mongoid>, ["= 2.0.0.rc.7"])
+      s.add_dependency(%q<bson_ext>, ["~> 1.2"])
       s.add_dependency(%q<rails>, [">= 3.0.0"])
     end
   else
@@ -135,6 +142,8 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<rspec-rails>, [">= 2.5.0"])
     s.add_dependency(%q<sqlite3>, [">= 1.3.3"])
     s.add_dependency(%q<ruby-debug>, [">= 0"])
+    s.add_dependency(%q<mongoid>, ["= 2.0.0.rc.7"])
+    s.add_dependency(%q<bson_ext>, ["~> 1.2"])
     s.add_dependency(%q<rails>, [">= 3.0.0"])
   end
 end
