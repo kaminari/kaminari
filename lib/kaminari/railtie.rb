@@ -1,5 +1,9 @@
 require 'rails'
 require 'action_view'
+# ensure ORMs are loaded *before* initializing Kaminari
+begin; require 'active_record'; rescue LoadError; end
+begin; require 'mongoid'; rescue LoadError; end
+
 require File.join(File.dirname(__FILE__), 'helpers')
 
 module Kaminari
