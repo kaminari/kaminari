@@ -38,3 +38,9 @@ RSpec::Matchers.define :contain_tag_old do |count|
     "expected #{count || 'any'} instance(s) of #{@klass.name} but was #{@count}"
   end
 end
+
+RSpec::Matchers.define :skip do |num|
+  match do |criteria|
+    criteria.instance_variable_get('@options')[:skip] == num
+  end
+end
