@@ -1,3 +1,8 @@
+== 0.9.13
+
+* Added Mongoid support #5 [juno, hibariya]
+  This means, Kaminari is now *ORM agnostic*  ☇3☇3☇3
+
 == 0.9.12
 
 * Moved the whole pagination logic to the paginator partial so that users can

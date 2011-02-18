@@ -18,14 +18,22 @@ No special collection class or something for the paginated values but uses a gen
 * Engine based I18n aware customizable helper
 As the whole pagination helper is basically just a collection of links and non-links, Kaminari renders each of them through its own partial template inside the Engine. So, you can easily modify their behaviour or style or whatever by overriding partial templates.
 
+* ORM, template engine agnostic
+Kaminari supports multiple ORMs (ActiveRecord, Mongoid) and multiple template engines (ERB, Haml).
+
 * Modern
 The pagination helper outputs the HTML5 <nav> tag by default. Plus, the helper supports the Rails 3 unobtrusive Ajax.
 
 
-== Rails versions
+== Supported versions
 
-3.0.x and 3.1
+* Ruby 1.8.7 and 1.9.2 and 1.9.3
 
+* Rails 3.0.x and 3.1
+
+* Haml 3
+
+* Mongoid 2 (beta)
 
 == Install
 
