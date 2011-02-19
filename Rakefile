@@ -17,7 +17,7 @@ Jeweler::Tasks.new do |gem|
   gem.name = "kaminari"
   gem.homepage = "http://github.com/amatsuda/kaminari"
   gem.license = "MIT"
-  gem.summary = 'A pagnation engine plugin for Rails 3'
+  gem.summary = 'A pagination engine plugin for Rails 3'
   gem.description = 'Kaminari is a Scope & Engine based clean and powerful and customizable and sophisticated paginator for Rails 3'
   gem.email = "ronnie@dio.jp"
   gem.authors = ["Akira Matsuda"]
