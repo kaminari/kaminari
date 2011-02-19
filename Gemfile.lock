@@ -1,45 +1,69 @@
-PATH
-  remote: .
+GIT
+  remote: git://github.com/rack/rack.git
+  revision: e3ffeac0dc04bb8d5994b7923bf12e55d549a279
   specs:
-    kaminari (0.9.13)
-      kaminari
-      rails (>= 3.0.0)
-      ruby-debug
+    rack (1.2.1)
+
+GIT
+  remote: git://github.com/rails/arel.git
+  revision: dbc86c0f2c2fc3c8bacf35c67fb8e0967b0a8980
+  specs:
+    arel (2.0.7.beta.20110121165657)
+
+GIT
+  remote: git://github.com/rails/rails.git
+  revision: 289cc15f1a89a179116f67e5f666f4ff6d645f03
+  specs:
+    actionmailer (3.1.0.beta)
+      actionpack (= 3.1.0.beta)
+      mail (~> 2.2.15)
+    actionpack (3.1.0.beta)
+      activemodel (= 3.1.0.beta)
+      activesupport (= 3.1.0.beta)
+      builder (~> 3.0.0)
+      erubis (~> 2.6.6)
+      i18n (~> 0.5.0)
+      rack (~> 1.2.1)
+      rack-cache (~> 1.0.0)
+      rack-mount (~> 0.6.13)
+      rack-test (~> 0.5.7)
+      tzinfo (~> 0.3.23)
+    activemodel (3.1.0.beta)
+      activesupport (= 3.1.0.beta)
+      bcrypt-ruby (~> 2.1.4)
+      builder (~> 3.0.0)
+      i18n (~> 0.5.0)
+    activerecord (3.1.0.beta)
+      activemodel (= 3.1.0.beta)
+      activesupport (= 3.1.0.beta)
+      arel (~> 2.0.2)
+      tzinfo (~> 0.3.23)
+    activeresource (3.1.0.beta)
+      activemodel (= 3.1.0.beta)
+      activesupport (= 3.1.0.beta)
+    activesupport (3.1.0.beta)
+    rails (3.1.0.beta)
+      actionmailer (= 3.1.0.beta)
+      actionpack (= 3.1.0.beta)
+      activerecord (= 3.1.0.beta)
+      activeresource (= 3.1.0.beta)
+      activesupport (= 3.1.0.beta)
+      bundler (~> 1.0)
+      railties (= 3.1.0.beta)
+    railties (3.1.0.beta)
+      actionpack (= 3.1.0.beta)
+      activesupport (= 3.1.0.beta)
+      rake (>= 0.8.7)
+      thor (~> 0.14.4)
 
 GEM
   remote: http://rubygems.org/
   specs:
     abstract (1.0.0)
-    actionmailer (3.0.4)
-      actionpack (= 3.0.4)
-      mail (~> 2.2.15)
-    actionpack (3.0.4)
-      activemodel (= 3.0.4)
-      activesupport (= 3.0.4)
-      builder (~> 2.1.2)
-      erubis (~> 2.6.6)
-      i18n (~> 0.4)
-      rack (~> 1.2.1)
-      rack-mount (~> 0.6.13)
-      rack-test (~> 0.5.7)
-      tzinfo (~> 0.3.23)
-    activemodel (3.0.4)
-      activesupport (= 3.0.4)
-      builder (~> 2.1.2)
-      i18n (~> 0.4)
-    activerecord (3.0.4)
-      activemodel (= 3.0.4)
-      activesupport (= 3.0.4)
-      arel (~> 2.0.2)
-      tzinfo (~> 0.3.23)
-    activeresource (3.0.4)
-      activemodel (= 3.0.4)
-      activesupport (= 3.0.4)
-    activesupport (3.0.4)
-    arel (2.0.8)
+    bcrypt-ruby (2.1.4)
     bson (1.2.2)
     bson_ext (1.2.2)
-    builder (2.1.2)
+    builder (3.0.0)
     capybara (0.4.1.2)
       celerity (>= 0.7.9)
       culerity (>= 0.2.4)
@@ -65,6 +89,7 @@ GEM
       bundler (~> 1.0.0)
       git (>= 1.2.5)
       rake
+      ruby-debug
     json_pure (1.5.1)
     linecache (0.43)
     mail (2.2.15)
@@ -82,24 +107,12 @@ GEM
       will_paginate (~> 3.0.pre)
     nokogiri (1.4.4)
     polyglot (0.3.1)
-    rack (1.2.1)
+    rack-cache (1.0)
+      rack (>= 0.4)
     rack-mount (0.6.13)
       rack (>= 1.0.0)
     rack-test (0.5.7)
       rack (>= 1.0)
-    rails (3.0.4)
-      actionmailer (= 3.0.4)
-      actionpack (= 3.0.4)
-      activerecord (= 3.0.4)
-      activeresource (= 3.0.4)
-      activesupport (= 3.0.4)
-      bundler (~> 1.0)
-      railties (= 3.0.4)
-    railties (3.0.4)
-      actionpack (= 3.0.4)
-      activesupport (= 3.0.4)
-      rake (>= 0.8.7)
-      thor (~> 0.14.4)
     rake (0.8.7)
     rcov (0.9.9)
     rr (1.0.2)
@@ -142,15 +155,14 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  arel
+  arel!
   bson_ext (~> 1.2)
   bundler (>= 1.0.0)
   capybara (>= 0.4.1.1)
   jeweler (>= 1.5.2)
-  kaminari!
   mongoid (= 2.0.0.rc.7)
-  rack
-  rails
+  rack!
+  rails!
   rcov
   rr (>= 1.0.2)
   rspec (>= 2.5.0)
