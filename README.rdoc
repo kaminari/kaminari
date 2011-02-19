@@ -5,23 +5,23 @@ A Scope & Engine based, clean, powerful, customizable and sophisticated paginato
 
 == Features
 
-* Clean
+=== Clean
 Does not globally pollute +Array+, +Hash+, +Object+ or <tt>AR::Base</tt>.
 
-* Easy to use
+=== Easy to use
 Just bundle the gem, then your models are ready to be paginated. No configuration required. Don't have to define anything in your models or helpers.
 
-* Simple scope-based API
+=== Simple scope-based API
 Everything is method chainable with less "Hasheritis". You know, that's the Rails 3 way.
 No special collection class or anything for the paginated values, instead using a general <tt>AR::Relation</tt> instance. So, of course you can chain any other conditions before or after the paginator scope.
 
-* Customizable engine-based I18n-aware helper
+=== Customizable engine-based I18n-aware helper
 As the whole pagination helper is basically just a collection of links and non-links, Kaminari renders each of them through its own partial template inside the Engine. So, you can easily modify their behaviour, style or whatever by overriding partial templates.
 
-* ORM & template engine agnostic
+=== ORM & template engine agnostic
 Kaminari supports multiple ORMs (ActiveRecord, Mongoid) and multiple template engines (ERB, Haml).
 
-* Modern
+=== Modern
 The pagination helper outputs the HTML5 <nav> tag by default. Plus, the helper supports Rails 3 unobtrusive Ajax.
 
 
@@ -43,63 +43,72 @@ Put this line in your Gemfile:
 Then bundle:
   % bundle
 
-
 == Usage
 
 === Query Basics
 
 * the +:page+ scope
-To fetch the 7th page of users (default +per_page+ is 25)
-  User.page(7)
+
+  To fetch the 7th page of users (default +per_page+ is 25)
+    User.page(7)
 
 * the +:per+ scope
-To show a lot more users per each page (change the +per_page+ value)
-  User.page(7).per(50)
-Note that the +:per+ scope is not directly defined on the models but is just a method defined on the page scope. This is absolutely reasonable because you will never actually use +per_page+ without specifying the +page+ number.
+
+  To show a lot more users per each page (change the +per_page+ value)
+    User.page(7).per(50)
+  Note that the +:per+ scope is not directly defined on the models but is just a method defined on the page scope. This is absolutely reasonable because you will never actually use +per_page+ without specifying the +page+ number.
 
 === Configuring default +per_page+ value for each model
 
 * +paginates_per+
-You can specify default +per_page+ value per each model using the following declarative DSL.
-  class User < ActiveRecord::Base
-    paginates_per 50
-  end
+
+  You can specify default +per_page+ value per each model using the following declarative DSL.
+    class User < ActiveRecord::Base
+      paginates_per 50
+    end
 
 === Controllers
 
 * the page parameter is in <tt>params[:page]</tt>
-Typically, your controller code will look like this:
-  @users = User.order(:name).page params[:page]
+
+  Typically, your controller code will look like this:
+    @users = User.order(:name).page params[:page]
 
 === Views
 
 * the same old helper method
-Just call the +paginate+ helper:
-  <%= paginate @users %>
 
-This will render several <tt>?page=N</tt> pagination links surrounded by an HTML5 <+nav+> tag.
+  Just call the +paginate+ helper:
+    <%= paginate @users %>
+
+  This will render several <tt>?page=N</tt> pagination links surrounded by an HTML5 <+nav+> tag.
 
 === Helper Options
 
 * specifing the "inner window" size (4 by default)
-This would output something like <tt>... 5 6 7 8 9 ...</tt> when 7 is the current page.
-  <%= paginate @users, :window => 2 %>
+
+  This would output something like <tt>... 5 6 7 8 9 ...</tt> when 7 is the current page.
+    <%= paginate @users, :window => 2 %>
 
 * specifing the "outer window" size (1 by default)
-This would output something like <tt>1 2 3 4 ...(snip)... 17 18 19 20</tt> while having 20 pages in total.
-  <%= paginate @users, :outer_window => 3 %>
+
+  This would output something like <tt>1 2 3 4 ...(snip)... 17 18 19 20</tt> while having 20 pages in total.
+    <%= paginate @users, :outer_window => 3 %>
 
 * outer window can be separetely specified by +left+ +right+ (1 by default)
-This would output something like <tt>1 ...(snip)... 18 19 20</tt> while having 20 pages in total.
-  <%= paginate @users, :left => 0, :right => 2 %>
+
+  This would output something like <tt>1 ...(snip)... 18 19 20</tt> while having 20 pages in total.
+    <%= paginate @users, :left => 0, :right => 2 %>
 
 * extra parameters (+:params+) for the links
-This would modify each link's +url_option+. +:controller+ and +:action+ might be the keys in common.
-  <%= paginate @users, :params => {:controller => 'foo', :action => 'bar'}
+
+  This would modify each link's +url_option+. +:controller+ and +:action+ might be the keys in common.
+    <%= paginate @users, :params => {:controller => 'foo', :action => 'bar'}
 
 * Ajax links (crazy simple, but works perfectly!)
-This would add <tt>data-remote="true"</tt> to all the links inside.
-  <%= paginate @users, :remote => true %>
+
+  This would add <tt>data-remote="true"</tt> to all the links inside.
+    <%= paginate @users, :remote => true %>
 
 === I18n and labels
 
@@ -118,22 +127,28 @@ Keys and the default values are the following. You can override them by adding t
 Kaminari includes a handy template generator.
 
 * to edit your paginator
-Run the generator first,
+
+  Run the generator first,
   % rails g kaminari:views default
 
-then edit the partials in your app's <tt>app/views/kaminari/</tt> directory.
+  then edit the partials in your app's <tt>app/views/kaminari/</tt> directory.
 
 * for Haml users
-Haml templates generator is also available by adding the <tt>-e haml</tt> option (this is automatically invoked when the default template_engine is set to Haml).
+  Haml templates generator is also available by adding the <tt>-e haml</tt> option (this is automatically invoked when the default template_engine is set to Haml).
 
   % rails g kaminari:views default -e haml
 
 * themes
-The generator has the ability to fetch several sample template themes from the external repository (https://github.com/amatsuda/kaminari_themes) in addition to the bundled "default" one, which will help you creating a nice looking paginator.
-  % rails g kaminari:views THEME
 
-To see the full list of avaliable themes, take a look at the themes repository, or just hit the generator without specifying +THEME+ argument.
-  % rails g kaminari:views
+  The generator has the ability to fetch several sample template themes from
+  the external repository (https://github.com/amatsuda/kaminari_themes) in 
+  addition to the bundled "default" one, which will help you creating a nice
+  looking paginator.
+    % rails g kaminari:views THEME
+
+  To see the full list of avaliable themes, take a look at the themes repository,
+  or just hit the generator without specifying +THEME+ argument.
+    % rails g kaminari:views
 
 
 == For more information
