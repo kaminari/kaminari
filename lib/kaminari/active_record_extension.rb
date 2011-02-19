@@ -17,7 +17,9 @@ module Kaminari
         kls.class_eval do
           # Fetch the values at the specified page number
           #   Model.page(5)
-          scope :page, lambda {|num|
+          scope :page, lambda {|*num|
+            raise ArgumentError if num.size > 1
+            num = num.first || 1
             limit(default_per_page).offset(default_per_page * ([num.to_i, 1].max - 1))
           } do
             # Specify the <tt>per_page</tt> value for the preceding <tt>page</tt> scope
