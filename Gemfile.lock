@@ -1,69 +1,44 @@
-GIT
-  remote: git://github.com/rack/rack.git
-  revision: e3ffeac0dc04bb8d5994b7923bf12e55d549a279
+PATH
+  remote: .
   specs:
-    rack (1.2.1)
-
-GIT
-  remote: git://github.com/rails/arel.git
-  revision: dbc86c0f2c2fc3c8bacf35c67fb8e0967b0a8980
-  specs:
-    arel (2.0.7.beta.20110121165657)
-
-GIT
-  remote: git://github.com/rails/rails.git
-  revision: 829de9d98e59f9b083ed96a9031cd9841c83ae47
-  specs:
-    actionmailer (3.1.0.beta)
-      actionpack (= 3.1.0.beta)
-      mail (~> 2.2.15)
-    actionpack (3.1.0.beta)
-      activemodel (= 3.1.0.beta)
-      activesupport (= 3.1.0.beta)
-      builder (~> 3.0.0)
-      erubis (~> 2.6.6)
-      i18n (~> 0.5.0)
-      rack (~> 1.2.1)
-      rack-cache (~> 1.0.0)
-      rack-mount (~> 0.6.13)
-      rack-test (~> 0.5.7)
-      tzinfo (~> 0.3.23)
-    activemodel (3.1.0.beta)
-      activesupport (= 3.1.0.beta)
-      bcrypt-ruby (~> 2.1.4)
-      builder (~> 3.0.0)
-      i18n (~> 0.5.0)
-    activerecord (3.1.0.beta)
-      activemodel (= 3.1.0.beta)
-      activesupport (= 3.1.0.beta)
-      arel (~> 2.0.2)
-      tzinfo (~> 0.3.23)
-    activeresource (3.1.0.beta)
-      activemodel (= 3.1.0.beta)
-      activesupport (= 3.1.0.beta)
-    activesupport (3.1.0.beta)
-    rails (3.1.0.beta)
-      actionmailer (= 3.1.0.beta)
-      actionpack (= 3.1.0.beta)
-      activerecord (= 3.1.0.beta)
-      activeresource (= 3.1.0.beta)
-      activesupport (= 3.1.0.beta)
-      bundler (~> 1.0)
-      railties (= 3.1.0.beta)
-    railties (3.1.0.beta)
-      actionpack (= 3.1.0.beta)
-      activesupport (= 3.1.0.beta)
-      rake (>= 0.8.7)
-      thor (~> 0.14.4)
+    kaminari (0.9.13)
+      rails (>= 3.0.0)
 
 GEM
   remote: http://rubygems.org/
   specs:
     abstract (1.0.0)
-    bcrypt-ruby (2.1.4)
+    actionmailer (3.0.4)
+      actionpack (= 3.0.4)
+      mail (~> 2.2.15)
+    actionpack (3.0.4)
+      activemodel (= 3.0.4)
+      activesupport (= 3.0.4)
+      builder (~> 2.1.2)
+      erubis (~> 2.6.6)
+      i18n (~> 0.4)
+      rack (~> 1.2.1)
+      rack-mount (~> 0.6.13)
+      rack-test (~> 0.5.7)
+      tzinfo (~> 0.3.23)
+    activemodel (3.0.4)
+      activesupport (= 3.0.4)
+      builder (~> 2.1.2)
+      i18n (~> 0.4)
+    activerecord (3.0.4)
+      activemodel (= 3.0.4)
+      activesupport (= 3.0.4)
+      arel (~> 2.0.2)
+      tzinfo (~> 0.3.23)
+    activeresource (3.0.4)
+      activemodel (= 3.0.4)
+      activesupport (= 3.0.4)
+    activesupport (3.0.4)
+    archive-tar-minitar (0.5.2)
+    arel (2.0.8)
     bson (1.2.2)
     bson_ext (1.2.2)
-    builder (3.0.0)
+    builder (2.1.2)
     capybara (0.4.1.2)
       celerity (>= 0.7.9)
       culerity (>= 0.2.4)
@@ -73,7 +48,7 @@ GEM
       rack-test (>= 0.5.4)
       selenium-webdriver (>= 0.0.27)
       xpath (~> 0.1.3)
-    celerity (0.8.7)
+    celerity (0.8.8)
     childprocess (0.1.7)
       ffi (~> 0.6.3)
     columnize (0.3.2)
@@ -89,9 +64,9 @@ GEM
       bundler (~> 1.0.0)
       git (>= 1.2.5)
       rake
-      ruby-debug
     json_pure (1.5.1)
-    linecache (0.43)
+    linecache19 (0.5.11)
+      ruby_core_source (>= 0.1.4)
     mail (2.2.15)
       activesupport (>= 2.3.6)
       i18n (>= 0.4.0)
@@ -107,12 +82,24 @@ GEM
       will_paginate (~> 3.0.pre)
     nokogiri (1.4.4)
     polyglot (0.3.1)
-    rack-cache (1.0)
-      rack (>= 0.4)
+    rack (1.2.1)
     rack-mount (0.6.13)
       rack (>= 1.0.0)
     rack-test (0.5.7)
       rack (>= 1.0)
+    rails (3.0.4)
+      actionmailer (= 3.0.4)
+      actionpack (= 3.0.4)
+      activerecord (= 3.0.4)
+      activeresource (= 3.0.4)
+      activesupport (= 3.0.4)
+      bundler (~> 1.0)
+      railties (= 3.0.4)
+    railties (3.0.4)
+      actionpack (= 3.0.4)
+      activesupport (= 3.0.4)
+      rake (>= 0.8.7)
+      thor (~> 0.14.4)
     rake (0.8.7)
     rcov (0.9.9)
     rr (1.0.2)
@@ -129,13 +116,18 @@ GEM
       activesupport (~> 3.0)
       railties (~> 3.0)
       rspec (~> 2.5.0)
-    ruby-debug (0.10.4)
-      columnize (>= 0.1)
-      ruby-debug-base (~> 0.10.4.0)
-    ruby-debug-base (0.10.4)
-      linecache (>= 0.3)
+    ruby-debug-base19 (0.11.24)
+      columnize (>= 0.3.1)
+      linecache19 (>= 0.5.11)
+      ruby_core_source (>= 0.1.4)
+    ruby-debug19 (0.11.6)
+      columnize (>= 0.3.1)
+      linecache19 (>= 0.5.11)
+      ruby-debug-base19 (>= 0.11.19)
+    ruby_core_source (0.1.4)
+      archive-tar-minitar (>= 0.5.2)
     rubyzip (0.9.4)
-    selenium-webdriver (0.1.2)
+    selenium-webdriver (0.1.3)
       childprocess (~> 0.1.5)
       ffi (~> 0.6.3)
       json_pure
@@ -155,18 +147,19 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  arel!
+  arel
   bson_ext (~> 1.2)
   bundler (>= 1.0.0)
   capybara (>= 0.4.1.1)
   jeweler (>= 1.5.2)
+  kaminari!
   mongoid (= 2.0.0.rc.7)
-  rack!
-  rails!
+  rack
+  rails
   rcov
   rr (>= 1.0.2)
   rspec (>= 2.5.0)
   rspec-rails (>= 2.5.0)
-  ruby-debug
+  ruby-debug19
   sqlite3 (>= 1.3.3)
   steak (>= 1.1.0)
