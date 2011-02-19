@@ -3,7 +3,14 @@ $LOAD_PATH.unshift(File.dirname(__FILE__))
 require 'rails'
 require 'mongoid'
 require 'kaminari'
-
+# Ensure we use 'syck' instead of 'psych' in 1.9.2
+# RubyGems >= 1.5.0 uses 'psych' on 1.9.2, but
+# Psych does not yet support YAML 1.1 merge keys.
+# Merge keys is often used in mongoid.yml
+# See: http://redmine.ruby-lang.org/issues/show/4300
+if RUBY_VERSION >= '1.9.2'
+  YAML::ENGINE.yamler = 'syck'
+end
 require File.join(File.dirname(__FILE__), 'fake_app')
 
 require 'rspec/rails'
