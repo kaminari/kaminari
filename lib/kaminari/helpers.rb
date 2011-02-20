@@ -17,10 +17,6 @@ module Kaminari
         resolver.find_all(*args_for_lookup(name)).present?
       end
 
-      def output_buffer #:nodoc:
-        @template.instance_variable_get('@output_buffer')
-      end
-
       private
       def context
         @template.instance_variable_get('@lookup_context')
