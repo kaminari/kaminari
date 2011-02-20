@@ -2,7 +2,6 @@ require File.join(File.dirname(__FILE__), 'active_record_relation_methods')
 module Kaminari
   module ActiveRecordExtension
     extend ActiveSupport::Concern
-    include Kaminari::ConfigurationMethods
     included do
       def self.inherited(kls) #:nodoc:
         # TERRIBLE HORRIBLE NO GOOD VERY BAD HACK: inheritable_attributes is not yet set here on AR 3.0
@@ -14,6 +13,8 @@ module Kaminari
         end
 
         kls.class_eval do
+          include Kaminari::ConfigurationMethods
+
           # Fetch the values at the specified page number
           #   Model.page(5)
           scope :page, Proc.new {|num|
