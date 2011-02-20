@@ -2,6 +2,7 @@ require 'rails'
 # ensure ORMs are loaded *before* initializing Kaminari
 begin; require 'mongoid'; rescue LoadError; end
 
+require File.join(File.dirname(__FILE__), 'helpers/action_view_extension')
 require File.join(File.dirname(__FILE__), 'helpers/helpers')
 require File.join(File.dirname(__FILE__), 'models/page_scope_methods')
 require File.join(File.dirname(__FILE__), 'models/configuration_methods')
@@ -20,7 +21,7 @@ module Kaminari
         ::Mongoid::Criteria.send :include, Kaminari::MongoidExtension::Criteria
       end
       ActiveSupport.on_load(:action_view) do 
-        ::ActionView::Base.send :include, Kaminari::Helpers
+        ::ActionView::Base.send :include, Kaminari::ActionViewExtension
       end
     end
   end
