@@ -1,6 +1,6 @@
 require File.expand_path('../spec_helper', File.dirname(__FILE__))
 require 'mongoid'
-require File.expand_path('../../lib/kaminari/mongoid_extension', File.dirname(__FILE__))
+require File.expand_path('../../lib/kaminari/models/mongoid_extension', File.dirname(__FILE__))
 
 describe Kaminari::MongoidExtension do
   before :all do
