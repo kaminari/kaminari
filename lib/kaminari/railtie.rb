@@ -3,8 +3,11 @@ require 'rails'
 begin; require 'mongoid'; rescue LoadError; end
 
 require File.join(File.dirname(__FILE__), 'helpers')
+require File.join(File.dirname(__FILE__), 'page_scope_methods')
+require File.join(File.dirname(__FILE__), 'configuration_methods')
 
 module Kaminari
+  DEFAULT_PER_PAGE = 25 unless defined? ::Kaminari::DEFAULT_PER_PAGE
   class Railtie < ::Rails::Railtie #:nodoc:
     initializer 'kaminari' do |app|
       ActiveSupport.on_load(:active_record) do 
