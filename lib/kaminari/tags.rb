@@ -73,7 +73,7 @@ module Kaminari
       def initialize(template, window_options) #:nodoc:
         @template, @options = template, window_options.reverse_merge(template.options)
         # so that this instance can actually "render". Black magic?
-        @output_buffer = ActionView::OutputBuffer.new
+        @output_buffer = @template.output_buffer || ActionView::OutputBuffer.new
       end
 
       # render given block as a view template
