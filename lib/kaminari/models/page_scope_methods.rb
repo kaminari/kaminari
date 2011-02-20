@@ -14,7 +14,7 @@ module Kaminari
 
       # Total number of pages
       def num_pages
-        (pagination_count.to_f / limit_value).ceil
+        (total_count.to_f / limit_value).ceil
       end
 
       # Current page number

@@ -8,7 +8,7 @@ module Kaminari
       def offset_value
         options[:skip]
       end
-      def pagination_count
+      def total_count
         count
       end
     end

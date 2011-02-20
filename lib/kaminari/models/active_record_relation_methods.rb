@@ -2,7 +2,7 @@ module Kaminari
   module ActiveRecordRelationMethods
     extend ActiveSupport::Concern
     module InstanceMethods
-      def pagination_count
+      def total_count
         except(:offset, :limit).count
       end
     end
