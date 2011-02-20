@@ -1,3 +1,14 @@
+== 0.10.0
+
+* Railtie initializer name is "kaminari" from now
+* Changed bundler settings to work both on 1.9.2 and 1.8.7 #12 [l15n]
+* Fixed bugs encountered when running specs on Ruby 1.9.2 #12 [l15n]
+* Clean up documentation (formatting and editing) #12 [l15n]
+* Use Proc.new instead of lambda for scoped_options #13 [l15n]
+* Use AS hooks for loading AR #14 [hasimo]
+* Refactor scope definition with Concerns #15 [l15n]
+* Ensure output_buffer is always initialized #11 [kichiro]
+
 == 0.9.13
 
 * Added Mongoid support #5 [juno, hibariya]
