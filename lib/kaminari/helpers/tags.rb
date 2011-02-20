@@ -174,6 +174,7 @@ module Kaminari
     module Link
       include Renderable
       include Page
+      # the link's href
       def url
         page_url_for page
       end

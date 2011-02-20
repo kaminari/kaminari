@@ -51,6 +51,6 @@ Rake::RDocTask.new do |rdoc|
   rdoc.rdoc_files.include('lib/**/*.rb')
 end
 
-task :test do 
-	Rake::Task[:spec].invoke 
+task :test do
+	Rake::Task[:spec].invoke
 end
