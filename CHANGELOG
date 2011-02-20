@@ -1,3 +1,8 @@
+== 0.10.1
+
+* Fixed a bug that the whole <nav> section was not rendered in some cases
+[GarthSnyder]
+
 == 0.10.0
 
 * Railtie initializer name is "kaminari" from now
