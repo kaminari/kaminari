@@ -129,14 +129,14 @@ Kaminari includes a handy template generator.
 * to edit your paginator
 
   Run the generator first,
-  % rails g kaminari:views default
+    % rails g kaminari:views default
 
   then edit the partials in your app's <tt>app/views/kaminari/</tt> directory.
 
 * for Haml users
   Haml templates generator is also available by adding the <tt>-e haml</tt> option (this is automatically invoked when the default template_engine is set to Haml).
 
-  % rails g kaminari:views default -e haml
+    % rails g kaminari:views default -e haml
 
 * themes
 
