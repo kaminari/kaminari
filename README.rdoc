@@ -27,9 +27,9 @@ The pagination helper outputs the HTML5 <nav> tag by default. Plus, the helper s
 
 == Supported versions
 
-* Ruby 1.8.7, 1.9.2, 1.9.3
+* Ruby 1.8.7, 1.9.2, 1.9.3 (trunk)
 
-* Rails 3.0.x, 3.1
+* Rails 3.0.x, 3.1 (edge)
 
 * Haml 3
 
@@ -87,28 +87,28 @@ Then bundle:
 
 * specifing the "inner window" size (4 by default)
 
-  This would output something like <tt>... 5 6 7 8 9 ...</tt> when 7 is the current page.
     <%= paginate @users, :window => 2 %>
+  This would output something like <tt>... 5 6 7 8 9 ...</tt> when 7 is the current page.
 
 * specifing the "outer window" size (1 by default)
 
-  This would output something like <tt>1 2 3 4 ...(snip)... 17 18 19 20</tt> while having 20 pages in total.
     <%= paginate @users, :outer_window => 3 %>
+  This would output something like <tt>1 2 3 4 ...(snip)... 17 18 19 20</tt> while having 20 pages in total.
 
-* outer window can be separetely specified by +left+ +right+ (1 by default)
+* outer window can be separetely specified by +left+, +right+ (1 by default)
 
-  This would output something like <tt>1 ...(snip)... 18 19 20</tt> while having 20 pages in total.
     <%= paginate @users, :left => 0, :right => 2 %>
+  This would output something like <tt>1 ...(snip)... 18 19 20</tt> while having 20 pages in total.
 
-* extra parameters (+:params+) for the links
+* extra parameters (:+params+) for the links
 
-  This would modify each link's +url_option+. +:controller+ and +:action+ might be the keys in common.
     <%= paginate @users, :params => {:controller => 'foo', :action => 'bar'}
+  This would modify each link's +url_option+. :+controller+ and :+action+ might be the keys in common.
 
 * Ajax links (crazy simple, but works perfectly!)
 
-  This would add <tt>data-remote="true"</tt> to all the links inside.
     <%= paginate @users, :remote => true %>
+  This would add <tt>data-remote="true"</tt> to all the links inside.
 
 === I18n and labels
 
@@ -134,6 +134,7 @@ Kaminari includes a handy template generator.
   then edit the partials in your app's <tt>app/views/kaminari/</tt> directory.
 
 * for Haml users
+
   Haml templates generator is also available by adding the <tt>-e haml</tt> option (this is automatically invoked when the default template_engine is set to Haml).
 
     % rails g kaminari:views default -e haml
