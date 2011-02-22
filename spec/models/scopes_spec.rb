@@ -3,7 +3,7 @@ require File.expand_path('../spec_helper', File.dirname(__FILE__))
 describe Kaminari::ActiveRecordExtension do
   before :all do
     User.delete_all
-    1.upto(100) {|i| User.create! :name => "user#{'%03d' % i}" }
+    1.upto(100) {|i| User.create! :name => "user#{'%03d' % i}", :age => (i / 10)}
   end
 
   describe '#page' do
@@ -93,5 +93,12 @@ describe Kaminari::ActiveRecordExtension do
       subject { User.page(2).per 3 }
       its(:current_page) { should == 2 }
     end
+  end
+
+  context 'chained with .group' do
+    subject { User.group('age').page(2).per 5 }
+    # 0..10
+    its(:total_count) { should == 11 }
+    its(:num_pages) { should == 3 }
   end
 end
