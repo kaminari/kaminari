@@ -47,16 +47,16 @@ Then bundle:
 
 === Query Basics
 
-* the +:page+ scope
+* the +page+ scope
 
   To fetch the 7th page of users (default +per_page+ is 25)
     User.page(7)
 
-* the +:per+ scope
+* the +per+ scope
 
   To show a lot more users per each page (change the +per_page+ value)
     User.page(7).per(50)
-  Note that the +:per+ scope is not directly defined on the models but is just a method defined on the page scope. This is absolutely reasonable because you will never actually use +per_page+ without specifying the +page+ number.
+  Note that the +per+ scope is not directly defined on the models but is just a method defined on the page scope. This is absolutely reasonable because you will never actually use +per_page+ without specifying the +page+ number.
 
 === Configuring default +per_page+ value for each model
 
@@ -99,6 +99,11 @@ Then bundle:
 
     <%= paginate @users, :left => 0, :right => 2 %>
   This would output something like <tt>1 ...(snip)... 18 19 20</tt> while having 20 pages in total.
+
+* changing the parameter name (:+param_name+) for the links
+
+    <%= paginate @users, :param_name => :pagina
+  This would modify the query parameter name on each links.
 
 * extra parameters (:+params+) for the links
 

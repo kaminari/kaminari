@@ -1,3 +1,9 @@
+== 0.10.2
+
+* Added :param_name option to the pagination helper #10 [ivanvr]
+  Example:
+  = paginate @users, :param_name => :pagina
+
 == 0.10.1
 
 * Fixed a bug that the whole <nav> section was not rendered in some cases
