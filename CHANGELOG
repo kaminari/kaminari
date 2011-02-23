@@ -1,3 +1,11 @@
+== 0.10.3
+
+* Fixed a bug that total_count() didn't work when chained with group() scope
+#21 [jgeiger]
+
+* Fixed a bug that the paginate helper didn't work properly with an Ajax call
+#23 [hjuskewycz]
+
 == 0.10.2
 
 * Added :param_name option to the pagination helper #10 [ivanvr]
