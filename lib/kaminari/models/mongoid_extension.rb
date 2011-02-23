@@ -5,7 +5,9 @@ module Kaminari
       extend ActiveSupport::Concern
 
       included do
-        delegate :page, :per, :num_pages, :current_page, :limit_value, :offset_value, :pagination_count, :to => '@klass'
+        def page(*args)
+          self.klass.page(*args).criteria.merge(self)
+        end
       end
     end
 
