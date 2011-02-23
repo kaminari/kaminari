@@ -74,17 +74,13 @@ module Kaminari
       def initialize(template, window_options) #:nodoc:
         @template, @options = template, window_options.reverse_merge(template.options)
         # so that this instance can actually "render". Black magic?
-        @output_buffer = @template.output_buffer
-        if @output_buffer.nil?
-          @output_buffer, @return_buffer = ActionView::OutputBuffer.new, true
-        end
+        @output_buffer = ActionView::OutputBuffer.new
       end
 
       # render given block as a view template
       def render(&block)
         instance_eval &block if @options[:num_pages] > 1
-        # return the output text only if the output_buffer was created inside this instance
-        @return_buffer ? @output_buffer : nil
+        @output_buffer
       end
 
       # enumerate each page providing PageProxy object as the block parameter
