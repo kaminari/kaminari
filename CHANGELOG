@@ -1,3 +1,10 @@
+== 0.10.4
+
+* Do not break ActiveRecord::Base.descendants, by making sure to call super
+from ActiveRecord::Base.inherited #34 [rolftimmermans]
+
+* Fixed vanishing mongoid criteria after calling page() #26 [tyok]
+
 == 0.10.3
 
 * Fixed a bug that total_count() didn't work when chained with group() scope
