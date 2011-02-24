@@ -6,6 +6,7 @@ describe Kaminari::MongoidExtension do
   before :all do
     class Developer
       include ::Mongoid::Document
+      field :value, :type => Integer
     end
   end
   before do
@@ -39,6 +40,25 @@ describe Kaminari::MongoidExtension do
       its(:num_pages) { should == 12 }
       it { should skip 0 }
     end
+
+    context 'with criteria before' do
+      subject { Developer.where(:value => 1).page 2 }
+      its(:selector) { should == {:value => 1} }
+      its(:current_page) { should == 2 }
+      its(:limit_value) { should == 25 }
+      its(:num_pages) { should == 12 }
+      it { should skip 25 }
+    end
+
+    context 'with criteria after' do
+      subject { Developer.page(2).where(:value => 1) }
+      its(:selector) { should == {:value => 1} }
+      its(:current_page) { should == 2 }
+      its(:limit_value) { should == 25 }
+      its(:num_pages) { should == 12 }
+      it { should skip 25 }
+    end
+
   end
 
   describe '#per' do
