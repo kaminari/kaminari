@@ -6,7 +6,7 @@ describe Kaminari::MongoidExtension do
   before :all do
     class Developer
       include ::Mongoid::Document
-      field :value, :type => Integer
+      field :salary, :type => Integer
     end
   end
   before do
@@ -42,8 +42,8 @@ describe Kaminari::MongoidExtension do
     end
 
     context 'with criteria before' do
-      subject { Developer.where(:value => 1).page 2 }
-      its(:selector) { should == {:value => 1} }
+      subject { Developer.where(:salary => 1).page 2 }
+      its(:selector) { should == {:salary => 1} }
       its(:current_page) { should == 2 }
       its(:limit_value) { should == 25 }
       its(:num_pages) { should == 12 }
@@ -51,8 +51,8 @@ describe Kaminari::MongoidExtension do
     end
 
     context 'with criteria after' do
-      subject { Developer.page(2).where(:value => 1) }
-      its(:selector) { should == {:value => 1} }
+      subject { Developer.page(2).where(:salary => 1) }
+      its(:selector) { should == {:salary => 1} }
       its(:current_page) { should == 2 }
       its(:limit_value) { should == 25 }
       its(:num_pages) { should == 12 }
