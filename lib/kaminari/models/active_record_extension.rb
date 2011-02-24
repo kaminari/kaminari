@@ -24,6 +24,8 @@ module Kaminari
             include Kaminari::PageScopeMethods
           end
         end
+        
+        super
       end
     end
   end

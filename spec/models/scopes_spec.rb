@@ -101,4 +101,9 @@ describe Kaminari::ActiveRecordExtension do
     its(:total_count) { should == 11 }
     its(:num_pages) { should == 3 }
   end
+
+  context 'activerecord descendants' do
+    subject { ActiveRecord::Base.descendants }
+    its(:length) { should_not == 0 }
+  end
 end
