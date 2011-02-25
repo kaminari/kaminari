@@ -9,10 +9,10 @@ module Kaminari
       #   <%= paginate @articles %>
       #
       # ==== Options
-      # * <tt>:window</tt> - The "inner window" size (2 by default).
-      # * <tt>:outer_window</tt> - The "outer window" size (1 by default).
-      # * <tt>:left</tt> - The "left outer window" size (1 by default).
-      # * <tt>:right</tt> - The "right outer window" size (1 by default).
+      # * <tt>:window</tt> - The "inner window" size (4 by default).
+      # * <tt>:outer_window</tt> - The "outer window" size (0 by default).
+      # * <tt>:left</tt> - The "left outer window" size (0 by default).
+      # * <tt>:right</tt> - The "right outer window" size (0 by default).
       # * <tt>:params</tt> - url_for parameters for the links (:controller, :action, etc.)
       # * <tt>:param_name</tt> - parameter name for page number in the links (:page by default)
       # * <tt>:remote</tt> - Ajax? (false by default)

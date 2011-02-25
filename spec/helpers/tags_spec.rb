@@ -7,29 +7,21 @@ describe 'Kaminari::Helpers' do
       subject { Paginator }
       its(:ancestor_renderables) { should == [Paginator] }
     end
-    describe 'PrevLink' do
-      subject { PrevLink }
-      its(:ancestor_renderables) { should == [PrevLink, Prev, Link] }
-    end
-    describe 'PrevSpan' do
-      subject { PrevSpan }
-      its(:ancestor_renderables) { should == [PrevSpan, Prev, NonLink] }
+    describe 'PrevPage' do
+      subject { PrevPage }
+      its(:ancestor_renderables) { should == [PrevPage, Link] }
     end
     describe 'Page' do
       subject { Page }
       its(:ancestor_renderables) { should == [Page, Link] }
     end
-    describe 'TruncatedSpan' do
-      subject { TruncatedSpan }
-      its(:ancestor_renderables) { should == [TruncatedSpan, NonLink] }
+    describe 'Gap' do
+      subject { Gap }
+      its(:ancestor_renderables) { should == [Gap] }
     end
-    describe 'NextLink' do
-      subject { NextLink }
-      its(:ancestor_renderables) { should == [NextLink, Next, Link] }
-    end
-    describe 'NextSpan' do
-      subject { NextSpan }
-      its(:ancestor_renderables) { should == [NextSpan, Next, NonLink] }
+    describe 'NextPage' do
+      subject { NextPage }
+      its(:ancestor_renderables) { should == [NextPage, Link] }
     end
   end
 
@@ -132,11 +124,11 @@ describe 'Kaminari::Helpers' do
         before do
           stub(@template = Object.new).options { {} }
         end
-        context 'last.is_a? TruncatedSpan' do
-          subject { Paginator::PageProxy.new({}, 10, TruncatedSpan.new(@template)) }
+        context 'last.is_a? Gap' do
+          subject { Paginator::PageProxy.new({}, 10, Gap.new(@template)) }
           its(:was_truncated?) { should be_true }
         end
-        context 'last.is not a TruncatedSpan' do
+        context 'last.is not a Gap' do
           subject { Paginator::PageProxy.new({}, 10, Page.new(@template)) }
           its(:was_truncated?) { should_not be_true }
         end

@@ -7,10 +7,12 @@
     paginator:     the paginator that renders the pagination tags inside
 = paginator.render do
   %nav.pagination
-    = current_page > 1 ? prev_link_tag : prev_span_tag
+    = first_page_tag
+    = prev_page_tag
     - each_page do |page|
       - if page.left_outer? || page.right_outer? || page.inside_window?
         = page_tag page
       - elsif !page.was_truncated?
-        = truncated_span_tag
-    = num_pages > current_page ? next_link_tag : next_span_tag
+        = gap_tag
+    = next_page_tag
+    = last_page_tag

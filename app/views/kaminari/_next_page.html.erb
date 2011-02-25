@@ -1,4 +1,4 @@
-<%# "Next" with link
+<%# Link to the "Next" page
   - available local variables
     url:           url to the next page
     current_page:  the page number of currently displayed page
@@ -6,6 +6,6 @@
     per_page:      number of items to fetch per page
     remote:        data-remote
 -%>
-<span class="next">
-  <%= link_to raw(t 'views.pagination.next'), url, :class => 'next', :rel => 'next', :remote => remote %>
+<span class="next<%= ' disabled' if current_page == num_pages %>">
+  <%= link_to_unless current_page == num_pages, raw(t 'views.pagination.next'), url, :class => 'next', :rel => 'next', :remote => remote %>
 </span>

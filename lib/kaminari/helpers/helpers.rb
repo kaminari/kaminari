@@ -39,8 +39,8 @@ module Kaminari
         @window_options = {}.tap do |h|
           h[:window] = options.delete(:window) || options.delete(:inner_window) || 4
           outer_window = options.delete(:outer_window)
-          h[:left] = options.delete(:left) || outer_window || 1
-          h[:right] = options.delete(:right) || outer_window || 1
+          h[:left] = options.delete(:left) || outer_window || 0
+          h[:right] = options.delete(:right) || outer_window || 0
         end
         @template = TemplateWrapper.new(template, options)
       end

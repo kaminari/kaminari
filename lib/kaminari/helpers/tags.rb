@@ -94,7 +94,7 @@ module Kaminari
         @last = Page.new @template, :page => page
       end
 
-      %w[prev_link prev_span next_link next_span truncated_span].each do |tag|
+      %w[first_page prev_page next_page last_page gap].each do |tag|
         eval <<-DEF
           def #{tag}_tag
             @last = #{tag.classify}.new @template
@@ -136,12 +136,12 @@ module Kaminari
 
         # within the left outer window or not
         def left_outer?
-          @page <= @options[:left] + 1
+          @page <= @options[:left]
         end
 
         # within the right outer window or not
         def right_outer?
-          @options[:num_pages] - @page <= @options[:right]
+          @options[:num_pages] - @page < @options[:right]
         end
 
         # inside the inner window or not
@@ -151,7 +151,7 @@ module Kaminari
 
         # The last rendered tag was "truncated" or not
         def was_truncated?
-          @last.is_a? TruncatedSpan
+          @last.is_a? Gap
         end
 
         def to_i
@@ -171,6 +171,7 @@ module Kaminari
     # Tag that contains a link
     module Link
       include Renderable
+      # target page number
       def page
         raise 'Override page with the actual page value to be a Page.'
       end
@@ -195,54 +196,41 @@ module Kaminari
       end
     end
 
-    # Tag that doesn't contain a link
-    module NonLink
-      include Renderable
+    # Link with page number that appears at the leftmost
+    class FirstPage < Tag
+      include Link
+      def page #:nodoc:
+        1
+      end
+    end
+
+    # Link with page number that appears at the rightmost
+    class LastPage < Tag
+      include Link
+      def page #:nodoc:
+        @options[:num_pages]
+      end
     end
 
     # The "previous" page of the current page
-    module Prev
-      include Renderable
-    end
-
-    # "Previous" without link
-    class PrevSpan < Tag
-      include NonLink
-      include Prev
-    end
-
-    # "Previous" with link
-    class PrevLink < Tag
+    class PrevPage < Tag
       include Link
-      include Prev
       def page #:nodoc:
         @options[:current_page] - 1
       end
     end
 
     # The "next" page of the current page
-    module Next
-      include Renderable
-    end
-
-    # "Next" without link
-    class NextSpan < Tag
-      include NonLink
-      include Next
-    end
-
-    # "Next" with link
-    class NextLink < Tag
+    class NextPage < Tag
       include Link
-      include Next
       def page #:nodoc:
         @options[:current_page] + 1
       end
     end
 
     # Non-link tag that stands for skipped pages...
-    class TruncatedSpan < Tag
-      include NonLink
+    class Gap < Tag
+      include Renderable
     end
   end
 end
