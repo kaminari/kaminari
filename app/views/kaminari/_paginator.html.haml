@@ -9,15 +9,8 @@
   %nav.pagination
     = current_page > 1 ? prev_link_tag : prev_span_tag
     - each_page do |page|
-      - if page.current?
-        = current_page_tag
-      - elsif page.left_outer? || page.right_outer? || page.inside_window?
-        - if page.first?
-          = first_page_link_tag
-        - elsif page.last?
-          = last_page_link_tag
-        - else
-          = page_link_tag
+      - if page.left_outer? || page.right_outer? || page.inside_window?
+        = page_tag page
       - elsif !page.was_truncated?
         = truncated_span_tag
     = num_pages > current_page ? next_link_tag : next_span_tag

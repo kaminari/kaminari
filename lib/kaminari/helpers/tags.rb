@@ -86,17 +86,12 @@ module Kaminari
       # enumerate each page providing PageProxy object as the block parameter
       def each_page
         1.upto(@options[:num_pages]) do |i|
-          @page = i
           yield PageProxy.new(options, i, @last)
         end
       end
 
-      %w[current_page first_page_link last_page_link page_link].each do |tag|
-        eval <<-DEF
-          def #{tag}_tag
-            @last = #{tag.classify}.new @template, :page => @page
-          end
-        DEF
+      def page_tag(page)
+        @last = Page.new @template, :page => page
       end
 
       %w[prev_link prev_span next_link next_span truncated_span].each do |tag|
@@ -113,6 +108,8 @@ module Kaminari
 
       # Wraps a "page number" and provides some utility methods
       class PageProxy
+        include Comparable
+
         def initialize(options, page, last) #:nodoc:
           @options, @page, @last = options, page, last
         end
@@ -156,31 +153,45 @@ module Kaminari
         def was_truncated?
           @last.is_a? TruncatedSpan
         end
-      end
-    end
 
-    # A page
-    module Page
-      include Renderable
-      # target page number
-      def page
-        raise 'Override page with the actual page value to be a Page.'
-      end
-      def to_s(locals = {}) #:nodoc:
-        super locals.merge(:page => page)
+        def to_i
+          number
+        end
+
+        def to_s
+          number.to_s
+        end
+
+        def <=>(other)
+          to_i <=> other.to_i
+        end
       end
     end
 
     # Tag that contains a link
     module Link
       include Renderable
-      include Page
+      def page
+        raise 'Override page with the actual page value to be a Page.'
+      end
       # the link's href
       def url
         page_url_for page
       end
       def to_s(locals = {}) #:nodoc:
         super locals.merge(:url => url)
+      end
+    end
+
+    # A page
+    class Page < Tag
+      include Link
+      # target page number
+      def page
+        @options[:page]
+      end
+      def to_s(locals = {}) #:nodoc:
+        super locals.merge(:page => page)
       end
     end
 
@@ -227,32 +238,6 @@ module Kaminari
       def page #:nodoc:
         @options[:current_page] + 1
       end
-    end
-
-    # Link showing page number
-    class PageLink < Tag
-      include Page
-      include Link
-      def page #:nodoc:
-        @options[:page]
-      end
-    end
-
-    # Non-link tag showing the current page number
-    class CurrentPage < Tag
-      include Page
-      include NonLink
-      def page #:nodoc:
-        @options[:page]
-      end
-    end
-
-    # Link with page number that appears at the leftmost
-    class FirstPageLink < PageLink
-    end
-
-    # Link with page number that appears at the rightmost
-    class LastPageLink < PageLink
     end
 
     # Non-link tag that stands for skipped pages...
