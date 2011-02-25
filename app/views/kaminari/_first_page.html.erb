@@ -7,5 +7,5 @@
     remote:        data-remote
 -%>
 <span class="first<%= ' disabled' if current_page == 1 %>">
-  <%= link_to_unless current_page == 1, raw(t 'views.pagination.first'), url, :class => 'prev', :rel => 'prev', :remote => remote %>
+  <%= link_to_unless current_page == 1, raw(t 'views.pagination.first'), url, :rel => (current_page == 2) ? 'start prev':'start', :remote => remote %>
 </span>

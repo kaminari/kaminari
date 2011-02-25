@@ -5,5 +5,5 @@
     num_pages:     total number of pages
     per_page:      number of items to fetch per page
     remote:        data-remote
-%span.prev
-  = link_to_unless current_page == 1, raw(t 'views.pagination.previous'), url, :class => 'prev', :rel => 'prev', :remote => remote
+%span{:class => "prev#{' disabled' if current_page == 1}"}
+  = link_to_unless current_page == 1, raw(t 'views.pagination.previous'), url, :rel => (current_page == 2) ? 'start prev':'prev', :remote => remote

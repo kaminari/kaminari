@@ -1,10 +1,15 @@
 -#  Link showing page number
   - available local variables
-    page:          the page number of this page
+    page:          the PageProxy for the current page
     url:           url to this page
     current_page:  the page number of currently displayed page
     num_pages:     total number of pages
     per_page:      number of items to fetch per page
     remote:        data-remote
-%span{:class => "page#{' first' if page.first?}#{' last' if page.last?}#{' current' if page.current?}"}
-  = link_to_unless page == current_page, page, url, :remote => remote
+    
+%span{:class => "page#{' current' if page.current?}"}
+  - opts = {:remote => remote}
+  - opts[:rel] = 'start' if page.first?
+  - opts[:rel] = 'next' if page.number == current_page + 1
+  - opts[:rel] = opts[:rel].nil? ? 'prev' : opts[:rel] + ' prev' if page.number == current_page - 1
+  = link_to_unless page.current?, page, url, opts
