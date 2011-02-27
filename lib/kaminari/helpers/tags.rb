@@ -134,6 +134,16 @@ module Kaminari
           @page == @options[:num_pages]
         end
 
+        # the previous page or not
+        def prev?
+          @page == @options[:current_page] - 1
+        end
+
+        # the next page or not
+        def next?
+          @page == @options[:current_page] + 1
+        end
+
         # within the left outer window or not
         def left_outer?
           @page <= @options[:left]

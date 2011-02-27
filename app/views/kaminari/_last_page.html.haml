@@ -6,6 +6,4 @@
     per_page:      number of items to fetch per page
     remote:        data-remote
 %span{:class => "last#{' disabled' if current_page == num_pages}"}
-  - opts = {:remote => remote};
-  - opts[:rel] = 'next' if current_page == num_pages - 1
-  = link_to_unless current_page == num_pages, raw(t 'views.pagination.last'), url, opts
+  = link_to_unless current_page == num_pages, raw(t 'views.pagination.last'), url, {:remote => remote}
