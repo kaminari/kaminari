@@ -121,7 +121,10 @@ describe 'Kaminari::Helpers' do
       end
       describe '#was_truncated?' do
         before do
-          stub(@template = Object.new).options { {} }
+          stub(@template = Object.new) do
+            options { {} }
+            params { {} }
+          end
         end
         context 'last.is_a? Gap' do
           subject { Paginator::PageProxy.new({}, 10, Gap.new(@template)) }
