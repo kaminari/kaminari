@@ -9,42 +9,18 @@ module Kaminari
     # class, so _tag parital is not needed).
     #   e.g.)  PrevLink  ->  app/views/kaminari/_prev_link.html.erb
     #
-    # If the template file does not exist, it falls back to ancestor classes.
-    #   e.g.)  FirstPageLink  ->  app/views/kaminari/_first_page_link.html.erb
-    #                         ->  app/views/kaminari/_page_link.html.erb
-    #
-    # When no matching template were found in your app, finally the engine's pre
+    # When no matching template were found in your app, the engine's pre
     # installed template will be used.
     #   e.g.)  Paginator  ->  $GEM_HOME/kaminari-x.x.x/app/views/kaminari/_paginator.html.erb
     class Tag
       def initialize(template, options = {}) #:nodoc:
-        @template, @options = template, template.options.merge(options)
-        @param_name = @options.delete :param_name
+        @template, @options = template, options.dup
+        @param_name = @options.delete(:param_name)
+        @params = @options[:params] ? template.params.merge(@options.delete :params) : template.params
       end
 
       def to_s(locals = {}) #:nodoc:
-        @template.render :partial => find_template, :locals => @options.merge(locals)
-      end
-
-      private
-      def self.ancestor_renderables
-        arr = []
-        ancestors.each do |klass|
-          return arr if klass == Tag
-          arr << klass if klass != Renderable
-        end
-      end
-
-      # OMG yet another super dirty hack
-      # this method finds
-      #   1. a template for the given class from app/views
-      #   2. a template for its parent class from app/views
-      #   3. the default one inside the engine
-      def find_template
-        self.class.ancestor_renderables.each do |klass|
-          return "kaminari/#{klass.template_filename}" if @template.partial_exists? klass.template_filename
-        end
-        "kaminari/#{self.class.template_filename}"
+        @template.render :partial => "kaminari/#{self.class.name.demodulize.underscore}", :locals => @options.merge(locals)
       end
 
       def page_url_for(page)
@@ -52,27 +28,16 @@ module Kaminari
       end
     end
 
-    module Renderable #:nodoc:
-      def self.included(base) #:nodoc:
-        base.extend ClassMethods
-      end
-      module ClassMethods #:nodoc:
-        def template_filename #:nodoc:
-          name.demodulize.underscore
-        end
-        def included(base) #:nodoc:
-          base.extend Renderable::ClassMethods
-        end
-      end
-    end
-
     # The container tag
     class Paginator < Tag
-      include Renderable
-      attr_reader :options
-
-      def initialize(template, window_options) #:nodoc:
-        @template, @options = template, window_options.reverse_merge(template.options)
+      def initialize(template, options) #:nodoc:
+        @window_options = {}.tap do |h|
+          h[:window] = options.delete(:window) || options.delete(:inner_window) || 4
+          outer_window = options.delete(:outer_window)
+          h[:left] = options.delete(:left) || outer_window || 0
+          h[:right] = options.delete(:right) || outer_window || 0
+        end
+        @template, @options = template, options
         # so that this instance can actually "render". Black magic?
         @output_buffer = ActionView::OutputBuffer.new
       end
@@ -86,24 +51,24 @@ module Kaminari
       # enumerate each page providing PageProxy object as the block parameter
       def each_page
         1.upto(@options[:num_pages]) do |i|
-          yield PageProxy.new(options, i, @last)
+          yield PageProxy.new(@window_options.merge(@options), i, @last)
         end
       end
 
       def page_tag(page)
-        @last = Page.new @template, :page => page
+        @last = Page.new @template, @options.merge(:page => page)
       end
 
       %w[first_page prev_page next_page last_page gap].each do |tag|
         eval <<-DEF
           def #{tag}_tag
-            @last = #{tag.classify}.new @template
+            @last = #{tag.classify}.new @template, @options
           end
         DEF
       end
 
-      def to_s(window_options = {}) #:nodoc:
-        super window_options.merge :paginator => self
+      def to_s #:nodoc:
+        super @window_options.merge(@options).merge :paginator => self
       end
 
       # Wraps a "page number" and provides some utility methods
@@ -180,7 +145,6 @@ module Kaminari
 
     # Tag that contains a link
     module Link
-      include Renderable
       # target page number
       def page
         raise 'Override page with the actual page value to be a Page.'
@@ -240,7 +204,6 @@ module Kaminari
 
     # Non-link tag that stands for skipped pages...
     class Gap < Tag
-      include Renderable
     end
   end
 end

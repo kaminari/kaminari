@@ -2,29 +2,6 @@ require File.expand_path('../spec_helper', File.dirname(__FILE__))
 include Kaminari::Helpers
 
 describe 'Kaminari::Helpers' do
-  describe 'template lookup rule' do
-    describe 'Paginator' do
-      subject { Paginator }
-      its(:ancestor_renderables) { should == [Paginator] }
-    end
-    describe 'PrevPage' do
-      subject { PrevPage }
-      its(:ancestor_renderables) { should == [PrevPage, Link] }
-    end
-    describe 'Page' do
-      subject { Page }
-      its(:ancestor_renderables) { should == [Page, Link] }
-    end
-    describe 'Gap' do
-      subject { Gap }
-      its(:ancestor_renderables) { should == [Gap] }
-    end
-    describe 'NextPage' do
-      subject { NextPage }
-      its(:ancestor_renderables) { should == [NextPage, Link] }
-    end
-  end
-
   describe 'Paginator' do
     describe 'Paginator::PageProxy' do
       describe '#current?' do
