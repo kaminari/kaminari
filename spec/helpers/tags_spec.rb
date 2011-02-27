@@ -60,6 +60,28 @@ describe 'Kaminari::Helpers' do
         end
       end
 
+      describe '#next?' do
+        context 'page == current_page + 1' do
+          subject { Paginator::PageProxy.new({:current_page => 52}, 53, nil) }
+          its(:next?) { should be_true }
+        end
+        context 'page != current_page + 1' do
+          subject { Paginator::PageProxy.new({:current_page => 52}, 77, nil) }
+          its(:next?) { should_not be_true }
+        end
+      end
+
+      describe '#prev?' do
+        context 'page == current_page - 1' do
+          subject { Paginator::PageProxy.new({:current_page => 77}, 76, nil) }
+          its(:prev?) { should be_true }
+        end
+        context 'page != current_page + 1' do
+          subject { Paginator::PageProxy.new({:current_page => 77}, 80, nil) }
+          its(:prev?) { should_not be_true }
+        end
+      end
+
       describe '#left_outer?' do
         context 'current_page == left' do
           subject { Paginator::PageProxy.new({:left => 3}, 3, nil) }
@@ -67,7 +89,7 @@ describe 'Kaminari::Helpers' do
         end
         context 'current_page == left + 1' do
           subject { Paginator::PageProxy.new({:left => 3}, 4, nil) }
-          its(:left_outer?) { should be_true }
+          its(:left_outer?) { should_not be_true }
         end
         context 'current_page == left + 2' do
           subject { Paginator::PageProxy.new({:left => 3}, 5, nil) }
@@ -82,7 +104,7 @@ describe 'Kaminari::Helpers' do
         end
         context 'num_pages - page == right' do
           subject { Paginator::PageProxy.new({:num_pages => 10, :right => 3}, 7, nil) }
-          its(:right_outer?) { should be_true }
+          its(:right_outer?) { should_not be_true }
         end
         context 'num_pages - page < right' do
           subject { Paginator::PageProxy.new({:num_pages => 10, :right => 3}, 8, nil) }
