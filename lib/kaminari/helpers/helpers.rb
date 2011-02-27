@@ -12,6 +12,7 @@ module Kaminari
           h[:right] = options.delete(:right) || outer_window || 0
         end
         @template, @options = template, options
+        @options[:current_page] = PageProxy.new @window_options.merge(@options), @options[:current_page], nil
         # so that this instance can actually "render". Black magic?
         @output_buffer = ActionView::OutputBuffer.new
       end
@@ -117,7 +118,7 @@ module Kaminari
 
         # inside the inner window or not
         def inside_window?
-          (@page - @options[:current_page]).abs <= @options[:window]
+          (@options[:current_page] - @page).abs <= @options[:window]
         end
 
         # The last rendered tag was "truncated" or not
@@ -131,6 +132,14 @@ module Kaminari
 
         def to_s
           number.to_s
+        end
+
+        def +(other)
+          to_i + other.to_i
+        end
+
+        def -(other)
+          to_i - other.to_i
         end
 
         def <=>(other)
