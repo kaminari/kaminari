@@ -3,7 +3,7 @@ require 'rails'
 begin; require 'mongoid'; rescue LoadError; end
 
 require File.join(File.dirname(__FILE__), 'helpers/action_view_extension')
-require File.join(File.dirname(__FILE__), 'helpers/helpers')
+require File.join(File.dirname(__FILE__), 'helpers/paginator')
 require File.join(File.dirname(__FILE__), 'models/page_scope_methods')
 require File.join(File.dirname(__FILE__), 'models/configuration_methods')
 
