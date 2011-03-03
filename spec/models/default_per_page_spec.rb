@@ -1,6 +1,11 @@
 require File.expand_path('../spec_helper', File.dirname(__FILE__))
 
 describe 'default per_page' do
+  describe 'AR::Base' do
+    subject { ActiveRecord::Base }
+    it { should_not respond_to :paginates_per }
+  end
+
   subject { User.page 0 }
 
   context 'by default' do

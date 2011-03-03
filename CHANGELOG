@@ -1,3 +1,63 @@
+== 0.10.4
+
+* Do not break ActiveRecord::Base.descendants, by making sure to call super
+from ActiveRecord::Base.inherited #34 [rolftimmermans]
+
+* Fixed vanishing mongoid criteria after calling page() #26 [tyok]
+
+== 0.10.3
+
+* Fixed a bug that total_count() didn't work when chained with group() scope
+#21 [jgeiger]
+
+* Fixed a bug that the paginate helper didn't work properly with an Ajax call
+#23 [hjuskewycz]
+
+== 0.10.2
+
+* Added :param_name option to the pagination helper #10 [ivanvr]
+  Example:
+  = paginate @users, :param_name => :pagina
+
+== 0.10.1
+
+* Fixed a bug that the whole <nav> section was not rendered in some cases
+[GarthSnyder]
+
+== 0.10.0
+
+* Railtie initializer name is "kaminari" from now
+* Changed bundler settings to work both on 1.9.2 and 1.8.7 #12 [l15n]
+* Fixed bugs encountered when running specs on Ruby 1.9.2 #12 [l15n]
+* Clean up documentation (formatting and editing) #12 [l15n]
+* Use Proc.new instead of lambda for scoped_options #13 [l15n]
+* Use AS hooks for loading AR #14 [hasimo]
+* Refactor scope definition with Concerns #15 [l15n]
+* Ensure output_buffer is always initialized #11 [kichiro]
+
+== 0.9.13
+
+* Added Mongoid support #5 [juno, hibariya]
+  This means, Kaminari is now *ORM agnostic*  ☇3☇3☇3
+
+== 0.9.12
+
+* Moved the whole pagination logic to the paginator partial so that users can
+touch it
+  Note: You need to update your _paginator.html.* if you've already customized
+	it. If you haven't overridden _paginator.html.* files, then probably
+	there're nothing you have to do.
+	See this commit for the example:
+		https://github.com/amatsuda/kaminari_themes/commit/2dfb41c
+
+== 0.9.10
+
+* the per() method accepts String, zero and minus value now #7 [koic]
+  This enables you to do something like this:
+	Model.page(params[:page]).per(params[:per])
+
+* Added support for Gem Testers (http://gem-testers.org/) #8 [joealba]
+
 == 0.9.9
 
 * :params option for the helper [yomukaku_memo]

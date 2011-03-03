@@ -1,9 +1,9 @@
 require File.expand_path('../spec_helper', File.dirname(__FILE__))
 
-describe Kaminari::ActiveRecord do
+describe Kaminari::ActiveRecordExtension do
   before :all do
     User.delete_all
-    1.upto(100) {|i| User.create! :name => "user#{'%03d' % i}" }
+    1.upto(100) {|i| User.create! :name => "user#{'%03d' % i}", :age => (i / 10)}
   end
 
   describe '#page' do
@@ -66,6 +66,21 @@ describe Kaminari::ActiveRecord do
       subject { User.page(50).per(65536) }
       its(:num_pages) { should == 1 }
     end
+
+    context 'per 0 (using default)' do
+      subject { User.page(50).per(0) }
+      its(:num_pages) { should == 4 }
+    end
+
+    context 'per -1 (using default)' do
+      subject { User.page(5).per(-1) }
+      its(:num_pages) { should == 4 }
+    end
+
+    context 'per "String value that can not be converted into Number" (using default)' do
+      subject { User.page(5).per('aho') }
+      its(:num_pages) { should == 4 }
+    end
   end
 
   describe '#current_page' do
@@ -78,5 +93,17 @@ describe Kaminari::ActiveRecord do
       subject { User.page(2).per 3 }
       its(:current_page) { should == 2 }
     end
+  end
+
+  context 'chained with .group' do
+    subject { User.group('age').page(2).per 5 }
+    # 0..10
+    its(:total_count) { should == 11 }
+    its(:num_pages) { should == 3 }
+  end
+
+  context 'activerecord descendants' do
+    subject { ActiveRecord::Base.descendants }
+    its(:length) { should_not == 0 }
   end
 end
