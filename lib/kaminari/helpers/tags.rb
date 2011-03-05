@@ -239,12 +239,7 @@ module Kaminari
     end
 
     # Non-link tag showing the current page number
-    class CurrentPage < Tag
-      include Page
-      include Link
-      def page #:nodoc:
-        @options[:page]
-      end
+    class CurrentPage < PageLink
     end
 
     # Link with page number that appears at the leftmost
