@@ -241,7 +241,7 @@ module Kaminari
     # Non-link tag showing the current page number
     class CurrentPage < Tag
       include Page
-      include NonLink
+      include Link
       def page #:nodoc:
         @options[:page]
       end
