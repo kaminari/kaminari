@@ -95,6 +95,30 @@ describe Kaminari::ActiveRecordExtension do
     end
   end
 
+  describe '#last_page?' do
+    context 'on last page' do
+      subject { User.page(10).per(10) }
+      its(:last_page?) { should == true }
+    end
+
+    context 'not on last page' do
+      subject { User.page(1).per(10) }
+      its(:last_page?) { should == false }
+    end
+  end
+
+  describe '#first_page?' do
+    context 'on first page' do
+      subject { User.page(1).per(10) }
+      its(:first_page?) { should == true }
+    end
+
+    context 'not on first page' do
+      subject { User.page(5).per(10) }
+      its(:first_page?) { should == false }
+    end
+  end
+
   context 'chained with .group' do
     subject { User.group('age').page(2).per 5 }
     # 0..10
