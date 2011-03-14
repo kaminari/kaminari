@@ -12,6 +12,10 @@ module Kaminari
         end
       end
 
+      def skip(num)
+        limit(limit_value).offset(offset_value + num.to_i)
+      end
+
       # Total number of pages
       def num_pages
         (total_count.to_f / limit_value).ceil
