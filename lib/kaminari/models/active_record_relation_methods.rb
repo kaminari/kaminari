@@ -9,7 +9,7 @@ module Kaminari
       end
 
       def total_count #:nodoc:
-        c = except(:offset, :limit).count
+        c = except(:offset, :limit, :order).count
         # .group returns an OrderdHash that responds to #count
         c.respond_to?(:count) ? c.count : c
       end
