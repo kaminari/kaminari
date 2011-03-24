@@ -156,6 +156,22 @@ Kaminari includes a handy template generator.
   or just hit the generator without specifying +THEME+ argument.
     % rails g kaminari:views
 
+* multiple themes
+
+  To utilize multiple themes from within a single application, create a directory within the app/views/kaminari/ and move your custom template files into that directory.
+    rails g kaminari:views default (skip if you have existing kaminari views)
+	cd app/views/kaminari
+	mkdir my_custom_theme
+	cp _*.html.* my_custom_theme/
+	
+  Next reference that directory when calling the paginate method:
+
+    % paginate @users, :theme => 'my_custom_theme'
+
+  Customize away!
+
+  Note: if the theme isn't present or none is specified, kaminari will default back to the views included within the gem.
+
 
 == For more information
 
