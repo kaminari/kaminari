@@ -23,7 +23,8 @@ module Kaminari
       end
 
       def to_s(locals = {}) #:nodoc:
-        @template.render :partial => find_template, :locals => @options.merge(locals)
+        theme = @template.options[:theme] ? "#{@template.options[:theme]}/" : ''
+        @template.render :partial => find_template(theme), :locals => @options.merge(locals)
       end
 
       private
@@ -40,9 +41,9 @@ module Kaminari
       #   1. a template for the given class from app/views
       #   2. a template for its parent class from app/views
       #   3. the default one inside the engine
-      def find_template
+      def find_template theme = ''      
         self.class.ancestor_renderables.each do |klass|
-          return "kaminari/#{klass.template_filename}" if @template.partial_exists? klass.template_filename
+          return "kaminari/#{theme}#{klass.template_filename}" if @template.partial_exists? "#{theme}#{klass.template_filename}"
         end
         "kaminari/#{self.class.template_filename}"
       end
