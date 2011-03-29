@@ -19,7 +19,7 @@ group :development do
   gem 'arel', :git => 'git://github.com/rails/arel.git'
   gem 'rspec-rails', '>= 2.5.0'
   gem 'sqlite3', '>= 1.3.3'
-  gem 'mongoid', '2.0.0.rc.7'
+  gem 'mongoid', '>= 2.0.0.rc.7'
   gem 'bson_ext', '~> 1.2'
 #   platforms :mri_18 do
 #     gem 'ruby-debug'
