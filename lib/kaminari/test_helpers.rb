@@ -30,9 +30,9 @@ module Kaminari
 
       values = {}
       values[:total_count] = options[:total_count] || (resource.respond_to?(:length) ? resource.length : 1)
-      values[:per_page] = options[:per_page] || 25
-      values[:num_pages] = (values[:total_count] / values[:per_page]) + ((values[:total_count] % values[:per_page]) == 0 ? 0 : 1)
-      values[:current_page] = options[:current_page] || 1
+      values[:limit_value] = options[:per_page] || 25
+      values[:num_pages] = (values[:total_count] / values[:limit_value]) + ((values[:total_count] % values[:limit_value]) == 0 ? 0 : 1)
+      values[:current_page] = [(options[:current_page] || 1), values[:num_pages]].min
       return values
     end
 

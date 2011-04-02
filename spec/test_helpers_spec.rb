@@ -81,7 +81,7 @@ describe "Kaminari::TestHelpers::" do
       it "set per_page to the default of 25" do
 
         values = calculate_values(Object.new)
-        values[:per_page].should == 25
+        values[:limit_value].should == 25
 
       end
 
@@ -89,10 +89,10 @@ describe "Kaminari::TestHelpers::" do
 
     context "when per_page is specified" do
 
-      it "sets per_page to the specified value" do
+      it "sets limit_value to the specified value" do
 
         values = calculate_values(Object.new, :per_page => 17)
-        values[:per_page].should == 17
+        values[:limit_value].should == 17
 
       end
 
@@ -116,10 +116,25 @@ describe "Kaminari::TestHelpers::" do
 
     context "when current_page is specified" do
 
-      it "sets current_page to the specified value" do
+      context "and the current_page value is <= num_pages" do
 
-        values = calculate_values(Object.new, :current_page => 19)
-        values[:current_page].should == 19
+        it "sets current_page to the specified value" do
+
+          values = calculate_values(Object.new, :current_page => 19, :total_count => 500, :per_page => 20)
+          values[:current_page].should == 19
+
+        end
+
+      end
+
+      context "and the current_page value is > num_pages" do
+
+        it "sets current_page to the max value allowed by num_pages" do
+
+          values = calculate_values(Object.new, :current_page => 19, :total_count => 100, :per_page => 20)
+          values[:current_page].should == 5
+        end
+
 
       end
 
