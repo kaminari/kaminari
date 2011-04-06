@@ -29,8 +29,9 @@ module Kaminari
 
       # Last page of the collection?
       def last_page?
-        current_page == num_pages
+        current_page >= num_pages
       end
     end
   end
 end
+
