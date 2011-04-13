@@ -5,7 +5,9 @@ module Kaminari
     included do
       def self.inherited(kls) #:nodoc:
         # TERRIBLE HORRIBLE NO GOOD VERY BAD HACK: inheritable_attributes is not yet set here on AR 3.0
-        unless kls.default_scoping
+        # => What was the purpose of this hack ? All tests are green without it...
+        # => Is it for inherit @_default_per_page attribute between models ? If so, using class_attribute might do the trick
+        unless kls.default_scopes.empty?
           new_inheritable_attributes = Hash[inheritable_attributes.map do |key, value|
             [key, value.duplicable? ? value.dup : value]
           end]
@@ -17,11 +19,11 @@ module Kaminari
 
           # Fetch the values at the specified page number
           #   Model.page(5)
-          scope :page, Proc.new {|num|
-            limit(default_per_page).offset(default_per_page * ([num.to_i, 1].max - 1))
-          } do
-            include Kaminari::ActiveRecordRelationMethods
-            include Kaminari::PageScopeMethods
+          def self.page(num=nil)
+            limit(default_per_page).offset(default_per_page * ([num.to_i, 1].max - 1)).extending  do
+              include Kaminari::ActiveRecordRelationMethods
+              include Kaminari::PageScopeMethods
+            end
           end
         end
 
