@@ -21,6 +21,16 @@ module Kaminari
       def current_page
         (offset_value / limit_value) + 1
       end
+
+      # First page of the collection ?
+      def first_page?
+        current_page == 1
+      end
+
+      # Last page of the collection?
+      def last_page?
+        current_page >= num_pages
+      end
     end
   end
 end
