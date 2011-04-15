@@ -21,6 +21,7 @@ group :development do
   gem 'sqlite3', '>= 1.3.3'
   gem 'mongoid', '>= 2.0.0.rc.7'
   gem 'bson_ext', '~> 1.2'
+  gem 'database_cleaner'
 #   platforms :mri_18 do
 #     gem 'ruby-debug'
 #   end

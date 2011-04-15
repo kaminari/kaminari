@@ -77,6 +77,7 @@ GEM
     childprocess (0.1.7)
       ffi (~> 0.6.3)
     culerity (0.2.15)
+    database_cleaner (0.6.6)
     diff-lcs (1.1.2)
     erubis (2.6.6)
       abstract (>= 1.0.0)
@@ -151,6 +152,7 @@ DEPENDENCIES
   bson_ext (~> 1.2)
   bundler (>= 1.0.0)
   capybara (>= 0.4.1.1)
+  database_cleaner
   jeweler (>= 1.5.2)
   mongoid (>= 2.0.0.rc.7)
   rack!
