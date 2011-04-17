@@ -3,9 +3,9 @@ module Kaminari
     extend ActiveSupport::Concern
     module InstanceMethods
       def total_count #:nodoc:
-        c = except(:offset, :limit).count
+        @_c ||= except(:offset, :limit).count
         # .group returns an OrderdHash that responds to #count
-        c.respond_to?(:count) ? c.count : c
+        @_result ||= @_c.respond_to?(:count) ? @_c.count : @_c
       end
     end
   end
