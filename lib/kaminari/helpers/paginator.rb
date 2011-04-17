@@ -25,6 +25,8 @@ module Kaminari
 
       # enumerate each page providing PageProxy object as the block parameter
       def each_page
+        return to_enum(:each_page) unless block_given?
+
         1.upto(@options[:num_pages]) do |i|
           yield PageProxy.new(@window_options.merge(@options), i, @last)
         end
