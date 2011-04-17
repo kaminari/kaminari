@@ -38,7 +38,7 @@ BANNER
       def self.themes
         begin
           @themes ||= open ALL_API do |json|
-#         open File.join File.dirname(__FILE__), '../../../spec/generators/sample.json' do |json|
+#             @themes ||= open(File.join(File.dirname(__FILE__), '../../../spec/generators/sample.json')) do |json|
             files = ActiveSupport::JSON.decode(json)['blobs']
             hash = files.group_by {|fn, _| fn[0...(fn.index('/') || 0)]}.delete_if {|fn, _| fn.blank?}
             hash.map do |name, files|
@@ -53,7 +53,7 @@ BANNER
       def download_templates(theme)
         theme.templates_for(template_engine).each do |template|
           say "      downloading #{template.name} from kaminari_themes..."
-          get "#{SHOW_API}/#{template.sha}", "app/views/kaminari/#{template.basename}"
+          get "#{SHOW_API}/#{template.sha}", template.name
         end
       end
 
@@ -70,29 +70,33 @@ BANNER
     end
 
     Template = Struct.new(:name, :sha) do
-      def engine #:nodoc:
-        File.extname(name).sub /^\./, ''
+      def description?
+        name == 'DESCRIPTION'
       end
 
-      def basename #:nodoc:
-        File.basename name
+      def view?
+        name =~ /^app\/views\//
+      end
+
+      def engine #:nodoc:
+        File.extname(name).sub /^\./, ''
       end
     end
 
     class Theme
       attr_accessor :name
       def initialize(name, templates) #:nodoc:
-        @name, @templates = name, templates.map {|f| Template.new *f}
+        @name, @templates = name, templates.map {|fn, sha| Template.new fn.sub(/^#{name}\//, ''), sha}
       end
 
       def description #:nodoc:
-        file = @templates.detect {|t| t.name == "#{name}/DESCRIPTION"}
+        file = @templates.detect(&:description?)
         return "#{' ' * 12}#{name}" unless file
         open("#{SHOW_API}/#{file.sha}").read.chomp.gsub /^/, ' ' * 12
       end
 
       def templates_for(template_engine) #:nodoc:
-        @templates.select {|t| t.engine == template_engine}
+        @templates.select {|t| !t.description?}.select {|t| !t.view? || (t.engine == template_engine)}
       end
     end
   end
