@@ -5,15 +5,6 @@ module Kaminari
     extend ActiveSupport::Concern
     included do
       def self.inherited(kls) #:nodoc:
-        # TERRIBLE HORRIBLE NO GOOD VERY BAD HACK: inheritable_attributes is not yet set here on AR 3.0
-        default_scopes = kls.respond_to?(:default_scoping) ? kls.default_scoping : kls.default_scopes
-        unless default_scopes
-          new_inheritable_attributes = Hash[inheritable_attributes.map do |key, value|
-            [key, value.duplicable? ? value.dup : value]
-          end]
-          kls.instance_variable_set('@inheritable_attributes', new_inheritable_attributes)
-        end
-
         kls.class_eval do
           include Kaminari::ConfigurationMethods
 
