@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Akira Matsuda"]
-  s.date = %q{2011-04-13}
+  s.date = %q{2011-04-19}
   s.description = %q{Kaminari is a Scope & Engine based, clean, powerful, customizable and sophisticated paginator for Rails 3}
   s.email = %q{ronnie@dio.jp}
   s.extra_rdoc_files = [
@@ -56,6 +56,7 @@ Gem::Specification.new do |s|
     "lib/kaminari/models/mongoid_extension.rb",
     "lib/kaminari/models/page_scope_methods.rb",
     "lib/kaminari/railtie.rb",
+    "lib/kaminari/version.rb",
     "spec/acceptance/acceptance_helper.rb",
     "spec/acceptance/support/helpers.rb",
     "spec/acceptance/support/paths.rb",
@@ -63,10 +64,12 @@ Gem::Specification.new do |s|
     "spec/fake_app.rb",
     "spec/helpers/helpers_spec.rb",
     "spec/helpers/tags_spec.rb",
+    "spec/models/active_record_relation_methods_spec.rb",
     "spec/models/default_per_page_spec.rb",
     "spec/models/mongoid_spec.rb",
     "spec/models/scopes_spec.rb",
     "spec/spec_helper.rb",
+    "spec/support/database_cleaner.rb",
     "spec/support/matchers.rb"
   ]
   s.homepage = %q{http://github.com/amatsuda/kaminari}
@@ -82,10 +85,12 @@ Gem::Specification.new do |s|
     "spec/fake_app.rb",
     "spec/helpers/helpers_spec.rb",
     "spec/helpers/tags_spec.rb",
+    "spec/models/active_record_relation_methods_spec.rb",
     "spec/models/default_per_page_spec.rb",
     "spec/models/mongoid_spec.rb",
     "spec/models/scopes_spec.rb",
     "spec/spec_helper.rb",
+    "spec/support/database_cleaner.rb",
     "spec/support/matchers.rb"
   ]
 
@@ -94,56 +99,47 @@ Gem::Specification.new do |s|
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<kaminari>, [">= 0"])
-      s.add_development_dependency(%q<rspec>, [">= 2.5.0"])
-      s.add_development_dependency(%q<rr>, [">= 1.0.2"])
-      s.add_development_dependency(%q<steak>, [">= 1.1.0"])
-      s.add_development_dependency(%q<capybara>, [">= 0.4.1.1"])
+      s.add_development_dependency(%q<rails>, [">= 3.0.0"])
       s.add_development_dependency(%q<bundler>, [">= 1.0.0"])
-      s.add_development_dependency(%q<jeweler>, [">= 1.5.2"])
+      s.add_development_dependency(%q<sqlite3>, [">= 0"])
+      s.add_development_dependency(%q<mongoid>, [">= 2"])
+      s.add_development_dependency(%q<rspec>, [">= 0"])
+      s.add_development_dependency(%q<rspec-rails>, [">= 0"])
+      s.add_development_dependency(%q<rr>, [">= 0"])
+      s.add_development_dependency(%q<steak>, [">= 0"])
+      s.add_development_dependency(%q<capybara>, [">= 0"])
+      s.add_development_dependency(%q<database_cleaner>, [">= 0"])
       s.add_development_dependency(%q<rcov>, [">= 0"])
-      s.add_development_dependency(%q<rails>, [">= 0"])
-      s.add_development_dependency(%q<rack>, [">= 0"])
-      s.add_development_dependency(%q<arel>, [">= 0"])
-      s.add_development_dependency(%q<rspec-rails>, [">= 2.5.0"])
-      s.add_development_dependency(%q<sqlite3>, [">= 1.3.3"])
-      s.add_development_dependency(%q<mongoid>, ["= 2.0.0.rc.7"])
-      s.add_development_dependency(%q<bson_ext>, ["~> 1.2"])
-      s.add_runtime_dependency(%q<rails>, [">= 3.0.0"])
+      s.add_development_dependency(%q<jeweler>, [">= 0"])
     else
       s.add_dependency(%q<kaminari>, [">= 0"])
-      s.add_dependency(%q<rspec>, [">= 2.5.0"])
-      s.add_dependency(%q<rr>, [">= 1.0.2"])
-      s.add_dependency(%q<steak>, [">= 1.1.0"])
-      s.add_dependency(%q<capybara>, [">= 0.4.1.1"])
-      s.add_dependency(%q<bundler>, [">= 1.0.0"])
-      s.add_dependency(%q<jeweler>, [">= 1.5.2"])
-      s.add_dependency(%q<rcov>, [">= 0"])
-      s.add_dependency(%q<rails>, [">= 0"])
-      s.add_dependency(%q<rack>, [">= 0"])
-      s.add_dependency(%q<arel>, [">= 0"])
-      s.add_dependency(%q<rspec-rails>, [">= 2.5.0"])
-      s.add_dependency(%q<sqlite3>, [">= 1.3.3"])
-      s.add_dependency(%q<mongoid>, ["= 2.0.0.rc.7"])
-      s.add_dependency(%q<bson_ext>, ["~> 1.2"])
       s.add_dependency(%q<rails>, [">= 3.0.0"])
+      s.add_dependency(%q<bundler>, [">= 1.0.0"])
+      s.add_dependency(%q<sqlite3>, [">= 0"])
+      s.add_dependency(%q<mongoid>, [">= 2"])
+      s.add_dependency(%q<rspec>, [">= 0"])
+      s.add_dependency(%q<rspec-rails>, [">= 0"])
+      s.add_dependency(%q<rr>, [">= 0"])
+      s.add_dependency(%q<steak>, [">= 0"])
+      s.add_dependency(%q<capybara>, [">= 0"])
+      s.add_dependency(%q<database_cleaner>, [">= 0"])
+      s.add_dependency(%q<rcov>, [">= 0"])
+      s.add_dependency(%q<jeweler>, [">= 0"])
     end
   else
     s.add_dependency(%q<kaminari>, [">= 0"])
-    s.add_dependency(%q<rspec>, [">= 2.5.0"])
-    s.add_dependency(%q<rr>, [">= 1.0.2"])
-    s.add_dependency(%q<steak>, [">= 1.1.0"])
-    s.add_dependency(%q<capybara>, [">= 0.4.1.1"])
-    s.add_dependency(%q<bundler>, [">= 1.0.0"])
-    s.add_dependency(%q<jeweler>, [">= 1.5.2"])
-    s.add_dependency(%q<rcov>, [">= 0"])
-    s.add_dependency(%q<rails>, [">= 0"])
-    s.add_dependency(%q<rack>, [">= 0"])
-    s.add_dependency(%q<arel>, [">= 0"])
-    s.add_dependency(%q<rspec-rails>, [">= 2.5.0"])
-    s.add_dependency(%q<sqlite3>, [">= 1.3.3"])
-    s.add_dependency(%q<mongoid>, ["= 2.0.0.rc.7"])
-    s.add_dependency(%q<bson_ext>, ["~> 1.2"])
     s.add_dependency(%q<rails>, [">= 3.0.0"])
+    s.add_dependency(%q<bundler>, [">= 1.0.0"])
+    s.add_dependency(%q<sqlite3>, [">= 0"])
+    s.add_dependency(%q<mongoid>, [">= 2"])
+    s.add_dependency(%q<rspec>, [">= 0"])
+    s.add_dependency(%q<rspec-rails>, [">= 0"])
+    s.add_dependency(%q<rr>, [">= 0"])
+    s.add_dependency(%q<steak>, [">= 0"])
+    s.add_dependency(%q<capybara>, [">= 0"])
+    s.add_dependency(%q<database_cleaner>, [">= 0"])
+    s.add_dependency(%q<rcov>, [">= 0"])
+    s.add_dependency(%q<jeweler>, [">= 0"])
   end
 end
 
