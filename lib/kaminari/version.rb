@@ -1,3 +1,3 @@
 module Kaminari
-  VERSION = File.read File.join(File.dirname(__FILE__), '../../VERSION')
+  VERSION = '0.11.1'
 end
