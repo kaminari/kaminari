@@ -1,3 +1,34 @@
+== 0.11.0
+
+This release contains several backward incompatibilities on template API.
+You probably need to update your existing templates if you're already using
+your own custom theme.
+
+* Merge _current_page, _first_page_link, _last_page_link and _page_link into
+one _page partial #28 [GarthSnyder]
+
+* Add real first/last page links, and use them by default instead of outer
+window #30 [GarthSnyder]
+
+* The disabled items should simply not be emitted, even as an empty span #30
+[GarthSnyder]
+
+* Skip :order in #count_all so complex groups with generated columns don't
+blow up in SQL-land #61 [keeran, Empact]
+
+* Ignore :include in #count_all to make it work better with polymorphic eager
+loading #80 [njakobsen]
+
+* Quick fix on #count to return the actual number of records on AR 3.0 #45 #50
+
+* Removed "TERRIBLE HORRIBLE NO GOOD VERY BAD HACK" #82 [janx, flop, pda]
+
+* Allow for Multiple Themes #64 [tmilewski]
+
+* Themes can contain the whole application directory structure now
+
+* Use gemspec method in Gemfile [p_elliott]
+
 == 0.10.4
 
 * Do not break ActiveRecord::Base.descendants, by making sure to call super
