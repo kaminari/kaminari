@@ -95,6 +95,18 @@ describe Kaminari::ActiveRecordExtension do
     end
   end
 
+  describe '#count' do
+    context 'page 1' do
+      subject { User.page }
+      its(:count) { should == 25 }
+    end
+
+    context 'page 2' do
+      subject { User.page 2 }
+      its(:count) { should == 25 }
+    end
+  end
+
   context 'chained with .group' do
     subject { User.group('age').page(2).per 5 }
     # 0..10
