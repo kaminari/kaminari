@@ -23,8 +23,18 @@ Jeweler::Tasks.new do |gem|
   gem.authors = ["Akira Matsuda"]
   # Include your dependencies below. Runtime dependencies are required when using your gem,
   # and development dependencies are only needed for development (ie running rake tasks, tests, etc)
-   gem.add_runtime_dependency 'rails', '>= 3.0.0'
-  #  gem.add_development_dependency 'rspec', '> 1.2.3'
+   gem.add_development_dependency 'rails', '>= 3.0.0'
+   gem.add_development_dependency 'bundler', '>= 1.0.0'
+   gem.add_development_dependency 'sqlite3'
+   gem.add_development_dependency 'mongoid', '>= 2'
+   gem.add_development_dependency 'rspec'
+   gem.add_development_dependency 'rspec-rails'
+   gem.add_development_dependency 'rr'
+   gem.add_development_dependency 'steak'
+   gem.add_development_dependency 'capybara'
+   gem.add_development_dependency 'database_cleaner'
+   gem.add_development_dependency 'rcov'
+   gem.add_development_dependency 'jeweler'
 end
 Jeweler::RubygemsDotOrgTasks.new
 
