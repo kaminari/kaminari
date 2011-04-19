@@ -1,4 +1,5 @@
 require File.join(File.dirname(__FILE__), 'mongoid_criteria_methods')
+
 module Kaminari
   module MongoidExtension
     module Criteria

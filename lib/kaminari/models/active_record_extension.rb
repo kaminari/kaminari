@@ -1,4 +1,5 @@
 require File.join(File.dirname(__FILE__), 'active_record_relation_methods')
+
 module Kaminari
   module ActiveRecordExtension
     extend ActiveSupport::Concern
