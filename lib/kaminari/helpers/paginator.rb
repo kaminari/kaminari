@@ -11,6 +11,8 @@ module Kaminari
           h[:left] = options.delete(:left) || outer_window || 0
           h[:right] = options.delete(:right) || outer_window || 0
         end
+        max_pages = options.delete(:max_pages) || options[:num_pages]
+        options[:num_pages] = max_pages if max_pages < options[:num_pages]
         @template, @options = template, options
         @options[:current_page] = PageProxy.new @window_options.merge(@options), @options[:current_page], nil
         # so that this instance can actually "render". Black magic?
