@@ -6,10 +6,12 @@ module Kaminari
     class Paginator < Tag
       def initialize(template, options) #:nodoc:
         @window_options = {}.tap do |h|
-          h[:window] = options.delete(:window) || options.delete(:inner_window) || 4
-          outer_window = options.delete(:outer_window)
-          h[:left] = options.delete(:left) || outer_window || 0
-          h[:right] = options.delete(:right) || outer_window || 0
+          h[:window] = options.delete(:window) || options.delete(:inner_window) || Kaminari.config.window
+          outer_window = options.delete(:outer_window) || Kaminari.config.outer_window
+          h[:left] = options.delete(:left) || Kaminari.config.left
+          h[:left] = outer_window if h[:left] == 0
+          h[:right] = options.delete(:right) || Kaminari.config.right
+          h[:right] = outer_window if h[:right] == 0
         end
         @template, @options = template, options
         @options[:current_page] = PageProxy.new @window_options.merge(@options), @options[:current_page], nil

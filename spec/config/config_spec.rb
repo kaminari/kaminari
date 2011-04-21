@@ -16,4 +16,28 @@ describe Kaminari::Configuration do
       end
     end
   end
+
+  describe 'window' do
+    context 'by default' do
+      its(:window) { should == 4 }
+    end
+  end
+
+  describe 'outer_window' do
+    context 'by default' do
+      its(:outer_window) { should == 0 }
+    end
+  end
+
+  describe 'left' do
+    context 'by default' do
+      its(:left) { should == 0 }
+    end
+  end
+
+  describe 'right' do
+    context 'by default' do
+      its(:right) { should == 0 }
+    end
+  end
 end
