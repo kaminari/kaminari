@@ -3,9 +3,10 @@ module Kaminari
     extend ActiveSupport::Concern
     module InstanceMethods
       # a workaround for AR 3.0.x that returns 0 for #count when page > 1
+      # if +limit_value+ is specified, load all the records and count them
       if Rails.version < '3.1'
         def count #:nodoc:
-          limit_value == 0 ? 0 : length
+          limit_value ? length : super
         end
       end
 
