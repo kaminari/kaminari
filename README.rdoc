@@ -58,6 +58,19 @@ Then bundle:
     User.page(7).per(50)
   Note that the +per+ scope is not directly defined on the models but is just a method defined on the page scope. This is absolutely reasonable because you will never actually use +per_page+ without specifying the +page+ number.
 
+=== General configuration options
+
+You can configure the following default values by overriding these values using <tt>Kaminari.configure</tt> method.
+  default_per_page  # 25 by default
+  window            # 4 by default
+  outer_window      # 0 by default
+  left              # 0 by default
+  right             # 0 by default
+
+There's a handy generator that generates the default configuration file into config/initilizers directory.
+Run the following generator command, then edit the generated file.
+  % rails g kaminari:config
+
 === Configuring default +per_page+ value for each model
 
 * +paginates_per+
@@ -163,7 +176,7 @@ Kaminari includes a handy template generator.
     cd app/views/kaminari
     mkdir my_custom_theme
     cp _*.html.* my_custom_theme/
-	
+
   Next reference that directory when calling the paginate method:
 
     % paginate @users, :theme => 'my_custom_theme'

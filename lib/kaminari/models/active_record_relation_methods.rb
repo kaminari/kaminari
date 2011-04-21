@@ -2,6 +2,7 @@ module Kaminari
   module ActiveRecordRelationMethods
     extend ActiveSupport::Concern
     module InstanceMethods
+      # a workaround for AR 3.0.x that returns 0 for #count when page > 1
       if Rails.version < '3.1'
         def count #:nodoc:
           limit_value == 0 ? 0 : length
