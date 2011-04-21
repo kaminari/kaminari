@@ -13,7 +13,7 @@ module Kaminari
       # This model's default per_page value
       # returns 25 unless explicitly overridden via <tt>paginates_per</tt>
       def default_per_page
-        @_default_per_page || Kaminari::DEFAULT_PER_PAGE
+        @_default_per_page || Kaminari.config.default_per_page
       end
     end
   end
