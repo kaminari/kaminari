@@ -20,6 +20,7 @@ module Kaminari
         ::Mongoid::Document.send :include, Kaminari::MongoidExtension::Document
         ::Mongoid::Criteria.send :include, Kaminari::MongoidExtension::Criteria
       end
+      require File.join(File.dirname(__FILE__), 'models/array_extension')
       ActiveSupport.on_load(:action_view) do
         ::ActionView::Base.send :include, Kaminari::ActionViewExtension
       end
