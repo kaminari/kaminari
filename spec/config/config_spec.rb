@@ -40,4 +40,10 @@ describe Kaminari::Configuration do
       its(:right) { should == 0 }
     end
   end
+
+  describe 'param_name' do
+    context 'by default' do
+      its(:param_name) { should == :page }
+    end
+  end
 end
