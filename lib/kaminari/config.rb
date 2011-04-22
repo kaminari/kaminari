@@ -22,6 +22,7 @@ module Kaminari
     config_accessor :outer_window
     config_accessor :left
     config_accessor :right
+    config_accessor :param_name
   end
 
   # this is ugly. why can't we pass the default value to config_accessor...?
@@ -31,5 +32,6 @@ module Kaminari
     config.outer_window = 0
     config.left = 0
     config.right = 0
+    config.param_name = :page
   end
 end
