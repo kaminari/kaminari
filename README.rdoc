@@ -43,6 +43,7 @@ Put this line in your Gemfile:
 Then bundle:
   % bundle
 
+
 == Usage
 
 === Query Basics
@@ -103,24 +104,24 @@ Run the following generator command, then edit the generated file.
     <%= paginate @users, :window => 2 %>
   This would output something like <tt>... 5 6 7 8 9 ...</tt> when 7 is the current page.
 
-* specifing the "outer window" size (1 by default)
+* specifing the "outer window" size (0 by default)
 
     <%= paginate @users, :outer_window => 3 %>
   This would output something like <tt>1 2 3 4 ...(snip)... 17 18 19 20</tt> while having 20 pages in total.
 
-* outer window can be separetely specified by +left+, +right+ (1 by default)
+* outer window can be separetely specified by +left+, +right+ (0 by default)
 
-    <%= paginate @users, :left => 0, :right => 2 %>
+    <%= paginate @users, :left => 1, :right => 3 %>
   This would output something like <tt>1 ...(snip)... 18 19 20</tt> while having 20 pages in total.
 
 * changing the parameter name (:+param_name+) for the links
 
-    <%= paginate @users, :param_name => :pagina
+    <%= paginate @users, :param_name => :pagina %>
   This would modify the query parameter name on each links.
 
 * extra parameters (:+params+) for the links
 
-    <%= paginate @users, :params => {:controller => 'foo', :action => 'bar'}
+    <%= paginate @users, :params => {:controller => 'foo', :action => 'bar'} %>
   This would modify each link's +url_option+. :+controller+ and :+action+ might be the keys in common.
 
 * Ajax links (crazy simple, but works perfectly!)
@@ -172,24 +173,32 @@ Kaminari includes a handy template generator.
 * multiple themes
 
   To utilize multiple themes from within a single application, create a directory within the app/views/kaminari/ and move your custom template files into that directory.
-    rails g kaminari:views default (skip if you have existing kaminari views)
-    cd app/views/kaminari
-    mkdir my_custom_theme
-    cp _*.html.* my_custom_theme/
+    % rails g kaminari:views default (skip if you have existing kaminari views)
+    % cd app/views/kaminari
+    % mkdir my_custom_theme
+    % cp _*.html.* my_custom_theme/
 
   Next reference that directory when calling the paginate method:
 
-    % paginate @users, :theme => 'my_custom_theme'
+    <%= paginate @users, :theme => 'my_custom_theme' %>
 
   Customize away!
 
   Note: if the theme isn't present or none is specified, kaminari will default back to the views included within the gem.
+
+=== Paginating a generic Array object
+
+Kaminari provides an Array wrapper class that adapts a generic Array object to the <tt>paginate</tt> view helper.
+However, the <tt>paginate</tt> helper doesn't automatically handle your Array object (this is an intensional design).
+<tt>Kaminari::paginate_array</tt> method converts your Array object into a paginatable Array that accepts <tt>page</tt> method.
+  Kaminari.paginate_array(my_array_object).page(params[:page]).per(10)
 
 
 == For more information
 
 Check out Kaminari recipes on the GitHub Wiki for more advanced tips and techniques.
 https://github.com/amatsuda/kaminari/wiki/Kaminari-recipes
+
 
 == Questions, Feedback
 

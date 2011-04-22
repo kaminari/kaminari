@@ -1,3 +1,24 @@
+== 0.12.0
+
+* General configuration options #41 #62 [javierv, iain]
+  You can now globally override some default values such as default_per_page,
+  window, etc. via configuration file.
+  Also, here comes a generator command that generates the default
+  configuration file into your app's config/initilizers directory.
+
+* Generic pagination support for Array object #47 #68 #74 [lda ened jianlin]
+  You can now paginate through any kind of Arrayish object in this way:
+    Kaminari.paginate_array(my_array_object).page(params[:page]).per(10)
+
+* Fixed a serious performance regression in 0.11.0 [ankane]
+  There was a critical performance issue on #count method in 0.11.0 gem.
+
+* Bugfix: Pass the real @params to url_for #90 [utkarshkukreti]
+
+* Fixed a gem packaging problem (circular dependency)
+  There was a packaging problem with Kaminari 0.11.0 that the gem depends on
+  Kaminari gem. Maybe Jeweler + "gemspec" method didn't work well...
+
 == 0.11.0
 
 This release contains several backward incompatibilities on template API.
