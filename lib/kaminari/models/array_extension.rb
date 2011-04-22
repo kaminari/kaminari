@@ -7,7 +7,7 @@ module Kaminari
 
     def initialize(original_array, limit_val = default_per_page, offset_val = 0) #:nodoc:
       @_original_array, @_limit_value, @_offset_value = original_array, limit_val, offset_val
-      super (original_array[offset_val, limit_val] || [])
+      super(original_array[offset_val, limit_val] || [])
     end
 
     # items at the specified "page"
