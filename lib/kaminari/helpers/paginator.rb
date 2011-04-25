@@ -14,6 +14,7 @@ module Kaminari
           h[:right] = outer_window if h[:right] == 0
         end
         @template, @options = template, options
+        @theme = @options[:theme] ? "#{@options[:theme]}/" : ''
         @options[:current_page] = PageProxy.new @window_options.merge(@options), @options[:current_page], nil
         # so that this instance can actually "render". Black magic?
         @output_buffer = ActionView::OutputBuffer.new

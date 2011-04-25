@@ -1,3 +1,12 @@
+== 0.12.1
+
+* Slim template support #93 [detrain]
+
+* Use Kaminari.config to specify default value for param_name #94 [avsej]
+
+* Fixed "super called outside of method" error happened in particular versions
+of Ruby 1.8.7 #91 [Skulli]
+
 == 0.12.0
 
 * General configuration options #41 #62 [javierv, iain]
@@ -6,7 +15,7 @@
   Also, here comes a generator command that generates the default
   configuration file into your app's config/initilizers directory.
 
-* Generic pagination support for Array object #47 #68 #74 [lda ened jianlin]
+* Generic pagination support for Array object #47 #68 #74 [lda, ened, jianlin]
   You can now paginate through any kind of Arrayish object in this way:
     Kaminari.paginate_array(my_array_object).page(params[:page]).per(10)
 
