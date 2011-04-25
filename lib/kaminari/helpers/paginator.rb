@@ -47,29 +47,23 @@ module Kaminari
       end
 
       def to_s #:nodoc:
-        suppress_logging_render_partial do
-          super @window_options.merge(@options).merge :paginator => self
-        end
-      end
+        subscriber = ActionView::LogSubscriber.log_subscribers.detect {|ls| ls.is_a? ActionView::LogSubscriber}
+        return super @window_options.merge(@options).merge :paginator => self unless subscriber
 
-      private
-      # dirty hack
-      def suppress_logging_render_partial(&blk)
-        if subscriber = ActionView::LogSubscriber.log_subscribers.detect {|ls| ls.is_a? ActionView::LogSubscriber}
-          class << subscriber
-            alias_method :render_partial_with_logging, :render_partial
-            # do nothing
-            def render_partial(event); end
-          end
-          ret = blk.call
-          class << subscriber
-            alias_method :render_partial, :render_partial_with_logging
-            undef :render_partial_with_logging
-          end
-          ret
-        else
-          blk.call
+        # dirty hack to suppress logging render_partial
+        class << subscriber
+          alias_method :render_partial_with_logging, :render_partial
+          # do nothing
+          def render_partial(event); end
         end
+
+        ret = super @window_options.merge(@options).merge :paginator => self
+
+        class << subscriber
+          alias_method :render_partial, :render_partial_with_logging
+          undef :render_partial_with_logging
+        end
+        ret
       end
 
       # Wraps a "page number" and provides some utility methods
