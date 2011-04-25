@@ -7,6 +7,11 @@
 * Fixed "super called outside of method" error happened in particular versions
 of Ruby 1.8.7 #91 [Skulli]
 
+* _paginate.html.erb isn't rendered with custom theme #97 [danlunde]
+
+* I don't know why but this version seems like working with Haml 3.1.0 #96
+[FlyboyArt]
+
 == 0.12.0
 
 * General configuration options #41 #62 [javierv, iain]
