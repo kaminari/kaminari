@@ -34,4 +34,3 @@ module Kaminari
     end
   end
 end
-
