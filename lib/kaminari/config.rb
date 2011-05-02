@@ -23,6 +23,10 @@ module Kaminari
     config_accessor :left
     config_accessor :right
     config_accessor :param_name
+
+    def param_name
+      config.param_name.respond_to?(:call) ? config.param_name.call() : config.param_name 
+    end
   end
 
   # this is ugly. why can't we pass the default value to config_accessor...?
