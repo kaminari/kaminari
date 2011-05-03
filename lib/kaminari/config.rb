@@ -25,13 +25,7 @@ module Kaminari
     config_accessor :param_name
 
     def param_name
-      if block_given?
-        yield
-      elsif config.param_name.respond_to? :call
-        config.param_name.call()
-      else
-        config.param_name 
-      end
+      config.param_name.respond_to?(:call) ? config.param_name.call() : config.param_name 
     end
   end
 

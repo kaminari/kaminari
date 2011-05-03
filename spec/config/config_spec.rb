@@ -46,19 +46,7 @@ describe Kaminari::Configuration do
       its(:param_name) { should == :page }
     end
 
-    context 'configured via block' do
-      before do
-        Kaminari.configure {|c| c.param_name { :test } }
-      end
-
-      its(:param_name) { should == :test }
-
-      after do 
-        Kaminari.configure {|c| c.param_name = :page }
-      end
-    end
-
-    context 'configured via config lambda/proc' do
+    context 'configured via config block' do
       before do
         Kaminari.configure {|c| c.param_name = lambda { :test } }
       end
