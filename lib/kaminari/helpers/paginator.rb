@@ -1,9 +1,13 @@
 require File.join(File.dirname(__FILE__), 'tags')
+require 'action_view/context'
 
 module Kaminari
   module Helpers
     # The main container tag
     class Paginator < Tag
+      # so that this instance can actually "render"
+      include ::ActionView::Context
+
       def initialize(template, options) #:nodoc:
         @window_options = {}.tap do |h|
           h[:window] = options.delete(:window) || options.delete(:inner_window) || Kaminari.config.window
@@ -16,7 +20,7 @@ module Kaminari
         @template, @options = template, options
         @theme = @options[:theme] ? "#{@options[:theme]}/" : ''
         @options[:current_page] = PageProxy.new @window_options.merge(@options), @options[:current_page], nil
-        # so that this instance can actually "render". Black magic?
+        # initialize the output_buffer for Context
         @output_buffer = ActionView::OutputBuffer.new
       end
 
