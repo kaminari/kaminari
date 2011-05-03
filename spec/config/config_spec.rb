@@ -53,7 +53,7 @@ describe Kaminari::Configuration do
 
       its(:param_name) { should == :test }
 
-      after do 
+      after do
         Kaminari.configure {|c| c.param_name = :page }
       end
     end

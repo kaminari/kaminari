@@ -18,4 +18,3 @@ describe 'Kaminari::ActionViewExtension' do
     end
   end
 end
-

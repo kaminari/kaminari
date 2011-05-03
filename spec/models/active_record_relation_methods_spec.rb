@@ -23,6 +23,6 @@ describe Kaminari::ActiveRecordRelationMethods do
         # Only @author and @author2 have books titled with the title00x partern
         User.includes(:books_authored).where("books.title LIKE 'title00%'").page(1).total_count.should == 2
       end
-    end    
+    end
   end
 end
