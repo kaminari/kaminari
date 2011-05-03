@@ -5,6 +5,8 @@ module Kaminari
     extend ActiveSupport::Concern
     included do
       def self.inherited(kls) #:nodoc:
+        super
+
         kls.class_eval do
           include Kaminari::ConfigurationMethods
 
@@ -17,8 +19,6 @@ module Kaminari
             include Kaminari::PageScopeMethods
           end
         end
-
-        super
       end
     end
   end

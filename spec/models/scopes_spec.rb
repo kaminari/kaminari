@@ -40,6 +40,11 @@ describe Kaminari::ActiveRecordExtension do
       subject { User.page 5 }
       it_should_behave_like 'blank page'
     end
+
+    describe 'ensure #order_values is preserved' do
+      subject { User.order('id').page 1 }
+      its(:order_values) { should == ['id'] }
+    end
   end
 
   describe '#per' do
