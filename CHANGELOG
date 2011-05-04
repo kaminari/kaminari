@@ -1,6 +1,11 @@
 == 0.12.4
 
-* Support for config.param_name as lambda
+* Support for config.param_name as lambda #102 [ajrkerr]
+
+* Stop duplicating order_values #65 [zettabyte]
+
+* Preserve select value (e.g. "distinct") when counting #77, #104 [tbeauvais,
+beatlevic]
 
 == 0.12.3
 
