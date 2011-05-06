@@ -70,7 +70,7 @@ You can configure the following default values by overriding these values using 
   left              # 0 by default
   right             # 0 by default
 
-There's a handy generator that generates the default configuration file into config/initilizers directory.
+There's a handy generator that generates the default configuration file into config/initializers directory.
 Run the following generator command, then edit the generated file.
   % rails g kaminari:config
 
