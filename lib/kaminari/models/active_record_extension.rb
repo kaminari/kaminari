@@ -18,7 +18,7 @@ module Kaminari
             include Kaminari::ActiveRecordRelationMethods
             include Kaminari::PageScopeMethods
           end
-        end
+        end if kls.superclass == ActiveRecord::Base
       end
     end
   end
