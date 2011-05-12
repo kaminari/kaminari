@@ -19,7 +19,7 @@ module Kaminari
         end
         @template, @options = template, options
         @theme = @options[:theme] ? "#{@options[:theme]}/" : ''
-        @options[:current_page] = PageProxy.new @window_options.merge(@options), @options[:current_page], nil
+        @options[:current_page] = page @options[:current_page]
         # initialize the output_buffer for Context
         @output_buffer = ActionView::OutputBuffer.new
       end
@@ -35,8 +35,22 @@ module Kaminari
         return to_enum(:each_page) unless block_given?
 
         1.upto(@options[:num_pages]) do |i|
-          yield PageProxy.new(@window_options.merge(@options), i, @last)
+          yield page(i, @last)
         end
+      end
+
+      # converts :first and :last to Fixnum, returns anything else unchanged.
+      def page_number(number)
+        case number
+          when :first then 1
+          when :last then @options[:num_pages]
+          else number
+        end
+      end
+
+      # create a PageProxy for the given page number, understands :first and :last
+      def page(number, last = nil)
+        PageProxy.new @window_options.merge(@options), page_number(number), last
       end
 
       def page_tag(page)
