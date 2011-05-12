@@ -61,6 +61,16 @@ Then bundle:
     User.page(7).per(50)
   Note that the +per+ scope is not directly defined on the models but is just a method defined on the page scope. This is absolutely reasonable because you will never actually use +per_page+ without specifying the +page+ number.
 
+* the +smart_count+ method
+
+  ActiveRecord +count+ method may fail or give wrong results on complex queries. Say, for example, you use +having+ constraint, based on +select+ generated columns. As long as generated columns are thrown away, +having+ constraint will fail and you will get invalid query. If this is your case, you should define a +smart_count+ method on your model or scope. A possible implementation may be (works with any complex query):
+
+    def smart_count
+      count_by_sql("SELECT COUNT(*) FROM (#{scoped.to_sql}) AS count_table")
+    end
+
+  Kaminari will call this method instead of +count+ if it is defined.
+
 === General configuration options
 
 You can configure the following default values by overriding these values using <tt>Kaminari.configure</tt> method.
@@ -163,7 +173,7 @@ Kaminari includes a handy template generator.
 * themes
 
   The generator has the ability to fetch several sample template themes from
-  the external repository (https://github.com/amatsuda/kaminari_themes) in 
+  the external repository (https://github.com/amatsuda/kaminari_themes) in
   addition to the bundled "default" one, which will help you creating a nice
   looking paginator.
     % rails g kaminari:views THEME

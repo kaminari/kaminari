@@ -29,14 +29,21 @@ class User < ActiveRecord::Base
     User.joins(:books_read => :authors).where(:authors_books => {:id => self})
   end
 
-  scope :by_name, order(:name)
-  scope :by_read_count, lambda {
-    cols = if connection.adapter_name == "PostgreSQL"
+  def self.cols
+    if connection.adapter_name == "PostgreSQL"
       column_names.map { |column| %{"users"."#{column}"} }.join(", ")
     else
       '"users"."id"'
     end
+  end
+
+  scope :by_name, order(:name)
+  scope :by_read_count, lambda {
     group(cols).select("count(readerships.id) AS read_count, #{cols}").order('read_count DESC')
+  }
+
+  scope :read_count_at_least, lambda { |cnt|
+    group(cols).select("count(readerships.id) AS read_count, #{cols}").having("read_count >= #{cnt}")
   }
 end
 class Authorship < ActiveRecord::Base
