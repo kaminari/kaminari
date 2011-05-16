@@ -28,6 +28,14 @@ describe 'Kaminari::Helpers::Paginator' do
     it { should == :pagina }
   end
 
+  describe '#route' do
+    before do
+      @paginator = Paginator.new(template, :route => :users_path)
+    end
+    subject { @paginator.page_tag(template).instance_variable_get('@route') }
+    it { should == :users_path }
+  end
+
   #TODO test somehow...
 #   describe '#tagify_links' do
 #     def tags_with(options)
