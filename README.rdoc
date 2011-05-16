@@ -121,6 +121,11 @@ Run the following generator command, then edit the generated file.
     <%= paginate @users, :param_name => :pagina %>
   This would modify the query parameter name on each links.
 
+* using a named route for the links
+
+    <%= paginate @users, :route => :custom_users_path %>
+  This will use the provided named route instead of url_for. Useful to avoid params getting converted to a query string.
+
 * extra parameters (:+params+) for the links
 
     <%= paginate @users, :params => {:controller => 'foo', :action => 'bar'} %>
