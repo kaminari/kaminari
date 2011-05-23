@@ -2,6 +2,7 @@ require 'rails'
 # ensure ORMs are loaded *before* initializing Kaminari
 begin; require 'mongoid'; rescue LoadError; end
 begin; require 'mongo_mapper'; rescue LoadError; end
+begin; require 'dm-core'; require 'dm-aggregates'; rescue LoadError; end
 
 require File.join(File.dirname(__FILE__), 'config')
 require File.join(File.dirname(__FILE__), 'helpers/action_view_extension')
@@ -26,6 +27,10 @@ module Kaminari
         ::MongoMapper::Document.send :include, Kaminari::MongoMapperExtension::Document
         ::Plucky::Query.send :include, Kaminari::PluckyCriteriaMethods
         ::Plucky::Query.send :include, Kaminari::PageScopeMethods
+      end
+      if defined? ::DataMapper
+        require File.join(File.dirname(__FILE__), 'models/data_mapper_extension')
+        ::DataMapper::Collection.send :include, Kaminari::DataMapperExtension::CollectionInstanceMethods
       end
       require File.join(File.dirname(__FILE__), 'models/array_extension')
       ActiveSupport.on_load(:action_view) do
