@@ -54,6 +54,10 @@ module Kaminari
     # MyModel.all.class #=> DataMapper::Collection
     module CollectionInstanceMethods
       include Paginatable
+      
+      def default_per_page
+        model.default_per_page
+      end
     end
     
     # This should be included into DataMapper::Model so that one can call:

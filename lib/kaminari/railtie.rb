@@ -31,6 +31,7 @@ module Kaminari
       if defined? ::DataMapper
         require File.join(File.dirname(__FILE__), 'models/data_mapper_extension')
         ::DataMapper::Collection.send :include, Kaminari::DataMapperExtension::CollectionInstanceMethods
+        ::DataMapper::Model.append_extensions Kaminari::DataMapperExtension::ModelClassMethods
       end
       require File.join(File.dirname(__FILE__), 'models/array_extension')
       ActiveSupport.on_load(:action_view) do

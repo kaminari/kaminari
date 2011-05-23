@@ -31,7 +31,7 @@ describe Kaminari::DataMapperExtension do
     DataMapper.finalize
     DataMapper.auto_migrate!
     
-    ::DataMapper::Model.append_extensions Kaminari::DataMapperExtension::ModelClassMethods
+    #::DataMapper::Model.append_extensions Kaminari::DataMapperExtension::ModelClassMethods
     
     300.times do |i|
       Worker.create(:name => "Worker#{i}", :age => i)
@@ -172,6 +172,10 @@ describe Kaminari::DataMapperExtension do
     
     context 'on query with order' do
       subject { Worker.page(5).all(:age.lte => 100, :order => [:age.asc]).per(13) }
+      it('includes worker with age 52') { should include(Worker.first(:age => 52)) }
+      it('does not include worker with age 51') { should_not include(Worker.first(:age => 51)) }
+      it('includes worker with age 52') { should include(Worker.first(:age => 64)) }
+      it('does not include worker with age 51') { should_not include(Worker.first(:age => 65)) }
       its(:current_page) { should == 5 }
       its('query.limit') { should == 13 }
       its('query.offset') { should == 52 }
