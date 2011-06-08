@@ -1,4 +1,4 @@
-require File.join(File.dirname(__FILE__), 'tags')
+require 'kaminari/helpers/tags'
 require 'action_view/context'
 
 module Kaminari

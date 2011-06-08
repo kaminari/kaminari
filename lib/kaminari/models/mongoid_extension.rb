@@ -1,4 +1,4 @@
-require File.join(File.dirname(__FILE__), 'mongoid_criteria_methods')
+require 'kaminari/models/mongoid_criteria_methods'
 
 module Kaminari
   module MongoidExtension

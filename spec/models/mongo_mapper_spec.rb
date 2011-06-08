@@ -1,6 +1,6 @@
 require File.expand_path('../spec_helper', File.dirname(__FILE__))
 require 'mongo_mapper'
-require File.expand_path('../../lib/kaminari/models/mongo_mapper_extension', File.dirname(__FILE__))
+require 'kaminari/models/mongo_mapper_extension'
 
 describe Kaminari::MongoMapperExtension do
   before :all do

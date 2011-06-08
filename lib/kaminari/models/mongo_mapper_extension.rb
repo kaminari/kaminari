@@ -1,4 +1,4 @@
-require File.join(File.dirname(__FILE__), 'plucky_criteria_methods')
+require 'kaminari/models/plucky_criteria_methods'
 
 module Kaminari
   module MongoMapperExtension
