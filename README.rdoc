@@ -191,7 +191,7 @@ Kaminari includes a handy template generator.
 === Paginating a generic Array object
 
 Kaminari provides an Array wrapper class that adapts a generic Array object to the <tt>paginate</tt> view helper.
-However, the <tt>paginate</tt> helper doesn't automatically handle your Array object (this is an intensional design).
+However, the <tt>paginate</tt> helper doesn't automatically handle your Array object (this is intentional and by design).
 <tt>Kaminari::paginate_array</tt> method converts your Array object into a paginatable Array that accepts <tt>page</tt> method.
   Kaminari.paginate_array(my_array_object).page(params[:page]).per(10)
 
