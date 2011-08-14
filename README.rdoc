@@ -37,6 +37,8 @@ The pagination helper outputs the HTML5 <nav> tag by default. Plus, the helper s
 
 * MongoMapper 0.9
 
+* DataMapper 1.1.0
+
 == Install
 
 Put this line in your Gemfile:
