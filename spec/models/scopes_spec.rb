@@ -55,9 +55,9 @@ describe Kaminari::ActiveRecordExtension do
     end
   end
 
-  describe '#skip' do
-    context 'page 1 per 5 skip 1' do
-      subject { User.page(1).per(5).skip(1) }
+  describe '#shift' do
+    context 'page 1 per 5 shift 1' do
+      subject { User.page(1).per(5).shift(1) }
       it { should have(5).users }
       its('first.name') { should == 'user002' }
     end
