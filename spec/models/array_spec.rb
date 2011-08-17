@@ -5,6 +5,7 @@ describe Kaminari::PaginatableArray do
   describe '#page' do
     shared_examples_for 'the first page of array' do
       it { should have(25).users }
+      its(:current_page) { should == 1 }
       its(:first) { should == 1 }
     end
 
@@ -20,6 +21,7 @@ describe Kaminari::PaginatableArray do
     context 'page 2' do
       subject { array.page 2 }
       it { should have(25).users }
+      its(:current_page) { should == 2 }
       its(:first) { should == 26 }
     end
 

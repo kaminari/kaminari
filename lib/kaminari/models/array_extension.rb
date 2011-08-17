@@ -4,14 +4,16 @@ module Kaminari
     include Kaminari::ConfigurationMethods::ClassMethods
 
     attr_internal_accessor :limit_value, :offset_value
+    attr_internal_reader :current_page
 
     def initialize(original_array, limit_val = default_per_page, offset_val = 0) #:nodoc:
-      @_original_array, @_limit_value, @_offset_value = original_array, limit_val, offset_val
-      super(original_array[offset_val, limit_val] || [])
+      @_original_array, @_limit_value, @_offset_value, @_current_page = original_array, limit_val.to_i, offset_val.to_i, nil
+      super(original_array[offset_value, limit_value] || [])
     end
 
     # items at the specified "page"
     def page(num = 1)
+      @_current_page = num
       offset(limit_value * ([num.to_i, 1].max - 1))
     end
 
