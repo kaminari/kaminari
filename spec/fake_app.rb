@@ -53,6 +53,9 @@ class Book < ActiveRecord::Base
   has_many :authors, :through => :authorships, :source => :user
   has_many :readers, :through => :readerships, :source => :user
 end
+# a model that is a descendant of AR::Base but doesn't directly inherit AR::Base
+class Admin < User
+end
 
 # controllers
 class ApplicationController < ActionController::Base; end

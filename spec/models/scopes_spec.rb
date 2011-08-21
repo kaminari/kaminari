@@ -10,12 +10,13 @@ shared_examples_for 'blank page' do
 end
 
 describe Kaminari::ActiveRecordExtension do
-  [User, GemDefinedModel].each do |model_class|
-    context "for #{model_class}" do
-      before :all do
-        1.upto(100) {|i| model_class.create! :name => "user#{'%03d' % i}", :age => (i / 10)}
-      end
+  before :all do
+    1.upto(100) {|i| User.create! :name => "user#{'%03d' % i}", :age => (i / 10)}
+    1.upto(100) {|i| GemDefinedModel.create! :name => "user#{'%03d' % i}", :age => (i / 10)}
+  end
 
+  [User, Admin, GemDefinedModel].each do |model_class|
+    context "for #{model_class}" do
       describe '#page' do
         context 'page 1' do
           subject { model_class.page 1 }
