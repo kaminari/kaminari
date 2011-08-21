@@ -3,16 +3,19 @@ require 'mongo_mapper'
 require 'kaminari/models/mongo_mapper_extension'
 
 describe Kaminari::MongoMapperExtension do
-  before :all do
-    MongoMapper.connection = Mongo::Connection.new('localhost', 27017)
-    MongoMapper.database = "kaminari_test"
-    class Developer
-      include ::MongoMapper::Document
-      key :salary, Integer
-    end
-  end
   before do
-    stub(subject).count { 300 } # in order to avoid DB access...
+    begin
+      MongoMapper.connection = Mongo::Connection.new('localhost', 27017)
+      MongoMapper.database = "kaminari_test"
+      class Developer
+        include ::MongoMapper::Document
+        key :salary, Integer
+      end
+
+      stub(subject).count { 300 } # in order to avoid DB access...
+    rescue Mongo::ConnectionFailure
+      pending 'can not connect to MongoDB'
+    end
   end
 
   describe '#page' do
