@@ -12,6 +12,7 @@ require 'database_cleaner'
 if RUBY_VERSION >= '1.9.2'
   YAML::ENGINE.yamler = 'syck'
 end
+require File.join(File.dirname(__FILE__), 'fake_gem')
 require File.join(File.dirname(__FILE__), 'fake_app')
 
 require 'rspec/rails'

@@ -72,6 +72,7 @@ Object.const_set(:ApplicationHelper, Module.new)
 #migrations
 class CreateAllTables < ActiveRecord::Migration
   def self.up
+    create_table(:gem_defined_models) { |t| t.string :name; t.integer :age }
     create_table(:users) {|t| t.string :name; t.integer :age}
     create_table(:books) {|t| t.string :title}
     create_table(:readerships) {|t| t.integer :user_id; t.integer :book_id }
