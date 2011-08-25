@@ -12,6 +12,12 @@ module Kaminari
     def initialize(original_array, options = {})
       @_original_array, @_limit_value, @_offset_value, @_total_count = original_array, (options[:limit] || default_per_page).to_i, options[:offset].to_i, options[:total_count]
 
+      if options[:limit] && options[:offset]
+        class << self
+          include Kaminari::PageScopeMethods
+        end
+      end
+
       if options[:total_count]
         super original_array
       else
@@ -36,11 +42,7 @@ module Kaminari
 
     # returns another chunk of the original array
     def offset(num)
-      arr = self.class.new @_original_array, :limit => @_limit_value, :offset => num, :total_count => @_total_count
-      class << arr
-        include Kaminari::PageScopeMethods
-      end
-      arr
+      self.class.new @_original_array, :limit => @_limit_value, :offset => num, :total_count => @_total_count
     end
   end
 
