@@ -11,7 +11,12 @@ module Kaminari
     # * <tt>:total_count</tt> - total_count
     def initialize(original_array, options = {})
       @_original_array, @_limit_value, @_offset_value, @_total_count = original_array, (options[:limit] || default_per_page).to_i, options[:offset].to_i, options[:total_count]
-      super(original_array[@_offset_value, @_limit_value] || [])
+
+      if options[:total_count]
+        super original_array
+      else
+        super(original_array[@_offset_value, @_limit_value] || [])
+      end
     end
 
     # items at the specified "page"

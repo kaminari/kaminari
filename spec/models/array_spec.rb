@@ -106,9 +106,9 @@ describe Kaminari::PaginatableArray do
   end
 
   context 'when setting total count explicitly' do
-    subject { Kaminari::PaginatableArray.new((1..100).to_a, :total_count => 9999).page(5).per(10) }
+    subject { Kaminari::PaginatableArray.new((1..10).to_a, :total_count => 9999).page(5).per(10) }
     it { should have(10).items }
-    its(:first) { should == 41 }
+    its(:first) { should == 1 }
     its(:total_count) { should == 9999 }
   end
 end
