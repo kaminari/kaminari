@@ -1,6 +1,8 @@
 require 'rails'
 # ensure ORMs are loaded *before* initializing Kaminari
 begin; require 'mongoid'; rescue LoadError; end
+begin; require 'mongo_mapper'; rescue LoadError; end
+begin; require 'dm-core'; rescue LoadError; end
 
 require 'kaminari/config'
 require 'kaminari/helpers/action_view_extension'
@@ -28,6 +30,11 @@ module Kaminari
         ::Plucky::Query.send :include, Kaminari::PageScopeMethods
       end
 
+      if defined? ::DataMapper
+        require 'kaminari/models/data_mapper_extension'
+        ::DataMapper::Model.send :include, Kaminari::DataMapperExtension::Model
+        ::DataMapper::Collection.send :include, Kaminari::DataMapperExtension::Collection
+      end
       require 'kaminari/models/array_extension'
 
       ActiveSupport.on_load(:action_view) do

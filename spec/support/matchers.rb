@@ -44,3 +44,9 @@ RSpec::Matchers.define :skip do |num|
     criteria.instance_variable_get('@options')[:skip] == num
   end
 end
+
+RSpec::Matchers.define :offset do |num|
+  match do |collection|
+    collection.offset_value == num
+  end
+end
