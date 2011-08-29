@@ -27,6 +27,8 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'mongoid', ['>= 2']
   s.add_development_dependency 'mongo_mapper', ['>= 0.9']
   s.add_development_dependency 'dm-core', ['>= 1.1.0']
+  s.add_development_dependency 'dm-migrations', ['>= 1.1.0']
+  s.add_development_dependency 'dm-aggregates', ['>= 1.1.0']
   s.add_development_dependency 'dm-sqlite-adapter', ['>= 1.1.0']
   s.add_development_dependency 'rspec', ['>= 0']
   s.add_development_dependency 'rspec-rails', ['>= 0']

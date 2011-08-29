@@ -11,12 +11,7 @@ module Kaminari
       end
 
       def total_count #:nodoc:
-        return count if query.options.blank?
-        opts = query.options.dup
-        opts.delete(:limit)
-        opts.delete(:offset)
-        opts.delete(:order)
-        model.all(opts).count
+        model.count(query.options.except(:limit, :offset, :order))
       end
     end
   end
