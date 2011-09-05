@@ -18,8 +18,8 @@ module Kaminari
         # Remove includes only if they are irrelevant
         c = c.except(:includes) unless references_eager_loaded_tables?
         # .group returns an OrderdHash that responds to #count
-        c = c.count
-        c.respond_to?(:count) ? c.count : c
+        c = c.length
+        c.respond_to?(:length) ? c.length : c
       end
     end
   end
