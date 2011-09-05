@@ -21,7 +21,9 @@ Gem::Specification.new do |s|
 
   s.licenses = ['MIT']
 
-  s.add_dependency 'rails', ['>= 3.0.0']
+  %w{ activerecord activesupport activemodel actionpack }.each do |gem|
+    s.add_dependency gem, ['>= 3.0.0']  
+  end
   s.add_development_dependency 'bundler', ['>= 1.0.0']
   s.add_development_dependency 'sqlite3', ['>= 0']
   s.add_development_dependency 'mongoid', ['>= 2']
@@ -31,7 +33,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'dm-aggregates', ['>= 1.1.0']
   s.add_development_dependency 'dm-sqlite-adapter', ['>= 1.1.0']
   s.add_development_dependency 'rspec', ['>= 0']
-  s.add_development_dependency 'rspec-rails', ['>= 0']
   s.add_development_dependency 'rr', ['>= 0']
   s.add_development_dependency 'steak', ['>= 0']
   s.add_development_dependency 'capybara', ['>= 0']
