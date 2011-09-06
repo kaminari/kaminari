@@ -20,8 +20,8 @@ module Kaminari
         # Remove includes only if they are irrelevant
         c = c.except(:includes) unless references_eager_loaded_tables?
         
-        uses_distinct_on_sql = c.to_sql =~ /DISTINCT ON/i
-        if uses_distinct_on_sql
+        uses_distinct_sql_statement = c.to_sql =~ /DISTINCT/i
+        if uses_distinct_sql_statement
           return c.length
         end
           
