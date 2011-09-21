@@ -9,7 +9,7 @@ module Kaminari
     # * <tt>:limit</tt> - limit
     # * <tt>:offset</tt> - offset
     # * <tt>:total_count</tt> - total_count
-    def initialize(original_array, options = {})
+    def initialize(original_array = [], options = {})
       @_original_array, @_limit_value, @_offset_value, @_total_count = original_array, (options[:limit] || default_per_page).to_i, options[:offset].to_i, options[:total_count]
 
       if options[:limit] && options[:offset]

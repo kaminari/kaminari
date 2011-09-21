@@ -1,6 +1,8 @@
 require File.expand_path('../spec_helper', File.dirname(__FILE__))
 
 describe Kaminari::PaginatableArray do
+  it { should have(0).items }
+
   context 'specifying limit and offset when initializing' do
     subject { Kaminari::PaginatableArray.new((1..100).to_a, :limit => 10, :offset => 20) }
     its(:current_page) { should == 3 }
