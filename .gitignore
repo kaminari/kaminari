@@ -2,6 +2,6 @@
 .bundle
 Gemfile.lock
 pkg/*
-
+tmp
 doc
 log
