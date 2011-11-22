@@ -3,6 +3,7 @@ require File.expand_path(File.dirname(__FILE__) + '/acceptance_helper')
 
 feature 'Users' do
   background do
+    User.delete_all
     1.upto(100) {|i| User.create! :name => "user#{'%03d' % i}" }
   end
   scenario 'navigating by pagination links' do
