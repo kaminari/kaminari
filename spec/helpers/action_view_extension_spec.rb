@@ -2,6 +2,7 @@ require File.expand_path('../spec_helper', File.dirname(__FILE__))
 
 describe 'Kaminari::ActionViewExtension' do
   before do
+    User.delete_all
     50.times {|i| User.create! :name => "user#{i}"}
   end
   describe '#paginate' do

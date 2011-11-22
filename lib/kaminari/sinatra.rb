@@ -1,7 +1,7 @@
 require 'kaminari'
 module Kaminari
   module Helpers
-    autoload :SinatraHelper, 'kaminari/helpers/sinatra_helper'
+    autoload :SinatraHelpers, 'kaminari/helpers/sinatra_helpers'
   end
 end
 Kaminari::Hooks.init!
