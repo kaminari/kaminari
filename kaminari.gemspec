@@ -24,6 +24,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'railties', ['>= 3.0.0']
   s.add_development_dependency 'bundler', ['>= 1.0.0']
   s.add_development_dependency 'sqlite3', ['>= 0']
+  s.add_development_dependency 'activerecord', ['>= 3.0.0']
   s.add_development_dependency 'mongoid', ['>= 2']
   s.add_development_dependency 'mongo_mapper', ['>= 0.9']
   s.add_development_dependency 'dm-core', ['>= 1.1.0']
