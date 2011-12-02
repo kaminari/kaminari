@@ -58,9 +58,9 @@ describe Kaminari::ActiveRecordExtension do
         end
       end
 
-      describe '#shift' do
-        context 'page 1 per 5 shift 1' do
-          subject { model_class.page(1).per(5).shift(1) }
+      describe '#padding' do
+        context 'page 1 per 5 padding 1' do
+          subject { model_class.page(1).per(5).padding(1) }
           it { should have(5).users }
           its('first.name') { should == 'user002' }
         end

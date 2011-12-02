@@ -63,11 +63,11 @@ Then bundle:
     User.page(7).per(50)
   Note that the +per+ scope is not directly defined on the models but is just a method defined on the page scope. This is absolutely reasonable because you will never actually use +per_page+ without specifying the +page+ number.
 
-* the +shift+ scope
+* the +padding+ scope
 
-  Occasionally you need to shift a number of records that is not a multiple of the page size.
-    User.page(7).per(50).shift(3)
-  Note that the +shift+ scope is not directly defined on the models but is just a method defined on the page scope. This is absolutely reasonable because you can use +offset+ otherwise.
+  Occasionally you need to padding a number of records that is not a multiple of the page size.
+    User.page(7).per(50).padding(3)
+  Note that the +padding+ scope is not directly defined on the models but is just a method defined on the page scope. This is absolutely reasonable because you can use +offset+ otherwise.
 
 === General configuration options
 

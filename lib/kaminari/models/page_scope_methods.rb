@@ -12,7 +12,7 @@ module Kaminari
         end
       end
 
-      def shift(num)
+      def padding(num)
         offset(offset_value + num.to_i)
       end
 
