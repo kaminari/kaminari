@@ -46,7 +46,7 @@ describe Kaminari::ActiveRecordExtension do
 
         describe 'ensure #order_values is preserved' do
           subject { model_class.order('id').page 1 }
-          its(:order_values) { should == ['id'] }
+          its('order_values.uniq') { should == ['id'] }
         end
       end
 
