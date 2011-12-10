@@ -1,5 +1,5 @@
 # encoding: UTF-8
-require File.expand_path('../spec_helper', File.dirname(__FILE__))
+require 'spec_helper'
 
 feature 'Users' do
   background do

@@ -1,4 +1,4 @@
-require File.expand_path('../spec_helper', File.dirname(__FILE__))
+require 'spec_helper'
 
 shared_examples_for 'the first page' do
   it { should have(25).users }

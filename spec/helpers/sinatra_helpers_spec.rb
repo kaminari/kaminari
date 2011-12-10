@@ -1,5 +1,5 @@
-require File.expand_path('../spec_helper', File.dirname(__FILE__))
-require File.expand_path('../spec_helper_for_sinatra', File.dirname(__FILE__))
+require 'spec_helper'
+require 'spec_helper_for_sinatra'
 
 ERB_TEMPLATE_FOR_PAGINATE = <<EOT
 <div>
