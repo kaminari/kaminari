@@ -7,7 +7,7 @@ feature 'Users' do
     1.upto(100) {|i| User.create! :name => "user#{'%03d' % i}" }
   end
   scenario 'navigating by pagination links' do
-    visit users_path
+    visit '/users'
 
     within 'nav.pagination' do
       within 'span.page.current' do
