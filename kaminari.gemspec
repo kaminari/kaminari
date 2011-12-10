@@ -22,6 +22,7 @@ Gem::Specification.new do |s|
   s.licenses = ['MIT']
 
   s.add_dependency 'railties', ['>= 3.0.0']
+  s.add_development_dependency 'activerecord', ['>= 3.0.0']
   s.add_development_dependency 'bundler', ['>= 1.0.0']
   s.add_development_dependency 'sqlite3', ['>= 0']
   s.add_development_dependency 'activerecord', ['>= 3.0.0']
@@ -37,4 +38,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'steak', ['>= 0']
   s.add_development_dependency 'capybara', ['>= 0']
   s.add_development_dependency 'database_cleaner', ['>= 0']
+  s.add_development_dependency 'ammeter', ['>= 0.1.3']
+  s.add_development_dependency 'webmock', ['>= 1.7.6']
 end
