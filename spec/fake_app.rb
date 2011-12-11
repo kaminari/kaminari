@@ -16,6 +16,7 @@ app.initialize!
 # routes
 app.routes.draw do
   resources :users
+  match ':year(/:month(/:day))' => 'users#index', :as => :users_by_date
 end
 
 # models

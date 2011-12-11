@@ -23,6 +23,7 @@ module Kaminari
     config_accessor :left
     config_accessor :right
     config_accessor :param_name
+    config_accessor :route
 
     def param_name
       config.param_name.respond_to?(:call) ? config.param_name.call() : config.param_name 
@@ -37,5 +38,6 @@ module Kaminari
     config.left = 0
     config.right = 0
     config.param_name = :page
+    config.route = :url_for
   end
 end
