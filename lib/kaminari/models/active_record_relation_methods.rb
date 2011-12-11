@@ -20,7 +20,7 @@ module Kaminari
           c = c.except(:includes) unless references_eager_loaded_tables?
           # .group returns an OrderdHash that responds to #count
           c = c.count
-          @total_count = c.respond_to?(:count) ? c.count : c
+          c.respond_to?(:count) ? c.count : c
         end
       end
     end
