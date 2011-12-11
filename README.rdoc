@@ -217,6 +217,19 @@ Because the `page` parameter is now a URL segment, we can leverage on Rails page
 
 NOTE: In this example, I've pointed the route to my `:index` action. You may have defined a custom pagination action in your controller - you should point `:action => :your_custom_action` instead.
 
+== Sinatra/Padrino supports
+
+After December 2011, kaminari started to support Sinatra or Sinatra-based frameworks experimentally.
+
+To use kaminari and its helpers with these frameworks, please just
+
+    require 'kaminari/sinatra'
+
+or edit gemfile:
+
+    gem 'kaminari', :require => 'kaminari/sinatra'
+
+More features are coming, and please raise an issue[https://github.com/amatsuda/kaminari/issues] if something would be occurred around Sinatra.
 
 == For more information
 
