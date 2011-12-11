@@ -11,31 +11,6 @@ module Kaminari
       # so that this instance can actually "render"
       include ::ActionView::Context
 
-      module Windows
-        def relevant_pages options
-          [left_window(options), inside_window(options), right_window(options)].map(&:to_a).flatten.uniq.sort.reject { |x| x < 1 or x > options[:num_pages] }
-        end
-
-        def all_pages options
-          1.upto(options[:num_pages])
-        end
-
-        protected
-        def left_window options
-          1.upto(options[:left] + 1)
-        end
-
-        def right_window options
-          (options[:num_pages] - options[:right]).upto(options[:num_pages])
-        end
-
-        def inside_window options
-          (options[:current_page] - options[:window]).upto(options[:current_page] + options[:window])
-        end
-      end
-
-      include Windows
-
       def initialize(template, options) #:nodoc:
         @window_options = {}.tap do |h|
           h[:window] = options.delete(:window) || options.delete(:inner_window) || Kaminari.config.window
@@ -59,14 +34,11 @@ module Kaminari
       end
 
       # enumerate each page providing PageProxy object as the block parameter
-      def each_page
-        return to_enum(:each_page) unless block_given?
-
-        1.upto(@options[:num_pages]) do |i|
-          yield PageProxy.new(@window_options.merge(@options), i, @last)
-        end
-      end
-
+      # Because of performance reason, this doesn't actually enumerate all pages but pages that are seemingly relevant to the paginator.
+      # "Relevant" pages are:
+      # * pages inside the left outer window plus one for showing the gap tag
+      # * pages inside the inner window plus one on the left plus one on the right for showing the gap tags
+      # * pages inside the right outer window plus one for showing the gap tag
       def each_relevant_page
         return to_enum(:each_relevant_page) unless block_given?
 
@@ -74,6 +46,16 @@ module Kaminari
           yield PageProxy.new(@window_options.merge(@options), i, @last)
         end
       end
+      alias each_page each_relevant_page
+
+      def relevant_pages(options)
+        left_window_plus_one = 1.upto(options[:left] + 1).to_a
+        right_window_plus_one = (options[:num_pages] - options[:right]).upto(options[:num_pages]).to_a
+        inside_window_plus_each_sides = (options[:current_page] - options[:window] - 1).upto(options[:current_page] + options[:window] + 1).to_a
+
+        (left_window_plus_one + inside_window_plus_each_sides + right_window_plus_one).uniq.sort.reject {|x| (x < 1) || (x > options[:num_pages])}
+      end
+      private :relevant_pages
 
       def page_tag(page)
         @last = Page.new @template, @options.merge(:page => page)
