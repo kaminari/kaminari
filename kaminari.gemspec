@@ -29,6 +29,7 @@ Gem::Specification.new do |s|
   %w{ activerecord activemodel }.each do |gem|
     s.add_development_dependency gem, ['>= 3.0.0']
   end
+  s.add_development_dependency 'sinatra', ['>= 1.3']
   s.add_development_dependency 'mongoid', ['>= 2']
   s.add_development_dependency 'mongo_mapper', ['>= 0.9']
   s.add_development_dependency 'dm-core', ['>= 1.1.0']

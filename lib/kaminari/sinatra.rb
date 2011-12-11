@@ -5,10 +5,9 @@ rescue LoadError
 end
 
 require 'kaminari'
-module Kaminari
-  module Helpers
-    autoload :SinatraHelpers, 'kaminari/helpers/sinatra_helpers'
-  end
+module Kaminari::Helpers
 end
+require 'kaminari/helpers/sinatra_helpers'
+
 Kaminari::Hooks.init!
 

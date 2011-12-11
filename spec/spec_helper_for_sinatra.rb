@@ -1,4 +1,3 @@
-require 'sinatra/base'
 require 'kaminari/sinatra'
 require 'rack/test'
 require 'sinatra/test_helpers'
