@@ -10,7 +10,7 @@ module Kaminari
   end
 
   def self.load_framework!
-    raise "No framework specified!" if frameworks.empty?
+    show_warning if frameworks.empty?
     frameworks.each do |framework|
       begin
         require framework
@@ -20,6 +20,20 @@ module Kaminari
     end
   end
 
+  def self.show_warning
+    $stderr.puts <<-EOC
+warning: no framework is detected.
+would you check out if your Gemfile appropriately configured?
+---- e.g. ----
+when Rails:
+    gem 'rails'
+    gem 'kaminari'
+
+when Sinatra/Padrino:
+    gem 'kaminari', :require => 'kaminari/sinatra'
+
+    EOC
+  end
 
   def self.load_kaminari!
     require 'kaminari/config'
