@@ -203,6 +203,7 @@ However, the <tt>paginate</tt> helper doesn't automatically handle your Array ob
 <tt>Kaminari::paginate_array</tt> method converts your Array object into a paginatable Array that accepts <tt>page</tt> method.
   Kaminari.paginate_array(my_array_object).page(params[:page]).per(10)
 
+
 == Creating friendly URLs and caching
 
 Because of the `page` parameter and Rails 3 routing, you can easily generate SEO and user-friendly URLs. For any resource you'd like to paginate, just add the following to your `routes.rb`:
@@ -216,6 +217,7 @@ This will create URLs like `/my_resources/page/33` instead of `/my_resources?pag
 Because the `page` parameter is now a URL segment, we can leverage on Rails page caching[http://guides.rubyonrails.org/caching_with_rails.html#page-caching]!
 
 NOTE: In this example, I've pointed the route to my `:index` action. You may have defined a custom pagination action in your controller - you should point `:action => :your_custom_action` instead.
+
 
 == Sinatra/Padrino supports
 
@@ -231,10 +233,14 @@ or edit gemfile:
 
 More features are coming, and please raise an issue[https://github.com/amatsuda/kaminari/issues] if something would be occurred around Sinatra.
 
+
 == For more information
 
 Check out Kaminari recipes on the GitHub Wiki for more advanced tips and techniques.
 https://github.com/amatsuda/kaminari/wiki/Kaminari-recipes
+
+
+== Build Status {<img src="https://secure.travis-ci.org/amatsuda/kaminari.png"/>}[http://travis-ci.org/amatsuda/kaminari]
 
 
 == Questions, Feedback
