@@ -3,8 +3,8 @@ module Kaminari
   def self.frameworks
     frameworks = []
     case
-      when defined?(::Rails)   then frameworks << 'rails'
-      when defined?(::Sinatra) then frameworks << 'sinatra/base'
+      when rails?   then frameworks << 'rails'
+      when sinatra? then frameworks << 'sinatra/base'
     end
     frameworks
   end
@@ -47,10 +47,10 @@ when Sinatra/Padrino:
     load_framework!
     load_kaminari!
     require 'kaminari/hooks'
-    if defined?(::Rails)
+    if rails?
       require 'kaminari/railtie'
       require 'kaminari/engine'
-    elsif defined?(::Sinatra)
+    elsif sinatra?
       require 'kaminari/sinatra'
     else
       Kaminari::Hooks.init!
@@ -59,6 +59,15 @@ when Sinatra/Padrino:
 
   def self.load!
     hook!
+  end
+
+  private
+  def self.rails?
+    defined?(::Rails)
+  end
+
+  def self.sinatra?
+    defined?(::Sinatra)
   end
 
 end
