@@ -15,7 +15,7 @@ module Kaminari
       begin
         require framework
       rescue NameError => e
-        raise "can\'t load framework #{framework.inspect}. Have you added it to Gemfile?"
+        raise "can't load framework #{framework.inspect}. Have you added it to Gemfile?"
       end
     end
   end
