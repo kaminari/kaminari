@@ -1,5 +1,4 @@
 module Kaminari
-
   def self.frameworks
     frameworks = []
     case
@@ -15,14 +14,14 @@ module Kaminari
       begin
         require framework
       rescue NameError => e
-        raise "can't load framework #{framework.inspect}. Have you added it to Gemfile?"
+        raise "Failed to load framework #{framework.inspect}. Have you added it to Gemfile?"
       end
     end
   end
 
   def self.show_warning
     $stderr.puts <<-EOC
-warning: no framework is detected.
+warning: no framework detected.
 would you check out if your Gemfile appropriately configured?
 ---- e.g. ----
 when Rails:
@@ -69,7 +68,6 @@ when Sinatra/Padrino:
   def self.sinatra?
     defined?(::Sinatra)
   end
-
 end
 
 Kaminari.load!
