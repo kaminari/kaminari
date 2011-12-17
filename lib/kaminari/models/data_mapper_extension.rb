@@ -3,10 +3,12 @@ require 'kaminari/models/data_mapper_collection_methods'
 module Kaminari
   module DataMapperExtension
     module Paginatable
-      def page(num)
-        num = [num.to_i, 1].max - 1
-        all(:limit => default_per_page, :offset => default_per_page * num).extend Paginating
-      end
+      class_eval <<-RUBY, __FILE__, __LINE__ + 1
+        def #{Kaminari.config.page_method_name}(num = 1)
+          num = [num.to_i, 1].max - 1
+          all(:limit => default_per_page, :offset => default_per_page * num).extend Paginating
+        end
+      RUBY
     end
 
     module Paginating

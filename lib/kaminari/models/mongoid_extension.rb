@@ -6,9 +6,11 @@ module Kaminari
       extend ActiveSupport::Concern
 
       included do
-        def page(*args)
-          super(*args).criteria.merge(self)
-        end
+        class_eval <<-RUBY, __FILE__, __LINE__ + 1
+          def #{Kaminari.config.page_method_name}(*args)
+            super(*args).criteria.merge(self)
+          end
+        RUBY
       end
     end
 
@@ -19,7 +21,7 @@ module Kaminari
       included do
         # Fetch the values at the specified page number
         #   Model.page(5)
-        scope :page, Proc.new {|num|
+        scope Kaminari.config.page_method_name, Proc.new {|num|
           limit(default_per_page).offset(default_per_page * ([num.to_i, 1].max - 1))
         } do
           include Kaminari::MongoidCriteriaMethods

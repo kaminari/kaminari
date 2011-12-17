@@ -22,10 +22,11 @@ module Kaminari
     config_accessor :outer_window
     config_accessor :left
     config_accessor :right
+    config_accessor :page_method_name
     config_accessor :param_name
 
     def param_name
-      config.param_name.respond_to?(:call) ? config.param_name.call() : config.param_name 
+      config.param_name.respond_to?(:call) ? config.param_name.call : config.param_name
     end
   end
 
@@ -36,6 +37,7 @@ module Kaminari
     config.outer_window = 0
     config.left = 0
     config.right = 0
+    config.page_method_name = :page
     config.param_name = :page
   end
 end

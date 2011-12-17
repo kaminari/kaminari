@@ -27,9 +27,11 @@ module Kaminari
     end
 
     # items at the specified "page"
-    def page(num = 1)
-      offset(limit_value * ([num.to_i, 1].max - 1))
-    end
+    class_eval <<-RUBY, __FILE__, __LINE__ + 1
+      def #{Kaminari.config.page_method_name}(num = 1)
+        offset(limit_value * ([num.to_i, 1].max - 1))
+      end
+    RUBY
 
     # returns another chunk of the original array
     def limit(num)
