@@ -1,3 +1,65 @@
+== 0.13.0
+
+* Rails 3.2 ready! #180 [slbug]
+
+* DataMapper support! #149 [NoICE, Ragmaanir]
+
+* Sinatra & Padrino support! #179 [udzura, mlightner, aereal]
+
+* Added mongoid embedded documents support! #155 [yuki24]
+
+* Added `each_relevant_page` that only visits pages in the inner or outer
+windows #154 [cbeer]
+  Performance improved, particularly with very large number of pages.
+
+* Memoize count for AR when calling `total_count` #138 [sarmiena]
+  Increases performance for large datasets.
+
+* Added `page_entries_info` view helper #140 [jeffreyiacono]
+  Example:
+  <%= page_entries_info @posts %>
+  #=> Displaying posts 6 - 10 of 26 in total
+
+* Added `link_to_next_page` helper method that simply links to the next page
+  Example:
+  <%= link_to_next_page @posts, 'More' %>
+	#=> <a href="/posts?page=7" rel="next">More</a>
+
+* Let one override the `rel` attribute for 'link_to_next_page` helper #177
+[webmat]
+
+* Added `total_count` param for PaginatableArray. Useful for when working with
+RSolr #141 [samdalton]
+
+* Changed `Kaminari.paginate_array` API to take a Hash `options`
+  And specifying :limit & :offset immediately builds a pagination ready object
+	Example:
+  # the following two are equivalent. Use whichever you like
+  Kaminari.paginate_array((1..100).to_a, limit: 10, offset: 10)
+  Kaminari.paginate_array((1..100).to_a).page(2).per(10)
+
+* Added `padding` method to skip an arbitrary record count #60 [aaronjensen]
+  Example:
+  User.page(2).per(10).padding(3)  # this will return users 14..23
+
+* Made the pagination method name (defaulted to `page`) configurable #57, #162
+  Example:
+  # you can use the config file and its generator for this
+	Kaminari.config.page_method_name = :paging
+	Article.paging(3).per(30)
+
+* Only add extensions to direct descendents of ActiveRecord::Base #108
+[seejohnrun]
+
+* AR models that were subclassed before Kaminari::ActiveRecordExtension is
+included pick up the extensions #119 [pivotal-casebook]
+
+* Avoid overwriting AR::Base inherited method #165 [briandmcnabb]
+
+* Stopped depending on Rails gem #159 [alsemyonov]
+
+* introduced Travis CI #181 [hsbt]
+
 == 0.12.4
 
 * Support for config.param_name as lambda #102 [ajrkerr]
