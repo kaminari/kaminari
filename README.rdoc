@@ -1,6 +1,6 @@
 = Kaminari
 
-A Scope & Engine based, clean, powerful, customizable and sophisticated paginator for Rails 3
+A Scope & Engine based, clean, powerful, customizable and sophisticated paginator for modern web app frameworks and ORMs
 
 
 == Features
@@ -19,7 +19,7 @@ No special collection class or anything for the paginated values, instead using 
 As the whole pagination helper is basically just a collection of links and non-links, Kaminari renders each of them through its own partial template inside the Engine. So, you can easily modify their behaviour, style or whatever by overriding partial templates.
 
 === ORM & template engine agnostic
-Kaminari supports multiple ORMs (ActiveRecord, Mongoid, MongoMapper) and multiple template engines (ERB, Haml).
+Kaminari supports multiple ORMs (ActiveRecord, Mongoid, MongoMapper) multiple web frameworks (Rails, Sinatra), and multiple template engines (ERB, Haml).
 
 === Modern
 The pagination helper outputs the HTML5 <nav> tag by default. Plus, the helper supports Rails 3 unobtrusive Ajax.
@@ -67,7 +67,7 @@ Then bundle:
 
   Occasionally you need to padding a number of records that is not a multiple of the page size.
     User.page(7).per(50).padding(3)
-  Note that the +padding+ scope is not directly defined on the models but is just a method defined on the page scope. This is absolutely reasonable because you can use +offset+ otherwise.
+  Note that the +padding+ scope also is not directly defined on the models.
 
 === General configuration options
 
@@ -77,10 +77,17 @@ You can configure the following default values by overriding these values using 
   outer_window      # 0 by default
   left              # 0 by default
   right             # 0 by default
+  page_method_name  # :page by default
+  param_name        # :page by default
 
 There's a handy generator that generates the default configuration file into config/initializers directory.
 Run the following generator command, then edit the generated file.
   % rails g kaminari:config
+
+* changing +page_method_name+
+
+  You can change the method name `page` to `bonzo` or `plant` or whatever you like, in order to play nice with existing `page` method or association or scope or any other plugin that defines `page` method on your models.
+
 
 === Configuring default +per_page+ value for each model
 
@@ -107,7 +114,12 @@ Run the following generator command, then edit the generated file.
 
   This will render several <tt>?page=N</tt> pagination links surrounded by an HTML5 <+nav+> tag.
 
-=== Helper Options
+=== Helpers
+
+* the +paginate+ helper method
+
+    <%= paginate @users %>
+  This would output several pagination links such as <tt>« First ‹ Prev ... 2 3 4 5 6 7 8 9 10 ... Next › Last »</tt>
 
 * specifing the "inner window" size (4 by default)
 
@@ -139,16 +151,28 @@ Run the following generator command, then edit the generated file.
     <%= paginate @users, :remote => true %>
   This would add <tt>data-remote="true"</tt> to all the links inside.
 
+* the +link_to_next_page+ helper method
+
+    <%= link_to_next_page @items, 'Next Page' %>
+  This simply renders a link to the next page. This would be helpful for creating "Twitter like" pagination feature.
+
+* the +page_entries_info+ helper method
+
+    <%= page_entries_info @users %>
+  This renders a helpful message with numbers of displayed vs. total entries.
+
 === I18n and labels
 
-The default labels for 'previous', '...' and 'next' are stored in the I18n yaml inside the engine, and rendered through I18n API. You can switch the label value per I18n.locale for your internationalized application.
+The default labels for 'first', 'last', 'previous', '...' and 'next' are stored in the I18n yaml inside the engine, and rendered through I18n API. You can switch the label value per I18n.locale for your internationalized application.
 Keys and the default values are the following. You can override them by adding to a YAML file in your <tt>Rails.root/config/locales</tt> directory.
 
   en:
     views:
       pagination:
-        previous: "&laquo; Prev"
-        next: "Next &raquo;"
+        first: "&laquo; First"
+        last: "Last &raquo;"
+        previous: "&lsaquo; Prev"
+        next: "Next &rsaquo;"
         truncate: "..."
 
 === Customizing the pagination helper
@@ -203,6 +227,8 @@ However, the <tt>paginate</tt> helper doesn't automatically handle your Array ob
 <tt>Kaminari::paginate_array</tt> method converts your Array object into a paginatable Array that accepts <tt>page</tt> method.
   Kaminari.paginate_array(my_array_object).page(params[:page]).per(10)
 
+You can specify the `total_count` value through options Hash. This would be helpful when handling an Array-ish object that has a different `count` value from actual `count` such as RSolr search result.
+
 
 == Creating friendly URLs and caching
 
@@ -219,11 +245,11 @@ Because the `page` parameter is now a URL segment, we can leverage on Rails page
 NOTE: In this example, I've pointed the route to my `:index` action. You may have defined a custom pagination action in your controller - you should point `:action => :your_custom_action` instead.
 
 
-== Sinatra/Padrino supports
+== Sinatra/Padrino support
 
-After December 2011, kaminari started to support Sinatra or Sinatra-based frameworks experimentally.
+Since version 0.13.0, kaminari started to support Sinatra or Sinatra-based frameworks experimentally.
 
-To use kaminari and its helpers with these frameworks, please just
+To use kaminari and its helpers with these frameworks,
 
     require 'kaminari/sinatra'
 
@@ -231,7 +257,7 @@ or edit gemfile:
 
     gem 'kaminari', :require => 'kaminari/sinatra'
 
-More features are coming, and please raise an issue[https://github.com/amatsuda/kaminari/issues] if something would be occurred around Sinatra.
+More features are coming, and again, this is still experimental. Please let us know if you found anything wrong with the Sinatra support.
 
 
 == For more information
