@@ -50,7 +50,11 @@ module Kaminari
   end
 
   # Wrap an Array object to make it paginatable
-  def self.paginate_array(array)
-    PaginatableArray.new array
+  # ==== Options
+  # * <tt>:limit</tt> - limit
+  # * <tt>:offset</tt> - offset
+  # * <tt>:total_count</tt> - total_count
+  def self.paginate_array(array, options = {})
+    PaginatableArray.new array, options
   end
 end
