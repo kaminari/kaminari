@@ -255,4 +255,4 @@ Feel free to message me on Github (amatsuda) or Twitter (@a_matsuda)  ☇☇☇ 
 
 == Copyright
 
-Copyright (c) 2011 Akira Matsuda. See LICENSE.txt for further details.
+Copyright (c) 2011 Akira Matsuda. See MIT-LICENSE for further details.
