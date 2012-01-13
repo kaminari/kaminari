@@ -105,16 +105,16 @@ describe Kaminari::MongoidExtension do
     end
 
     before :all do
-      @mongo_MongoidExtension_Developer = MongoMongoidExtension_Developer.new
-      @mongo_MongoidExtension_Developer.frameworks.new(:name => "rails", :language => "ruby")
-      @mongo_MongoidExtension_Developer.frameworks.new(:name => "merb", :language => "ruby")
-      @mongo_MongoidExtension_Developer.frameworks.new(:name => "sinatra", :language => "ruby")
-      @mongo_MongoidExtension_Developer.frameworks.new(:name => "cakephp", :language => "php")
-      @mongo_MongoidExtension_Developer.frameworks.new(:name => "tornado", :language => "python")
+      @developer = MongoMongoidExtension_Developer.new
+      @developer.frameworks.new(:name => "rails", :language => "ruby")
+      @developer.frameworks.new(:name => "merb", :language => "ruby")
+      @developer.frameworks.new(:name => "sinatra", :language => "ruby")
+      @developer.frameworks.new(:name => "cakephp", :language => "php")
+      @developer.frameworks.new(:name => "tornado", :language => "python")
     end
 
     context 'page 1' do
-      subject { @mongo_MongoidExtension_Developer.frameworks.page(1).per(1) }
+      subject { @developer.frameworks.page(1).per(1) }
       it { should be_a Mongoid::Criteria }
       its(:total_count) { should == 5 }
       its(:limit_value) { should == 1 }
@@ -124,7 +124,7 @@ describe Kaminari::MongoidExtension do
     end
 
     context 'with criteria after' do
-      subject { @mongo_MongoidExtension_Developer.frameworks.page(1).per(2).where(:language => "ruby") }
+      subject { @developer.frameworks.page(1).per(2).where(:language => "ruby") }
       it { should be_a Mongoid::Criteria }
       its(:total_count) { should == 3 }
       its(:limit_value) { should == 2 }
@@ -134,7 +134,7 @@ describe Kaminari::MongoidExtension do
     end
 
     context 'with criteria before' do
-      subject { @mongo_MongoidExtension_Developer.frameworks.where(:language => "ruby").page(1).per(2) }
+      subject { @developer.frameworks.where(:language => "ruby").page(1).per(2) }
       it { should be_a Mongoid::Criteria }
       its(:total_count) { should == 3 }
       its(:limit_value) { should == 2 }
