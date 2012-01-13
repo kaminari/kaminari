@@ -72,7 +72,7 @@ module Kaminari
         offset = (collection.current_page - 1) * collection.limit_value
         output = %{Displaying #{entry_name.pluralize} <b>%d&nbsp;-&nbsp;%d</b> of <b>%d</b> in total} % [
           offset + 1,
-          offset + collection.count,
+          offset + collection.current_page_count,
           collection.total_count
         ]
       end
