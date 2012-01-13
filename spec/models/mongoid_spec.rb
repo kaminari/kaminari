@@ -9,7 +9,7 @@ describe Kaminari::MongoidExtension do
       Mongoid.configure do |config|
         config.master = Mongo::Connection.new.db("kaminari_test")
       end
-      class MongoidExtension_Developer
+      class MongoidExtensionDeveloper
         include ::Mongoid::Document
         field :salary, type: Integer
       end
@@ -19,16 +19,16 @@ describe Kaminari::MongoidExtension do
   end
 
   before(:each) do
-    MongoidExtension_Developer.all.destroy
+    MongoidExtensionDeveloper.all.destroy
     41.times do
-      MongoidExtension_Developer.create!({:salary => 1})
+      MongoidExtensionDeveloper.create!({:salary => 1})
     end
   end
 
   describe '#page' do
     
     context 'page 1' do
-      subject { MongoidExtension_Developer.page 1 }
+      subject { MongoidExtensionDeveloper.page 1 }
       it { should be_a Mongoid::Criteria }
       its(:current_page) { should == 1 }
       its(:limit_value) { should == 25 }
@@ -38,7 +38,7 @@ describe Kaminari::MongoidExtension do
     end
 
     context 'page 2' do
-      subject { MongoidExtension_Developer.page 2 }
+      subject { MongoidExtensionDeveloper.page 2 }
       it { should be_a Mongoid::Criteria }
       its(:current_page) { should == 2 }
       its(:limit_value) { should == 25 }
@@ -48,7 +48,7 @@ describe Kaminari::MongoidExtension do
     end
 
     context 'page "foobar"' do
-      subject { MongoidExtension_Developer.page 'foobar' }
+      subject { MongoidExtensionDeveloper.page 'foobar' }
       it { should be_a Mongoid::Criteria }
       its(:current_page) { should == 1 }
       its(:limit_value) { should == 25 }
@@ -58,7 +58,7 @@ describe Kaminari::MongoidExtension do
     end
 
     context 'with criteria before' do
-      subject { MongoidExtension_Developer.where(:salary => 1).page 2 }
+      subject { MongoidExtensionDeveloper.where(:salary => 1).page 2 }
       its(:selector) { should == {:salary => 1} }
       its(:current_page) { should == 2 }
       its(:limit_value) { should == 25 }
@@ -68,7 +68,7 @@ describe Kaminari::MongoidExtension do
     end
 
     context 'with criteria after' do
-      subject { MongoidExtension_Developer.page(2).where(:salary => 1) }
+      subject { MongoidExtensionDeveloper.page(2).where(:salary => 1) }
       its(:selector) { should == {:salary => 1} }
       its(:current_page) { should == 2 }
       its(:limit_value) { should == 25 }
@@ -79,7 +79,7 @@ describe Kaminari::MongoidExtension do
   end
 
   describe '#per' do
-    subject { MongoidExtension_Developer.page(2).per(10) }
+    subject { MongoidExtensionDeveloper.page(2).per(10) }
     it { should be_a Mongoid::Criteria }
     its(:current_page) { should == 2 }
     its(:limit_value) { should == 10 }
@@ -90,7 +90,7 @@ describe Kaminari::MongoidExtension do
 
   describe '#page in embedded documents' do
     before :all do
-      class MongoMongoidExtension_Developer
+      class MongoMongoidExtensionDeveloper
         include ::Mongoid::Document
         field :salary, :type => Integer
         embeds_many :frameworks
@@ -105,7 +105,7 @@ describe Kaminari::MongoidExtension do
     end
 
     before :all do
-      @mongo_developer = MongoMongoidExtension_Developer.new
+      @mongo_developer = MongoMongoidExtensionDeveloper.new
       @mongo_developer.frameworks.new(:name => "rails", :language => "ruby")
       @mongo_developer.frameworks.new(:name => "merb", :language => "ruby")
       @mongo_developer.frameworks.new(:name => "sinatra", :language => "ruby")
