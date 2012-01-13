@@ -7,6 +7,10 @@ module Kaminari
         limit_value ? length : super
       end
     end
+    
+    def current_page_count #:nodoc:
+      count
+    end
 
     def total_count #:nodoc:
       # #count overrides the #select which could include generated columns referenced in #order, so skip #order here, where it's irrelevant to the result anyway

@@ -3,80 +3,94 @@ require 'mongoid'
 require 'kaminari/models/mongoid_extension'
 
 describe Kaminari::MongoidExtension do
-  before :all do
-    class Developer
-      include ::Mongoid::Document
-      field :salary, :type => Integer
+
+  before do
+    begin
+      Mongoid.configure do |config|
+        config.master = Mongo::Connection.new.db("kaminari_test")
+      end
+      class MongoidExtensionDeveloper
+        include ::Mongoid::Document
+        field :salary, type: Integer
+      end
+    rescue Mongo::ConnectionFailure
+      pending 'can not connect to MongoDB'
+    end
+  end
+
+  before(:each) do
+    MongoidExtensionDeveloper.all.destroy
+    41.times do
+      MongoidExtensionDeveloper.create!({:salary => 1})
     end
   end
 
   describe '#page' do
-    before do
-      stub(subject).count { 300 } # in order to avoid DB access...
-    end
-
+    
     context 'page 1' do
-      subject { Developer.page 1 }
+      subject { MongoidExtensionDeveloper.page 1 }
       it { should be_a Mongoid::Criteria }
       its(:current_page) { should == 1 }
       its(:limit_value) { should == 25 }
-      its(:num_pages) { should == 12 }
+      its(:num_pages) { should == 2 }
+      its(:current_page_count) { should == 25 }
       it { should skip(0) }
     end
 
     context 'page 2' do
-      subject { Developer.page 2 }
+      subject { MongoidExtensionDeveloper.page 2 }
       it { should be_a Mongoid::Criteria }
       its(:current_page) { should == 2 }
       its(:limit_value) { should == 25 }
-      its(:num_pages) { should == 12 }
+      its(:num_pages) { should == 2 }
+      its(:current_page_count) { should == 16 }
       it { should skip 25 }
     end
 
     context 'page "foobar"' do
-      subject { Developer.page 'foobar' }
+      subject { MongoidExtensionDeveloper.page 'foobar' }
       it { should be_a Mongoid::Criteria }
       its(:current_page) { should == 1 }
       its(:limit_value) { should == 25 }
-      its(:num_pages) { should == 12 }
+      its(:num_pages) { should == 2 }
+      its(:current_page_count) { should == 25 }
       it { should skip 0 }
     end
 
     context 'with criteria before' do
-      subject { Developer.where(:salary => 1).page 2 }
+      subject { MongoidExtensionDeveloper.where(:salary => 1).page 2 }
       its(:selector) { should == {:salary => 1} }
       its(:current_page) { should == 2 }
       its(:limit_value) { should == 25 }
-      its(:num_pages) { should == 12 }
+      its(:num_pages) { should == 2 }
+      its(:current_page_count) { should == 16 }
       it { should skip 25 }
     end
 
     context 'with criteria after' do
-      subject { Developer.page(2).where(:salary => 1) }
+      subject { MongoidExtensionDeveloper.page(2).where(:salary => 1) }
       its(:selector) { should == {:salary => 1} }
       its(:current_page) { should == 2 }
       its(:limit_value) { should == 25 }
-      its(:num_pages) { should == 12 }
+      its(:num_pages) { should == 2 }
+      its(:current_page_count) { should == 16 }
       it { should skip 25 }
     end
   end
 
   describe '#per' do
-    before do
-      stub(subject).count { 300 } # in order to avoid DB access...
-    end
-
-    subject { Developer.page(2).per(10) }
+    subject { MongoidExtensionDeveloper.page(2).per(10) }
     it { should be_a Mongoid::Criteria }
     its(:current_page) { should == 2 }
     its(:limit_value) { should == 10 }
-    its(:num_pages) { should == 30 }
+    its(:num_pages) { should == 5 }
+    its(:current_page_count) { should == 10 }
     it { should skip 10 }
   end
 
   describe '#page in embedded documents' do
     before :all do
-      class MongoDeveloper
+      class MongoMongoidExtensionDeveloper
         include ::Mongoid::Document
         field :salary, :type => Integer
         embeds_many :frameworks
@@ -86,12 +100,12 @@ describe Kaminari::MongoidExtension do
         include ::Mongoid::Document
         field :name, :type => String
         field :language, :type => String
-        embedded_in :mongo_developer
+        embedded_in :mongo_mongoid_extension_developer
       end
     end
 
     before :all do
-      @mongo_developer = MongoDeveloper.new
+      @mongo_developer = MongoMongoidExtensionDeveloper.new
       @mongo_developer.frameworks.new(:name => "rails", :language => "ruby")
       @mongo_developer.frameworks.new(:name => "merb", :language => "ruby")
       @mongo_developer.frameworks.new(:name => "sinatra", :language => "ruby")
@@ -106,6 +120,7 @@ describe Kaminari::MongoidExtension do
       its(:limit_value) { should == 1 }
       its(:current_page) { should == 1 }
       its(:num_pages) { should == 5 }
+      its(:current_page_count) { should == 1 }
     end
 
     context 'with criteria after' do
@@ -115,6 +130,7 @@ describe Kaminari::MongoidExtension do
       its(:limit_value) { should == 2 }
       its(:current_page) { should == 1 }
       its(:num_pages) { should == 2 }
+      its(:current_page_count) { should == 2 }
     end
 
     context 'with criteria before' do
@@ -124,6 +140,7 @@ describe Kaminari::MongoidExtension do
       its(:limit_value) { should == 2 }
       its(:current_page) { should == 1 }
       its(:num_pages) { should == 2 }
+      its(:current_page_count) { should == 2 }
     end
   end
 end
