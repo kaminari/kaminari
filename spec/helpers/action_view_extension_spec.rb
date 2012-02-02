@@ -112,4 +112,40 @@ describe 'Kaminari::ActionViewExtension' do
       end
     end
   end
+
+  describe '#rel_next_prev_link_tags' do
+    before do
+      75.times {|i| User.create! :name => "user#{i}"}
+    end
+    context 'the first page' do
+      before do
+        @users = User.page(1).per(25)
+      end
+
+      subject { helper.rel_next_prev_link_tags @users, :params => {:controller => 'users', :action => 'index'} }
+      it { should be_a String }
+      it { should match /rel="next"/ }
+      it { should_not match /rel="prev"/ }
+    end
+    context 'the middle page' do
+      before do
+        @users = User.page(2).per(25)
+      end
+
+      subject { helper.rel_next_prev_link_tags @users, :params => {:controller => 'users', :action => 'index'} }
+      it { should be_a String }
+      it { should match /rel="next"/ }
+      it { should match /rel="prev"/ }
+    end
+    context 'the last page' do
+      before do
+        @users = User.page(3).per(25)
+      end
+
+      subject { helper.rel_next_prev_link_tags @users, :params => {:controller => 'users', :action => 'index'} }
+      it { should be_a String }
+      it { should_not match /rel="next"/ }
+      it { should match /rel="prev"/ }
+    end
+  end
 end
