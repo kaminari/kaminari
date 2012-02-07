@@ -11,7 +11,7 @@ describe Kaminari::MongoidExtension do
       end
       class MongoidExtensionDeveloper
         include ::Mongoid::Document
-        field :salary, type: Integer
+        field :salary, :type => Integer
       end
     rescue Mongo::ConnectionFailure
       pending 'can not connect to MongoDB'
