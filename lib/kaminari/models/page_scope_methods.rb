@@ -33,5 +33,10 @@ module Kaminari
     def last_page?
       current_page >= num_pages
     end
+
+    # Another page in the collection?
+    def next_page?
+      current_page < num_pages ? (current_page + 1) : false
+    end
   end
 end
