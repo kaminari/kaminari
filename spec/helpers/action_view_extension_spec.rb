@@ -16,6 +16,33 @@ describe 'Kaminari::ActionViewExtension' do
     end
   end
 
+  describe '#link_to_previous_page' do
+    before do
+      50.times {|i| User.create! :name => "user#{i}"}
+    end
+    context 'having previous pages' do
+      before do
+        @users = User.page(50)
+      end
+      context 'the default behaviour' do
+        subject { helper.link_to_previous_page @users, 'Previous', :params => {:controller => 'users', :action => 'index'} }
+        it { should be_a String }
+        it { should match /rel="previous"/ }
+      end
+      context 'overriding rel=' do
+        subject { helper.link_to_previous_page @users, 'Previous', :rel => 'external', :params => {:controller => 'users', :action => 'index'} }
+        it { should match /rel="external"/ }
+      end
+    end
+    context 'the first page' do
+      before do
+        @users = User.page(1)
+      end
+      subject { helper.link_to_previous_page @users, 'Previous', :params => {:controller => 'users', :action => 'index'} }
+      it { should_not be }
+    end
+  end
+
   describe '#link_to_next_page' do
     before do
       50.times {|i| User.create! :name => "user#{i}"}
