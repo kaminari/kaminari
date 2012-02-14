@@ -27,11 +27,11 @@ describe 'Kaminari::ActionViewExtension' do
       context 'the default behaviour' do
         subject { helper.link_to_next_page @users, 'More', :params => {:controller => 'users', :action => 'index'} }
         it { should be_a String }
-        it { should match /rel="next"/ }
+        it { should match(/rel="next"/) }
       end
       context 'overriding rel=' do
         subject { helper.link_to_next_page @users, 'More', :rel => 'external', :params => {:controller => 'users', :action => 'index'} }
-        it { should match /rel="external"/ }
+        it { should match(/rel="external"/) }
       end
     end
     context 'the last page' do

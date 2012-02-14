@@ -55,10 +55,10 @@ describe 'Kaminari::Helpers::SinatraHelper' do
       end
 
       it 'should point to current page' do
-        last_document.search('.current').text.should match /1/
+        last_document.search('.current').text.should match(/1/)
 
         get '/users?page=2'
-        last_document.search('.current').text.should match /2/
+        last_document.search('.current').text.should match(/2/)
       end
 
       it 'should load 25 users' do
@@ -148,7 +148,7 @@ describe 'Kaminari::Helpers::SinatraHelper' do
       it 'should have a more page link' do
         get '/users'
         last_document.search('a#next_page_link').should be_present
-        last_document.search('a#next_page_link').text.should match /Next!/
+        last_document.search('a#next_page_link').text.should match(/Next!/)
       end
     end
 
@@ -167,7 +167,7 @@ describe 'Kaminari::Helpers::SinatraHelper' do
         get '/users_placeholder?page=2'
         last_document.search('a#next_page_link').should be_empty
         last_document.search('span#no_next_page').should be_present
-        last_document.search('span#no_next_page').text.should match /No Next Page/
+        last_document.search('span#no_next_page').text.should match(/No Next Page/)
       end
     end
   end
