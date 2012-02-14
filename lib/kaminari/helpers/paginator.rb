@@ -29,7 +29,7 @@ module Kaminari
 
       # render given block as a view template
       def render(&block)
-        instance_eval &block if @options[:num_pages] > 1
+        instance_eval(&block) if @options[:num_pages] > 1
         @output_buffer
       end
 
