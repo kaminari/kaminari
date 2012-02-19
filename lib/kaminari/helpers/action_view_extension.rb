@@ -80,12 +80,20 @@ module Kaminari
     #
     # By default, the message will use the humanized class name of objects
     # in collection: for instance, "project types" for ProjectType models.
+    # The namespace will be cutted out and only the last name will be used.
     # Override this with the <tt>:entry_name</tt> parameter:
     #
     #   <%= page_entries_info @posts, :entry_name => 'item' %>
     #   #-> Displaying items 6 - 10 of 26 in total
     def page_entries_info(collection, options = {})
-      entry_name = options[:entry_name] || (collection.empty?? 'entry' : collection.first.class.name.underscore.sub('_', ' '))
+      if collection.empty?
+        entry_name = 'entry'
+      else
+        class_name = collection.first.class.name
+        entry_name = class_name.include?("::")? class_name.split("::").last : class_name
+        entry_name = entry_name.underscore.sub('_', ' ')
+      end
+      entry_name = options[:entry_name] unless options[:entry_name].nil?
       output = ""
       if collection.num_pages < 2
         output = case collection.total_count
