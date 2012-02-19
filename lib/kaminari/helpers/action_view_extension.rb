@@ -19,6 +19,31 @@ module Kaminari
       paginator.to_s
     end
 
+    # A simple "Twitter like" pagination link that creates a link to the previous page.
+    #
+    # ==== Examples
+    # Basic usage:
+    #
+    #   <%= link_to_previous_page @items, 'Previous Page' %>
+    #
+    # Ajax:
+    #
+    #   <%= link_to_previous_page @items, 'Previous Page', :remote => true %>
+    #
+    # By default, it renders nothing if there are no more results on the previous page.
+    # You can customize this output by passing a block.
+    #
+    #   <%= link_to_previous_page @users, 'Previous Page' do %>
+    #     <span>At the Beginning</span>
+    #   <% end %>
+    def link_to_previous_page(scope, name, options = {}, &block)
+      params = options.delete(:params) || {}
+      param_name = options.delete(:param_name) || Kaminari.config.param_name
+      link_to_unless scope.first_page?, name, params.merge(param_name => (scope.current_page - 1)), options.reverse_merge(:rel => 'previous') do
+        block.call if block
+      end
+    end
+
     # A simple "Twitter like" pagination link that creates a link to the next page.
     #
     # ==== Examples
