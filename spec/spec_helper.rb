@@ -21,6 +21,8 @@ require 'rspec/rails'
 # in ./support/ and its subdirectories.
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each {|f| require f}
 
+I18n.load_path << "config/locales/kaminari.yml"
+
 RSpec.configure do |config|
   config.mock_with :rr
   config.before :all do

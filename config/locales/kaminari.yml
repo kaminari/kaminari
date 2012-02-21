@@ -8,3 +8,8 @@ en:
       previous: "&lsaquo; Prev"
       next: "Next &rsaquo;"
       truncate: "..."
+  entries_info:
+    no_entries: "No %{entries} found"
+    have_1_entry: "Displaying <b>1</b> %{entry_name}"
+    have_less_than_2: "Displaying <b>all %{total_count}</b> %{entry_name}"
+    page_of_entries: "Displaying %{entry_name} <b>%{start}&nbsp;-&nbsp;%{end}</b> of <b>%{total}</b> in total"

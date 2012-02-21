@@ -89,17 +89,13 @@ module Kaminari
       output = ""
       if collection.num_pages < 2
         output = case collection.total_count
-        when 0; "No #{entry_name.pluralize} found"
-        when 1; "Displaying <b>1</b> #{entry_name}"
-        else;   "Displaying <b>all #{collection.total_count}</b> #{entry_name.pluralize}"
+        when 0; I18n.t("entries_info.no_entries", :entries => entry_name.pluralize)
+        when 1; I18n.t("entries_info.have_1_entry", :entry_name => entry_name)
+        else;   I18n.t("entries_info.have_less_than_2", :total_count => collection.total_count, :entry_name => entry_name.pluralize)
         end
       else
         offset = (collection.current_page - 1) * collection.limit_value
-        output = %{Displaying #{entry_name.pluralize} <b>%d&nbsp;-&nbsp;%d</b> of <b>%d</b> in total} % [
-          offset + 1,
-          offset + collection.current_page_count,
-          collection.total_count
-        ]
+        output = I18n.t("entries_info.page_of_entries", :entry_name => entry_name.pluralize, :start => offset + 1, :end => offset + collection.current_page_count, :total => collection.total_count)
       end
       output.html_safe
     end
