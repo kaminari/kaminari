@@ -4,6 +4,7 @@ module Kaminari
     case
       when rails?   then frameworks << 'rails'
       when sinatra? then frameworks << 'sinatra/base'
+      when grape?   then frameworks << 'grape'
     end
     frameworks
   end
