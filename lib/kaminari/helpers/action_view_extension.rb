@@ -80,26 +80,24 @@ module Kaminari
     #
     # By default, the message will use the humanized class name of objects
     # in collection: for instance, "project types" for ProjectType models.
+    # The namespace will be cutted out and only the last name will be used.
     # Override this with the <tt>:entry_name</tt> parameter:
     #
     #   <%= page_entries_info @posts, :entry_name => 'item' %>
     #   #-> Displaying items 6 - 10 of 26 in total
     def page_entries_info(collection, options = {})
-      entry_name = options[:entry_name] || (collection.empty?? 'entry' : collection.first.class.name.underscore.sub('_', ' '))
-      output = ""
+      entry_name = 'entry'
+      entry_name = collection.first.class.model_name.human.downcase unless collection.empty?
+      entry_name = options[:entry_name] unless options[:entry_name].nil?
+      entry_name = entry_name.pluralize unless collection.total_count == 1
       if collection.num_pages < 2
-        output = case collection.total_count
-        when 0; "No #{entry_name.pluralize} found"
-        when 1; "Displaying <b>1</b> #{entry_name}"
-        else;   "Displaying <b>all #{collection.total_count}</b> #{entry_name.pluralize}"
-        end
+        output = t("helpers.page_entries_info.one_page.display_entries", { :count => collection.total_count, :entry_name => entry_name })
       else
         offset = (collection.current_page - 1) * collection.limit_value
-        output = %{Displaying #{entry_name.pluralize} <b>%d&nbsp;-&nbsp;%d</b> of <b>%d</b> in total} % [
-          offset + 1,
-          offset + collection.current_page_count,
-          collection.total_count
-        ]
+        output = t("helpers.page_entries_info.more_pages.display_entries", { :entry_name => entry_name,
+                                                                             :first => offset + 1,
+                                                                             :last => offset + collection.current_page_count,
+                                                                             :total => collection.total_count })
       end
       output.html_safe
     end

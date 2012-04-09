@@ -71,70 +71,141 @@ describe 'Kaminari::ActionViewExtension' do
   end
 
   describe '#page_entries_info' do
-    before do
-      @users = User.page(1).per(25)
-    end
-    context 'having no entries' do
-      subject { helper.page_entries_info @users, :params => {:controller => 'users', :action => 'index'} }
-      it      { should == 'No entries found' }
-    end
-
-    context 'having 1 entry' do
+    context 'on a model without namespace' do
       before do
-        User.create!
         @users = User.page(1).per(25)
       end
-      subject { helper.page_entries_info @users, :params => {:controller => 'users', :action => 'index'} }
-      it      { should == 'Displaying <b>1</b> user' }
-
-      context 'setting the entry name option to "member"' do
-        subject { helper.page_entries_info @users, :entry_name => 'member', :params => {:controller => 'users', :action => 'index'} }
-        it      { should == 'Displaying <b>1</b> member' }
-      end
-    end
-
-    context 'having more than 1 but less than a page of entries' do
-      before do
-        10.times {|i| User.create!}
-        @users = User.page(1).per(25)
-      end
-      subject { helper.page_entries_info @users, :params => {:controller => 'users', :action => 'index'} }
-      it      { should == 'Displaying <b>all 10</b> users' }
-
-      context 'setting the entry name option to "member"' do
-        subject { helper.page_entries_info @users, :entry_name => 'member', :params => {:controller => 'users', :action => 'index'} }
-        it      { should == 'Displaying <b>all 10</b> members' }
-      end
-    end
-
-    context 'having more than one page of entries' do
-      before do
-        50.times {|i| User.create!}
+      context 'having no entries' do
+        subject { helper.page_entries_info @users, :params => {:controller => 'users', :action => 'index'} }
+        it      { should == 'No entries found' }
       end
 
-      describe 'the first page' do
+      context 'having 1 entry' do
         before do
+          User.create!
           @users = User.page(1).per(25)
         end
         subject { helper.page_entries_info @users, :params => {:controller => 'users', :action => 'index'} }
-        it      { should == 'Displaying users <b>1&nbsp;-&nbsp;25</b> of <b>50</b> in total' }
+        it      { should == 'Displaying <b>1</b> user' }
 
         context 'setting the entry name option to "member"' do
           subject { helper.page_entries_info @users, :entry_name => 'member', :params => {:controller => 'users', :action => 'index'} }
-          it      { should == 'Displaying members <b>1&nbsp;-&nbsp;25</b> of <b>50</b> in total' }
+          it      { should == 'Displaying <b>1</b> member' }
         end
       end
 
-      describe 'the next page' do
+      context 'having more than 1 but less than a page of entries' do
         before do
-          @users = User.page(2).per(25)
+          10.times {|i| User.create!}
+          @users = User.page(1).per(25)
         end
         subject { helper.page_entries_info @users, :params => {:controller => 'users', :action => 'index'} }
-        it      { should == 'Displaying users <b>26&nbsp;-&nbsp;50</b> of <b>50</b> in total' }
+        it      { should == 'Displaying <b>all 10</b> users' }
 
         context 'setting the entry name option to "member"' do
           subject { helper.page_entries_info @users, :entry_name => 'member', :params => {:controller => 'users', :action => 'index'} }
-          it      { should == 'Displaying members <b>26&nbsp;-&nbsp;50</b> of <b>50</b> in total' }
+          it      { should == 'Displaying <b>all 10</b> members' }
+        end
+      end
+
+      context 'having more than one page of entries' do
+        before do
+          50.times {|i| User.create!}
+        end
+
+        describe 'the first page' do
+          before do
+            @users = User.page(1).per(25)
+          end
+          subject { helper.page_entries_info @users, :params => {:controller => 'users', :action => 'index'} }
+          it      { should == 'Displaying users <b>1&nbsp;-&nbsp;25</b> of <b>50</b> in total' }
+
+          context 'setting the entry name option to "member"' do
+            subject { helper.page_entries_info @users, :entry_name => 'member', :params => {:controller => 'users', :action => 'index'} }
+            it      { should == 'Displaying members <b>1&nbsp;-&nbsp;25</b> of <b>50</b> in total' }
+          end
+        end
+
+        describe 'the next page' do
+          before do
+            @users = User.page(2).per(25)
+          end
+          subject { helper.page_entries_info @users, :params => {:controller => 'users', :action => 'index'} }
+          it      { should == 'Displaying users <b>26&nbsp;-&nbsp;50</b> of <b>50</b> in total' }
+
+          context 'setting the entry name option to "member"' do
+            subject { helper.page_entries_info @users, :entry_name => 'member', :params => {:controller => 'users', :action => 'index'} }
+            it      { should == 'Displaying members <b>26&nbsp;-&nbsp;50</b> of <b>50</b> in total' }
+          end
+        end
+      end
+    end
+    context 'on a model with namespace' do
+      before do
+        @addresses = User::Address.page(1).per(25)
+      end
+      context 'having no entries' do
+        subject { helper.page_entries_info @addresses, :params => {:controller => 'addresses', :action => 'index'} }
+        it      { should == 'No entries found' }
+      end
+
+      context 'having 1 entry' do
+        before do
+          User::Address.create!
+          @addresses = User::Address.page(1).per(25)
+        end
+        subject { helper.page_entries_info @addresses, :params => {:controller => 'addresses', :action => 'index'} }
+        it      { should == 'Displaying <b>1</b> address' }
+
+        context 'setting the entry name option to "place"' do
+          subject { helper.page_entries_info @addresses, :entry_name => 'place', :params => {:controller => 'addresses', :action => 'index'} }
+          it      { should == 'Displaying <b>1</b> place' }
+        end
+      end
+
+      context 'having more than 1 but less than a page of entries' do
+        before do
+          10.times {|i| User::Address.create!}
+          @addresses = User::Address.page(1).per(25)
+        end
+        subject { helper.page_entries_info @addresses, :params => {:controller => 'addresses', :action => 'index'} }
+        it      { should == 'Displaying <b>all 10</b> addresses' }
+
+        context 'setting the entry name option to "place"' do
+          subject { helper.page_entries_info @addresses, :entry_name => 'place', :params => {:controller => 'addresses', :action => 'index'} }
+          it      { should == 'Displaying <b>all 10</b> places' }
+        end
+      end
+
+      context 'having more than one page of entries' do
+        before do
+          50.times {|i| User::Address.create!}
+        end
+
+        describe 'the first page' do
+          before do
+            @addresses = User::Address.page(1).per(25)
+          end
+          subject { helper.page_entries_info @addresses, :params => {:controller => 'addresses', :action => 'index'} }
+          it      { should == 'Displaying addresses <b>1&nbsp;-&nbsp;25</b> of <b>50</b> in total' }
+
+          context 'setting the entry name option to "place"' do
+            subject { helper.page_entries_info @addresses, :entry_name => 'place', :params => {:controller => 'addresses', :action => 'index'} }
+            it      { should == 'Displaying places <b>1&nbsp;-&nbsp;25</b> of <b>50</b> in total' }
+          end
+        end
+
+        describe 'the next page' do
+          before do
+            @addresses = User::Address.page(2).per(25)
+          end
+          subject { helper.page_entries_info @addresses, :params => {:controller => 'addresses', :action => 'index'} }
+          it      { should == 'Displaying addresses <b>26&nbsp;-&nbsp;50</b> of <b>50</b> in total' }
+
+          context 'setting the entry name option to "place"' do
+            subject { helper.page_entries_info @addresses, :entry_name => 'place', :params => {:controller => 'addresses', :action => 'index'} }
+            it      { should == 'Displaying places <b>26&nbsp;-&nbsp;50</b> of <b>50</b> in total' }
+          end
         end
       end
     end

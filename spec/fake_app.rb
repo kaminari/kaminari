@@ -24,6 +24,7 @@ class User < ActiveRecord::Base
   has_many :readerships
   has_many :books_authored, :through => :authorships, :source => :book
   has_many :books_read, :through => :readerships, :source => :book
+  has_many :addresses, :class_name => 'User::Address'
 
   def readers
     User.joins(:books_read => :authors).where(:authors_books => {:id => self})
@@ -56,6 +57,10 @@ end
 # a model that is a descendant of AR::Base but doesn't directly inherit AR::Base
 class Admin < User
 end
+# a model with namespace
+class User::Address < ActiveRecord::Base
+  belongs_to :user
+end
 
 # controllers
 class ApplicationController < ActionController::Base; end
@@ -65,6 +70,15 @@ class UsersController < ApplicationController
     render :inline => <<-ERB
 <%= @users.map(&:name).join("\n") %>
 <%= paginate @users %>
+ERB
+  end
+end
+class AddressesController < ApplicationController
+  def index
+    @addresses = User::Address.page params[:page]
+    render :inline => <<-ERB
+<%= @addresses.map(&:street).join("\n") %>
+<%= paginate @addresses %>
 ERB
   end
 end
@@ -80,5 +94,6 @@ class CreateAllTables < ActiveRecord::Migration
     create_table(:books) {|t| t.string :title}
     create_table(:readerships) {|t| t.integer :user_id; t.integer :book_id }
     create_table(:authorships) {|t| t.integer :user_id; t.integer :book_id }
+    create_table(:user_addresses) {|t| t.string :street; t.integer :user_id }
   end
 end
