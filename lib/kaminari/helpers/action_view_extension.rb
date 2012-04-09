@@ -86,16 +86,10 @@ module Kaminari
     #   <%= page_entries_info @posts, :entry_name => 'item' %>
     #   #-> Displaying items 6 - 10 of 26 in total
     def page_entries_info(collection, options = {})
-      if collection.empty?
-        entry_name = 'entry'
-      else
-        class_name = collection.first.class.name
-        entry_name = class_name.include?("::")? class_name.split("::").last : class_name
-        entry_name = entry_name.underscore.sub('_', ' ')
-      end
+      entry_name = 'entry'
+      entry_name = collection.first.class.model_name.human.downcase unless collection.empty?
       entry_name = options[:entry_name] unless options[:entry_name].nil?
       entry_name = entry_name.pluralize unless collection.total_count == 1
-      output = ""
       if collection.num_pages < 2
         output = t("helpers.page_entries_info.one_page.display_entries", { :count => collection.total_count, :entry_name => entry_name })
       else
