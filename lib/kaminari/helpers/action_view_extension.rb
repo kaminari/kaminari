@@ -103,5 +103,45 @@ module Kaminari
       end
       output.html_safe
     end
+
+    # Renders rel="next" and rel="prev" links to be used in the head.
+    #
+    # ==== Examples
+    # Basic usage:
+    #
+    #   In head:
+    #   <head>
+    #     <title>My Website</title>
+    #     <%= yield :head %>
+    #   </head>
+    #
+    #   Somewhere in body:
+    #   <% content_for :head do %>
+    #     <%= rel_next_prev_link_tags @items %>
+    #   <% end %>
+    #
+    #   #-> <link rel="next" href="/items/page/3" /><link rel="prev" href="/items/page/1" />
+    #
+    def rel_next_prev_link_tags(scope, options = {})
+      params = options.delete(:params) || {}
+      param_name = options.delete(:param_name) || Kaminari.config.param_name
+
+      output = ""
+
+      if !scope.first_page? && !scope.last_page?
+        # If not first and not last, then output both links.
+        output << '<link rel="next" href="' + url_for(params.merge(param_name => (scope.current_page + 1))) + '"/>'
+        output << '<link rel="prev" href="' + url_for(params.merge(param_name => (scope.current_page - 1))) + '"/>'
+      elsif scope.first_page?
+        # If first page, add next link unless last page.
+        output << '<link rel="next" href="' + url_for(params.merge(param_name => (scope.current_page + 1))) + '"/>' unless scope.last_page?
+      else
+        # If last page, add prev link unless first page.
+        output << '<link rel="prev" href="' + url_for(params.merge(param_name => (scope.current_page - 1))) + '"/>' unless scope.first_page?
+      end
+
+      output.html_safe
+    end
+
   end
 end
