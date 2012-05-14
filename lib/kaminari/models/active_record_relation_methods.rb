@@ -7,7 +7,7 @@ module Kaminari
         limit_value ? length : super
       end
     end
-    
+
     def current_page_count #:nodoc:
       count
     end

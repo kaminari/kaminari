@@ -11,7 +11,7 @@ module Kaminari
     def total_count #:nodoc:
       embedded? ? unpage.count : count
     end
-    
+
     def current_page_count #:nodoc:
       # TODO: this needs a better fix, count comes from Mongoid::Context::Mongo or Enumerable which have different signatures
       begin
@@ -20,7 +20,7 @@ module Kaminari
         count
       end
     end
-    
+
     private
     def unpage
       clone.tap do |crit|

@@ -3,7 +3,7 @@ require 'mongo_mapper'
 require 'kaminari/models/mongo_mapper_extension'
 
 describe Kaminari::MongoMapperExtension do
-  
+
   before do
     begin
       MongoMapper.connection = Mongo::Connection.new('localhost', 27017)
