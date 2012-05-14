@@ -42,7 +42,7 @@ module Kaminari
     def total_count
       @_total_count || @_original_array.count
     end
-    
+
     def current_page_count #:nodoc:
       count
     end
