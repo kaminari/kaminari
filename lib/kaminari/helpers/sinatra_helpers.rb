@@ -14,7 +14,7 @@ module Kaminari::Helpers
 
       alias included registered
     end
-    
+
     class ActionViewTemplateProxy
       def initialize(opts={})
         @current_path = opts[:current_path]
@@ -38,12 +38,12 @@ module Kaminari::Helpers
         query = @current_params.merge(extra_params)
         @current_path + (query.empty? ? '' : "?#{query.to_query}")
       end
-      
+
       def params
         @current_params
       end
     end
-  
+
     module HelperMethods
       # A helper that renders the pagination links - for Sinatra.
       #

@@ -26,7 +26,7 @@ describe Kaminari::MongoidExtension do
   end
 
   describe '#page' do
-    
+
     context 'page 1' do
       subject { MongoidExtensionDeveloper.page 1 }
       it { should be_a Mongoid::Criteria }
