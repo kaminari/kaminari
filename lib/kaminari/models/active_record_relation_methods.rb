@@ -9,6 +9,8 @@ module Kaminari
     end
 
     def current_page_count #:nodoc:
+      return count.length if count.is_a?(ActiveSupport::OrderedHash)
+
       count
     end
 
