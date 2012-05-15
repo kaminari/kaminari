@@ -4,6 +4,7 @@ module Kaminari
     case
       when rails?   then frameworks << 'rails'
       when sinatra? then frameworks << 'sinatra/base'
+      when grape?   then frameworks << 'grape'
     end
     frameworks
   end
@@ -31,6 +32,9 @@ when Rails:
 when Sinatra/Padrino:
     gem 'kaminari', :require => 'kaminari/sinatra'
 
+when Grape:
+    gem 'kaminari', :require => 'kaminari/grape'
+
     EOC
   end
 
@@ -51,6 +55,8 @@ when Sinatra/Padrino:
       require 'kaminari/engine'
     elsif sinatra?
       require 'kaminari/sinatra'
+    elsif grape?
+      require 'kaminari/grape'
     else
       Kaminari::Hooks.init!
     end
@@ -67,6 +73,10 @@ when Sinatra/Padrino:
 
   def self.sinatra?
     defined?(::Sinatra)
+  end
+
+  def self.grape?
+    defined?(::Grape)
   end
 end
 
