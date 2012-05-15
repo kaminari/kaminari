@@ -85,23 +85,18 @@ module Kaminari
     #   <%= page_entries_info @posts, :entry_name => 'item' %>
     #   #-> Displaying items 6 - 10 of 26 in total
     def page_entries_info(collection, options = {})
-      entry_name = options[:entry_name] || (collection.empty?? 'entry' : collection.first.class.name.underscore.sub('_', ' '))
-      output = ""
+      entry_name = options[:entry_name] || (collection.empty? ? 'entry' : collection.first.class.name.underscore.sub('_', ' '))
       if collection.num_pages < 2
-        output = case collection.total_count
+        case collection.total_count
         when 0; "No #{entry_name.pluralize} found"
         when 1; "Displaying <b>1</b> #{entry_name}"
         else;   "Displaying <b>all #{collection.total_count}</b> #{entry_name.pluralize}"
         end
       else
-        offset = (collection.current_page - 1) * collection.limit_value
-        output = %{Displaying #{entry_name.pluralize} <b>%d&nbsp;-&nbsp;%d</b> of <b>%d</b> in total} % [
-          offset + 1,
-          offset + collection.current_page_count,
-          collection.total_count
-        ]
-      end
-      output.html_safe
+        page_start = collection.offset_value + 1
+        page_end = collection.last_page? ? collection.total_count : collection.offset_value + collection.limit_value
+        %{Displaying #{entry_name.pluralize} <b>#{page_start}&nbsp;-&nbsp;#{page_end}</b> of <b>#{collection.total_count}</b> in total}
+      end.html_safe
     end
   end
 end

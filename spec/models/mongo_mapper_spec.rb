@@ -29,7 +29,6 @@ describe Kaminari::MongoMapperExtension do
       its(:current_page) { should == 1 }
       its(:limit_value) { should == 25 }
       its(:num_pages) { should == 2 }
-      its(:current_page_count) { should == 25 }
       it { should skip(0) }
     end
 
@@ -39,7 +38,6 @@ describe Kaminari::MongoMapperExtension do
       its(:current_page) { should == 2 }
       its(:limit_value) { should == 25 }
       its(:num_pages) { should == 2 }
-      its(:current_page_count) { should == 16 }
       it { should skip 25 }
     end
 
@@ -49,7 +47,6 @@ describe Kaminari::MongoMapperExtension do
       its(:current_page) { should == 1 }
       its(:limit_value) { should == 25 }
       its(:num_pages) { should == 2 }
-      its(:current_page_count) { should == 25 }
       it { should skip 0 }
     end
 
@@ -62,7 +59,6 @@ describe Kaminari::MongoMapperExtension do
       its(:current_page) { should == 2 }
       its(:limit_value) { should == 25 }
       its(:num_pages) { should == 2 }
-      its(:current_page_count) { should == 16 }
       it { should skip 25 }
     end
 
@@ -75,7 +71,6 @@ describe Kaminari::MongoMapperExtension do
       its(:current_page) { should == 2 }
       its(:limit_value) { should == 25 }
       its(:num_pages) { should == 2 }
-      its(:current_page_count) { should == 16 }
       it { should skip 25 }
     end
   end
@@ -86,7 +81,6 @@ describe Kaminari::MongoMapperExtension do
     its(:current_page) { should == 2 }
     its(:limit_value) { should == 10 }
     its(:num_pages) { should == 5 }
-    its(:current_page_count) { should == 10 }
     it { should skip 10 }
   end
 end

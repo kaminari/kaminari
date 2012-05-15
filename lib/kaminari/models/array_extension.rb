@@ -43,10 +43,6 @@ module Kaminari
       @_total_count || @_original_array.count
     end
 
-    def current_page_count #:nodoc:
-      count
-    end
-
     # returns another chunk of the original array
     def offset(num)
       self.class.new @_original_array, :limit => @_limit_value, :offset => num, :total_count => @_total_count

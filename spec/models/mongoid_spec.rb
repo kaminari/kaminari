@@ -33,7 +33,6 @@ describe Kaminari::MongoidExtension do
       its(:current_page) { should == 1 }
       its(:limit_value) { should == 25 }
       its(:num_pages) { should == 2 }
-      its(:current_page_count) { should == 25 }
       it { should skip(0) }
     end
 
@@ -43,7 +42,6 @@ describe Kaminari::MongoidExtension do
       its(:current_page) { should == 2 }
       its(:limit_value) { should == 25 }
       its(:num_pages) { should == 2 }
-      its(:current_page_count) { should == 16 }
       it { should skip 25 }
     end
 
@@ -53,7 +51,6 @@ describe Kaminari::MongoidExtension do
       its(:current_page) { should == 1 }
       its(:limit_value) { should == 25 }
       its(:num_pages) { should == 2 }
-      its(:current_page_count) { should == 25 }
       it { should skip 0 }
     end
 
@@ -63,7 +60,6 @@ describe Kaminari::MongoidExtension do
       its(:current_page) { should == 2 }
       its(:limit_value) { should == 25 }
       its(:num_pages) { should == 2 }
-      its(:current_page_count) { should == 16 }
       it { should skip 25 }
     end
 
@@ -73,7 +69,6 @@ describe Kaminari::MongoidExtension do
       its(:current_page) { should == 2 }
       its(:limit_value) { should == 25 }
       its(:num_pages) { should == 2 }
-      its(:current_page_count) { should == 16 }
       it { should skip 25 }
     end
   end
@@ -84,7 +79,6 @@ describe Kaminari::MongoidExtension do
     its(:current_page) { should == 2 }
     its(:limit_value) { should == 10 }
     its(:num_pages) { should == 5 }
-    its(:current_page_count) { should == 10 }
     it { should skip 10 }
   end
 
@@ -120,7 +114,6 @@ describe Kaminari::MongoidExtension do
       its(:limit_value) { should == 1 }
       its(:current_page) { should == 1 }
       its(:num_pages) { should == 5 }
-      its(:current_page_count) { should == 1 }
     end
 
     context 'with criteria after' do
@@ -130,7 +123,6 @@ describe Kaminari::MongoidExtension do
       its(:limit_value) { should == 2 }
       its(:current_page) { should == 1 }
       its(:num_pages) { should == 2 }
-      its(:current_page_count) { should == 2 }
     end
 
     context 'with criteria before' do
@@ -140,7 +132,6 @@ describe Kaminari::MongoidExtension do
       its(:limit_value) { should == 2 }
       its(:current_page) { should == 1 }
       its(:num_pages) { should == 2 }
-      its(:current_page_count) { should == 2 }
     end
   end
 end

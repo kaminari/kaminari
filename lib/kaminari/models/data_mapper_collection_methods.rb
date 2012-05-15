@@ -11,10 +11,5 @@ module Kaminari
     def total_count #:nodoc:
       model.count(query.options.except(:limit, :offset, :order))
     end
-
-    def current_page_count #:nodoc:
-      count
-    end
-
   end
 end
