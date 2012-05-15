@@ -80,22 +80,29 @@ module Kaminari
     #
     # By default, the message will use the humanized class name of objects
     # in collection: for instance, "project types" for ProjectType models.
+    # The namespace will be cutted out and only the last name will be used.
     # Override this with the <tt>:entry_name</tt> parameter:
     #
     #   <%= page_entries_info @posts, :entry_name => 'item' %>
     #   #-> Displaying items 6 - 10 of 26 in total
     def page_entries_info(collection, options = {})
       entry_name = options[:entry_name] || (collection.empty? ? 'entry' : collection.first.class.name.underscore.sub('_', ' '))
-      if collection.num_pages < 2
-        case collection.total_count
-        when 0; "No #{entry_name.pluralize} found"
-        when 1; "Displaying <b>1</b> #{entry_name}"
-        else;   "Displaying <b>all #{collection.total_count}</b> #{entry_name.pluralize}"
-        end
+
+      entry_name = if collection.empty?
+        'entry'
+      elsif options[:entry_name]
+        options[:entry_name]
       else
-        page_start = collection.offset_value + 1
-        page_end = collection.last_page? ? collection.total_count : collection.offset_value + collection.limit_value
-        %{Displaying #{entry_name.pluralize} <b>#{page_start}&nbsp;-&nbsp;#{page_end}</b> of <b>#{collection.total_count}</b> in total}
+        collection.first.class.model_name.human.downcase
+      end
+      entry_name = entry_name.pluralize unless collection.total_count == 1
+
+      if collection.num_pages < 2
+        t('helpers.page_entries_info.one_page.display_entries', :entry_name => entry_name, :count => collection.total_count)
+      else
+        first = collection.offset_value + 1
+        last = collection.last_page? ? collection.total_count : collection.offset_value + collection.limit_value
+        t('helpers.page_entries_info.more_pages.display_entries', :entry_name => entry_name, :first => first, :last => last, :total => collection.total_count)
       end.html_safe
     end
   end
