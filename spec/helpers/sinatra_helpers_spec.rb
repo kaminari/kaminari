@@ -153,11 +153,6 @@ describe 'Kaminari::Helpers::SinatraHelper' do
     end
 
     context 'the last page' do
-      before do
-        User.delete_all
-        50.times {|i| User.create! :name => "user#{i}"}
-      end
-
       it 'should not have a more page link' do
         get '/users?page=2'
         last_document.search('a#next_page_link').should be_empty

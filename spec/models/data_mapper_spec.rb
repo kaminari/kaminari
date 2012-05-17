@@ -29,7 +29,9 @@ describe Kaminari::DataMapperExtension do
 
     DataMapper.finalize
     DataMapper.auto_migrate!
+  end
 
+  before do
     300.times do |i|
       Worker.create(:name => "Worker#{i}", :age => i)
     end

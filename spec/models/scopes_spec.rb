@@ -10,7 +10,7 @@ shared_examples_for 'blank page' do
 end
 
 describe Kaminari::ActiveRecordExtension do
-  before :all do
+  before do
     1.upto(100) {|i| User.create! :name => "user#{'%03d' % i}", :age => (i / 10)}
     1.upto(100) {|i| GemDefinedModel.create! :name => "user#{'%03d' % i}", :age => (i / 10)}
   end
