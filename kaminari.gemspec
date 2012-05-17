@@ -21,25 +21,15 @@ Gem::Specification.new do |s|
 
   s.licenses = ['MIT']
 
-  %w{ activesupport actionpack railties }.each do |gem|
-    s.add_dependency gem, ['>= 3.0.0']
-  end
+  s.add_dependency 'activesupport', ['>= 3.0.0']
+  s.add_dependency 'actionpack', ['>= 3.0.0']
+
   s.add_development_dependency 'bundler', ['>= 1.0.0']
+  s.add_development_dependency 'rake', ['>= 0']
   s.add_development_dependency 'sqlite3', ['>= 0']
-  %w{ activerecord activemodel }.each do |gem|
-    s.add_development_dependency gem, ['>= 3.0.0']
-  end
+  s.add_development_dependency 'tzinfo', ['>= 0']
   s.add_development_dependency 'sinatra', ['>= 1.3']
-  s.add_development_dependency 'mongoid', ['>= 2']
-  s.add_development_dependency 'mongo_mapper', ['>= 0.9']
-  s.add_development_dependency 'dm-core', ['>= 1.1.0']
-  s.add_development_dependency 'dm-migrations', ['>= 1.1.0']
-  s.add_development_dependency 'dm-aggregates', ['>= 1.1.0']
-  s.add_development_dependency 'dm-transactions', ['>= 1.1.0']
-  s.add_development_dependency 'dm-active_model', ['>= 1.1.0']
-  s.add_development_dependency 'dm-sqlite-adapter', ['>= 1.1.0']
   s.add_development_dependency 'rspec', ['>= 0']
-  s.add_development_dependency 'rspec-rails', ['>= 0']
   s.add_development_dependency 'rr', ['>= 0']
   s.add_development_dependency 'capybara', ['>= 1.0']
   s.add_development_dependency 'database_cleaner', ['>= 0']

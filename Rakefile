@@ -11,6 +11,22 @@ end
 
 task :default => :spec
 
+namespace :spec do
+  %w(active_record_32 data_mapper_12 mongoid mongo_mapper).each do |gemfile|
+    task gemfile do
+      sh "BUNDLE_GEMFILE='gemfiles/#{gemfile}.gemfile' bundle --quiet"
+      sh "BUNDLE_GEMFILE='gemfiles/#{gemfile}.gemfile' bundle exec rake -t spec"
+    end
+  end
+
+  task :all do
+    %w(active_record_32 data_mapper_12 mongoid mongo_mapper).each do |gemfile|
+      sh "BUNDLE_GEMFILE='gemfiles/#{gemfile}.gemfile' bundle --quiet"
+      sh "BUNDLE_GEMFILE='gemfiles/#{gemfile}.gemfile' bundle exec rake spec"
+    end
+  end
+end
+
 require 'rdoc/task'
 
 Rake::RDocTask.new do |rdoc|
