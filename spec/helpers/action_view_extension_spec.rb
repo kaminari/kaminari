@@ -82,7 +82,7 @@ describe 'Kaminari::ActionViewExtension' do
 
       context 'having 1 entry' do
         before do
-          User.create!
+          User.create! :name => 'user1'
           @users = User.page(1).per(25)
         end
         subject { helper.page_entries_info @users, :params => {:controller => 'users', :action => 'index'} }
@@ -96,7 +96,7 @@ describe 'Kaminari::ActionViewExtension' do
 
       context 'having more than 1 but less than a page of entries' do
         before do
-          10.times {|i| User.create!}
+          10.times {|i| User.create! :name => "user#{i}"}
           @users = User.page(1).per(25)
         end
         subject { helper.page_entries_info @users, :params => {:controller => 'users', :action => 'index'} }
@@ -110,7 +110,7 @@ describe 'Kaminari::ActionViewExtension' do
 
       context 'having more than one page of entries' do
         before do
-          50.times {|i| User.create!}
+          50.times {|i| User.create! :name => "user#{i}"}
         end
 
         describe 'the first page' do
