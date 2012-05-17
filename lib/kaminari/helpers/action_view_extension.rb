@@ -93,7 +93,7 @@ module Kaminari
       elsif options[:entry_name]
         options[:entry_name]
       else
-        collection.first.class.model_name.human.downcase
+        collection.model_name.human.downcase
       end
       entry_name = entry_name.pluralize unless collection.total_count == 1
 
