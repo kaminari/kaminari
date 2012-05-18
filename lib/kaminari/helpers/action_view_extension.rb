@@ -93,7 +93,11 @@ module Kaminari
       elsif options[:entry_name]
         options[:entry_name]
       else
-        collection.model_name.human.downcase
+        if collection.respond_to? :model  # DataMapper
+          collection.model.model_name.human.downcase
+        else  # AR
+          collection.model_name.human.downcase
+        end
       end
       entry_name = entry_name.pluralize unless collection.total_count == 1
 

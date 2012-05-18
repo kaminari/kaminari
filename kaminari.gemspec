@@ -36,6 +36,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'dm-migrations', ['>= 1.1.0']
   s.add_development_dependency 'dm-aggregates', ['>= 1.1.0']
   s.add_development_dependency 'dm-transactions', ['>= 1.1.0']
+  s.add_development_dependency 'dm-active_model', ['>= 1.1.0']
   s.add_development_dependency 'dm-sqlite-adapter', ['>= 1.1.0']
   s.add_development_dependency 'rspec', ['>= 0']
   s.add_development_dependency 'rspec-rails', ['>= 0']
