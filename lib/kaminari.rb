@@ -31,7 +31,7 @@ require 'kaminari/models/page_scope_methods'
 require 'kaminari/models/configuration_methods'
 require 'kaminari/hooks'
 
-# if not using Railtie, call `Kaminari::Hooks.init!` directly
+# if not using Railtie, call `Kaminari::Hooks.init` directly
 if defined? Rails
   require 'kaminari/railtie'
   require 'kaminari/engine'

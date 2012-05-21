@@ -1,4 +1,4 @@
 require 'grape'
 require 'kaminari'
 
-Kaminari::Hooks.init!
+Kaminari::Hooks.init
