@@ -6,10 +6,19 @@ module Kaminari
         ::ActiveRecord::Base.send :include, Kaminari::ActiveRecordExtension
       end
 
+      begin; require 'data_mapper'; rescue LoadError; end
+      if defined? ::DataMapper
+        require 'kaminari/models/data_mapper_extension'
+        ::DataMapper::Collection.send :include, Kaminari::DataMapperExtension::Collection
+        ::DataMapper::Model.append_extensions Kaminari::DataMapperExtension::Model
+        # ::DataMapper::Model.send :extend, Kaminari::DataMapperExtension::Model
+      end
+
+      begin; require 'mongoid'; rescue LoadError; end
       if defined? ::Mongoid
         require 'kaminari/models/mongoid_extension'
-        ::Mongoid::Document.send :include, Kaminari::MongoidExtension::Document
         ::Mongoid::Criteria.send :include, Kaminari::MongoidExtension::Criteria
+        ::Mongoid::Document.send :include, Kaminari::MongoidExtension::Document
       end
 
       ActiveSupport.on_load(:mongo_mapper) do
@@ -17,13 +26,6 @@ module Kaminari
         ::MongoMapper::Document.send :include, Kaminari::MongoMapperExtension::Document
         ::Plucky::Query.send :include, Kaminari::PluckyCriteriaMethods
         ::Plucky::Query.send :include, Kaminari::PageScopeMethods
-      end
-
-      if defined? ::DataMapper
-        require 'kaminari/models/data_mapper_extension'
-        ::DataMapper::Collection.send :include, Kaminari::DataMapperExtension::Collection
-        ::DataMapper::Model.append_extensions Kaminari::DataMapperExtension::Model
-        # ::DataMapper::Model.send :extend, Kaminari::DataMapperExtension::Model
       end
       require 'kaminari/models/array_extension'
 
