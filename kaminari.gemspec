@@ -28,13 +28,8 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rake', ['>= 0']
   s.add_development_dependency 'sqlite3', ['>= 0']
   s.add_development_dependency 'tzinfo', ['>= 0']
-  s.add_development_dependency 'sinatra', ['>= 1.3']
   s.add_development_dependency 'rspec', ['>= 0']
   s.add_development_dependency 'rr', ['>= 0']
   s.add_development_dependency 'capybara', ['>= 1.0']
   s.add_development_dependency 'database_cleaner', ['>= 0']
-  s.add_development_dependency 'padrino-helpers', ['>= 0.10.6.c']
-  s.add_development_dependency 'rack-test', ['>= 0']
-  s.add_development_dependency 'sinatra-contrib', ['>= 1.3']
-  s.add_development_dependency 'nokogiri', ['>= 0']
 end
