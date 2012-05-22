@@ -45,6 +45,18 @@ module Kaminari::Helpers
         @current_path + (query.empty? ? '' : "?#{query.to_query}")
       end
 
+      def link_to_unless(condition, name, options = {}, html_options = {}, &block)
+        if condition
+          if block_given?
+            block.arity <= 1 ? capture(name, &block) : capture(name, options, html_options, &block)
+          else
+            name
+          end
+        else
+          link_to(name, options, html_options)
+        end
+      end
+
       def params
         @current_params
       end
