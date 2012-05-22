@@ -7,7 +7,11 @@ describe Kaminari::MongoidExtension do
   before do
     begin
       Mongoid.configure do |config|
-        config.master = Mongo::Connection.new.db("kaminari_test")
+        if Mongoid::VERSION =~ /^3/
+          config.sessions = { default: { hosts: [ "localhost:27017" ], database: 'kaminari_test' }}
+        else
+          config.master = Mongo::Connection.new.db("kaminari_test")
+        end
       end
       class MongoidExtensionDeveloper
         include ::Mongoid::Document
@@ -54,22 +58,26 @@ describe Kaminari::MongoidExtension do
       it { should skip 0 }
     end
 
-    context 'with criteria before' do
-      subject { MongoidExtensionDeveloper.where(:salary => 1).page 2 }
-      its(:selector) { should == {:salary => 1} }
+    shared_examples 'complete valid pagination' do
+      if Mongoid::VERSION =~ /^3/
+        its(:selector) { should == {'salary' => 1} }
+      else
+        its(:selector) { should == {:salary => 1} }
+      end
       its(:current_page) { should == 2 }
       its(:limit_value) { should == 25 }
       its(:num_pages) { should == 2 }
       it { should skip 25 }
     end
 
+    context 'with criteria before' do
+      subject { MongoidExtensionDeveloper.where(:salary => 1).page 2 }
+      it_should_behave_like 'complete valid pagination'
+    end
+
     context 'with criteria after' do
       subject { MongoidExtensionDeveloper.page(2).where(:salary => 1) }
-      its(:selector) { should == {:salary => 1} }
-      its(:current_page) { should == 2 }
-      its(:limit_value) { should == 25 }
-      its(:num_pages) { should == 2 }
-      it { should skip 25 }
+      it_should_behave_like 'complete valid pagination'
     end
   end
 
