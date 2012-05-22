@@ -16,6 +16,12 @@ module Kaminari::Helpers
     end
 
     class ActionViewTemplateProxy
+      include Padrino::Helpers::OutputHelpers
+      include Padrino::Helpers::TagHelpers
+      include Padrino::Helpers::AssetTagHelpers
+      include Padrino::Helpers::FormatHelpers
+      include Padrino::Helpers::TranslationHelpers
+
       def initialize(opts={})
         @current_path = opts[:current_path]
         @param_name = (opts[:param_name] || :page).to_sym
