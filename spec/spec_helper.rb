@@ -15,7 +15,7 @@ require 'database_cleaner'
 require 'fake_gem' if defined? ActiveRecord
 
 if defined? Rails
-  require 'fake_app/fake_app'
+  require 'fake_app/rails_app'
 
   require 'rspec/rails'
 end
