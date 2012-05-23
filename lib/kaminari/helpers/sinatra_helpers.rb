@@ -46,6 +46,7 @@ module Kaminari::Helpers
       end
 
       def link_to_unless(condition, name, options = {}, html_options = {}, &block)
+        options = url_for(options) if options.is_a? Hash
         if condition
           if block_given?
             block.arity <= 1 ? capture(name, &block) : capture(name, options, html_options, &block)
@@ -106,10 +107,10 @@ module Kaminari::Helpers
       def link_to_next_page(scope, name, options = {})
         params = options.delete(:params) || (Rack::Utils.parse_query(env['QUERY_STRING']).symbolize_keys rescue {})
         param_name = options.delete(:param_name) || Kaminari.config.param_name
-        placeholder = options.delete(:placeholder) || ""
+        placeholder = options.delete(:placeholder)
         query = params.merge(param_name => (scope.current_page + 1))
         unless scope.last_page?
-          link_to name, env['PATH_INFO'] + (query.empty? ? '' : "?#{query.to_query}"), options.merge(:rel => 'next')
+          link_to name, env['PATH_INFO'] + (query.empty? ? '' : "?#{query.to_query}"), options.reverse_merge(:rel => 'next')
         else
           placeholder
         end
