@@ -3,4 +3,9 @@ rvm:
   - 1.9.3
   - ruby-head
 
-script: bundle exec rake spec
+gemfile:
+  - gemfiles/active_record_32.gemfile
+  - gemfiles/data_mapper_12.gemfile
+  - gemfiles/mongo_mapper.gemfile
+  - gemfiles/mongoid.gemfile
+  - gemfiles/sinatra.gemfile
