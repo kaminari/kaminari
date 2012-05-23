@@ -53,4 +53,5 @@ class CreateAllTables < ActiveRecord::Migration
     create_table(:user_addresses) {|t| t.string :street; t.integer :user_id }
   end
 end
+ActiveRecord::Migration.verbose = false
 CreateAllTables.up
