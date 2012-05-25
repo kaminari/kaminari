@@ -56,35 +56,35 @@ describe Kaminari::PaginatableArray do
     end
   end
 
-  describe '#num_pages' do
+  describe '#total_pages' do
     context 'per 25 (default)' do
       subject { array.page }
-      its(:num_pages) { should == 4 }
+      its(:total_pages) { should == 4 }
     end
 
     context 'per 7' do
       subject { array.page(2).per(7) }
-      its(:num_pages) { should == 15 }
+      its(:total_pages) { should == 15 }
     end
 
     context 'per 65536' do
       subject { array.page(50).per(65536) }
-      its(:num_pages) { should == 1 }
+      its(:total_pages) { should == 1 }
     end
 
     context 'per 0 (using default)' do
       subject { array.page(50).per(0) }
-      its(:num_pages) { should == 4 }
+      its(:total_pages) { should == 4 }
     end
 
     context 'per -1 (using default)' do
       subject { array.page(5).per(-1) }
-      its(:num_pages) { should == 4 }
+      its(:total_pages) { should == 4 }
     end
 
     context 'per "String value that can not be converted into Number" (using default)' do
       subject { array.page(5).per('aho') }
-      its(:num_pages) { should == 4 }
+      its(:total_pages) { should == 4 }
     end
   end
 

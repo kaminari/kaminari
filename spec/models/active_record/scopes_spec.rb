@@ -68,35 +68,35 @@ if defined? ActiveRecord
           end
         end
 
-        describe '#num_pages' do
+        describe '#total_pages' do
           context 'per 25 (default)' do
             subject { model_class.page }
-            its(:num_pages) { should == 4 }
+            its(:total_pages) { should == 4 }
           end
 
           context 'per 7' do
             subject { model_class.page(2).per(7) }
-            its(:num_pages) { should == 15 }
+            its(:total_pages) { should == 15 }
           end
 
           context 'per 65536' do
             subject { model_class.page(50).per(65536) }
-            its(:num_pages) { should == 1 }
+            its(:total_pages) { should == 1 }
           end
 
           context 'per 0 (using default)' do
             subject { model_class.page(50).per(0) }
-            its(:num_pages) { should == 4 }
+            its(:total_pages) { should == 4 }
           end
 
           context 'per -1 (using default)' do
             subject { model_class.page(5).per(-1) }
-            its(:num_pages) { should == 4 }
+            its(:total_pages) { should == 4 }
           end
 
           context 'per "String value that can not be converted into Number" (using default)' do
             subject { model_class.page(5).per('aho') }
-            its(:num_pages) { should == 4 }
+            its(:total_pages) { should == 4 }
           end
         end
 
@@ -153,7 +153,7 @@ if defined? ActiveRecord
           subject { model_class.group('age').page(2).per 5 }
           # 0..10
           its(:total_count) { should == 11 }
-          its(:num_pages) { should == 3 }
+          its(:total_pages) { should == 3 }
         end
 
         context 'activerecord descendants' do

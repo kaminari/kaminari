@@ -15,7 +15,7 @@ module Kaminari
     end
 
     # Total number of pages
-    def num_pages
+    def total_pages
       (total_count.to_f / limit_value).ceil
     end
 
@@ -31,7 +31,7 @@ module Kaminari
 
     # Last page of the collection?
     def last_page?
-      current_page >= num_pages
+      current_page >= total_pages
     end
   end
 end

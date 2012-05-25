@@ -68,7 +68,7 @@ module Kaminari
     class LastPage < Tag
       include Link
       def page #:nodoc:
-        @options[:num_pages]
+        @options[:total_pages]
       end
     end
 

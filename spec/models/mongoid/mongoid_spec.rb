@@ -15,7 +15,7 @@ if defined? Mongoid
         it { should be_a Mongoid::Criteria }
         its(:current_page) { should == 1 }
         its(:limit_value) { should == 25 }
-        its(:num_pages) { should == 2 }
+        its(:total_pages) { should == 2 }
         it { should skip(0) }
       end
 
@@ -24,7 +24,7 @@ if defined? Mongoid
         it { should be_a Mongoid::Criteria }
         its(:current_page) { should == 2 }
         its(:limit_value) { should == 25 }
-        its(:num_pages) { should == 2 }
+        its(:total_pages) { should == 2 }
         it { should skip 25 }
       end
 
@@ -33,7 +33,7 @@ if defined? Mongoid
         it { should be_a Mongoid::Criteria }
         its(:current_page) { should == 1 }
         its(:limit_value) { should == 25 }
-        its(:num_pages) { should == 2 }
+        its(:total_pages) { should == 2 }
         it { should skip 0 }
       end
 
@@ -45,7 +45,7 @@ if defined? Mongoid
         end
         its(:current_page) { should == 2 }
         its(:limit_value) { should == 25 }
-        its(:num_pages) { should == 2 }
+        its(:total_pages) { should == 2 }
         it { should skip 25 }
       end
 
@@ -65,7 +65,7 @@ if defined? Mongoid
       it { should be_a Mongoid::Criteria }
       its(:current_page) { should == 2 }
       its(:limit_value) { should == 10 }
-      its(:num_pages) { should == 5 }
+      its(:total_pages) { should == 5 }
       it { should skip 10 }
     end
 
@@ -85,7 +85,7 @@ if defined? Mongoid
         its(:total_count) { should == 5 }
         its(:limit_value) { should == 1 }
         its(:current_page) { should == 1 }
-        its(:num_pages) { should == 5 }
+        its(:total_pages) { should == 5 }
       end
 
       context 'with criteria after' do
@@ -94,7 +94,7 @@ if defined? Mongoid
         its(:total_count) { should == 3 }
         its(:limit_value) { should == 2 }
         its(:current_page) { should == 1 }
-        its(:num_pages) { should == 2 }
+        its(:total_pages) { should == 2 }
       end
 
       context 'with criteria before' do
@@ -103,7 +103,7 @@ if defined? Mongoid
         its(:total_count) { should == 3 }
         its(:limit_value) { should == 2 }
         its(:current_page) { should == 1 }
-        its(:num_pages) { should == 2 }
+        its(:total_pages) { should == 2 }
       end
     end
   end

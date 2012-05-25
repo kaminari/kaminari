@@ -35,7 +35,7 @@ if defined? DataMapper
         its('query.limit') { should == 25 }
         its('query.offset') { should == 0 }
         its(:total_count) { should == User.count(:age.gte => 60) }
-        its(:num_pages) { should == 2 }
+        its(:total_pages) { should == 2 }
       end
 
       context 'page 1' do
@@ -45,7 +45,7 @@ if defined? DataMapper
         its('query.limit') { should == 25 }
         its('query.offset') { should == 0 }
         its(:total_count) { should == 100 }
-        its(:num_pages) { should == 4 }
+        its(:total_pages) { should == 4 }
       end
 
       context 'page 2' do
@@ -56,7 +56,7 @@ if defined? DataMapper
         its('query.limit') { should == 25 }
         its('query.offset') { should == 25 }
         its(:total_count) { should == 100 }
-        its(:num_pages) { should == 4 }
+        its(:total_pages) { should == 4 }
       end
 
       context 'page "foobar"' do
@@ -66,7 +66,7 @@ if defined? DataMapper
         its('query.limit') { should == 25 }
         its('query.offset') { should == 0 }
         its(:total_count) { should == 100 }
-        its(:num_pages) { should == 4 }
+        its(:total_pages) { should == 4 }
       end
 
       context 'with criteria before' do
@@ -76,7 +76,7 @@ if defined? DataMapper
         its('query.limit') { should == 25 }
         its('query.offset') { should == 25 }
         its(:total_count) { should == User.count(:age.gt => 60) }
-        its(:num_pages) { should == 2 }
+        its(:total_pages) { should == 2 }
       end
 
       context 'with criteria after' do
@@ -86,7 +86,7 @@ if defined? DataMapper
         its('query.limit') { should == 25 }
         its('query.offset') { should == 25 }
         its(:total_count) { should == User.count(:age.gt => 60) }
-        its(:num_pages) { should == 2 }
+        its(:total_pages) { should == 2 }
       end
     end
 
@@ -99,7 +99,7 @@ if defined? DataMapper
         its(:limit_value) { should == 20 }
         its('query.offset') { should == 20 }
         its(:total_count) { should == 100 }
-        its(:num_pages) { should == 5 }
+        its(:total_pages) { should == 5 }
       end
 
       context 'on query with condition' do
@@ -108,7 +108,7 @@ if defined? DataMapper
         its('query.limit') { should == 13 }
         its('query.offset') { should == 52 }
         its(:total_count) { should == 81 }
-        its(:num_pages) { should == 7 }
+        its(:total_pages) { should == 7 }
       end
 
       context 'on query with order' do
@@ -121,7 +121,7 @@ if defined? DataMapper
         its('query.limit') { should == 13 }
         its('query.offset') { should == 52 }
         its(:total_count) { should == 81 }
-        its(:num_pages) { should == 7 }
+        its(:total_pages) { should == 7 }
       end
 
       context 'on chained queries' do
@@ -130,7 +130,7 @@ if defined? DataMapper
         its('query.limit') { should == 13 }
         its('query.offset') { should == 26 }
         its(:total_count) { should == 31 }
-        its(:num_pages) { should == 3 }
+        its(:total_pages) { should == 3 }
       end
 
       context 'on query on association' do
@@ -139,7 +139,7 @@ if defined? DataMapper
         its('query.limit') { should == 5 }
         its('query.offset') { should == 10 }
         its(:total_count) { should == 50 }
-        its(:num_pages) { should == 10 }
+        its(:total_pages) { should == 10 }
       end
 
       context 'on query with association conditions' do
@@ -148,7 +148,7 @@ if defined? DataMapper
         its('query.limit') { should == 5 }
         its('query.offset') { should == 10 }
         its(:total_count) { should == 50 }
-        its(:num_pages) { should == 10 }
+        its(:total_pages) { should == 10 }
       end
     end
   end
