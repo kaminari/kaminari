@@ -12,7 +12,7 @@ end
 task :default => :spec
 
 namespace :spec do
-  %w(active_record_32 data_mapper_12 mongoid mongo_mapper sinatra).each do |gemfile|
+  %w(active_record_32 data_mapper_12 mongoid_24 mongo_mapper sinatra).each do |gemfile|
     task gemfile do
       sh "BUNDLE_GEMFILE='gemfiles/#{gemfile}.gemfile' bundle --quiet"
       sh "BUNDLE_GEMFILE='gemfiles/#{gemfile}.gemfile' bundle exec rake -t spec"
@@ -20,7 +20,7 @@ namespace :spec do
   end
 
   task :all do
-    %w(active_record_32 data_mapper_12 mongoid mongo_mapper sinatra).each do |gemfile|
+    %w(active_record_32 data_mapper_12 mongoid_24 mongo_mapper sinatra).each do |gemfile|
       sh "BUNDLE_GEMFILE='gemfiles/#{gemfile}.gemfile' bundle --quiet"
       sh "BUNDLE_GEMFILE='gemfiles/#{gemfile}.gemfile' bundle exec rake spec"
     end
