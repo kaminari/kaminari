@@ -7,5 +7,5 @@ gemfile:
   - gemfiles/active_record_32.gemfile
   - gemfiles/data_mapper_12.gemfile
   - gemfiles/mongo_mapper.gemfile
-  - gemfiles/mongoid.gemfile
+  - gemfiles/mongoid_24.gemfile
   - gemfiles/sinatra.gemfile
