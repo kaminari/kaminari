@@ -27,11 +27,11 @@ describe 'Kaminari::ActionViewExtension' do
       context 'the default behaviour' do
         subject { helper.link_to_previous_page @users, 'Previous', :params => {:controller => 'users', :action => 'index'} }
         it { should be_a String }
-        it { should match /rel="previous"/ }
+        it { should match(/rel="previous"/) }
       end
       context 'overriding rel=' do
         subject { helper.link_to_previous_page @users, 'Previous', :rel => 'external', :params => {:controller => 'users', :action => 'index'} }
-        it { should match /rel="external"/ }
+        it { should match(/rel="external"/) }
       end
     end
     context 'the first page' do
@@ -222,8 +222,8 @@ describe 'Kaminari::ActionViewExtension' do
 
       subject { helper.rel_next_prev_link_tags @users, :params => {:controller => 'users', :action => 'index'} }
       it { should be_a String }
-      it { should match /rel="next"/ }
-      it { should_not match /rel="prev"/ }
+      it { should match(/rel="next"/) }
+      it { should_not match(/rel="prev"/) }
     end
     context 'the middle page' do
       before do
@@ -232,8 +232,8 @@ describe 'Kaminari::ActionViewExtension' do
 
       subject { helper.rel_next_prev_link_tags @users, :params => {:controller => 'users', :action => 'index'} }
       it { should be_a String }
-      it { should match /rel="next"/ }
-      it { should match /rel="prev"/ }
+      it { should match(/rel="next"/) }
+      it { should match(/rel="prev"/) }
     end
     context 'the last page' do
       before do
@@ -242,8 +242,8 @@ describe 'Kaminari::ActionViewExtension' do
 
       subject { helper.rel_next_prev_link_tags @users, :params => {:controller => 'users', :action => 'index'} }
       it { should be_a String }
-      it { should_not match /rel="next"/ }
-      it { should match /rel="prev"/ }
+      it { should_not match(/rel="next"/) }
+      it { should match(/rel="prev"/) }
     end
   end
 end
