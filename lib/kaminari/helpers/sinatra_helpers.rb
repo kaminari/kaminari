@@ -110,7 +110,7 @@ module Kaminari::Helpers
         placeholder = options.delete(:placeholder)
         query = params.merge(param_name => (scope.current_page + 1))
         unless scope.last_page?
-          link_to name, env['PATH_INFO'] + (query.empty? ? '' : "?#{query.to_query}"), options.reverse_merge(:rel => 'next')
+          link_to name, env['REQUEST_PATH'] + (query.empty? ? '' : "?#{query.to_query}"), options.reverse_merge(:rel => 'next')
         else
           placeholder
         end
