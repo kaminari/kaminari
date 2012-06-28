@@ -78,7 +78,7 @@ module Kaminari::Helpers
       # * <tt>:remote</tt> - Ajax? (false by default)
       # * <tt>:ANY_OTHER_VALUES</tt> - Any other hash key & values would be directly passed into each tag as :locals value.
       def paginate(scope, options = {}, &block)
-        current_path = env['PATH_INFO'] rescue nil
+        current_path = env['REQUEST_PATH'] rescue nil
         current_params = Rack::Utils.parse_query(env['QUERY_STRING']).symbolize_keys rescue {}
         paginator = Kaminari::Helpers::Paginator.new(
           ActionViewTemplateProxy.new(:current_params => current_params, :current_path => current_path, :param_name => options[:param_name] || Kaminari.config.param_name),
