@@ -78,7 +78,7 @@ module Kaminari::Helpers
       # * <tt>:remote</tt> - Ajax? (false by default)
       # * <tt>:ANY_OTHER_VALUES</tt> - Any other hash key & values would be directly passed into each tag as :locals value.
       def paginate(scope, options = {}, &block)
-        current_path = env['REQUEST_PATH'] rescue nil
+        current_path = request.path rescue nil
         current_params = Rack::Utils.parse_query(env['QUERY_STRING']).symbolize_keys rescue {}
         paginator = Kaminari::Helpers::Paginator.new(
           ActionViewTemplateProxy.new(:current_params => current_params, :current_path => current_path, :param_name => options[:param_name] || Kaminari.config.param_name),
@@ -110,7 +110,7 @@ module Kaminari::Helpers
         placeholder = options.delete(:placeholder)
         query = params.merge(param_name => (scope.current_page + 1))
         unless scope.last_page?
-          link_to name, env['REQUEST_PATH'] + (query.empty? ? '' : "?#{query.to_query}"), options.reverse_merge(:rel => 'next')
+          link_to name, request.path + (query.empty? ? '' : "?#{query.to_query}"), options.reverse_merge(:rel => 'next')
         else
           placeholder
         end
