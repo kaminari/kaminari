@@ -227,8 +227,8 @@ However, the <tt>paginate</tt> helper doesn't automatically handle your Array ob
 <tt>Kaminari::paginate_array</tt> method converts your Array object into a paginatable Array that accepts <tt>page</tt> method.
   Kaminari.paginate_array(my_array_object).page(params[:page]).per(10)
 
-You can specify the `total_count` value through options Hash. This would be helpful when handling an Array-ish object that has a different `count` value from actual `count` such as RSolr search result.
-
+You can specify the `total_count` value through options Hash. This would be helpful when handling an Array-ish object that has a different `count` value from actual `count` such as RSolr search result or when you need to generate a custom pagination. For example:
+  Kaminari.paginate_array([], total_count: 145).page(params[:page]).per(10)
 
 == Creating friendly URLs and caching
 
