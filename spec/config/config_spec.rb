@@ -19,7 +19,7 @@ describe Kaminari::Configuration do
 
   describe 'max_per_page' do
     context 'by default' do
-      its(:max_per_page) { should == 0 }
+      its(:max_per_page) { should == nil }
     end
     context 'configure via config block' do
       before do
@@ -27,7 +27,7 @@ describe Kaminari::Configuration do
       end
       its(:max_per_page) { should == 100 }
       after do
-        Kaminari.configure {|c| c.max_per_page = 0}
+        Kaminari.configure {|c| c.max_per_page = nil}
       end
     end
   end

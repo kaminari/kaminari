@@ -38,7 +38,7 @@ module Kaminari
   # this is ugly. why can't we pass the default value to config_accessor...?
   configure do |config|
     config.default_per_page = 25
-    config.max_per_page = 0
+    config.max_per_page = nil
     config.window = 4
     config.outer_window = 0
     config.left = 0
