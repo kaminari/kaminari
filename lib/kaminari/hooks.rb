@@ -26,7 +26,6 @@ module Kaminari
         require 'kaminari/models/mongo_mapper_extension'
         ::MongoMapper::Document.send :include, Kaminari::MongoMapperExtension::Document
         ::Plucky::Query.send :include, Kaminari::PluckyCriteriaMethods
-        ::Plucky::Query.send :include, Kaminari::PageScopeMethods
       end
       require 'kaminari/models/array_extension'
 

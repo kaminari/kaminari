@@ -1,5 +1,7 @@
 module Kaminari
   module PluckyCriteriaMethods
+    include Kaminari::PageScopeMethods
+
     def limit_value #:nodoc:
       options[:limit]
     end
