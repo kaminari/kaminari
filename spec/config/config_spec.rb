@@ -17,6 +17,21 @@ describe Kaminari::Configuration do
     end
   end
 
+  describe 'max_per_page' do
+    context 'by default' do
+      its(:max_per_page) { should == nil }
+    end
+    context 'configure via config block' do
+      before do
+        Kaminari.configure {|c| c.max_per_page = 100}
+      end
+      its(:max_per_page) { should == 100 }
+      after do
+        Kaminari.configure {|c| c.max_per_page = nil}
+      end
+    end
+  end
+
   describe 'window' do
     context 'by default' do
       its(:window) { should == 4 }
