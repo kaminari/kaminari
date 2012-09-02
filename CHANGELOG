@@ -1,3 +1,39 @@
+== 0.14.0
+
+* Grape framework support! #218 [mrplum]
+
+* Mongoid 3 ready! #238 [shingara]
+
+* Added link_to_previous_page helper #191 [timgremore]
+
+* Added helper to generate rel="next" and rel="prev" link tags for SEO #200
+[joe1chen]
+
+* Added `max_per_page` configuration option #274 [keiko0713]
+  This would be useful for the case when you are using user input `per_page`
+  value but want to impose the upper bound.
+
+* Added I18n to page_entries_info #207 [plribeiro3000]
+
+* Changed method name "num_pages" to "total_pages"
+  num_pages" is still available as an alias of "total_pages", but will be
+  deprecated or removed in some future version.
+
+* Changed the way page_entries_info behave so it can show appropriate names
+for models with namespace #207 [plribeiro3000]
+
+* Added html_safe to page_entries_info helper #190 [lucapette]
+
+* Fixed displayed number of items on each page w/ Mongoid 2.4.x and
+MongoMapper #194 [dblock]
+
+* Removed a unused local variable from templates from default tamplate #245 [juno]
+
+* Fixed page_entry_info to use the value of `entry_name` option when given
+collection is empty or a PaginatableArray #265, #277 [eitoball]
+
+* Added require 'dm-aggregates' in DataMapper hook #259 [shingara]
+
 == 0.13.0
 
 * Rails 3.2 ready! #180 [slbug]
