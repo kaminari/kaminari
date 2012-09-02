@@ -5,6 +5,8 @@ module Kaminari
     def per(num)
       if (n = num.to_i) <= 0
         self
+      elsif max_per_page && max_per_page < n
+        limit(max_per_page).offset(offset_value / limit_value * max_per_page)
       else
         limit(n).offset(offset_value / limit_value * n)
       end

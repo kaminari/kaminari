@@ -73,6 +73,7 @@ Then bundle:
 
 You can configure the following default values by overriding these values using <tt>Kaminari.configure</tt> method.
   default_per_page  # 25 by default
+  max_per_page      # nil by default
   window            # 4 by default
   outer_window      # 0 by default
   left              # 0 by default
@@ -96,6 +97,16 @@ Run the following generator command, then edit the generated file.
   You can specify default +per_page+ value per each model using the following declarative DSL.
     class User < ActiveRecord::Base
       paginates_per 50
+    end
+
+=== Configuring max +per_page+ value for each model
+
+* +max_paginates_per+
+
+  You can specify max +per_page+ value per each model using the following declarative DSL.
+  If the variable that specified via +per+ scope is more than this variable, max +paginates_per+ is used instead of it. Default value is nil, which means you are not imposing any max +per_page+ value.
+    class User < ActiveRecord::Base
+      max_paginates_per 100
     end
 
 === Controllers
