@@ -214,6 +214,14 @@ describe 'Kaminari::ActionViewExtension' do
         end
       end
     end
+
+    context 'on a PaginatableArray' do
+      before do
+        @numbers = Kaminari.paginate_array(%w{one two three}).page(1)
+      end
+      subject { helper.page_entries_info @numbers }
+      it      { should == 'Displaying <b>all 3</b> entries' }
+    end
   end
 
   describe '#rel_next_prev_link_tags' do
