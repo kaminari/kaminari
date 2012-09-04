@@ -7,7 +7,7 @@ en:
       last: "Last &raquo;"
       previous: "&lsaquo; Prev"
       next: "Next &rsaquo;"
-      truncate: "..."
+      truncate: "&hellip;"
   helpers:
     page_entries_info:
       one_page:
