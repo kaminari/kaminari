@@ -73,6 +73,7 @@ Then bundle:
 
 You can configure the following default values by overriding these values using <tt>Kaminari.configure</tt> method.
   default_per_page  # 25 by default
+  max_per_page      # nil by default
   window            # 4 by default
   outer_window      # 0 by default
   left              # 0 by default
@@ -96,6 +97,16 @@ Run the following generator command, then edit the generated file.
   You can specify default +per_page+ value per each model using the following declarative DSL.
     class User < ActiveRecord::Base
       paginates_per 50
+    end
+
+=== Configuring max +per_page+ value for each model
+
+* +max_paginates_per+
+
+  You can specify max +per_page+ value per each model using the following declarative DSL.
+  If the variable that specified via +per+ scope is more than this variable, max +paginates_per+ is used instead of it. Default value is nil, which means you are not imposing any max +per_page+ value.
+    class User < ActiveRecord::Base
+      max_paginates_per 100
     end
 
 === Controllers
@@ -151,7 +162,7 @@ Run the following generator command, then edit the generated file.
     <%= paginate @users, :remote => true %>
   This would add <tt>data-remote="true"</tt> to all the links inside.
 
-* the +link_to_next_page+ helper method
+* the +link_to_next_page+ and +link_to_previous_page+ helper method
 
     <%= link_to_next_page @items, 'Next Page' %>
   This simply renders a link to the next page. This would be helpful for creating "Twitter like" pagination feature.
@@ -227,8 +238,8 @@ However, the <tt>paginate</tt> helper doesn't automatically handle your Array ob
 <tt>Kaminari::paginate_array</tt> method converts your Array object into a paginatable Array that accepts <tt>page</tt> method.
   Kaminari.paginate_array(my_array_object).page(params[:page]).per(10)
 
-You can specify the `total_count` value through options Hash. This would be helpful when handling an Array-ish object that has a different `count` value from actual `count` such as RSolr search result.
-
+You can specify the `total_count` value through options Hash. This would be helpful when handling an Array-ish object that has a different `count` value from actual `count` such as RSolr search result or when you need to generate a custom pagination. For example:
+  Kaminari.paginate_array([], total_count: 145).page(params[:page]).per(10)
 
 == Creating friendly URLs and caching
 

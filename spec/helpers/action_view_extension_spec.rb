@@ -78,6 +78,11 @@ describe 'Kaminari::ActionViewExtension' do
       context 'having no entries' do
         subject { helper.page_entries_info @users, :params => {:controller => 'users', :action => 'index'} }
         it      { should == 'No entries found' }
+
+        context 'setting the entry name option to "member"' do
+          subject { helper.page_entries_info @users, :entry_name => 'member', :params => {:controller => 'users', :action => 'index'} }
+          it      { should == 'No members found' }
+        end
       end
 
       context 'having 1 entry' do
@@ -208,6 +213,14 @@ describe 'Kaminari::ActionViewExtension' do
           end
         end
       end
+    end
+
+    context 'on a PaginatableArray' do
+      before do
+        @numbers = Kaminari.paginate_array(%w{one two three}).page(1)
+      end
+      subject { helper.page_entries_info @numbers }
+      it      { should == 'Displaying <b>all 3</b> entries' }
     end
   end
 

@@ -8,6 +8,7 @@ module Kaminari
 
       begin; require 'data_mapper'; rescue LoadError; end
       if defined? ::DataMapper
+        require 'dm-aggregates'
         require 'kaminari/models/data_mapper_extension'
         ::DataMapper::Collection.send :include, Kaminari::DataMapperExtension::Collection
         ::DataMapper::Model.append_extensions Kaminari::DataMapperExtension::Model
@@ -25,7 +26,6 @@ module Kaminari
         require 'kaminari/models/mongo_mapper_extension'
         ::MongoMapper::Document.send :include, Kaminari::MongoMapperExtension::Document
         ::Plucky::Query.send :include, Kaminari::PluckyCriteriaMethods
-        ::Plucky::Query.send :include, Kaminari::PageScopeMethods
       end
       require 'kaminari/models/array_extension'
 

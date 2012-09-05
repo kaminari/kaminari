@@ -86,12 +86,10 @@ module Kaminari
     #   <%= page_entries_info @posts, :entry_name => 'item' %>
     #   #-> Displaying items 6 - 10 of 26 in total
     def page_entries_info(collection, options = {})
-      entry_name = options[:entry_name] || (collection.empty? ? 'entry' : collection.first.class.name.underscore.sub('_', ' '))
-
-      entry_name = if collection.empty?
-        'entry'
-      elsif options[:entry_name]
+      entry_name = if options[:entry_name]
         options[:entry_name]
+      elsif collection.empty? || collection.is_a?(PaginatableArray)
+        'entry'
       else
         if collection.respond_to? :model  # DataMapper
           collection.model.model_name.human.downcase
