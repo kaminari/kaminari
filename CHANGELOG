@@ -1,3 +1,39 @@
+== 0.14.0
+
+* Grape framework support! #218 [mrplum]
+
+* Mongoid 3 ready! #238 [shingara]
+
+* Added link_to_previous_page helper #191 [timgremore]
+
+* Added helper to generate rel="next" and rel="prev" link tags for SEO #200
+[joe1chen]
+
+* Added `max_per_page` configuration option #274 [keiko0713]
+  This would be useful for the case when you are using user input `per_page`
+  value but want to impose the upper bound.
+
+* Added I18n to page_entries_info #207 [plribeiro3000]
+
+* Changed method name "num_pages" to "total_pages"
+  num_pages" is still available as an alias of "total_pages", but will be
+  deprecated or removed in some future version.
+
+* Changed the way page_entries_info behave so it can show appropriate names
+for models with namespace #207 [plribeiro3000]
+
+* Added html_safe to page_entries_info helper #190 [lucapette]
+
+* Fixed displayed number of items on each page w/ Mongoid 2.4.x and
+MongoMapper #194 [dblock]
+
+* Removed a unused local variable from templates from default tamplate #245 [juno]
+
+* Fixed page_entry_info to use the value of `entry_name` option when given
+collection is empty or a PaginatableArray #265, #277 [eitoball]
+
+* Added require 'dm-aggregates' in DataMapper hook #259 [shingara]
+
 == 0.13.0
 
 * Rails 3.2 ready! #180 [slbug]
@@ -23,7 +59,7 @@ windows #154 [cbeer]
 * Added `link_to_next_page` helper method that simply links to the next page
   Example:
   <%= link_to_next_page @posts, 'More' %>
-	#=> <a href="/posts?page=7" rel="next">More</a>
+  #=> <a href="/posts?page=7" rel="next">More</a>
 
 * Let one override the `rel` attribute for 'link_to_next_page` helper #177
 [webmat]
@@ -33,7 +69,7 @@ RSolr #141 [samdalton]
 
 * Changed `Kaminari.paginate_array` API to take a Hash `options`
   And specifying :limit & :offset immediately builds a pagination ready object
-	Example:
+  Example:
   # the following two are equivalent. Use whichever you like
   Kaminari.paginate_array((1..100).to_a, limit: 10, offset: 10)
   Kaminari.paginate_array((1..100).to_a).page(2).per(10)
@@ -45,8 +81,8 @@ RSolr #141 [samdalton]
 * Made the pagination method name (defaulted to `page`) configurable #57, #162
   Example:
   # you can use the config file and its generator for this
-	Kaminari.config.page_method_name = :paging
-	Article.paging(3).per(30)
+  Kaminari.config.page_method_name = :paging
+  Article.paging(3).per(30)
 
 * Only add extensions to direct descendents of ActiveRecord::Base #108
 [seejohnrun]
@@ -193,10 +229,10 @@ from ActiveRecord::Base.inherited #34 [rolftimmermans]
 * Moved the whole pagination logic to the paginator partial so that users can
 touch it
   Note: You need to update your _paginator.html.* if you've already customized
-	it. If you haven't overridden _paginator.html.* files, then probably
-	there're nothing you have to do.
-	See this commit for the example:
-		https://github.com/amatsuda/kaminari_themes/commit/2dfb41c
+  it. If you haven't overridden _paginator.html.* files, then probably
+  there're nothing you have to do.
+  See this commit for the example:
+    https://github.com/amatsuda/kaminari_themes/commit/2dfb41c
 
 == 0.9.10
 
@@ -210,8 +246,8 @@ touch it
 
 * :params option for the helper [yomukaku_memo]
   You can override each link's url_for option by this option
-	Example:
-	= paginate @users, :params => {:controller => 'users', :action => 'index2'}
+  Example:
+  = paginate @users, :params => {:controller => 'users', :action => 'index2'}
 
 * refactor tags
 

@@ -5,6 +5,8 @@ module Kaminari
     def per(num)
       if (n = num.to_i) <= 0
         self
+      elsif max_per_page && max_per_page < n
+        limit(max_per_page).offset(offset_value / limit_value * max_per_page)
       else
         limit(n).offset(offset_value / limit_value * n)
       end
@@ -15,9 +17,11 @@ module Kaminari
     end
 
     # Total number of pages
-    def num_pages
+    def total_pages
       (total_count.to_f / limit_value).ceil
     end
+    #FIXME for compatibility. remove num_pages at some time in the future
+    alias num_pages total_pages
 
     # Current page number
     def current_page
@@ -31,7 +35,7 @@ module Kaminari
     
      # Last page of the collection?
     def last_page?
-      current_page >= num_pages
+      current_page >= total_pages
     end
  
     # Next page number in the collection

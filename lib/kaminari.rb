@@ -1,32 +1,18 @@
 module Kaminari
-  def self.frameworks
-    frameworks = []
-    case
-      when rails?   then frameworks << 'rails'
-      when sinatra? then frameworks << 'sinatra/base'
-      when grape?   then frameworks << 'grape'
-    end
-    frameworks
-  end
+end
 
-  def self.load_framework!
-    show_warning if frameworks.empty?
-    frameworks.each do |framework|
-      begin
-        require framework
-      rescue NameError => e
-        raise "Failed to load framework #{framework.inspect}. Have you added it to Gemfile?"
-      end
-    end
-  end
+# load Rails/Railtie
+begin
+  require 'rails'
+rescue LoadError
+  #do nothing
+end
 
-  def self.show_warning
-    $stderr.puts <<-EOC
+$stderr.puts <<-EOC if !defined?(Rails) && !defined?(Sinatra) && !defined?(Grape)
 warning: no framework detected.
 would you check out if your Gemfile appropriately configured?
 ---- e.g. ----
 when Rails:
-    gem 'rails'
     gem 'kaminari'
 
 when Sinatra/Padrino:
@@ -35,49 +21,18 @@ when Sinatra/Padrino:
 when Grape:
     gem 'kaminari', :require => 'kaminari/grape'
 
-    EOC
-  end
+EOC
 
-  def self.load_kaminari!
-    require 'kaminari/config'
-    require 'kaminari/helpers/action_view_extension'
-    require 'kaminari/helpers/paginator'
-    require 'kaminari/models/page_scope_methods'
-    require 'kaminari/models/configuration_methods'
-  end
+# load Kaminari components
+require 'kaminari/config'
+require 'kaminari/helpers/action_view_extension'
+require 'kaminari/helpers/paginator'
+require 'kaminari/models/page_scope_methods'
+require 'kaminari/models/configuration_methods'
+require 'kaminari/hooks'
 
-  def self.hook!
-    load_framework!
-    load_kaminari!
-    require 'kaminari/hooks'
-    if rails?
-      require 'kaminari/railtie'
-      require 'kaminari/engine'
-    elsif sinatra?
-      require 'kaminari/sinatra'
-    elsif grape?
-      require 'kaminari/grape'
-    else
-      Kaminari::Hooks.init!
-    end
-  end
-
-  def self.load!
-    hook!
-  end
-
-  private
-  def self.rails?
-    defined?(::Rails)
-  end
-
-  def self.sinatra?
-    defined?(::Sinatra)
-  end
-
-  def self.grape?
-    defined?(::Grape)
-  end
+# if not using Railtie, call `Kaminari::Hooks.init` directly
+if defined? Rails
+  require 'kaminari/railtie'
+  require 'kaminari/engine'
 end
-
-Kaminari.load!

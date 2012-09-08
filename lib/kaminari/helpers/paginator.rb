@@ -23,13 +23,16 @@ module Kaminari
         @template, @options = template, options
         @theme = @options[:theme] ? "#{@options[:theme]}/" : ''
         @options[:current_page] = PageProxy.new @window_options.merge(@options), @options[:current_page], nil
+        #FIXME for compatibility. remove num_pages at some time in the future
+        @options[:total_pages] ||= @options[:num_pages]
+        @last = nil
         # initialize the output_buffer for Context
         @output_buffer = ActionView::OutputBuffer.new
       end
 
       # render given block as a view template
       def render(&block)
-        instance_eval(&block) if @options[:num_pages] > 1
+        instance_eval(&block) if @options[:total_pages] > 1
         @output_buffer
       end
 
@@ -50,10 +53,10 @@ module Kaminari
 
       def relevant_pages(options)
         left_window_plus_one = 1.upto(options[:left] + 1).to_a
-        right_window_plus_one = (options[:num_pages] - options[:right]).upto(options[:num_pages]).to_a
+        right_window_plus_one = (options[:total_pages] - options[:right]).upto(options[:total_pages]).to_a
         inside_window_plus_each_sides = (options[:current_page] - options[:window] - 1).upto(options[:current_page] + options[:window] + 1).to_a
 
-        (left_window_plus_one + inside_window_plus_each_sides + right_window_plus_one).uniq.sort.reject {|x| (x < 1) || (x > options[:num_pages])}
+        (left_window_plus_one + inside_window_plus_each_sides + right_window_plus_one).uniq.sort.reject {|x| (x < 1) || (x > options[:total_pages])}
       end
       private :relevant_pages
 
@@ -114,7 +117,7 @@ module Kaminari
 
         # the last page or not
         def last?
-          @page == @options[:num_pages]
+          @page == @options[:total_pages]
         end
 
         # the previous page or not
@@ -134,7 +137,7 @@ module Kaminari
 
         # within the right outer window or not
         def right_outer?
-          @options[:num_pages] - @page < @options[:right]
+          @options[:total_pages] - @page < @options[:right]
         end
 
         # inside the inner window or not

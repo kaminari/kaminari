@@ -16,6 +16,12 @@ module Kaminari::Helpers
     end
 
     class ActionViewTemplateProxy
+      include Padrino::Helpers::OutputHelpers
+      include Padrino::Helpers::TagHelpers
+      include Padrino::Helpers::AssetTagHelpers
+      include Padrino::Helpers::FormatHelpers
+      include Padrino::Helpers::TranslationHelpers
+
       def initialize(opts={})
         @current_path = opts[:current_path]
         @param_name = (opts[:param_name] || :page).to_sym
@@ -37,6 +43,19 @@ module Kaminari::Helpers
         end
         query = @current_params.merge(extra_params)
         @current_path + (query.empty? ? '' : "?#{query.to_query}")
+      end
+
+      def link_to_unless(condition, name, options = {}, html_options = {}, &block)
+        options = url_for(options) if options.is_a? Hash
+        if condition
+          if block_given?
+            block.arity <= 1 ? capture(name, &block) : capture(name, options, html_options, &block)
+          else
+            name
+          end
+        else
+          link_to(name, options, html_options)
+        end
       end
 
       def params
@@ -63,7 +82,7 @@ module Kaminari::Helpers
         current_params = Rack::Utils.parse_query(env['QUERY_STRING']).symbolize_keys rescue {}
         paginator = Kaminari::Helpers::Paginator.new(
           ActionViewTemplateProxy.new(:current_params => current_params, :current_path => current_path, :param_name => options[:param_name] || Kaminari.config.param_name),
-          options.reverse_merge(:current_page => scope.current_page, :num_pages => scope.num_pages, :per_page => scope.limit_value, :param_name => Kaminari.config.param_name, :remote => false)
+          options.reverse_merge(:current_page => scope.current_page, :total_pages => scope.total_pages, :per_page => scope.limit_value, :param_name => Kaminari.config.param_name, :remote => false)
         )
         paginator.to_s
       end
@@ -88,10 +107,10 @@ module Kaminari::Helpers
       def link_to_next_page(scope, name, options = {})
         params = options.delete(:params) || (Rack::Utils.parse_query(env['QUERY_STRING']).symbolize_keys rescue {})
         param_name = options.delete(:param_name) || Kaminari.config.param_name
-        placeholder = options.delete(:placeholder) || ""
+        placeholder = options.delete(:placeholder)
         query = params.merge(param_name => (scope.current_page + 1))
         unless scope.last_page?
-          link_to name, env['PATH_INFO'] + (query.empty? ? '' : "?#{query.to_query}"), options.merge(:rel => 'next')
+          link_to name, env['PATH_INFO'] + (query.empty? ? '' : "?#{query.to_query}"), options.reverse_merge(:rel => 'next')
         else
           placeholder
         end
