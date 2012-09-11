@@ -1,3 +1,11 @@
+== 0.14.1
+
+* Changed the default "truncation" String from  "..." to &hellip; #264 [pjaspers]
+
+* The theme generator is Github API v3 compatible now! #279 [eitoball]
+
+* Made Kaminari.config.default_per_page changeable again #280 [yuki24]
+
 == 0.14.0
 
 * Grape framework support! #218 [mrplum]
