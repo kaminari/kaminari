@@ -28,6 +28,24 @@ describe 'Kaminari::Helpers::Paginator' do
     it { should == :pagina }
   end
 
+  describe '#to_s' do
+    before do
+      ActiveSupport::Deprecation.behavior = :stderr
+      @original_stderr, $stderr = $stderr, StringIO.new
+    end
+
+    after { $stderr = @original_stderr }
+
+    it 'should expose num_pages as local and warn for deprecation' do
+      mock(template = Object.new).render.with_any_args do |args|
+        args[:locals][:num_pages].should == 1
+      end
+      Paginator.new(template, :total_pages => 1).to_s
+
+      $stderr.string.should match(/^DEPRECATION WARNING: num_pages/)
+    end
+  end
+
   #TODO test somehow...
 #   describe '#tagify_links' do
 #     def tags_with(options)
