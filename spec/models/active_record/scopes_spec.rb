@@ -100,6 +100,24 @@ if defined? ActiveRecord
           end
         end
 
+        describe '#num_pages' do
+          before do
+            ActiveSupport::Deprecation.behavior = :stderr
+            @original_stderr, $stderr = $stderr, StringIO.new
+          end
+
+          after do
+            $stderr = @original_stderr
+          end
+
+          it 'should still work and warn deprecation' do
+            lambda {
+              model_class.page.num_pages.should == 4
+            }.should_not raise_exception
+            $stderr.string.should match(/^DEPRECATION WARNING: num_pages is deprecated/)
+          end
+        end
+
 
         describe '#current_page' do
           context 'page 1' do

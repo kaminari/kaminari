@@ -20,8 +20,12 @@ module Kaminari
     def total_pages
       (total_count.to_f / limit_value).ceil
     end
+
     #FIXME for compatibility. remove num_pages at some time in the future
-    alias num_pages total_pages
+    def num_pages
+      ActiveSupport::Deprecation.warn('num_pages is deprecated and will be removed from next major or minor release')
+      total_pages
+    end
 
     # Current page number
     def current_page
