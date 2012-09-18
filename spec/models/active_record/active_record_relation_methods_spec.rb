@@ -35,6 +35,13 @@ if defined? ActiveRecord
           User.page(1).count(:name, distinct: true).should == 4
         end
       end
+      context "when the scope returns an ActiveSupport::OrderedHash" do
+        it "should not throw exception by passing options to count" do
+          -> {
+            @author.readers.by_read_count.page(1).total_count(:name, distinct: true)
+          }.should_not raise_exception
+        end
+      end
     end
   end
 end

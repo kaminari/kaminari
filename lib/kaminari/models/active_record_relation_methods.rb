@@ -18,7 +18,11 @@ module Kaminari
 
         # .group returns an OrderdHash that responds to #count
         c = c.count(column_name, options)
-        c.respond_to?(:count) ? c.count(column_name, options) : c
+        if c.is_a?(ActiveSupport::OrderedHash)
+          c.count
+        else
+          c.respond_to?(:count) ? c.count(column_name, options) : c
+        end
       end
     end
   end
