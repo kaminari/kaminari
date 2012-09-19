@@ -25,6 +25,23 @@ if defined? ActiveRecord
           User.includes(:books_authored).where("books.title LIKE 'title00%'").page(1).total_count.should == 2
         end
       end
+      context "when total_count receives options" do
+        it "should return a distinct total count" do
+          User.page(1).total_count(:name, distinct: true).should == 4
+        end
+      end
+      context "when count receives options" do
+        it "should return a distinct set by column" do
+          User.page(1).count(:name, distinct: true).should == 4
+        end
+      end
+      context "when the scope returns an ActiveSupport::OrderedHash" do
+        it "should not throw exception by passing options to count" do
+          -> {
+            @author.readers.by_read_count.page(1).total_count(:name, distinct: true)
+          }.should_not raise_exception
+        end
+      end
     end
   end
 end
