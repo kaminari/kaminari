@@ -37,7 +37,7 @@ if defined? ActiveRecord
       end
       context "when the scope returns an ActiveSupport::OrderedHash" do
         it "should not throw exception by passing options to count" do
-          -> {
+          lambda {
             @author.readers.by_read_count.page(1).total_count(:name, distinct: true)
           }.should_not raise_exception
         end
