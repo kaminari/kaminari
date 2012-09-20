@@ -27,18 +27,18 @@ if defined? ActiveRecord
       end
       context "when total_count receives options" do
         it "should return a distinct total count" do
-          User.page(1).total_count(:name, distinct: true).should == 4
+          User.page(1).total_count(:name, :distinct => true).should == 4
         end
       end
       context "when count receives options" do
         it "should return a distinct set by column" do
-          User.page(1).count(:name, distinct: true).should == 4
+          User.page(1).count(:name, :distinct => true).should == 4
         end
       end
       context "when the scope returns an ActiveSupport::OrderedHash" do
         it "should not throw exception by passing options to count" do
           lambda {
-            @author.readers.by_read_count.page(1).total_count(:name, distinct: true)
+            @author.readers.by_read_count.page(1).total_count(:name, :distinct => true)
           }.should_not raise_exception
         end
       end
