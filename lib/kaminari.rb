@@ -10,15 +10,16 @@ end
 
 $stderr.puts <<-EOC if !defined?(Rails) && !defined?(Sinatra) && !defined?(Grape)
 warning: no framework detected.
-would you check out if your Gemfile appropriately configured?
+
+Your Gemfile might not be configured properly.
 ---- e.g. ----
-when Rails:
+Rails:
     gem 'kaminari'
 
-when Sinatra/Padrino:
+Sinatra/Padrino:
     gem 'kaminari', :require => 'kaminari/sinatra'
 
-when Grape:
+Grape:
     gem 'kaminari', :require => 'kaminari/grape'
 
 EOC
