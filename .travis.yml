@@ -1,3 +1,5 @@
+services: mongodb
+
 script: "bundle exec rake spec"
 
 rvm:
