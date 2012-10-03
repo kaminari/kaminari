@@ -1,8 +1,14 @@
+services: mongodb
+
 script: "bundle exec rake spec"
+
+before_install:
+  - gem install nokogiri ffi do_sqlite3 -- --with-cflags='--std=gnu99'
 
 rvm:
   - 1.8.7
   - 1.9.3
+  - ruby-head
 
 gemfile:
   - gemfiles/active_record_32.gemfile
