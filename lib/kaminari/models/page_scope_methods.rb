@@ -18,7 +18,12 @@ module Kaminari
 
     # Total number of pages
     def total_pages
-      (total_count.to_f / limit_value).ceil
+      total_pages_count = (total_count.to_f / limit_value).ceil
+      if max_pages.present? && max_pages < total_pages_count
+        max_pages
+      else
+        total_pages_count
+      end
     end
     #FIXME for compatibility. remove num_pages at some time in the future
     alias num_pages total_pages
