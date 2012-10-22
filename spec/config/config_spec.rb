@@ -73,4 +73,19 @@ describe Kaminari::Configuration do
       end
     end
   end
+
+  describe 'max_pages' do
+    context 'by default' do
+      its(:max_pages) { should == nil }
+    end
+    context 'configure via config block' do
+      before do
+        Kaminari.configure {|c| c.max_pages = 5}
+      end
+      its(:max_pages) { should == 5 }
+      after do
+        Kaminari.configure {|c| c.max_pages = nil}
+      end
+    end
+  end
 end
