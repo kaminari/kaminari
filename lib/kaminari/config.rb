@@ -24,6 +24,7 @@ module Kaminari
     config_accessor :left
     config_accessor :right
     config_accessor :page_method_name
+    config_accessor :out_of_range
 
     def param_name
       config.param_name.respond_to?(:call) ? config.param_name.call : config.param_name
@@ -45,5 +46,6 @@ module Kaminari
     config.right = 0
     config.page_method_name = :page
     config.param_name = :page
+    config.out_of_range = :blank #:first, :last
   end
 end
