@@ -42,11 +42,39 @@ describe Kaminari::PaginatableArray do
       it_should_behave_like 'the first page of array'
     end
 
-    context 'page > max page' do
-      subject { array.page 5 }
-      it_should_behave_like 'blank array page'
+    describe 'with out of range configuration' do
+      context 'set to :blank' do
+        subject { array.page 5 }
+        it { should == [] }
+        its(:current_page) { should == 5 }
+      end
+
+      context 'set to :first' do
+        before do
+          Kaminari.configure {|c| c.out_of_range = :first}
+        end
+        subject { array.page 5 }
+        it_should_behave_like 'the first page of array'
+        after do
+          Kaminari.configure {|c| c.out_of_range = :blank}
+        end
+      end
+
+      context 'set to :last' do
+        before do
+          Kaminari.configure {|c| c.out_of_range = :last}
+        end
+        subject { array.page 5 }
+        it { should have(25).users }
+        its(:current_page) { should == 4 }
+        its(:first) { should == 76 }
+        after do
+          Kaminari.configure {|c| c.out_of_range = :blank}
+        end
+      end
     end
-  end
+
+ end
 
   describe '#per' do
     context 'page 1 per 5' do
