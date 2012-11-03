@@ -4,7 +4,7 @@ module Kaminari
     #   Model.page(3).per(10)
     def per(num)
       if (n = num.to_i) <= 0
-        self
+        limit(0)
       elsif max_per_page && max_per_page < n
         limit(max_per_page).offset(offset_value / limit_value * max_per_page)
       else
