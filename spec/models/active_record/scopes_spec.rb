@@ -70,7 +70,8 @@ if defined? ActiveRecord
               before do
                 Kaminari.configure {|c| c.out_of_range = :last}
               end
-              subject { array.page 5 }
+              subject { model_class.page 5 }
+              it_should_behave_like 'the last page'
              after do
                 Kaminari.configure {|c| c.out_of_range = :blank}
               end
