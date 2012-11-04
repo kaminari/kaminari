@@ -7,4 +7,5 @@ Kaminari.configure do |config|
   # config.right = 0
   # config.page_method_name = :page
   # config.param_name = :page
+  # config.out_of_range = :blank
 end
