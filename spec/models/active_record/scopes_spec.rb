@@ -11,6 +11,13 @@ if defined? ActiveRecord
     it { should have(0).users }
   end
 
+  shared_examples_for 'the last page' do
+    it { should have(25).users }
+    its(:current_page) { should == 4 }
+    its('first.name') { should == 'user076' }
+
+  end
+
   describe Kaminari::ActiveRecordExtension do
     before do
       1.upto(100) {|i| User.create! :name => "user#{'%03d' % i}", :age => (i / 10)}
@@ -41,9 +48,33 @@ if defined? ActiveRecord
             it_should_behave_like 'the first page'
           end
 
-          context 'page > max page' do
-            subject { model_class.page 5 }
-            it_should_behave_like 'blank page'
+          describe 'with out of range configuration' do
+            context 'set to :blank' do
+              subject { model_class.page 5 }
+              it { should == [] }
+              it_should_behave_like 'blank page'
+            end
+
+            context 'set to :first' do
+              before do
+                Kaminari.configure {|c| c.out_of_range = :first}
+              end
+              subject { model_class.page 5 }
+              it_should_behave_like 'the first page'
+              after do
+                Kaminari.configure {|c| c.out_of_range = :blank}
+              end
+            end
+
+            context 'set to :last' do
+              before do
+                Kaminari.configure {|c| c.out_of_range = :last}
+              end
+              subject { array.page 5 }
+             after do
+                Kaminari.configure {|c| c.out_of_range = :blank}
+              end
+            end
           end
 
           describe 'ensure #order_values is preserved' do
