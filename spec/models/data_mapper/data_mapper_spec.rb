@@ -88,6 +88,45 @@ if defined? DataMapper
         its(:total_count) { should == User.count(:age.gt => 60) }
         its(:total_pages) { should == 2 }
       end
+
+      describe 'with out of range configuration' do
+        context 'set to :blank' do
+          subject { User.page(5).all }
+          it { should == [] }
+          its(:current_page) { should == 5 }
+          its('query.limit') { should == 25 }
+          its('query.offset') { should == 100 }
+        end
+
+        context 'set to :first' do
+          before do
+            Kaminari.configure {|c| c.out_of_range = :first}
+          end
+          subject { User.page(5).all }
+          its(:current_page) { should == 1 }
+          its('query.limit') { should == 25 }
+          its('query.offset') { should == 0 }
+          after do
+            Kaminari.configure {|c| c.out_of_range = :blank}
+          end
+        end
+
+        context 'set to :last' do
+          before do
+            Kaminari.configure {|c| c.out_of_range = :last}
+          end
+          subject { User.page(5).all }
+          its(:current_page) { should == 4 }
+          its('query.limit') { should == 25 }
+          its('query.offset') { should == 75 }
+          after do
+            Kaminari.configure {|c| c.out_of_range = :blank}
+          end
+        end
+      end
+
+
+
     end
 
     describe '#per' do
