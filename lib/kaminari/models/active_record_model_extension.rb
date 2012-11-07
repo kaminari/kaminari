@@ -10,7 +10,8 @@ module Kaminari
       class << self
         # Fetch the values at the specified page number
         #   Model.page(5)
-        define_method Kaminari.config.page_method_name do |num = 0|
+        define_method Kaminari.config.page_method_name do |*args|
+          num = args.first
           self.
             limit(default_per_page).
             offset(default_per_page * ([num.to_i, 1].max - 1)).
