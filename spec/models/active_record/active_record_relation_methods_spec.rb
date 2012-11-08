@@ -2,6 +2,20 @@ require 'spec_helper'
 
 if defined? ActiveRecord
   describe Kaminari::ActiveRecordRelationMethods do
+    describe '#page' do
+      it "should accept no arguments" do
+        lambda { User.page }.should_not raise_error
+      end
+
+      it "should accept 1 argument" do
+        lambda { User.page(5) }.should_not raise_error
+      end
+
+      it "should not accept 2 arguments" do
+        lambda { User.page(5,2) }.should raise_error(ArgumentError)
+      end
+    end
+
     describe '#total_count' do
       before do
         @author = User.create! :name => 'author'
@@ -40,6 +54,12 @@ if defined? ActiveRecord
           lambda {
             @author.readers.by_read_count.page(1).total_count(:name, :distinct => true)
           }.should_not raise_exception
+        end
+      end
+      context "when there are multiple conditions for one attribute" do
+        it "should successfully count the results" do
+          scope = User.where(:name => ['author', 'author2']).where(:name => ['author2', 'author3'])
+          scope.page(1).total_count.should == 1
         end
       end
     end
