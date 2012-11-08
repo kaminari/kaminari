@@ -11,6 +11,7 @@ module Kaminari
         # Fetch the values at the specified page number
         #   Model.page(5)
         define_method Kaminari.config.page_method_name do |*args|
+          raise ArgumentError.new("wrong number of arguments(#{args.size} for 1)") if args.size > 1
           num = args.first
           self.
             limit(default_per_page).
