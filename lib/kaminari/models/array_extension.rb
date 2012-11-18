@@ -49,8 +49,8 @@ module Kaminari
     def calculate_offset(num)
       goto_page = Kaminari.config.out_of_range
 
-      return 0 if out_of_range?(num) && goto_page == :first
-      return total_count - @_limit_value if out_of_range?(num) && goto_page == :last
+      return 0 if goto_page == :first && out_of_range?(num)
+      return total_count - @_limit_value if goto_page == :last && out_of_range?(num)
       num
     end
 
