@@ -65,7 +65,7 @@ Then bundle:
 
 * the +padding+ scope
 
-  Occasionally you need to padding a number of records that is not a multiple of the page size.
+  Occasionally you need to pad a number of records that is not a multiple of the page size.
     User.page(7).per(50).padding(3)
   Note that the +padding+ scope also is not directly defined on the models.
 
@@ -104,7 +104,7 @@ Run the following generator command, then edit the generated file.
 * +max_paginates_per+
 
   You can specify max +per_page+ value per each model using the following declarative DSL.
-  If the variable that specified via +per+ scope is more than this variable, max +paginates_per+ is used instead of it. Default value is nil, which means you are not imposing any max +per_page+ value.
+  If the variable that specified via +per+ scope is more than this variable, +max_paginates_per+ is used instead of it. Default value is nil, which means you are not imposing any max +per_page+ value.
     class User < ActiveRecord::Base
       max_paginates_per 100
     end
@@ -132,17 +132,17 @@ Run the following generator command, then edit the generated file.
     <%= paginate @users %>
   This would output several pagination links such as <tt>« First ‹ Prev ... 2 3 4 5 6 7 8 9 10 ... Next › Last »</tt>
 
-* specifing the "inner window" size (4 by default)
+* specifying the "inner window" size (4 by default)
 
     <%= paginate @users, :window => 2 %>
   This would output something like <tt>... 5 6 7 8 9 ...</tt> when 7 is the current page.
 
-* specifing the "outer window" size (0 by default)
+* specifying the "outer window" size (0 by default)
 
     <%= paginate @users, :outer_window => 3 %>
   This would output something like <tt>1 2 3 4 ...(snip)... 17 18 19 20</tt> while having 20 pages in total.
 
-* outer window can be separetely specified by +left+, +right+ (0 by default)
+* outer window can be separately specified by +left+, +right+ (0 by default)
 
     <%= paginate @users, :left => 1, :right => 3 %>
   This would output something like <tt>1 ...(snip)... 18 19 20</tt> while having 20 pages in total.
@@ -165,7 +165,7 @@ Run the following generator command, then edit the generated file.
 * the +link_to_next_page+ and +link_to_previous_page+ helper method
 
     <%= link_to_next_page @items, 'Next Page' %>
-  This simply renders a link to the next page. This would be helpful for creating "Twitter like" pagination feature.
+  This simply renders a link to the next page. This would be helpful for creating a Twitter-like pagination feature.
 
 * the +page_entries_info+ helper method
 
@@ -223,7 +223,7 @@ Kaminari includes a handy template generator.
     % mkdir my_custom_theme
     % cp _*.html.* my_custom_theme/
 
-  Next reference that directory when calling the paginate method:
+  Next, reference that directory when calling the +paginate+ method:
 
     <%= paginate @users, :theme => 'my_custom_theme' %>
 
