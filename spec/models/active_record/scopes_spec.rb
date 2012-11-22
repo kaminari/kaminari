@@ -98,6 +98,26 @@ if defined? ActiveRecord
             subject { model_class.page(5).per('aho') }
             its(:total_pages) { should == 4 }
           end
+
+          context 'with max_pages < total pages count from database' do
+            before { model_class.max_pages_per 3 }
+            subject { model_class.page }
+            its(:total_pages) { should == 3 }
+            after { model_class.max_pages_per nil }
+          end
+
+          context 'with max_pages > total pages count from database' do
+            before { model_class.max_pages_per 11 }
+            subject { model_class.page }
+            its(:total_pages) { should == 4 }
+            after { model_class.max_pages_per nil }
+          end
+
+          context 'with max_pages is nil' do
+            before { model_class.max_pages_per nil }
+            subject { model_class.page }
+            its(:total_pages) { should == 4 }
+          end
         end
 
 
