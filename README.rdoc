@@ -62,7 +62,11 @@ Then bundle:
   To show a lot more users per each page (change the +per_page+ value)
     User.page(7).per(50)
   Note that the +per+ scope is not directly defined on the models but is just a method defined on the page scope. This is absolutely reasonable because you will never actually use +per_page+ without specifying the +page+ number.
-
+  
+  If you would like to specify "no limit" while still using the +per+ scope, you can pass +nil+:
+    User.count                 # => 1000
+    User.page(1).per(nil).size # => 1000
+    
 * the +padding+ scope
 
   Occasionally you need to pad a number of records that is not a multiple of the page size.
