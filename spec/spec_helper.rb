@@ -9,6 +9,7 @@ end
 require 'bundler/setup'
 Bundler.require
 
+require 'capybara/rspec'
 require 'database_cleaner'
 
 # Simulate a gem providing a subclass of ActiveRecord::Base before the Railtie is loaded.
