@@ -74,17 +74,17 @@ describe Kaminari::PaginatableArray do
 
     context 'per 0 (using default)' do
       subject { array.page(50).per(0) }
-      its(:total_pages) { should == 4 }
+      it { should == [] }
     end
 
     context 'per -1 (using default)' do
       subject { array.page(5).per(-1) }
-      its(:total_pages) { should == 4 }
+      it { should == [] }
     end
 
     context 'per "String value that can not be converted into Number" (using default)' do
       subject { array.page(5).per('aho') }
-      its(:total_pages) { should == 4 }
+      it { should == [] }
     end
   end
 
