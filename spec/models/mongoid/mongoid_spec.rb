@@ -3,7 +3,7 @@ require 'spec_helper'
 if defined? Mongoid
   describe Kaminari::MongoidExtension do
     before(:each) do
-      41.times do
+      100.times do
         User.create!({:salary => 1})
       end
     end
@@ -15,7 +15,7 @@ if defined? Mongoid
         it { should be_a Mongoid::Criteria }
         its(:current_page) { should == 1 }
         its(:limit_value) { should == 25 }
-        its(:total_pages) { should == 2 }
+        its(:total_pages) { should == 4 }
         it { should skip(0) }
       end
 
@@ -24,7 +24,7 @@ if defined? Mongoid
         it { should be_a Mongoid::Criteria }
         its(:current_page) { should == 2 }
         its(:limit_value) { should == 25 }
-        its(:total_pages) { should == 2 }
+        its(:total_pages) { should == 4 }
         it { should skip 25 }
       end
 
@@ -33,7 +33,7 @@ if defined? Mongoid
         it { should be_a Mongoid::Criteria }
         its(:current_page) { should == 1 }
         its(:limit_value) { should == 25 }
-        its(:total_pages) { should == 2 }
+        its(:total_pages) { should == 4 }
         it { should skip 0 }
       end
 
@@ -45,7 +45,7 @@ if defined? Mongoid
         end
         its(:current_page) { should == 2 }
         its(:limit_value) { should == 25 }
-        its(:total_pages) { should == 2 }
+        its(:total_pages) { should == 4 }
         it { should skip 25 }
       end
 
@@ -58,6 +58,39 @@ if defined? Mongoid
         subject { User.page(2).where(:salary => 1) }
         it_should_behave_like 'complete valid pagination'
       end
+
+      describe 'with out of range configuration' do
+        context 'set to :blank' do
+          subject { User.page(5) }
+          it { should == [] }
+          its(:current_page) { should == 5 }
+        end
+
+        context 'set to :first' do
+          before do
+            Kaminari.configure {|c| c.out_of_range = :first}
+          end
+          subject { User.page(5) }
+          its(:current_page) { should == 1 }
+          it { should skip 0 }
+          after do
+            Kaminari.configure {|c| c.out_of_range = :blank}
+          end
+        end
+
+        context 'set to :last' do
+          before do
+            Kaminari.configure {|c| c.out_of_range = :last}
+          end
+          subject { User.page(5) }
+          its(:current_page) { should == 4 }
+          it { should skip 75 }
+          after do
+            Kaminari.configure {|c| c.out_of_range = :blank}
+          end
+        end
+      end
+
     end
 
     describe '#per' do
@@ -65,7 +98,7 @@ if defined? Mongoid
       it { should be_a Mongoid::Criteria }
       its(:current_page) { should == 2 }
       its(:limit_value) { should == 10 }
-      its(:total_pages) { should == 5 }
+      its(:total_pages) { should == 10 }
       it { should skip 10 }
     end
 

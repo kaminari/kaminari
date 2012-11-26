@@ -11,6 +11,13 @@ if defined? ActiveRecord
     it { should have(0).users }
   end
 
+  shared_examples_for 'the last page' do
+    it { should have(25).users }
+    its(:current_page) { should == 4 }
+    its('first.name') { should == 'user076' }
+
+  end
+
   describe Kaminari::ActiveRecordExtension do
     before do
       1.upto(100) {|i| User.create! :name => "user#{'%03d' % i}", :age => (i / 10)}
@@ -41,9 +48,34 @@ if defined? ActiveRecord
             it_should_behave_like 'the first page'
           end
 
-          context 'page > max page' do
-            subject { model_class.page 5 }
-            it_should_behave_like 'blank page'
+          describe 'with out of range configuration' do
+            context 'set to :blank' do
+              subject { model_class.page 5 }
+              it { should == [] }
+              it_should_behave_like 'blank page'
+            end
+
+            context 'set to :first' do
+              before do
+                Kaminari.configure {|c| c.out_of_range = :first}
+              end
+              subject { model_class.page 5 }
+              it_should_behave_like 'the first page'
+              after do
+                Kaminari.configure {|c| c.out_of_range = :blank}
+              end
+            end
+
+            context 'set to :last' do
+              before do
+                Kaminari.configure {|c| c.out_of_range = :last}
+              end
+              subject { model_class.page 5 }
+              it_should_behave_like 'the last page'
+             after do
+                Kaminari.configure {|c| c.out_of_range = :blank}
+              end
+            end
           end
 
           describe 'ensure #order_values is preserved' do
@@ -66,6 +98,11 @@ if defined? ActiveRecord
             it { should have(5).users }
             its('first.name') { should == 'user002' }
           end
+
+           context 'page 1 per 0 padding 1' do
+            subject { model_class.page(1).per(0).padding(1) }
+            it { should == [] }
+          end
         end
 
         describe '#total_pages' do
@@ -86,17 +123,17 @@ if defined? ActiveRecord
 
           context 'per 0 (using default)' do
             subject { model_class.page(50).per(0) }
-            its(:total_pages) { should == 4 }
+            it { should == [] }
           end
 
           context 'per -1 (using default)' do
             subject { model_class.page(5).per(-1) }
-            its(:total_pages) { should == 4 }
+            it { should == [] }
           end
 
           context 'per "String value that can not be converted into Number" (using default)' do
             subject { model_class.page(5).per('aho') }
-            its(:total_pages) { should == 4 }
+            it { should == [] }
           end
         end
 

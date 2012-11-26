@@ -1,4 +1,5 @@
 require 'kaminari/models/mongoid_criteria_methods'
+require 'kaminari/models/page_extensions'
 
 module Kaminari
   module MongoidExtension
@@ -19,15 +20,17 @@ module Kaminari
       include Kaminari::ConfigurationMethods
 
       included do
+        self.send(:extend, Kaminari::PageExtensions)
         # Fetch the values at the specified page number
         #   Model.page(5)
         scope Kaminari.config.page_method_name, Proc.new {|num|
-          limit(default_per_page).offset(default_per_page * ([num.to_i, 1].max - 1))
+          limit(default_per_page).offset(calculate_offset(num))
         } do
           include Kaminari::MongoidCriteriaMethods
           include Kaminari::PageScopeMethods
         end
       end
+
     end
   end
 end

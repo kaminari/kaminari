@@ -32,6 +32,22 @@ describe Kaminari::Configuration do
     end
   end
 
+  describe 'out_of_range' do
+    context 'by default' do
+      its(:out_of_range) { should == :blank }
+    end
+
+    context "configure via config block" do
+      before do
+        Kaminari.configure {|c| c.out_of_range = :first}
+      end
+      its(:out_of_range) { should == :first }
+      after do
+        Kaminari.configure {|c| c.out_of_range = :blank}
+      end
+     end
+  end
+
   describe 'window' do
     context 'by default' do
       its(:window) { should == 4 }

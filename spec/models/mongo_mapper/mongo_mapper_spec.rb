@@ -4,7 +4,7 @@ if defined? MongoMapper
   describe Kaminari::MongoMapperExtension do
     before(:each) do
       User.destroy_all
-      41.times { User.create!({:salary => 1}) }
+      100.times { User.create!({:salary => 1}) }
     end
 
     describe '#page' do
@@ -13,7 +13,7 @@ if defined? MongoMapper
         it { should be_a Plucky::Query }
         its(:current_page) { should == 1 }
         its(:limit_value) { should == 25 }
-        its(:total_pages) { should == 2 }
+        its(:total_pages) { should == 4 }
         it { should skip(0) }
       end
 
@@ -22,7 +22,7 @@ if defined? MongoMapper
         it { should be_a Plucky::Query }
         its(:current_page) { should == 2 }
         its(:limit_value) { should == 25 }
-        its(:total_pages) { should == 2 }
+        its(:total_pages) { should == 4 }
         it { should skip 25 }
       end
 
@@ -31,7 +31,7 @@ if defined? MongoMapper
         it { should be_a Plucky::Query }
         its(:current_page) { should == 1 }
         its(:limit_value) { should == 25 }
-        its(:total_pages) { should == 2 }
+        its(:total_pages) { should == 4 }
         it { should skip 0 }
       end
 
@@ -43,7 +43,7 @@ if defined? MongoMapper
         subject { User.where(:salary => 1).page 2 }
         its(:current_page) { should == 2 }
         its(:limit_value) { should == 25 }
-        its(:total_pages) { should == 2 }
+        its(:total_pages) { should == 4 }
         it { should skip 25 }
       end
 
@@ -55,8 +55,42 @@ if defined? MongoMapper
         subject { User.page(2).where(:salary => 1) }
         its(:current_page) { should == 2 }
         its(:limit_value) { should == 25 }
-        its(:total_pages) { should == 2 }
+        its(:total_pages) { should == 4 }
         it { should skip 25 }
+      end
+    end
+
+    describe 'with out of range configuration' do
+      context 'set to :blank' do
+        subject { User.page(5) }
+        # not sure how to return empty array when out of range
+        #it { should == [] }
+        its(:current_page) { should == 5 }
+        it { should skip 100 }
+      end
+
+      context 'set to :first' do
+        before do
+          Kaminari.configure {|c| c.out_of_range = :first}
+        end
+        subject { User.page(5) }
+        its(:current_page) { should == 1 }
+        it { should skip 0 }
+        after do
+          Kaminari.configure {|c| c.out_of_range = :blank}
+        end
+      end
+
+      context 'set to :last' do
+        before do
+          Kaminari.configure {|c| c.out_of_range = :last}
+        end
+        subject { User.page(5) }
+        its(:current_page) { should == 4 }
+        it { should skip 75 }
+        after do
+          Kaminari.configure {|c| c.out_of_range = :blank}
+        end
       end
     end
 
@@ -65,7 +99,7 @@ if defined? MongoMapper
       it { should be_a Plucky::Query }
       its(:current_page) { should == 2 }
       its(:limit_value) { should == 10 }
-      its(:total_pages) { should == 5 }
+      its(:total_pages) { should == 10 }
       it { should skip 10 }
     end
   end

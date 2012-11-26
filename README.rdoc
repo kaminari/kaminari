@@ -80,6 +80,7 @@ You can configure the following default values by overriding these values using 
   right             # 0 by default
   page_method_name  # :page by default
   param_name        # :page by default
+  out_of_range      # :blank by default
 
 There's a handy generator that generates the default configuration file into config/initializers directory.
 Run the following generator command, then edit the generated file.
@@ -89,6 +90,11 @@ Run the following generator command, then edit the generated file.
 
   You can change the method name `page` to `bonzo` or `plant` or whatever you like, in order to play nice with existing `page` method or association or scope or any other plugin that defines `page` method on your models.
 
+
+* changing +out_of_range+
+
+  You can define the page loaded when you go out of range.
+  Possibilities are `:blank`, `:first`, `:last`.
 
 === Configuring default +per_page+ value for each model
 

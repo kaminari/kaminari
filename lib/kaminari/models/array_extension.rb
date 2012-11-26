@@ -43,8 +43,21 @@ module Kaminari
 
     # returns another chunk of the original array
     def offset(num)
-      self.class.new @_original_array, :limit => @_limit_value, :offset => num, :total_count => @_total_count
+      self.class.new @_original_array, :limit => @_limit_value, :offset => calculate_offset(num), :total_count => @_total_count
     end
+
+    def calculate_offset(num)
+      goto_page = Kaminari.config.out_of_range
+
+      return 0 if goto_page == :first && out_of_range?(num)
+      return total_count - @_limit_value if goto_page == :last && out_of_range?(num)
+      num
+    end
+
+    def out_of_range?(num)
+      num + 1 > total_count
+    end
+
   end
 
   # Wrap an Array object to make it paginatable
