@@ -12,6 +12,8 @@ if defined? MongoMapper
         subject { User.page(1) }
         it { should be_a Plucky::Query }
         its(:current_page) { should == 1 }
+        its(:prev_page) { should be_nil }
+        its(:next_page) { should == 2 }
         its(:limit_value) { should == 25 }
         its(:total_pages) { should == 2 }
         it { should skip(0) }
@@ -21,6 +23,8 @@ if defined? MongoMapper
         subject { User.page 2 }
         it { should be_a Plucky::Query }
         its(:current_page) { should == 2 }
+        its(:prev_page) { should == 1 }
+        its(:next_page) { should be_nil }
         its(:limit_value) { should == 25 }
         its(:total_pages) { should == 2 }
         it { should skip 25 }
@@ -30,6 +34,8 @@ if defined? MongoMapper
         subject { User.page 'foobar' }
         it { should be_a Plucky::Query }
         its(:current_page) { should == 1 }
+        its(:prev_page) { should be_nil }
+        its(:next_page) { should == 2 }
         its(:limit_value) { should == 25 }
         its(:total_pages) { should == 2 }
         it { should skip 0 }
@@ -42,6 +48,8 @@ if defined? MongoMapper
 
         subject { User.where(:salary => 1).page 2 }
         its(:current_page) { should == 2 }
+        its(:prev_page) { should == 1 }
+        its(:next_page) { should be_nil }
         its(:limit_value) { should == 25 }
         its(:total_pages) { should == 2 }
         it { should skip 25 }
@@ -54,6 +62,8 @@ if defined? MongoMapper
 
         subject { User.page(2).where(:salary => 1) }
         its(:current_page) { should == 2 }
+        its(:prev_page) { should == 1 }
+        its(:next_page) { should be_nil }
         its(:limit_value) { should == 25 }
         its(:total_pages) { should == 2 }
         it { should skip 25 }
@@ -64,6 +74,8 @@ if defined? MongoMapper
       subject { User.page(2).per(10) }
       it { should be_a Plucky::Query }
       its(:current_page) { should == 2 }
+      its(:prev_page) { should == 1 }
+      its(:next_page) { should == 3 }
       its(:limit_value) { should == 10 }
       its(:total_pages) { should == 5 }
       it { should skip 10 }

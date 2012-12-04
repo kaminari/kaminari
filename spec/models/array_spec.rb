@@ -100,6 +100,30 @@ describe Kaminari::PaginatableArray do
     end
   end
 
+  describe '#next_page' do
+    context 'page 1' do
+      subject { array.page }
+      its(:next_page) { should == 2 }
+    end
+
+    context 'page 5' do
+      subject { array.page 5 }
+      its(:next_page) { should be_nil }
+    end
+  end
+
+  describe '#prev_page' do
+    context 'page 1' do
+      subject { array.page }
+      its(:prev_page) { should be_nil }
+    end
+
+    context 'page 5' do
+      subject { array.page 5 }
+      its(:prev_page) { should == 4 }
+    end
+  end
+
   describe '#count' do
     context 'page 1' do
       subject { array.page }

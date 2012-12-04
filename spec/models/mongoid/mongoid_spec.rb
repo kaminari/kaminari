@@ -14,6 +14,8 @@ if defined? Mongoid
         subject { User.page 1 }
         it { should be_a Mongoid::Criteria }
         its(:current_page) { should == 1 }
+        its(:prev_page) { should be_nil }
+        its(:next_page) { should == 2 }
         its(:limit_value) { should == 25 }
         its(:total_pages) { should == 2 }
         it { should skip(0) }
@@ -23,6 +25,8 @@ if defined? Mongoid
         subject { User.page 2 }
         it { should be_a Mongoid::Criteria }
         its(:current_page) { should == 2 }
+        its(:prev_page) { should == 1 }
+        its(:next_page) { should be_nil }
         its(:limit_value) { should == 25 }
         its(:total_pages) { should == 2 }
         it { should skip 25 }
@@ -32,6 +36,8 @@ if defined? Mongoid
         subject { User.page 'foobar' }
         it { should be_a Mongoid::Criteria }
         its(:current_page) { should == 1 }
+        its(:prev_page) { should be_nil }
+        its(:next_page) { should == 2 }
         its(:limit_value) { should == 25 }
         its(:total_pages) { should == 2 }
         it { should skip 0 }
@@ -44,6 +50,8 @@ if defined? Mongoid
           its(:selector) { should == {:salary => 1} }
         end
         its(:current_page) { should == 2 }
+        its(:prev_page) { should == 1 }
+        its(:next_page) { should be_nil }
         its(:limit_value) { should == 25 }
         its(:total_pages) { should == 2 }
         it { should skip 25 }
@@ -64,6 +72,8 @@ if defined? Mongoid
       subject { User.page(2).per(10) }
       it { should be_a Mongoid::Criteria }
       its(:current_page) { should == 2 }
+      its(:prev_page) { should == 1 }
+      its(:next_page) { should == 3 }
       its(:limit_value) { should == 10 }
       its(:total_pages) { should == 5 }
       it { should skip 10 }
@@ -85,6 +95,8 @@ if defined? Mongoid
         its(:total_count) { should == 5 }
         its(:limit_value) { should == 1 }
         its(:current_page) { should == 1 }
+        its(:prev_page) { should be_nil }
+        its(:next_page) { should == 2 }
         its(:total_pages) { should == 5 }
       end
 
@@ -94,6 +106,8 @@ if defined? Mongoid
         its(:total_count) { should == 3 }
         its(:limit_value) { should == 2 }
         its(:current_page) { should == 1 }
+        its(:prev_page) { should be_nil }
+        its(:next_page) { should == 2 }
         its(:total_pages) { should == 2 }
       end
 
@@ -103,6 +117,8 @@ if defined? Mongoid
         its(:total_count) { should == 3 }
         its(:limit_value) { should == 2 }
         its(:current_page) { should == 1 }
+        its(:prev_page) { should be_nil }
+        its(:next_page) { should == 2 }
         its(:total_pages) { should == 2 }
       end
     end

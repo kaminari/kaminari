@@ -32,6 +32,8 @@ if defined? DataMapper
         subject { User.all(:age.gte => 60).page 0 }
         it { should be_a DataMapper::Collection }
         its(:current_page) { should == 1 }
+        its(:prev_page) { should be_nil }
+        its(:next_page) { should == 2 }
         its('query.limit') { should == 25 }
         its('query.offset') { should == 0 }
         its(:total_count) { should == User.count(:age.gte => 60) }
@@ -42,6 +44,8 @@ if defined? DataMapper
         subject { User.all(:age.gte => 0).page 1 }
         it { should be_a DataMapper::Collection }
         its(:current_page) { should == 1 }
+        its(:prev_page) { should be_nil }
+        its(:next_page) { should == 2 }
         its('query.limit') { should == 25 }
         its('query.offset') { should == 0 }
         its(:total_count) { should == 100 }
@@ -52,6 +56,8 @@ if defined? DataMapper
         subject { User.page 2 }
         it { should be_a DataMapper::Collection }
         its(:current_page) { should == 2 }
+        its(:prev_page) { should == 1 }
+        its(:next_page) { should == 3 }
         its(:limit_value) { should == 25 }
         its('query.limit') { should == 25 }
         its('query.offset') { should == 25 }
@@ -63,6 +69,8 @@ if defined? DataMapper
         subject { User.page 'foobar' }
         it { should be_a DataMapper::Collection }
         its(:current_page) { should == 1 }
+        its(:prev_page) { should be_nil }
+        its(:next_page) { should == 2 }
         its('query.limit') { should == 25 }
         its('query.offset') { should == 0 }
         its(:total_count) { should == 100 }
@@ -73,6 +81,8 @@ if defined? DataMapper
         subject { User.all(:age.gt => 60).page 2 }
         it { should be_a DataMapper::Collection }
         its(:current_page) { should == 2 }
+        its(:prev_page) { should == 1 }
+        its(:next_page) { should be_nil }
         its('query.limit') { should == 25 }
         its('query.offset') { should == 25 }
         its(:total_count) { should == User.count(:age.gt => 60) }
@@ -83,6 +93,8 @@ if defined? DataMapper
         subject { User.page(2).all(:age.gt => 60) }
         it { should be_a DataMapper::Collection }
         its(:current_page) { should == 2 }
+        its(:prev_page) { should == 1 }
+        its(:next_page) { should be_nil }
         its('query.limit') { should == 25 }
         its('query.offset') { should == 25 }
         its(:total_count) { should == User.count(:age.gt => 60) }
@@ -95,6 +107,8 @@ if defined? DataMapper
         subject { User.page(2).per(20) }
         it { should be_a DataMapper::Collection }
         its(:current_page) { should == 2 }
+        its(:prev_page) { should == 1 }
+        its(:next_page) { should == 3 }
         its('query.limit') { should == 20 }
         its(:limit_value) { should == 20 }
         its('query.offset') { should == 20 }
@@ -105,6 +119,8 @@ if defined? DataMapper
       context 'on query with condition' do
         subject { User.page(5).all(:age.lte => 80).per(13) }
         its(:current_page) { should == 5 }
+        its(:prev_page) { should == 4 }
+        its(:next_page) { should == 6 }
         its('query.limit') { should == 13 }
         its('query.offset') { should == 52 }
         its(:total_count) { should == 81 }
@@ -118,6 +134,8 @@ if defined? DataMapper
         it('includes user with age 52') { should include(User.first(:age => 64)) }
         it('does not include user with age 51') { should_not include(User.first(:age => 65)) }
         its(:current_page) { should == 5 }
+        its(:prev_page) { should == 4 }
+        its(:next_page) { should == 6 }
         its('query.limit') { should == 13 }
         its('query.offset') { should == 52 }
         its(:total_count) { should == 81 }
@@ -127,6 +145,8 @@ if defined? DataMapper
       context 'on chained queries' do
         subject { User.all(:age.gte => 50).page(3).all(:age.lte => 80).per(13) }
         its(:current_page) { should == 3 }
+        its(:prev_page) { should == 2 }
+        its(:next_page) { should be_nil }
         its('query.limit') { should == 13 }
         its('query.offset') { should == 26 }
         its(:total_count) { should == 31 }
@@ -136,6 +156,8 @@ if defined? DataMapper
       context 'on query on association' do
         subject { User[0].projects.page(3).all(:name.like => 'Project%').per(5) }
         its(:current_page) { should == 3 }
+        its(:prev_page) { should == 2 }
+        its(:next_page) { should == 4 }
         its('query.limit') { should == 5 }
         its('query.offset') { should == 10 }
         its(:total_count) { should == 50 }
@@ -145,6 +167,8 @@ if defined? DataMapper
       context 'on query with association conditions' do
         subject { User.page(3).all(:projects => Project.all).per(5) }
         its(:current_page) { should == 3 }
+        its(:prev_page) { should == 2 }
+        its(:next_page) { should == 4 }
         its('query.limit') { should == 5 }
         its('query.offset') { should == 10 }
         its(:total_count) { should == 50 }

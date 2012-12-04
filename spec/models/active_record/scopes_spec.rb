@@ -136,7 +136,6 @@ if defined? ActiveRecord
           end
         end
 
-
         describe '#current_page' do
           context 'page 1' do
             subject { model_class.page }
@@ -151,6 +150,30 @@ if defined? ActiveRecord
           context "with per(nil)" do
             subject { model_class.page.per(nil) }
             its(:current_page) { should == 1 }
+          end
+        end
+
+        describe '#next_page' do
+          context 'page 1' do
+            subject { model_class.page }
+            its(:next_page) { should == 2 }
+          end
+
+          context 'page 5' do
+            subject { model_class.page(5) }
+            its(:next_page) { should be_nil }
+          end
+        end
+
+        describe '#prev_page' do
+          context 'page 1' do
+            subject { model_class.page }
+            its(:prev_page) { should be_nil }
+          end
+
+          context 'page 5' do
+            subject { model_class.page(5) }
+            its(:prev_page) { should == 4 }
           end
         end
 

@@ -48,6 +48,16 @@ module Kaminari
       (offset_without_padding / limit_value) + 1
     end
 
+    # Next page number in the collection
+    def next_page
+      current_page + 1 unless last_page?
+    end
+
+    # Previous page number in the collection
+    def prev_page
+      current_page - 1 unless first_page?
+    end
+
     # First page of the collection ?
     def first_page?
       current_page == 1
