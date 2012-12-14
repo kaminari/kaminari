@@ -13,6 +13,7 @@ module Kaminari
     # * <tt>:params</tt> - url_for parameters for the links (:controller, :action, etc.)
     # * <tt>:param_name</tt> - parameter name for page number in the links (:page by default)
     # * <tt>:remote</tt> - Ajax? (false by default)
+    # * <tt>:route_prefix</tt> - namespace of router (current engine's namespace by default)
     # * <tt>:ANY_OTHER_VALUES</tt> - Any other hash key & values would be directly passed into each tag as :locals value.
     def paginate(scope, options = {}, &block)
       paginator = Kaminari::Helpers::Paginator.new self, options.reverse_merge(:current_page => scope.current_page, :total_pages => scope.total_pages, :per_page => scope.limit_value, :param_name => Kaminari.config.param_name, :remote => false)
@@ -39,7 +40,9 @@ module Kaminari
     def link_to_previous_page(scope, name, options = {}, &block)
       params = options.delete(:params) || {}
       param_name = options.delete(:param_name) || Kaminari.config.param_name
-      link_to_unless scope.first_page?, name, params.merge(param_name => (scope.current_page - 1)), options.reverse_merge(:rel => 'previous') do
+      route_prefix = options.delete(:route_prefix)
+      url = (route_prefix || self).url_for params.merge(param_name => (scope.current_page - 1))
+      link_to_unless scope.first_page?, name, url, options.reverse_merge(:rel => 'previous') do
         block.call if block
       end
     end
@@ -64,7 +67,9 @@ module Kaminari
     def link_to_next_page(scope, name, options = {}, &block)
       params = options.delete(:params) || {}
       param_name = options.delete(:param_name) || Kaminari.config.param_name
-      link_to_unless scope.last_page?, name, params.merge(param_name => (scope.current_page + 1)), options.reverse_merge(:rel => 'next') do
+      route_prefix = options.delete(:route_prefix)
+      url = (route_prefix || self).url_for params.merge(param_name => (scope.current_page + 1))
+      link_to_unless scope.last_page?, name, url, options.reverse_merge(:rel => 'next') do
         block.call if block
       end
     end
@@ -129,19 +134,14 @@ module Kaminari
     def rel_next_prev_link_tags(scope, options = {})
       params = options.delete(:params) || {}
       param_name = options.delete(:param_name) || Kaminari.config.param_name
+      route_prefix = options.delete(:route_prefix)
 
       output = ""
-
-      if !scope.first_page? && !scope.last_page?
-        # If not first and not last, then output both links.
-        output << '<link rel="next" href="' + url_for(params.merge(param_name => (scope.current_page + 1))) + '"/>'
-        output << '<link rel="prev" href="' + url_for(params.merge(param_name => (scope.current_page - 1))) + '"/>'
-      elsif scope.first_page?
-        # If first page, add next link unless last page.
-        output << '<link rel="next" href="' + url_for(params.merge(param_name => (scope.current_page + 1))) + '"/>' unless scope.last_page?
-      else
-        # If last page, add prev link unless first page.
-        output << '<link rel="prev" href="' + url_for(params.merge(param_name => (scope.current_page - 1))) + '"/>' unless scope.first_page?
+      unless scope.last_page?
+        output << '<link rel="next" href="' + (route_prefix || self).url_for(params.merge(param_name => (scope.current_page + 1))) + '"/>'
+      end
+      unless scope.first_page?
+        output << '<link rel="prev" href="' + (route_prefix || self).url_for(params.merge(param_name => (scope.current_page - 1))) + '"/>'
       end
 
       output.html_safe
