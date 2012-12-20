@@ -4,7 +4,7 @@ module Kaminari
     #   Model.page(3).per(10)
     def per(num)
       if num.nil?
-        limit(nil)
+        limit(nil).offset(0)
       elsif (n = num.to_i) <= 0
         self
       elsif max_per_page && max_per_page < n
@@ -20,6 +20,8 @@ module Kaminari
 
     # Total number of pages
     def total_pages
+      return 1 if limit_value.nil?
+
       total_pages_count = (total_count.to_f / limit_value).ceil
       if max_pages.present? && max_pages < total_pages_count
         max_pages
@@ -32,6 +34,7 @@ module Kaminari
 
     # Current page number
     def current_page
+      return 1 if limit_value.nil?
       (offset_value / limit_value) + 1
     end
 
