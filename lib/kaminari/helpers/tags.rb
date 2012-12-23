@@ -16,7 +16,7 @@ module Kaminari
       def initialize(template, options = {}) #:nodoc:
         @template, @options = template, options.dup
         @param_name = @options.delete(:param_name)
-        @route_prefix = @options.delete(:route_prefix)
+        @route_set = @options.delete(:route_set)
         @theme = @options[:theme] ? "#{@options.delete(:theme)}/" : ''
         @params = @options[:params] ? template.params.merge(@options.delete :params) : template.params
       end
@@ -26,7 +26,7 @@ module Kaminari
       end
 
       def page_url_for(page)
-        (@route_prefix || @template).url_for @params.merge(@param_name => (page <= 1 ? nil : page))
+        (@route_set || @template).url_for @params.merge(@param_name => (page <= 1 ? nil : page))
       end
     end
 

@@ -16,8 +16,8 @@ describe 'Kaminari::ActionViewExtension' do
     end
 
     if defined? Rails
-      context 'using route prefix' do
-        subject { helper.paginate @users, :params => {:controller => 'my_engine/items', :action => 'index'}, :route_prefix => my_engine }
+      context 'using custom route set' do
+        subject { helper.paginate @users, :params => {:controller => 'my_engine/items', :action => 'index'}, :route_set => my_engine }
         it { should match(%r(/mounted_engine/items)) }
       end
     end
@@ -41,8 +41,8 @@ describe 'Kaminari::ActionViewExtension' do
         it { should match(/rel="external"/) }
       end
       if defined? Rails
-        context 'using route prefix' do
-          subject { helper.link_to_previous_page @users, 'Previous', :params => {:controller => 'my_engine/items', :action => 'index'}, :route_prefix => my_engine }
+        context 'using custom route set' do
+          subject { helper.link_to_previous_page @users, 'Previous', :params => {:controller => 'my_engine/items', :action => 'index'}, :route_set => my_engine }
           it { should match(%r(/mounted_engine/items)) }
         end
       end
@@ -74,8 +74,8 @@ describe 'Kaminari::ActionViewExtension' do
         it { should match(/rel="external"/) }
       end
       if defined? Rails
-        context 'using route prefix' do
-          subject { helper.link_to_next_page @users, 'More', :params => {:controller => 'my_engine/items', :action => 'index'}, :route_prefix => my_engine }
+        context 'using custom route set' do
+          subject { helper.link_to_next_page @users, 'More', :params => {:controller => 'my_engine/items', :action => 'index'}, :route_set => my_engine }
           it { should match(%r(/mounted_engine/items)) }
         end
       end
@@ -244,10 +244,10 @@ describe 'Kaminari::ActionViewExtension' do
   end
 
   describe '#rel_next_prev_link_tags' do
-    shared_context 'using route prefix' do
+    shared_context 'using custom route set' do
       if defined? Rails
-        context 'using route prefix' do
-          subject { helper.rel_next_prev_link_tags @users, :params => {:controller => 'my_engine/items', :action => 'index'}, :route_prefix => my_engine }
+        context 'using custom route set' do
+          subject { helper.rel_next_prev_link_tags @users, :params => {:controller => 'my_engine/items', :action => 'index'}, :route_set => my_engine }
           it { should match(%r(/mounted_engine/items)) }
         end
       end
@@ -265,7 +265,7 @@ describe 'Kaminari::ActionViewExtension' do
       it { should be_a String }
       it { should match(/rel="next"/) }
       it { should_not match(/rel="prev"/) }
-      include_context 'using route prefix'
+      include_context 'using custom route set'
     end
     context 'the middle page' do
       before do
@@ -276,7 +276,7 @@ describe 'Kaminari::ActionViewExtension' do
       it { should be_a String }
       it { should match(/rel="next"/) }
       it { should match(/rel="prev"/) }
-      include_context 'using route prefix'
+      include_context 'using custom route set'
     end
     context 'the last page' do
       before do
@@ -287,7 +287,7 @@ describe 'Kaminari::ActionViewExtension' do
       it { should be_a String }
       it { should_not match(/rel="next"/) }
       it { should match(/rel="prev"/) }
-      include_context 'using route prefix'
+      include_context 'using custom route set'
     end
   end
 end
