@@ -10,6 +10,10 @@ en:
       truncate: "&hellip;"
   helpers:
     page_entries_info:
+      entry:
+        zero: "entries"
+        one: "entry"
+        other: "entries"
       one_page:
         display_entries:
           zero: "No %{entry_name} found"
