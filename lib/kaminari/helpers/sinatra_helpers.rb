@@ -125,7 +125,7 @@ end
 
 rescue LoadError
 
-$stderr.puts "[!]You shold install `padrino-helpers' gem if you want to use kaminari's pagination helpers with Sinatra."
+$stderr.puts "[!]You should install `padrino-helpers' gem if you want to use kaminari's pagination helpers with Sinatra."
 $stderr.puts "[!]Kaminari::Helpers::SinatraHelper does nothing now..."
 
 module Kaminari::Helpers
