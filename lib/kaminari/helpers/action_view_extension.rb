@@ -15,7 +15,8 @@ module Kaminari
     # * <tt>:remote</tt> - Ajax? (false by default)
     # * <tt>:ANY_OTHER_VALUES</tt> - Any other hash key & values would be directly passed into each tag as :locals value.
     def paginate(scope, options = {}, &block)
-      paginator = Kaminari::Helpers::Paginator.new self, options.reverse_merge(:current_page => scope.current_page, :total_pages => scope.total_pages, :per_page => scope.limit_value, :param_name => Kaminari.config.param_name, :remote => false)
+      total_pages = options[:total_pages] || scope.total_pages
+      paginator = Kaminari::Helpers::Paginator.new self, options.reverse_merge(:current_page => scope.current_page, :total_pages => total_pages, :per_page => scope.limit_value, :param_name => Kaminari.config.param_name, :remote => false)
       paginator.to_s
     end
 
@@ -86,6 +87,8 @@ module Kaminari
     #   <%= page_entries_info @posts, :entry_name => 'item' %>
     #   #-> Displaying items 6 - 10 of 26 in total
     def page_entries_info(collection, options = {})
+      total_pages = options[:total_pages] || collection.total_pages
+      total_count = options[:total_count] || collection.total_count
       entry_name = if options[:entry_name]
         options[:entry_name]
       elsif collection.empty? || collection.is_a?(PaginatableArray)
@@ -97,14 +100,14 @@ module Kaminari
           collection.model_name.human.downcase
         end
       end
-      entry_name = entry_name.pluralize unless collection.total_count == 1
+      entry_name = entry_name.pluralize unless total_count == 1
 
-      if collection.total_pages < 2
-        t('helpers.page_entries_info.one_page.display_entries', :entry_name => entry_name, :count => collection.total_count)
+      if total_pages < 2
+        t('helpers.page_entries_info.one_page.display_entries', :entry_name => entry_name, :count => total_count)
       else
         first = collection.offset_value + 1
-        last = collection.last_page? ? collection.total_count : collection.offset_value + collection.limit_value
-        t('helpers.page_entries_info.more_pages.display_entries', :entry_name => entry_name, :first => first, :last => last, :total => collection.total_count)
+        last = collection.current_page >= total_pages ? total_count : collection.offset_value + collection.limit_value
+        t('helpers.page_entries_info.more_pages.display_entries', :entry_name => entry_name, :first => first, :last => last, :total => total_count)
       end.html_safe
     end
 
