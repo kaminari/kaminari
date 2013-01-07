@@ -3,7 +3,7 @@ module Kaminari
     # Specify the <tt>per_page</tt> value for the preceding <tt>page</tt> scope
     #   Model.page(3).per(10)
     def per(num)
-      if num.nil?
+      if (num.nil? || num.is_a?(Array))
         limit(nil).offset(0)
       elsif (n = num.to_i) <= 0
         self

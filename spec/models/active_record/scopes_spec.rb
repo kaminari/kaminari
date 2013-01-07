@@ -63,6 +63,11 @@ if defined? ActiveRecord
             subject { model_class.page(1).per(nil) }
             it { should have(model_class.count).users }
           end
+
+          context "page 1 per []" do
+            subject { model_class.page(1).per([]) }
+            it { should have(model_class.count).users }
+          end
         end
 
         describe '#padding' do
