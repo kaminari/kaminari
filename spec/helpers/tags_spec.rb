@@ -135,6 +135,70 @@ describe 'Kaminari::Helpers' do
           its(:was_truncated?) { should_not be_true }
         end
       end
+      describe '#first_page_outside_inner_and_left?' do
+        context 'page == (left + 1) && page == (current_page - window - 1)' do
+          subject { Paginator::PageProxy.new({:current_page => 9, :window => 3, left: 4}, 5, nil) }
+          its(:first_page_outside_inner_and_left?) { should be_true }
+        end
+        context 'page == (left) && page == (current_page - window - 2)' do
+          subject { Paginator::PageProxy.new({:current_page => 9, :window => 3, left: 4}, 4, nil) }
+          its(:first_page_outside_inner_and_left?) { should_not be_true }
+        end
+        context 'page == (left + 2) && page == (current_page - window)' do
+          subject { Paginator::PageProxy.new({:current_page => 9, :window => 3, left: 4}, 6, nil) }
+          its(:first_page_outside_inner_and_left?) { should_not be_true }
+        end
+      end
+      describe '#first_page_outside_inner_and_right?' do
+        context 'page == (total_pages - right) && page == (current_page + window + 1)' do
+          subject { Paginator::PageProxy.new({:total_pages => 17, :current_page => 9, :window => 3, right: 4}, 13, nil) }
+          its(:first_page_outside_inner_and_right?) { should be_true }
+        end
+        context 'page == (total_pages - right + 1) && page == (current_page + window + 2)' do
+          subject { Paginator::PageProxy.new({:total_pages => 17, :current_page => 9, :window => 3, right: 4}, 14, nil) }
+          its(:first_page_outside_inner_and_right?) { should_not be_true }
+        end
+        context 'page == (total_pages - right - 1) && page == (current_page + window)' do
+          subject { Paginator::PageProxy.new({:total_pages => 17, :current_page => 9, :window => 3, right: 4}, 12, nil) }
+          its(:first_page_outside_inner_and_right?) { should_not be_true }
+        end
+      end
+      describe '#avoids_single_truncation?' do
+        context '#first_page_outside_inner_and_left? == true' do
+          subject { Paginator::PageProxy.new({:current_page => 9, :window => 3, left: 4}, 5, nil) }
+          its(:avoids_single_truncation?) { should be_true }
+        end
+        context '#first_page_outside_inner_and_right? == true' do
+          subject { Paginator::PageProxy.new({:total_pages => 17, :current_page => 9, :window => 3, right: 4}, 13, nil) }
+          its(:avoids_single_truncation?) { should be_true }
+        end
+        context '#first_page_outside_inner_and_left? == #first_page_outside_inner_and_right? == false' do
+          subject { Paginator::PageProxy.new({:current_page => 9, :window => 2, left: 4}, 5, nil) }
+          its(:avoids_single_truncation?) { should_not be_true }
+        end
+      end
+      describe '#display_tag?' do
+        context '#left_outer? == true' do
+          subject { Paginator::PageProxy.new({:total_pages => 15, :current_page => 8, :left => 3, :right => 3, :window => 3}, 1, nil) }
+          its(:display_tag?) {should be_true}
+        end
+        context '#right_outer? == true' do
+          subject { Paginator::PageProxy.new({:total_pages => 15, :current_page => 8, :left => 3, :right => 3, :window => 3 }, 15, nil) }
+          its(:display_tag?) { should be_true }
+        end
+        context '#inside_window? == true' do
+          subject { Paginator::PageProxy.new({:total_pages => 15, :current_page => 8, :left => 3, :right => 3, :window => 3 }, 9, nil) }
+          its(:display_tag?) { should be_true }
+        end
+        context '#avoids_single_truncation? == true' do
+          subject { Paginator::PageProxy.new({:total_pages => 15, :current_page => 8, :left => 3, :right => 3, :window => 3 }, 12, nil) }
+          its(:display_tag?) { should be_true }
+        end
+        context 'All of the above is false' do
+          subject { Paginator::PageProxy.new({:total_pages => 15, :current_page => 9, :left => 3, :right => 3, :window => 3 }, 4, nil) }
+          its(:display_tag?) { should_not be_true }
+        end
+      end
     end
   end
 end

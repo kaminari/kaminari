@@ -150,6 +150,26 @@ module Kaminari
           @last.is_a? Gap
         end
 
+        #Is the page the first one to the right of the left window and the first one to the left of the inner window?
+        def first_page_outside_inner_and_left?
+          (@page == @options[:current_page] - @options[:window] - 1) && (@page == @options[:left] + 1)
+        end
+
+        #Is the page the first one to the left of the right window and the first one to the right of the inner window?
+        def first_page_outside_inner_and_right?
+          (@page == @options[:current_page] + @options[:window] + 1) && (@page == @options[:total_pages] - @options[:right])
+        end
+
+        #The page isn't in any window, but if we truncate it, will we truncate only this page?
+        def avoids_single_truncation?
+          first_page_outside_inner_and_left? || first_page_outside_inner_and_right?
+        end
+
+        #Should we display the link tag?
+        def display_tag?
+          left_outer? || right_outer? || inside_window? || avoids_single_truncation?
+        end
+
         def to_i
           number
         end
