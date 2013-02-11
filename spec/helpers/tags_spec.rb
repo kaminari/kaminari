@@ -176,6 +176,55 @@ describe 'Kaminari::Helpers' do
           its(:was_truncated?) { should_not be_true }
         end
       end
+      describe "#single_gap?" do
+        let(:window_options) do
+          {
+            :left => 1,
+            :window => 1,
+            :right => 1,
+            :total_pages => 9
+          }
+        end
+
+        def gap_for(page)
+          Paginator::PageProxy.new(window_options, page, nil)
+        end
+
+        context "in case of '1 ... 4 5 6 ... 9'" do
+          before { window_options[:current_page] = 5 }
+
+          its("gap for 2") { gap_for(2).should_not be_a_single_gap }
+          its("gap for 3") { gap_for(3).should_not be_a_single_gap }
+          its("gap for 7") { gap_for(7).should_not be_a_single_gap }
+          its("gap for 8") { gap_for(8).should_not be_a_single_gap }
+        end
+
+        context "in case of '1 ... 3 4 5 ... 9'" do
+          before { window_options[:current_page] = 4 }
+
+          its("gap for 2") { gap_for(2).should be_a_single_gap }
+          its("gap for 6") { gap_for(6).should_not be_a_single_gap }
+          its("gap for 8") { gap_for(8).should_not be_a_single_gap }
+        end
+
+        context "in case of '1 ... 3 4 5 ... 7'" do
+          before do
+            window_options[:current_page] = 4
+            window_options[:total_pages] = 7
+          end
+
+          its("gap for 2") { gap_for(2).should be_a_single_gap }
+          its("gap for 6") { gap_for(6).should be_a_single_gap }
+        end
+
+        context "in case of '1 ... 5 6 7 ... 9'" do
+          before { window_options[:current_page] = 6 }
+
+          its("gap for 2") { gap_for(2).should_not be_a_single_gap }
+          its("gap for 4") { gap_for(4).should_not be_a_single_gap }
+          its("gap for 8") { gap_for(8).should be_a_single_gap }
+        end
+      end
     end
   end
 end

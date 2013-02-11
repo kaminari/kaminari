@@ -165,6 +165,11 @@ module Kaminari
           (@options[:current_page] - @page).abs <= @options[:window]
         end
 
+        def single_gap?
+          (@page.to_i == @options[:current_page] - @options[:window] - 1) && (@page.to_i == @options[:left] + 1) ||
+            (@page.to_i == @options[:current_page] + @options[:window] + 1) && (@page.to_i == @options[:total_pages] - @options[:right])
+        end
+
         # The last rendered tag was "truncated" or not
         def was_truncated?
           @last.is_a? Gap
