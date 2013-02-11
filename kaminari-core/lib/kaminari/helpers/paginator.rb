@@ -159,6 +159,11 @@ module Kaminari
           @last.is_a? Gap
         end
 
+        #Should we display the link tag?
+        def display_tag?
+          left_outer? || right_outer? || inside_window? || single_gap?
+        end
+
         def to_i #:nodoc:
           number
         end
