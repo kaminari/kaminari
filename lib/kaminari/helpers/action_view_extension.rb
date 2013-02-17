@@ -87,17 +87,23 @@ module Kaminari
     #   #-> Displaying items 6 - 10 of 26 in total
     def page_entries_info(collection, options = {})
       entry_name = if options[:entry_name]
-        options[:entry_name]
+        (collection.total_count == 1) ? options[:entry_name] : options[:entry_name].pluralize
       elsif collection.empty? || collection.is_a?(PaginatableArray)
-        'entry'
+        (collection.total_count == 1) ? 'entry' : 'entries'
       else
-        if collection.respond_to? :model  # DataMapper
-          collection.model.model_name.human.downcase
-        else  # AR
-          collection.model_name.human.downcase
-        end
+	model_name = if collection.respond_to? :model  # DataMapper
+		       collection.model.model_name
+		     else  # AR
+		       collection.model_name
+		     end
+	translate_name = model_name.human(:count=>collection.total_count).downcase
+	downcase_name = model_name.to_s.underscore.split("/").last.downcase
+	if translate_name == downcase_name
+	  (collection.total_count == 1) ? downcase_name : downcase_name.pluralize
+	else
+	  translate_name
+	end
       end
-      entry_name = entry_name.pluralize unless collection.total_count == 1
 
       if collection.total_pages < 2
         t('helpers.page_entries_info.one_page.display_entries', :entry_name => entry_name, :count => collection.total_count)
