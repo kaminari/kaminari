@@ -74,22 +74,33 @@ module Kaminari
 
       def to_s #:nodoc:
         subscriber = ActionView::LogSubscriber.log_subscribers.detect {|ls| ls.is_a? ActionView::LogSubscriber}
-        return super @window_options.merge(@options).merge :paginator => self unless subscriber
 
-        # dirty hack to suppress logging render_partial
-        class << subscriber
-          alias_method :render_partial_with_logging, :render_partial
-          # do nothing
-          def render_partial(event); end
+        # There is a logging subscriber
+        # and we don't want it to log render_partial
+        # It is threadsafe, but might not repress logging
+        # consistently in a high-load environment
+        if subscriber
+          class << subscriber
+            unless defined?(render_partial_with_logging)
+              alias_method :render_partial_with_logging, :render_partial
+              attr_accessor :render_without_logging
+              # ugly hack to make a renderer where
+              # we can turn logging on or off
+              def render_partial(event)
+                render_partial_with_logging(event) unless render_without_logging
+              end
+            end
+          end
+
+          subscriber.render_without_logging = true
+          ret = super @window_options.merge(@options).merge :paginator => self
+          subscriber.render_without_logging = false
+
+          ret
+        else
+          super @window_options.merge(@options).merge :paginator => self
         end
 
-        ret = super @window_options.merge(@options).merge :paginator => self
-
-        class << subscriber
-          alias_method :render_partial, :render_partial_with_logging
-          undef :render_partial_with_logging
-        end
-        ret
       end
 
       # Wraps a "page number" and provides some utility methods
