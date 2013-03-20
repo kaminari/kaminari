@@ -10,6 +10,11 @@ module Kaminari::Helpers
       def registered(app)
         app.register Padrino::Helpers
         app.helpers  HelperMethods
+        @app = app
+      end
+
+      def view_paths
+        @app.views
       end
 
       alias included registered
@@ -31,6 +36,7 @@ module Kaminari::Helpers
 
       def render(*args)
         base = ActionView::Base.new.tap do |a|
+          a.view_paths << SinatraHelpers.view_paths
           a.view_paths << File.expand_path('../../../../app/views', __FILE__)
         end
         base.render(*args)
@@ -125,7 +131,7 @@ end
 
 rescue LoadError
 
-$stderr.puts "[!]You shold install `padrino-helpers' gem if you want to use kaminari's pagination helpers with Sinatra."
+$stderr.puts "[!]You should install `padrino-helpers' gem if you want to use kaminari's pagination helpers with Sinatra."
 $stderr.puts "[!]Kaminari::Helpers::SinatraHelper does nothing now..."
 
 module Kaminari::Helpers

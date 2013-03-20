@@ -58,6 +58,11 @@ if defined? ActiveRecord
             it { should have(5).users }
             its('first.name') { should == 'user001' }
           end
+          
+          context "page 1 per nil" do
+            subject { model_class.page(1).per(nil) }
+            it { should have(model_class.count).users }
+          end
         end
 
         describe '#padding' do
@@ -98,6 +103,31 @@ if defined? ActiveRecord
             subject { model_class.page(5).per('aho') }
             its(:total_pages) { should == 4 }
           end
+
+          context 'with max_pages < total pages count from database' do
+            before { model_class.max_pages_per 3 }
+            subject { model_class.page }
+            its(:total_pages) { should == 3 }
+            after { model_class.max_pages_per nil }
+          end
+
+          context 'with max_pages > total pages count from database' do
+            before { model_class.max_pages_per 11 }
+            subject { model_class.page }
+            its(:total_pages) { should == 4 }
+            after { model_class.max_pages_per nil }
+          end
+
+          context 'with max_pages is nil' do
+            before { model_class.max_pages_per nil }
+            subject { model_class.page }
+            its(:total_pages) { should == 4 }
+          end
+          
+          context "with per(nil)" do
+            subject { model_class.page.per(nil) }
+            its(:total_pages) { should == 1 }
+          end
         end
 
 
@@ -110,6 +140,11 @@ if defined? ActiveRecord
           context 'page 2' do
             subject { model_class.page(2).per 3 }
             its(:current_page) { should == 2 }
+          end
+          
+          context "with per(nil)" do
+            subject { model_class.page.per(nil) }
+            its(:current_page) { should == 1 }
           end
         end
 

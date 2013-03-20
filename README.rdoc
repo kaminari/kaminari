@@ -62,10 +62,14 @@ Then bundle:
   To show a lot more users per each page (change the +per_page+ value)
     User.page(7).per(50)
   Note that the +per+ scope is not directly defined on the models but is just a method defined on the page scope. This is absolutely reasonable because you will never actually use +per_page+ without specifying the +page+ number.
-
+  
+  If you would like to specify "no limit" while still using the +per+ scope, you can pass +nil+:
+    User.count                 # => 1000
+    User.page(1).per(nil).size # => 1000
+    
 * the +padding+ scope
 
-  Occasionally you need to padding a number of records that is not a multiple of the page size.
+  Occasionally you need to pad a number of records that is not a multiple of the page size.
     User.page(7).per(50).padding(3)
   Note that the +padding+ scope also is not directly defined on the models.
 
@@ -87,7 +91,7 @@ Run the following generator command, then edit the generated file.
 
 * changing +page_method_name+
 
-  You can change the method name `page` to `bonzo` or `plant` or whatever you like, in order to play nice with existing `page` method or association or scope or any other plugin that defines `page` method on your models.
+  You can change the method name +page+ to +bonzo+ or +plant+ or whatever you like, in order to play nice with existing +page+ method or association or scope or any other plugin that defines +page+ method on your models.
 
 
 === Configuring default +per_page+ value for each model
@@ -104,7 +108,7 @@ Run the following generator command, then edit the generated file.
 * +max_paginates_per+
 
   You can specify max +per_page+ value per each model using the following declarative DSL.
-  If the variable that specified via +per+ scope is more than this variable, max +paginates_per+ is used instead of it. Default value is nil, which means you are not imposing any max +per_page+ value.
+  If the variable that specified via +per+ scope is more than this variable, +max_paginates_per+ is used instead of it. Default value is nil, which means you are not imposing any max +per_page+ value.
     class User < ActiveRecord::Base
       max_paginates_per 100
     end
@@ -132,17 +136,17 @@ Run the following generator command, then edit the generated file.
     <%= paginate @users %>
   This would output several pagination links such as <tt>« First ‹ Prev ... 2 3 4 5 6 7 8 9 10 ... Next › Last »</tt>
 
-* specifing the "inner window" size (4 by default)
+* specifying the "inner window" size (4 by default)
 
     <%= paginate @users, :window => 2 %>
   This would output something like <tt>... 5 6 7 8 9 ...</tt> when 7 is the current page.
 
-* specifing the "outer window" size (0 by default)
+* specifying the "outer window" size (0 by default)
 
     <%= paginate @users, :outer_window => 3 %>
   This would output something like <tt>1 2 3 4 ...(snip)... 17 18 19 20</tt> while having 20 pages in total.
 
-* outer window can be separetely specified by +left+, +right+ (0 by default)
+* outer window can be separately specified by +left+, +right+ (0 by default)
 
     <%= paginate @users, :left => 1, :right => 3 %>
   This would output something like <tt>1 ...(snip)... 18 19 20</tt> while having 20 pages in total.
@@ -165,7 +169,7 @@ Run the following generator command, then edit the generated file.
 * the +link_to_next_page+ and +link_to_previous_page+ helper method
 
     <%= link_to_next_page @items, 'Next Page' %>
-  This simply renders a link to the next page. This would be helpful for creating "Twitter like" pagination feature.
+  This simply renders a link to the next page. This would be helpful for creating a Twitter-like pagination feature.
 
 * the +page_entries_info+ helper method
 
@@ -223,7 +227,7 @@ Kaminari includes a handy template generator.
     % mkdir my_custom_theme
     % cp _*.html.* my_custom_theme/
 
-  Next reference that directory when calling the paginate method:
+  Next, reference that directory when calling the +paginate+ method:
 
     <%= paginate @users, :theme => 'my_custom_theme' %>
 
@@ -238,22 +242,22 @@ However, the <tt>paginate</tt> helper doesn't automatically handle your Array ob
 <tt>Kaminari::paginate_array</tt> method converts your Array object into a paginatable Array that accepts <tt>page</tt> method.
   Kaminari.paginate_array(my_array_object).page(params[:page]).per(10)
 
-You can specify the `total_count` value through options Hash. This would be helpful when handling an Array-ish object that has a different `count` value from actual `count` such as RSolr search result or when you need to generate a custom pagination. For example:
+You can specify the +total_count+ value through options Hash. This would be helpful when handling an Array-ish object that has a different +count+ value from actual +count+ such as RSolr search result or when you need to generate a custom pagination. For example:
   Kaminari.paginate_array([], total_count: 145).page(params[:page]).per(10)
 
 == Creating friendly URLs and caching
 
-Because of the `page` parameter and Rails 3 routing, you can easily generate SEO and user-friendly URLs. For any resource you'd like to paginate, just add the following to your `routes.rb`:
+Because of the +page+ parameter and Rails 3 routing, you can easily generate SEO and user-friendly URLs. For any resource you'd like to paginate, just add the following to your +routes.rb+:
 
     resources :my_resources do
       get 'page/:page', :action => :index, :on => :collection
     end
 
-This will create URLs like `/my_resources/page/33` instead of `/my_resources?page=33`. This is now a friendly URL, but it also has other added benefits...
+This will create URLs like <tt>/my_resources/page/33</tt> instead of <tt>/my_resources?page=33</tt>. This is now a friendly URL, but it also has other added benefits...
 
-Because the `page` parameter is now a URL segment, we can leverage on Rails page caching[http://guides.rubyonrails.org/caching_with_rails.html#page-caching]!
+Because the +page+ parameter is now a URL segment, we can leverage on Rails page caching[http://guides.rubyonrails.org/caching_with_rails.html#page-caching]!
 
-NOTE: In this example, I've pointed the route to my `:index` action. You may have defined a custom pagination action in your controller - you should point `:action => :your_custom_action` instead.
+NOTE: In this example, I've pointed the route to my <tt>:index</tt> action. You may have defined a custom pagination action in your controller - you should point <tt>:action => :your_custom_action</tt> instead.
 
 
 == Sinatra/Padrino support

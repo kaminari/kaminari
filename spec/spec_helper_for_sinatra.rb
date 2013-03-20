@@ -1,7 +1,6 @@
 require 'kaminari/sinatra'
 require 'rack/test'
 require 'sinatra/test_helpers'
-require 'capybara/dsl'
 require 'capybara/rspec'
 
 require 'fake_app/sinatra_app'
@@ -24,7 +23,6 @@ end
 RSpec.configure do |config|
   config.include Rack::Test::Methods
   config.include Sinatra::TestHelpers
-  config.include Capybara::DSL
   config.include HelperMethodForHelperSpec
 #   config.include HelperMethodForHelperSpec, :type => :helper
 end

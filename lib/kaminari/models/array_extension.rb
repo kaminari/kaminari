@@ -14,9 +14,7 @@ module Kaminari
       @_original_array, @_limit_value, @_offset_value, @_total_count = original_array, (options[:limit] || default_per_page).to_i, options[:offset].to_i, options[:total_count]
 
       if options[:limit] && options[:offset]
-        class << self
-          include Kaminari::PageScopeMethods
-        end
+        extend Kaminari::PageScopeMethods
       end
 
       if options[:total_count]

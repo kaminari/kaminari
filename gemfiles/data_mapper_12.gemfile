@@ -8,5 +8,8 @@ gem 'dm-transactions', '>= 1.2.0'
 gem 'dm-active_model', '>= 1.2.0'
 gem 'dm-sqlite-adapter', '>= 1.2.0'
 gem 'rspec-rails', '>= 2.0'
+gem 'nokogiri'
+gem 'xpath'
+gem 'mime-types'
 
 gemspec :path => '../'

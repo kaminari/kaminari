@@ -1,8 +1,11 @@
+services: mongodb
+
 script: "bundle exec rake spec"
 
 rvm:
   - 1.8.7
   - 1.9.3
+  - ruby-head
 
 gemfile:
   - gemfiles/active_record_32.gemfile
