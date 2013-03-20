@@ -41,6 +41,39 @@ EOT
         end
       end
 
+      context "mounted padrino app" do
+        before do
+          Padrino.clear!
+
+          class BaseApp < Padrino::Application; end
+          class MountedApp < Padrino::Application
+
+            register Kaminari::Helpers::SinatraHelpers
+
+            controllers :users do
+              get :index do
+                @page = params[:page] || 1
+                @users = User.page(@page)
+                @options = {}
+
+                erb ERB_TEMPLATE_FOR_PAGINATE
+              end
+            end
+
+          end
+
+          Padrino.mount('base_app').to('/')
+          Padrino.mount('mounted_app').to('/admin')
+          def app
+            Rack::Lint.new(Padrino.application)
+          end
+        end
+
+        it "should do ???" do
+          # get '/admin/users'
+        end
+      end
+
       context 'normal paginations with Sinatra' do
         before { get '/users' }
 
