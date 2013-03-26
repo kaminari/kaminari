@@ -6,7 +6,7 @@ module Kaminari
         ::ActiveRecord::Base.send :include, Kaminari::ActiveRecordExtension
       end
 
-      begin; require 'data_mapper'; rescue LoadError; end
+      begin; require 'dm-core'; rescue LoadError; end
       if defined? ::DataMapper
         require 'dm-aggregates'
         require 'kaminari/models/data_mapper_extension'
