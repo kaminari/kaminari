@@ -51,6 +51,20 @@ module Kaminari::Helpers
         @current_path + (query.empty? ? '' : "?#{query.to_query}")
       end
 
+      alias_method :old_link_to, :link_to
+      def link_to(name_given, options = {}, html_options = {}, &block)
+        if name_given.is_a? Hash
+          html_options = options
+          options = url_for(name_given)
+          name = if block_given?
+            block.arity <= 1 ? capture(name, &block) : capture(name, options, html_options, &block)
+          end
+          old_link_to(name, options, html_options)
+        else
+          old_link_to(name_given, options, html_options)
+        end
+      end
+
       def link_to_unless(condition, name, options = {}, html_options = {}, &block)
         options = url_for(options) if options.is_a? Hash
         if condition
