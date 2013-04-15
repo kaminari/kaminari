@@ -1,4 +1,4 @@
-source :rubygems
+source 'https://rubygems.org'
 
 gem 'railties', '>= 3.0.13'
 gem 'activerecord', '>= 3.0.13', :require => 'active_record'
