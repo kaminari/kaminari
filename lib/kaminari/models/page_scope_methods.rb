@@ -24,7 +24,7 @@ module Kaminari
       return 1 if limit_value.nil?
 
       count_without_padding = total_count
-      count_without_padding -= @_padding if @_padding
+      count_without_padding -= @_padding if defined?(@_padding) && @_padding
       count_without_padding = 0 if count_without_padding < 0
 
       total_pages_count = (count_without_padding.to_f / limit_value).ceil
@@ -42,7 +42,7 @@ module Kaminari
       return 1 if limit_value.nil?
 
       offset_without_padding = offset_value
-      offset_without_padding -= @_padding if @_padding
+      offset_without_padding -= @_padding if defined?(@_padding) && @_padding
       offset_without_padding = 0 if offset_without_padding < 0
 
       (offset_without_padding / limit_value) + 1
