@@ -67,6 +67,11 @@ Then bundle:
     User.count                 # => 1000
     User.page(1).per(nil).size # => 1000
     
+  Keep in mind that +per+ utilizes internally +limit+ and so it will override any +limit+ that was set previously
+    User.count                  # => 1000
+    a = User.limit(5).count     # => 5
+    b = a.page(1).per(20).size  # => 20 
+
 * the +padding+ scope
 
   Occasionally you need to pad a number of records that is not a multiple of the page size.
