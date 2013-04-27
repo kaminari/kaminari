@@ -40,3 +40,14 @@ appraise 'mongoid_30' do
   gem 'xpath'
   gem 'mime-types'
 end
+
+appraise 'sinatra' do
+  gem 'activerecord', '>= 3.2.3', :require => 'active_record'
+  gem 'sinatra', '>= 1.3'
+  gem 'padrino-helpers', '>= 0.10.6.c'
+  gem 'rack-test', '>= 0'
+  gem 'sinatra-contrib', '>= 1.3'
+  gem 'nokogiri'
+  gem 'xpath'
+  gem 'mime-types'
+end
