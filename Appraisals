@@ -20,3 +20,12 @@ appraise 'data_mapper_12' do
   gem 'xpath'
   gem 'mime-types'
 end
+
+appraise 'mongo_mapper' do
+  gem 'railties', '>= 3.2.3'
+  gem 'mongo_mapper', '>= 0.11.0'
+  gem 'rspec-rails', '>= 2.0'
+  gem 'nokogiri'
+  gem 'xpath'
+  gem 'mime-types'
+end
