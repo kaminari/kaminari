@@ -29,3 +29,14 @@ appraise 'mongo_mapper' do
   gem 'xpath'
   gem 'mime-types'
 end
+
+appraise 'mongoid_30' do
+  gem 'railties', '>= 3.2.3'
+  gem 'mongoid', '>= 3.0'
+  gem 'rspec-rails', '>= 2.0'
+  gem 'origin'
+  gem 'moped'
+  gem 'nokogiri'
+  gem 'xpath'
+  gem 'mime-types'
+end
