@@ -21,7 +21,7 @@ module Kaminari
       end
 
       def to_s(locals = {}) #:nodoc:
-        @template.render :partial => "kaminari/#{@theme}#{self.class.name.demodulize.underscore}", :locals => @options.merge(locals)
+        @template.render :partial => "kaminari/#{@theme}#{self.class.name.demodulize.underscore}", :locals => @options.merge(locals), :formats => [:html]
       end
 
       def page_url_for(page)
