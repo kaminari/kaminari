@@ -5,6 +5,7 @@ script: "bundle exec rake spec"
 rvm:
   - 1.9.3
   - 2.0.0
+  - rbx-19mode
 
 gemfile:
   - gemfiles/active_record_32.gemfile
