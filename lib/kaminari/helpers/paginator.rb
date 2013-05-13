@@ -80,8 +80,8 @@ module Kaminari
         # It is threadsafe, but might not repress logging
         # consistently in a high-load environment
         if subscriber
-          class << subscriber
-            unless defined?(render_partial_with_logging)
+          unless defined? subscriber.render_partial_with_logging
+            class << subscriber
               alias_method :render_partial_with_logging, :render_partial
               attr_accessor :render_without_logging
               # ugly hack to make a renderer where
@@ -100,7 +100,6 @@ module Kaminari
         else
           super @window_options.merge(@options).merge :paginator => self
         end
-
       end
 
       # Wraps a "page number" and provides some utility methods
