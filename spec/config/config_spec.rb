@@ -56,6 +56,18 @@ describe Kaminari::Configuration do
     end
   end
 
+  describe 'params_except' do
+    context 'by default' do
+      its(:params_except) { should == [] }
+    end
+  end
+
+  describe 'params_only' do
+    context 'by default' do
+      its(:params_only) { should == [] }
+    end
+  end
+
   describe 'param_name' do
     context 'by default' do
       its(:param_name) { should == :page }

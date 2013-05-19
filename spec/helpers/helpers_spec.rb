@@ -20,6 +20,30 @@ describe 'Kaminari::Helpers::Paginator' do
     it { should == {:controller => 'foo', :action => 'bar'} }
   end
 
+  describe '#params_except' do
+    before do
+      @paginator = Paginator.new(
+        template,
+        :params => { :controller => 'foo', :action => 'bar', :utm_source => 'baz' },
+        :params_except => [:utm_source]
+      )
+    end
+    subject { @paginator.page_tag(template).instance_variable_get('@params') }
+    it { should == { :controller => 'foo', :action => 'bar' } }
+  end
+
+  describe '#params_only' do
+    before do
+      @paginator = Paginator.new(
+        template,
+        :params => { :controller => 'foo', :action => 'bar', :utm_source => 'baz' },
+        :params_only => [:controller]
+      )
+    end
+    subject { @paginator.page_tag(template).instance_variable_get('@params') }
+    it { should == { :controller => 'foo' }
+  end
+
   describe '#param_name' do
     before do
       @paginator = Paginator.new(template, :param_name => :pagina)
