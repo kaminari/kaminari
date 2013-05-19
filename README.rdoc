@@ -179,7 +179,7 @@ Run the following generator command, then edit the generated file.
     <%= page_entries_info @users %>
   This renders a helpful message with numbers of displayed vs. total entries.
 
-* filtering out unuseful search params with +params_except+ and +params_only+
+* filtering out unuseful params in pagination links with +params_except+ and +params_only+
 
     <%= paginate @users, :params_except => [:utm_source] %>
     <%= paginate @users, :params_only => [:search_params] %>

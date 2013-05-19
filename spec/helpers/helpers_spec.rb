@@ -41,7 +41,7 @@ describe 'Kaminari::Helpers::Paginator' do
       )
     end
     subject { @paginator.page_tag(template).instance_variable_get('@params') }
-    it { should == { :controller => 'foo' }
+    it { should == { :controller => 'foo' } }
   end
 
   describe '#param_name' do
