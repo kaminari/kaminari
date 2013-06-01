@@ -25,6 +25,7 @@ module Kaminari
     config_accessor :right
     config_accessor :page_method_name
     config_accessor :max_pages
+    config_accessor :theme
 
     def param_name
       config.param_name.respond_to?(:call) ? config.param_name.call : config.param_name
@@ -47,5 +48,6 @@ module Kaminari
     config.page_method_name = :page
     config.param_name = :page
     config.max_pages = nil
+    config.theme = nil
   end
 end
