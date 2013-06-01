@@ -152,6 +152,11 @@ Run the following generator command, then edit the generated file.
     <%= paginate @users, :left => 1, :right => 3 %>
   This would output something like <tt>1 ...(snip)... 18 19 20</tt> while having 20 pages in total.
 
+* navigation links (first, last, previous, next) can be excluded by +exclude+ ([] by default)
+
+    <%= paginate @users, :exclude => [:first, :last]
+  This would leave out the first and last links in all cases.
+
 * changing the parameter name (:+param_name+) for the links
 
     <%= paginate @users, :param_name => :pagina %>

@@ -23,6 +23,7 @@ module Kaminari
         @template, @options = template, options
         @theme = @options[:theme] ? "#{@options[:theme]}/" : ''
         @options[:current_page] = PageProxy.new @window_options.merge(@options), @options[:current_page], nil
+        @options[:exclude] ||= []
         #FIXME for compatibility. remove num_pages at some time in the future
         @options[:total_pages] ||= @options[:num_pages]
         @options[:num_pages] ||= @options[:total_pages]
