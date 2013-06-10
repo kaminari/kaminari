@@ -4,7 +4,7 @@ if defined? Mongoid
   describe Kaminari::MongoidExtension do
     before(:each) do
       41.times do
-        User.create!({:salary => 1})
+        User.create!({salary: 1})
       end
     end
 
@@ -41,7 +41,7 @@ if defined? Mongoid
         if Mongoid::VERSION =~ /^3/
           its(:selector) { should == {'salary' => 1} }
         else
-          its(:selector) { should == {:salary => 1} }
+          its(:selector) { should == {salary: 1} }
         end
         its(:current_page) { should == 2 }
         its(:limit_value) { should == 25 }
@@ -50,12 +50,12 @@ if defined? Mongoid
       end
 
       context 'with criteria before' do
-        subject { User.where(:salary => 1).page 2 }
+        subject { User.where(salary: 1).page 2 }
         it_should_behave_like 'complete valid pagination'
       end
 
       context 'with criteria after' do
-        subject { User.page(2).where(:salary => 1) }
+        subject { User.page(2).where(salary: 1) }
         it_should_behave_like 'complete valid pagination'
       end
     end
@@ -72,11 +72,11 @@ if defined? Mongoid
     describe '#page in embedded documents' do
       before do
         @mongo_developer = MongoMongoidExtensionDeveloper.new
-        @mongo_developer.frameworks.new(:name => "rails", :language => "ruby")
-        @mongo_developer.frameworks.new(:name => "merb", :language => "ruby")
-        @mongo_developer.frameworks.new(:name => "sinatra", :language => "ruby")
-        @mongo_developer.frameworks.new(:name => "cakephp", :language => "php")
-        @mongo_developer.frameworks.new(:name => "tornado", :language => "python")
+        @mongo_developer.frameworks.new(name: "rails", language: "ruby")
+        @mongo_developer.frameworks.new(name: "merb", language: "ruby")
+        @mongo_developer.frameworks.new(name: "sinatra", language: "ruby")
+        @mongo_developer.frameworks.new(name: "cakephp", language: "php")
+        @mongo_developer.frameworks.new(name: "tornado", language: "python")
       end
 
       context 'page 1' do
@@ -89,7 +89,7 @@ if defined? Mongoid
       end
 
       context 'with criteria after' do
-        subject { @mongo_developer.frameworks.page(1).per(2).where(:language => "ruby") }
+        subject { @mongo_developer.frameworks.page(1).per(2).where(language: "ruby") }
         it { should be_a Mongoid::Criteria }
         its(:total_count) { should == 3 }
         its(:limit_value) { should == 2 }
@@ -98,7 +98,7 @@ if defined? Mongoid
       end
 
       context 'with criteria before' do
-        subject { @mongo_developer.frameworks.where(:language => "ruby").page(1).per(2) }
+        subject { @mongo_developer.frameworks.where(language: "ruby").page(1).per(2) }
         it { should be_a Mongoid::Criteria }
         its(:total_count) { should == 3 }
         its(:limit_value) { should == 2 }

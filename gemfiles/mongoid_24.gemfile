@@ -4,4 +4,4 @@ gem 'railties', '>= 3.2.3'
 gem 'mongoid', '~> 2.4.0'
 gem 'rspec-rails', '>= 2.0'
 
-gemspec :path => '../'
+gemspec path: '../'

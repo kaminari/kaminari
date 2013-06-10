@@ -9,4 +9,4 @@ gem 'nokogiri'
 gem 'xpath'
 gem 'mime-types'
 
-gemspec :path => '../'
+gemspec path: '../'

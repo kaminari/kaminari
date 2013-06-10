@@ -21,7 +21,7 @@ module Kaminari
       end
 
       def to_s(locals = {}) #:nodoc:
-        @template.render :partial => "kaminari/#{@theme}#{self.class.name.demodulize.underscore}", :locals => @options.merge(locals), :formats => [:html]
+        @template.render partial: "kaminari/#{@theme}#{self.class.name.demodulize.underscore}", locals: @options.merge(locals), formats: [:html]
       end
 
       def page_url_for(page)
@@ -40,7 +40,7 @@ module Kaminari
         page_url_for page
       end
       def to_s(locals = {}) #:nodoc:
-        super locals.merge(:url => url)
+        super locals.merge(url: url)
       end
     end
 
@@ -52,7 +52,7 @@ module Kaminari
         @options[:page]
       end
       def to_s(locals = {}) #:nodoc:
-        super locals.merge(:page => page)
+        super locals.merge(page: page)
       end
     end
 
