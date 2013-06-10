@@ -4,12 +4,12 @@ if defined? DataMapper
   describe Kaminari::DataMapperExtension do
     before do
       100.times do |i|
-        User.create(:name => "User#{i}", :age => i)
+        User.create(name: "User#{i}", age: i)
       end
 
       worker0 = User[0]
       50.times do |i|
-        worker0.projects << Project.create(:name => "Project#{i}")
+        worker0.projects << Project.create(name: "Project#{i}")
       end
       worker0.projects.save
     end
@@ -112,11 +112,11 @@ if defined? DataMapper
       end
 
       context 'on query with order' do
-        subject { User.page(5).all(:age.lte => 80, :order => [:age.asc]).per(13) }
-        it('includes user with age 52') { should include(User.first(:age => 52)) }
-        it('does not include user with age 51') { should_not include(User.first(:age => 51)) }
-        it('includes user with age 52') { should include(User.first(:age => 64)) }
-        it('does not include user with age 51') { should_not include(User.first(:age => 65)) }
+        subject { User.page(5).all(:age.lte => 80, order: [:age.asc]).per(13) }
+        it('includes user with age 52') { should include(User.first(age: 52)) }
+        it('does not include user with age 51') { should_not include(User.first(age: 51)) }
+        it('includes user with age 52') { should include(User.first(age: 64)) }
+        it('does not include user with age 51') { should_not include(User.first(age: 65)) }
         its(:current_page) { should == 5 }
         its('query.limit') { should == 13 }
         its('query.offset') { should == 52 }
