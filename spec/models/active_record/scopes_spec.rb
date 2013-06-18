@@ -58,11 +58,6 @@ if defined? ActiveRecord
             it { should have(5).users }
             its('first.name') { should == 'user001' }
           end
-
-          context "page 1 per nil" do
-            subject { model_class.page(1).per(nil) }
-            it { should have(model_class.count).users }
-          end
         end
 
         describe '#padding' do
