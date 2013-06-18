@@ -31,6 +31,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rspec', ['>= 0']
   s.add_development_dependency 'rr', ['>= 0']
   s.add_development_dependency 'capybara', ['>= 1.0']
-  s.add_development_dependency 'database_cleaner', ['>= 0']
+  s.add_development_dependency 'database_cleaner', ['< 1']
   s.add_development_dependency 'rdoc', ['>= 0']
 end
