@@ -58,7 +58,7 @@ module Kaminari
       current_page - 1 unless first_page?
     end
 
-    # First page of the collection ?
+    # First page of the collection?
     def first_page?
       current_page == 1
     end
@@ -66,6 +66,11 @@ module Kaminari
     # Last page of the collection?
     def last_page?
       current_page >= total_pages
+    end
+
+    # Out of range of the collection?
+    def out_of_range?
+      current_page > total_pages
     end
   end
 end

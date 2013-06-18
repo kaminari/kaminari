@@ -201,6 +201,23 @@ if defined? ActiveRecord
           end
         end
 
+        describe '#out_of_range?' do
+          context 'on last page' do
+            subject { model_class.page(10).per(10) }
+            its(:out_of_range?) { should == false }
+          end
+
+          context 'within range' do
+            subject { model_class.page(1).per(10) }
+            its(:out_of_range?) { should == false }
+          end
+
+          context 'out of range' do
+            subject { model_class.page(11).per(10) }
+            its(:out_of_range?) { should == true }
+          end
+        end
+
         describe '#count' do
           context 'page 1' do
             subject { model_class.page }
