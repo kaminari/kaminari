@@ -129,11 +129,6 @@ if defined? ActiveRecord
             subject { model_class.page }
             its(:total_pages) { should == 4 }
           end
-
-          context "with per(nil)" do
-            subject { model_class.page.per(nil) }
-            its(:total_pages) { should == 1 }
-          end
         end
 
         describe '#current_page' do
@@ -145,11 +140,6 @@ if defined? ActiveRecord
           context 'page 2' do
             subject { model_class.page(2).per 3 }
             its(:current_page) { should == 2 }
-          end
-
-          context "with per(nil)" do
-            subject { model_class.page.per(nil) }
-            its(:current_page) { should == 1 }
           end
         end
 
