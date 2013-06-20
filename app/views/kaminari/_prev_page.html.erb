@@ -5,6 +5,7 @@
     total_pages:   total number of pages
     per_page:      number of items to fetch per page
     remote:        data-remote
+    data:          add a data attribute. default nothing. `:data => {pjax: true` will trun to `data-pjax="true"` in html
 -%>
 <span class="prev">
   <%= link_to_unless current_page.first?, raw(t 'views.pagination.previous'), url, :rel => 'prev', :remote => remote, :data => data %>
