@@ -9,6 +9,7 @@ rvm:
 
 gemfile:
   - gemfiles/active_record_32.gemfile
+  - gemfiles/active_record_40.gemfile
   - gemfiles/data_mapper_12.gemfile
   - gemfiles/mongo_mapper.gemfile
   - gemfiles/mongoid_30.gemfile
