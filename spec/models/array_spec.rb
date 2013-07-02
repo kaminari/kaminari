@@ -86,6 +86,11 @@ describe Kaminari::PaginatableArray do
       subject { array.page(5).per('aho') }
       its(:total_pages) { should == 4 }
     end
+
+    context 'per 25, padding 25' do
+      subject { array.page(1).padding(25) }
+      its(:total_pages) { should == 3 }
+    end
   end
 
   describe '#current_page' do
