@@ -14,6 +14,19 @@ describe 'Kaminari::ActionViewExtension' do
         lambda { helper.escape_javascript(helper.paginate @users, :params => {:controller => 'users', :action => 'index'}) }.should_not raise_error
       end
     end
+
+    context 'data attribute' do
+      it "returns data attributes once defined" do
+        output = helper.paginate @users, :params => {:controller => 'users', :action => 'index'}, data: {pjax: true}
+        output.should match /data-pjax=\"true\"/
+      end
+
+      it "returns no data attributes if no such args" do
+        output = helper.paginate @users, :params => {:controller => 'users', :action => 'index'}
+        output.should be_a String
+        output.should_not match /data-/
+      end
+    end
   end
 
   describe '#link_to_previous_page' do
