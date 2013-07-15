@@ -37,11 +37,7 @@ module Kaminari
     #     <span>At the Beginning</span>
     #   <% end %>
     def link_to_previous_page(scope, name, options = {}, &block)
-      params = options.delete(:params) || {}
-      param_name = options.delete(:param_name) || Kaminari.config.param_name
-      link_to_unless scope.first_page?, name, params.merge(param_name => (scope.current_page - 1)), options.reverse_merge(:rel => 'previous') do
-        block.call if block
-      end
+      kaminari_link_to_page(scope, name, scope.first_page?, -1, 'previous', options, &block)
     end
 
     # A simple "Twitter like" pagination link that creates a link to the next page.
@@ -62,11 +58,7 @@ module Kaminari
     #     <span>No More Pages</span>
     #   <% end %>
     def link_to_next_page(scope, name, options = {}, &block)
-      params = options.delete(:params) || {}
-      param_name = options.delete(:param_name) || Kaminari.config.param_name
-      link_to_unless scope.last_page?, name, params.merge(param_name => (scope.current_page + 1)), options.reverse_merge(:rel => 'next') do
-        block.call if block
-      end
+      kaminari_link_to_page(scope, name, scope.last_page?, 1, 'next', options, &block)
     end
 
     # Renders a helpful message with numbers of displayed vs. total entries.
@@ -86,25 +78,12 @@ module Kaminari
     #   <%= page_entries_info @posts, :entry_name => 'item' %>
     #   #-> Displaying items 6 - 10 of 26 in total
     def page_entries_info(collection, options = {})
-      entry_name = if options[:entry_name]
-        options[:entry_name]
-      elsif collection.empty? || collection.is_a?(PaginatableArray)
-        'entry'
-      else
-        if collection.respond_to? :model  # DataMapper
-          collection.model.model_name.human.downcase
-        else  # AR
-          collection.model_name.human.downcase
-        end
-      end
-      entry_name = entry_name.pluralize unless collection.total_count == 1
-
       if collection.total_pages < 2
-        t('helpers.page_entries_info.one_page.display_entries', :entry_name => entry_name, :count => collection.total_count)
+        t('helpers.page_entries_info.one_page.display_entries', :entry_name => kaminari_entry_name(collection, options), :count => collection.total_count)
       else
         first = collection.offset_value + 1
         last = collection.last_page? ? collection.total_count : collection.offset_value + collection.limit_value
-        t('helpers.page_entries_info.more_pages.display_entries', :entry_name => entry_name, :first => first, :last => last, :total => collection.total_count)
+        t('helpers.page_entries_info.more_pages.display_entries', :entry_name => kaminari_entry_name(collection, options), :first => first, :last => last, :total => collection.total_count)
       end.html_safe
     end
 
@@ -131,21 +110,34 @@ module Kaminari
       param_name = options.delete(:param_name) || Kaminari.config.param_name
 
       output = ""
-
-      if !scope.first_page? && !scope.last_page?
-        # If not first and not last, then output both links.
-        output << '<link rel="next" href="' + url_for(params.merge(param_name => (scope.current_page + 1))) + '"/>'
-        output << '<link rel="prev" href="' + url_for(params.merge(param_name => (scope.current_page - 1))) + '"/>'
-      elsif scope.first_page?
-        # If first page, add next link unless last page.
-        output << '<link rel="next" href="' + url_for(params.merge(param_name => (scope.current_page + 1))) + '"/>' unless scope.last_page?
-      else
-        # If last page, add prev link unless first page.
-        output << '<link rel="prev" href="' + url_for(params.merge(param_name => (scope.current_page - 1))) + '"/>' unless scope.first_page?
-      end
+      output << '<link rel="next" href="' + url_for(params.merge(param_name => (scope.current_page + 1))) + '"/>' unless scope.last_page?
+      output << '<link rel="prev" href="' + url_for(params.merge(param_name => (scope.current_page - 1))) + '"/>' unless scope.first_page?
 
       output.html_safe
     end
 
+    private
+    def kaminari_entry_name(collection, options)
+      entry_name = if options[:entry_name]
+        options[:entry_name]
+      elsif collection.empty? || collection.is_a?(PaginatableArray)
+        'entry'
+      else
+        if collection.respond_to? :model  # DataMapper
+          collection.model.model_name.human.downcase
+        else  # AR
+          collection.model_name.human.downcase
+        end
+      end
+      collection.total_count == 1 ? entry_name : entry_name.pluralize
+    end
+
+    def kaminari_link_to_page(scope, name, dont_link, offset, rel, options = {}, &block)
+      params = options.delete(:params) || {}
+      param_name = options.delete(:param_name) || Kaminari.config.param_name
+      link_to_unless dont_link, name, params.merge(param_name => (scope.current_page + offset)), options.reverse_merge(:rel => rel) do
+        block.call if block
+      end
+    end
   end
 end
