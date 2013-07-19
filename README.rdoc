@@ -85,6 +85,8 @@ You can configure the following default values by overriding these values using 
   right             # 0 by default
   page_method_name  # :page by default
   param_name        # :page by default
+  params_except     # [] by default
+  params_only       # [] by default
 
 There's a handy generator that generates the default configuration file into config/initializers directory.
 Run the following generator command, then edit the generated file.
@@ -177,6 +179,14 @@ Run the following generator command, then edit the generated file.
     <%= page_entries_info @users %>
   This renders a helpful message with numbers of displayed vs. total entries.
 
+* filtering out unuseful params in pagination links with +params_except+ and +params_only+
+
+    <%= paginate @users, :params_except => [:utm_source] %>
+    <%= paginate @users, :params_only => [:search_params] %>
+  This filters out 'utm_source' from query params/passed only :search_params parameter to page links
+
+
+
 === I18n and labels
 
 The default labels for 'first', 'last', 'previous', '...' and 'next' are stored in the I18n yaml inside the engine, and rendered through I18n API. You can switch the label value per I18n.locale for your internationalized application.
@@ -211,7 +221,7 @@ Kaminari includes a handy template generator.
 * themes
 
   The generator has the ability to fetch several sample template themes from
-  the external repository (https://github.com/amatsuda/kaminari_themes) in 
+  the external repository (https://github.com/amatsuda/kaminari_themes) in
   addition to the bundled "default" one, which will help you creating a nice
   looking paginator.
     % rails g kaminari:views THEME

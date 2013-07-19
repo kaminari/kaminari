@@ -15,9 +15,9 @@ module Kaminari
     class Tag
       def initialize(template, options = {}) #:nodoc:
         @template, @options = template, options.dup
+        @params = self.class.params_for(@options, template.params)
         @param_name = @options.delete(:param_name)
         @theme = @options[:theme] ? "#{@options.delete(:theme)}/" : ''
-        @params = @options[:params] ? template.params.merge(@options.delete :params) : template.params
       end
 
       def to_s(locals = {}) #:nodoc:
@@ -26,6 +26,21 @@ module Kaminari
 
       def page_url_for(page)
         @template.url_for @params.merge(@param_name => (page <= 1 ? nil : page))
+      end
+
+      def self.params_for(options, params)
+        options = options.dup
+        param_name = options.delete(:param_name)
+        params = params.merge(options.delete(:params) || {})
+
+        params.tap do |params|
+          if (only = options.delete(:params_only)).present?
+            params.slice!(param_name, *only)
+          end
+          if (except = options.delete(:params_except)).present?
+            params.except!(*except - [param_name])
+          end
+        end
       end
     end
 
