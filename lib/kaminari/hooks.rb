@@ -28,10 +28,6 @@ module Kaminari
         ::Plucky::Query.send :include, Kaminari::PluckyCriteriaMethods
       end
       require 'kaminari/models/array_extension'
-
-      ActiveSupport.on_load(:action_view) do
-        ::ActionView::Base.send :include, Kaminari::ActionViewExtension
-      end
     end
   end
 end
