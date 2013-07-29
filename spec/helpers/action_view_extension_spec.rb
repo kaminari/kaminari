@@ -25,6 +25,15 @@ describe 'Kaminari::ActionViewExtension' do
         @users = User.page(50)
       end
       context 'the default behaviour' do
+        before do
+          def helper.params
+            { term: 'search_criteria', :controller => 'users', :action => 'index'}
+          end
+        end
+        subject { helper.link_to_previous_page @users, 'Previous' }
+        it { should be_a String }
+      end
+      context 'with explicit params' do
         subject { helper.link_to_previous_page @users, 'Previous', :params => {:controller => 'users', :action => 'index'} }
         it { should be_a String }
         it { should match(/rel="previous"/) }
@@ -47,11 +56,20 @@ describe 'Kaminari::ActionViewExtension' do
     before do
       50.times {|i| User.create! :name => "user#{i}"}
     end
-    context 'having more page' do
+    context 'having more pages' do
       before do
         @users = User.page(1)
       end
       context 'the default behaviour' do
+        before do
+          def helper.params
+            { term: 'search_criteria', :controller => 'users', :action => 'index'}
+          end
+        end
+        subject { helper.link_to_next_page @users, 'Next' }
+        it { should be_a String }
+      end
+      context 'with explicit params' do
         subject { helper.link_to_next_page @users, 'More', :params => {:controller => 'users', :action => 'index'} }
         it { should be_a String }
         it { should match(/rel="next"/) }
