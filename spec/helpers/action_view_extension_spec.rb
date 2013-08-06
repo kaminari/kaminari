@@ -246,7 +246,7 @@ describe 'Kaminari::ActionViewExtension' do
       subject { helper.rel_next_prev_link_tags @users, :params => {:controller => 'users', :action => 'index'} }
       it { should be_a String }
       it { should match(/rel="next"/) }
-      it { should match(/rel="prev"/) }
+      it { should match(/rel="prev" href=\"\/users"/) }
     end
     context 'the last page' do
       before do

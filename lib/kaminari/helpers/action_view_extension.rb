@@ -135,7 +135,8 @@ module Kaminari
       if !scope.first_page? && !scope.last_page?
         # If not first and not last, then output both links.
         output << '<link rel="next" href="' + url_for(params.merge(param_name => (scope.current_page + 1))) + '"/>'
-        output << '<link rel="prev" href="' + url_for(params.merge(param_name => (scope.current_page - 1))) + '"/>'
+        prev_page = scope.current_page - 1
+        output << '<link rel="prev" href="' + url_for(params.merge(param_name => (prev_page <= 1 ? nil : prev_page))) + '"/>'
       elsif scope.first_page?
         # If first page, add next link unless last page.
         output << '<link rel="next" href="' + url_for(params.merge(param_name => (scope.current_page + 1))) + '"/>' unless scope.last_page?
