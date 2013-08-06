@@ -124,7 +124,7 @@ module Kaminari
     #     <%= rel_next_prev_link_tags @items %>
     #   <% end %>
     #
-    #   #-> <link rel="next" href="/items/page/3" /><link rel="prev" href="/items/page/1" />
+    #   #-> <link rel="next" href="/items/page/4" /><link rel="prev" href="/items/page/2" />
     #
     def rel_next_prev_link_tags(scope, options = {})
       params = options.delete(:params) || {}
