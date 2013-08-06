@@ -25,7 +25,9 @@ module Kaminari
       end
 
       def page_url_for(page)
-        @template.url_for @params.merge(@param_name => (page <= 1 ? nil : page))
+        current_page_params_as_query_string = @param_name.to_s + '=' + (page <= 1 ? nil : page).to_s
+        current_page_params_as_hash = Rack::Utils.parse_nested_query(current_page_params_as_query_string)
+        @template.url_for Kaminari::Helpers.recursive_symbolize_keys(Kaminari::Helpers.recursive_merge(@params, current_page_params_as_hash))
       end
     end
 
@@ -91,5 +93,27 @@ module Kaminari
     # Non-link tag that stands for skipped pages...
     class Gap < Tag
     end
+
+    def self.recursive_merge(hash, other)  #:nodoc:
+      res = hash.clone
+      other.each do |key, other_value|
+        value = res[key]
+        if value.is_a?(Hash) && other_value.is_a?(Hash)
+          res[key] = recursive_merge(value, other_value)
+        else
+          res[key] = other_value
+        end
+      end
+      res
+    end
+
+    def self.recursive_symbolize_keys(hash)  #:nodoc:
+      res = Hash.new
+      hash.each do |key, value|
+        res[key] = value.is_a?(Hash) ? recursive_symbolize_keys(value) : value
+      end
+      res.symbolize_keys
+    end
+
   end
 end
