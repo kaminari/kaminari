@@ -133,3 +133,25 @@ describe 'Kaminari::Helpers::Paginator' do
 #     end
 #   end
 end
+
+describe 'Kaminari::Helpers::Tag' do
+  let :template do
+    stub(r = Object.new) do
+      render.with_any_args
+      params { {} }
+      options { {} }
+      url_for {|h| "/foo?page=#{h[:page]}"}
+    end
+    r
+  end
+
+  describe '#page_url_for' do
+    it "uses custom routes_proxy" do
+      routes_proxy = Object.new
+      stub(routes_proxy).url_for { |h| "/path/from/custom/proxy?page=#{h[:page]}" }
+
+      tag = Tag.new(template, :param_name => :page, :routes_proxy => routes_proxy)
+      expect(tag.page_url_for(2)).to eq "/path/from/custom/proxy?page=2"
+    end
+  end
+end
