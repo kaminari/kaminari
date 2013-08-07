@@ -97,7 +97,7 @@ module Kaminari
           collection.model_name.human.downcase
         end
       end
-      entry_name = entry_name.pluralize unless collection.total_count == 1
+      entry_name = t(entry_name, count: collection.total_count)
 
       if collection.total_pages < 2
         t('helpers.page_entries_info.one_page.display_entries', :entry_name => entry_name, :count => collection.total_count)
