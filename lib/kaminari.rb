@@ -1,7 +1,7 @@
 module Kaminari
 end
 
-# load Rails/Railtie
+# load Rails/Engine
 begin
   require 'rails'
 rescue LoadError
@@ -31,8 +31,7 @@ require 'kaminari/models/page_scope_methods'
 require 'kaminari/models/configuration_methods'
 require 'kaminari/hooks'
 
-# if not using Railtie, call `Kaminari::Hooks.init` directly
+# if not using Engine, call `Kaminari::Hooks.init` directly
 if defined? Rails
-  require 'kaminari/railtie'
   require 'kaminari/engine'
 end
