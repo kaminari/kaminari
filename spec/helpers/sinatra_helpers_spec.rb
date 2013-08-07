@@ -41,6 +41,63 @@ EOT
         end
       end
 
+      context "mounted padrino app" do
+        before do
+          Padrino.clear!
+
+          class BaseApp < Padrino::Application; end
+          class MountedApp < Padrino::Application
+
+            register Kaminari::Helpers::SinatraHelpers
+
+            controllers :users do
+              get :index do
+                @page = params[:page] || 1
+                @users = User.page(@page)
+                @options = {}
+
+                erb ERB_TEMPLATE_FOR_PAGINATE
+              end
+            end
+
+          end
+
+          Padrino.mount('base_app').to('/')
+          Padrino.mount('mounted_app').to('/admin')
+          def app
+            Rack::Lint.new(Padrino.application)
+          end
+        end
+
+        it "should do ???" do
+          # get '/admin/users'
+        end
+      end
+
+      context "namespaced sinatra app" do
+        before do
+          mock_app do
+            register Kaminari::Helpers::SinatraHelpers
+            register Sinatra::Namespace
+
+            namespace '/admin' do
+              get '/users' do
+                @page = params[:page] || 1
+                @users = User.page(@page).per(5)
+                @options = {}
+                erb ERB_TEMPLATE_FOR_PAGINATE
+              end
+            end
+          end
+          get '/admin/users'
+        end
+
+        it "should get the current path correctly" do
+          current_path = last_document.search('.page a').map(&:attributes).map{|a| a['href']}.map(&:value).map{|x| x.split('?').first}.uniq.first
+          current_path.should eq '/admin/users'
+        end
+      end
+
       context 'normal paginations with Sinatra' do
         before { get '/users' }
 

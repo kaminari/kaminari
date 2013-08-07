@@ -9,5 +9,6 @@ gem 'sinatra-contrib', '~> 1.3.0'
 gem 'nokogiri'
 gem 'xpath'
 gem 'mime-types'
+gem 'padrino-core'
 
 gemspec :path => '../'
