@@ -1,0 +1,11 @@
+source 'https://rubygems.org'
+
+git 'git://github.com/rails/rails.git' do
+  gem 'railties'
+  gem 'activerecord', :require => 'active_record'
+end
+
+gem 'rspec-rails', '>= 2.0'
+gem 'database_cleaner', '>= 1.0.1'
+
+gemspec :path => '../'
