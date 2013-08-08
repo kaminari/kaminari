@@ -1,4 +1,5 @@
 require 'kaminari/sinatra'
+require 'kaminari/helpers/action_view_extension'
 require 'rack/test'
 require 'sinatra/test_helpers'
 require 'capybara/rspec'
@@ -16,7 +17,7 @@ module HelperMethodForHelperSpec
 
   def helper
     # OMG terrible object...
-    Kaminari::Helpers::SinatraHelpers::ActionViewTemplateProxy.new(:current_params => {}, :current_path => '/', :param_name => Kaminari.config.param_name).extend(Padrino::Helpers, Kaminari::ActionViewExtension, Kaminari::Helpers::SinatraHelpers::HelperMethods, FakeEnv)
+    ::Kaminari::Helpers::SinatraHelpers::ActionViewTemplateProxy.new(:current_params => {}, :current_path => '/', :param_name => Kaminari.config.param_name).extend(Padrino::Helpers, Kaminari::ActionViewExtension, Kaminari::Helpers::SinatraHelpers::HelperMethods, FakeEnv)
   end
 end
 
