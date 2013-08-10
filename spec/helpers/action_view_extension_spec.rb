@@ -27,11 +27,12 @@ describe 'Kaminari::ActionViewExtension' do
       context 'the default behaviour' do
         before do
           def helper.params
-            { term: 'search_criteria', :controller => 'users', :action => 'index'}
+            { :term => 'search_criteria', :controller => 'users', :action => 'index'}
           end
         end
         subject { helper.link_to_previous_page @users, 'Previous' }
         it { should be_a String }
+        it { should match(/term=search_criteria/) }
       end
       context 'with explicit params' do
         subject { helper.link_to_previous_page @users, 'Previous', :params => {:controller => 'users', :action => 'index'} }
@@ -63,11 +64,12 @@ describe 'Kaminari::ActionViewExtension' do
       context 'the default behaviour' do
         before do
           def helper.params
-            { term: 'search_criteria', :controller => 'users', :action => 'index'}
+            { :term => 'search_criteria', :controller => 'users', :action => 'index'}
           end
         end
         subject { helper.link_to_next_page @users, 'Next' }
         it { should be_a String }
+        it { should match(/term=search_criteria/) }
       end
       context 'with explicit params' do
         subject { helper.link_to_next_page @users, 'More', :params => {:controller => 'users', :action => 'index'} }
