@@ -1,6 +1,34 @@
 require 'spec_helper'
 
 if defined? DataMapper
+  # tests for issue #203
+  describe Kaminari::DataMapperCollectionMethods do
+    before do
+      100.times do |i|
+        User.create(:name => "User#{i}", :age => i)
+      end
+
+      worker0 = User[0]
+      50.times do |i|
+        worker0.projects << Project.create(:name => "Project#{i}")
+      end
+      worker0.projects.save
+    end
+
+    describe 'Model' do
+      subject { User }
+      its(:current_page) { should == 1 }
+      it { User.all.count.should == 100 }
+      it { User.page(1).length.should == 25 }
+      it {
+        User.paginates_per(5)
+        User.page(1).length.should == 5
+        User.all.page(1).length.should == 5
+      }
+    end
+
+  end
+
   describe Kaminari::DataMapperExtension do
     before do
       100.times do |i|
