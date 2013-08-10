@@ -77,7 +77,7 @@ describe 'Kaminari::ActionViewExtension' do
       end
       context 'having no entries' do
         subject { helper.page_entries_info @users, :params => {:controller => 'users', :action => 'index'} }
-        it      { should == 'No users found' }
+        it      { should == 'No entries found' }
 
         context 'setting the entry name option to "member"' do
           subject { helper.page_entries_info @users, :entry_name => 'member', :params => {:controller => 'users', :action => 'index'} }
@@ -151,7 +151,7 @@ describe 'Kaminari::ActionViewExtension' do
       end
       context 'having no entries' do
         subject { helper.page_entries_info @addresses, :params => {:controller => 'addresses', :action => 'index'} }
-        it      { should == 'No addresses found' }
+        it      { should == 'No entries found' }
       end
 
       context 'having 1 entry' do

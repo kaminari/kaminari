@@ -88,7 +88,7 @@ module Kaminari
     def page_entries_info(collection, options = {})
       entry_name = if options[:entry_name]
         options[:entry_name]
-      elsif collection.is_a?(::Kaminari::PaginatableArray)
+      elsif collection.empty? || collection.is_a?(::Kaminari::PaginatableArray)
         'entry'
       else
         if collection.respond_to? :model  # DataMapper
