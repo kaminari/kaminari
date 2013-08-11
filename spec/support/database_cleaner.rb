@@ -5,7 +5,12 @@ DatabaseCleaner[:mongo_mapper].strategy = :truncation if defined? MongoMapper
 
 RSpec.configure do |config|
   config.before :suite do
-    DatabaseCleaner.clean_with :transaction
+    #DatabaseCleaner.clean_with :truncation
+
+    DatabaseCleaner.clean_with :truncation if defined? ActiveRecord
+    DatabaseCleaner.clean_with :transaction if defined? DataMapper
+    DatabaseCleaner.clean_with :truncation if defined? Mongoid
+    DatabaseCleaner.clean_with :truncation if defined? MongoMapper
   end
   config.before :each do
     DatabaseCleaner.start
