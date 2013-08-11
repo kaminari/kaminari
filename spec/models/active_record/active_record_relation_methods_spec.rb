@@ -41,6 +41,14 @@ if defined? ActiveRecord
             @author.readers.by_read_count.page(1).total_count(:name, :distinct => true)
           }.should_not raise_exception
         end
+
+        it "should count the number of rows, not the number of keys" do
+          @books.each {|book| book.readers << @readers[0..1] }
+
+          readerships = Readership.select('user_id, count(user_id) as read_count, book_id').group('user_id, book_id')
+          readerships.count.count.should_not == readerships.page(1).total_count
+          readerships.page(1).total_count.should == 8
+        end
       end
     end
   end
