@@ -43,6 +43,14 @@ module Kaminari
       def max_pages
         (defined?(@_max_pages) && @_max_pages) || Kaminari.config.max_pages
       end
+
+      def infinite_pages(val)
+        @_infinite_pages = val
+      end
+
+      def infinite_pages?
+        (defined?(@_infinite_pages) && @_infinite_pages) || Kaminari.config.infinite_pages
+      end
     end
   end
 end
