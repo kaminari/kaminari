@@ -27,6 +27,14 @@ module Kaminari
         ::MongoMapper::Document.send :include, Kaminari::MongoMapperExtension::Document
         ::Plucky::Query.send :include, Kaminari::PluckyCriteriaMethods
       end
+
+      # Rails 3.0.x fails to load helpers in Engines (?)
+      if defined?(::ActionView) && ::ActionPack::VERSION::STRING < '3.1'
+        ActiveSupport.on_load(:action_view) do
+          require 'kaminari/helpers/action_view_extension'
+          ::ActionView::Base.send :include, Kaminari::ActionViewExtension
+        end
+      end
       require 'kaminari/models/array_extension'
     end
   end
