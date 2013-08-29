@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 git 'git://github.com/rails/rails.git' do
   gem 'railties'
   gem 'activerecord', :require => 'active_record'
+  gem 'actionview', :require => 'action_view'
 end
 
 gem 'rspec-rails', '>= 2.0'
