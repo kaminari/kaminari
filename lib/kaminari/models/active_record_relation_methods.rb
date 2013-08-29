@@ -8,7 +8,7 @@ module Kaminari
       end
     end
 
-    def total_count(column_name = nil, options = {}) #:nodoc:
+    def total_count(column_name = :all, options = {}) #:nodoc:
       # #count overrides the #select which could include generated columns referenced in #order, so skip #order here, where it's irrelevant to the result anyway
       @total_count ||= begin
         c = except(:offset, :limit, :order)
