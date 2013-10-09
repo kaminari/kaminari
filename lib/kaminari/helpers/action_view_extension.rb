@@ -85,6 +85,12 @@ module Kaminari
     #
     #   <%= page_entries_info @posts, :entry_name => 'item' %>
     #   #-> Displaying items 6 - 10 of 26 in total
+    #
+    # Also expects the locale parameter to the pluralization of words in another language,
+    # made by inflection.
+    #   If you use i18n...eg:
+    #   <%= page_entries_info @sections, :locale => :es %>
+    #   #-> Mostrando secciones 6 - 10 de 26 en total
     def page_entries_info(collection, options = {})
       entry_name = if options[:entry_name]
         options[:entry_name]
@@ -97,7 +103,7 @@ module Kaminari
           collection.model_name.human.downcase
         end
       end
-      entry_name = entry_name.pluralize unless collection.total_count == 1
+      entry_name = entry_name.pluralize options[:locale] unless collection.total_count == 1
 
       if collection.total_pages < 2
         t('helpers.page_entries_info.one_page.display_entries', :entry_name => entry_name, :count => collection.total_count)
