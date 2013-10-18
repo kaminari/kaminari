@@ -23,7 +23,11 @@ if defined? ActiveRecord
       context "when the scope use conditions on includes" do
         it "should keep includes and successfully count the results" do
           # Only @author and @author2 have books titled with the title00x partern
-          User.includes(:books_authored).where("books.title LIKE 'title00%'").page(1).total_count.should == 2
+          if ActiveRecord::VERSION::STRING >= "4.1.0"
+            User.includes(:books_authored).references(:books).where("books.title LIKE 'title00%'").page(1).total_count.should == 2
+          else
+            User.includes(:books_authored).where("books.title LIKE 'title00%'").page(1).total_count.should == 2
+          end
         end
       end
 
@@ -34,14 +38,24 @@ if defined? ActiveRecord
       end
 
       context "when total_count receives options" do
-        it "should return a distinct total count" do
-          User.page(1).total_count(:name, :distinct => true).should == 4
+        it "should return a distinct total count for rails ~> 4.0.0" do
+          if ActiveRecord::VERSION::STRING < "4.1.0"
+            User.page(1).total_count(:name, :distinct => true).should == 4
+          end
+        end
+
+        it "should ignore the options for rails 4.1+" do
+          if ActiveRecord::VERSION::STRING >= "4.1.0"
+            User.page(1).total_count(:name, :distinct => true).should == 7
+          end
         end
       end
 
       context "when count receives options" do
-        it "should return a distinct set by column" do
-          User.page(1).count(:name, :distinct => true).should == 4
+        it "should return a distinct set by column for rails ~> 4.0.0" do
+          if ActiveRecord::VERSION::STRING < "4.1.0"
+            User.page(1).count(:name, :distinct => true).should == 4
+          end
         end
       end
 
