@@ -39,7 +39,7 @@ if defined? ActiveRecord
 
       context "when total_count receives options" do
         it "should return a distinct total count for rails ~> 4.0.0" do
-          if ActiveRecord::VERSION::STRING < "4.1.0"
+          if ActiveRecord::VERSION::STRING > "4.0.0" && ActiveRecord::VERSION::STRING < "4.1.0"
             User.page(1).total_count(:name, :distinct => true).should == 4
           end
         end
@@ -53,7 +53,7 @@ if defined? ActiveRecord
 
       context "when count receives options" do
         it "should return a distinct set by column for rails ~> 4.0.0" do
-          if ActiveRecord::VERSION::STRING < "4.1.0"
+          if ActiveRecord::VERSION::STRING > "4.0.0" && ActiveRecord::VERSION::STRING < "4.1.0"
             User.page(1).count(:name, :distinct => true).should == 4
           end
         end
