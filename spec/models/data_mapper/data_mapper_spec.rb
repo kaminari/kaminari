@@ -24,6 +24,7 @@ if defined? DataMapper
         User.paginates_per(5)
         User.page(1).length.should == 5
         User.all.page(1).length.should == 5
+        User.paginates_per(nil) # reset to default
       }
     end
 
