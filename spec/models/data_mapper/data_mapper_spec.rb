@@ -17,7 +17,6 @@ if defined? DataMapper
 
     describe 'Model' do
       subject { User }
-      its(:current_page) { should == 1 }
       it { User.all.count.should == 100 }
       it { User.page(1).length.should == 25 }
       it {
