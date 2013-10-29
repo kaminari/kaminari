@@ -6,7 +6,8 @@ require 'kaminari/helpers/tags'
 
 module Kaminari
   module Helpers
-    module LogSubscriberWithoutLogging
+
+    module ControllableLogSubscriber
       extend ActiveSupport::Concern
       included do
         # redefine the render_partial method but make it check the current thread
@@ -93,13 +94,13 @@ module Kaminari
 
         # There is at least 1 view logging subscriber
         # and we don't want any to log render_partial
-        # so unless we have already, include the LogSubscriberWithoutLogging
+        # so unless we have already, include the ControllableLogSubscriber
         # module on the eigenclass of each subscriber
         # which seems to be threadsafe and idempotent
         subscribers.each do |subscriber|
-          next if subscriber.is_a?(LogSubscriberWithoutLogging)
+          next if subscriber.is_a?(ControllableLogSubscriber)
           class << subscriber
-            include LogSubscriberWithoutLogging
+            include ControllableLogSubscriber
           end
         end
 
