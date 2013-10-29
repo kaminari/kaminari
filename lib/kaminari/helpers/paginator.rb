@@ -86,6 +86,7 @@ module Kaminari
 
       def to_s #:nodoc:
         subscribers = ActionView::LogSubscriber.log_subscribers.select {|ls| ls.kind_of? ActionView::LogSubscriber}
+
         if subscribers.size == 0
           return super @window_options.merge(@options).merge :paginator => self
         end
