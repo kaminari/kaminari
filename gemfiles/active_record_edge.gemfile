@@ -7,6 +7,5 @@ git 'git://github.com/rails/rails.git' do
 end
 
 gem 'rspec-rails', '>= 2.0'
-gem 'database_cleaner', '>= 1.0.1'
 
 gemspec :path => '../'
