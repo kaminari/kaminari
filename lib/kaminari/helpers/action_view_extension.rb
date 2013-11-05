@@ -37,7 +37,7 @@ module Kaminari
     #     <span>At the Beginning</span>
     #   <% end %>
     def link_to_previous_page(scope, name, options = {}, &block)
-      params = options.delete(:params) || {}
+      params = options[:params] ? self.params.merge(options.delete :params) : self.params
       param_name = options.delete(:param_name) || Kaminari.config.param_name
       link_to_unless scope.first_page?, name, params.merge(param_name => (scope.current_page - 1)), options.reverse_merge(:rel => 'previous') do
         block.call if block
@@ -62,7 +62,7 @@ module Kaminari
     #     <span>No More Pages</span>
     #   <% end %>
     def link_to_next_page(scope, name, options = {}, &block)
-      params = options.delete(:params) || {}
+      params = options[:params] ? self.params.merge(options.delete :params) : self.params
       param_name = options.delete(:param_name) || Kaminari.config.param_name
       link_to_unless scope.last_page?, name, params.merge(param_name => (scope.current_page + 1)), options.reverse_merge(:rel => 'next') do
         block.call if block
@@ -127,7 +127,7 @@ module Kaminari
     #   #-> <link rel="next" href="/items/page/3" /><link rel="prev" href="/items/page/1" />
     #
     def rel_next_prev_link_tags(scope, options = {})
-      params = options.delete(:params) || {}
+      params = options[:params] ? self.params.merge(options.delete :params) : self.params
       param_name = options.delete(:param_name) || Kaminari.config.param_name
 
       output = ""
