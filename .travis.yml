@@ -16,3 +16,12 @@ gemfile:
   - gemfiles/mongoid_30.gemfile
   - gemfiles/sinatra_13.gemfile
   - gemfiles/sinatra_14.gemfile
+
+matrix:
+  allow_failures:
+    - rvm: 1.9.3
+      gemfile: gemfiles/active_record_edge.gemfile
+    - rvm: 2.0.0
+      gemfile: gemfiles/active_record_edge.gemfile
+    - rvm: rbx-19mode
+      gemfile: gemfiles/active_record_edge.gemfile
