@@ -25,3 +25,7 @@ matrix:
       gemfile: gemfiles/active_record_edge.gemfile
     - rvm: rbx-19mode
       gemfile: gemfiles/active_record_edge.gemfile
+    - rvm: rbx-19mode
+      gemfile: gemfiles/sinatra_13.gemfile
+    - rvm: rbx-19mode
+      gemfile: gemfiles/sinatra_14.gemfile
