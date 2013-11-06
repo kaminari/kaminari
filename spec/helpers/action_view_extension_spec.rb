@@ -1,6 +1,22 @@
 require 'spec_helper'
 
 describe 'Kaminari::ActionViewExtension' do
+  describe '#paginate for mountable engines' do
+    before do
+      50.times {|i| Article.create! :title => "article#{i}"}
+      @articles = Article.page(1)
+    end
+
+    subject { helper.paginate @articles, :params => { mount: my_engine, :controller => 'articles', :action => 'index'} }
+    it { should be_a String }
+
+    context 'escaping the pagination for javascript' do
+      it 'should escape for javascript' do
+        lambda { helper.escape_javascript(helper.paginate @articles, :params => { mount: my_engine, :controller => 'articles', :action => 'index'}) }.should_not raise_error
+      end
+    end
+  end
+
   describe '#paginate' do
     before do
       50.times {|i| User.create! :name => "user#{i}"}

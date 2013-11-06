@@ -3,9 +3,12 @@ require 'action_controller/railtie'
 require 'action_view/railtie'
 
 require 'fake_app/active_record/config' if defined? ActiveRecord
-require 'fake_app/data_mapper/config' if defined? DataMapper
-require 'fake_app/mongoid/config' if defined? Mongoid
-require 'fake_app/mongo_mapper/config' if defined? MongoMapper
+require 'fake_app/data_mapper/config'   if defined? DataMapper
+require 'fake_app/mongoid/config'       if defined? Mongoid
+require 'fake_app/mongo_mapper/config'  if defined? MongoMapper
+
+
+
 # config
 app = Class.new(Rails::Application)
 app.config.secret_token = '3b7cd727ee24e8444053437c36cc66c4'
@@ -17,16 +20,29 @@ app.config.root = File.dirname(__FILE__)
 Rails.backtrace_cleaner.remove_silencers!
 app.initialize!
 
+# Mountable engine
+if defined? ActiveRecord
+  module TheEngine
+    class Engine < Rails::Engine; end
+  end
+
+  TheEngine::Engine.routes.draw do
+    resources :articles
+  end
+end
+
 # routes
 app.routes.draw do
   resources :users
+
+  mount(TheEngine::Engine => '/', :as => "my_engine") if defined? ActiveRecord
 end
 
-#models
+# models
 require 'fake_app/active_record/models' if defined? ActiveRecord
-require 'fake_app/data_mapper/models' if defined? DataMapper
-require 'fake_app/mongoid/models' if defined? Mongoid
-require 'fake_app/mongo_mapper/models' if defined? MongoMapper
+require 'fake_app/data_mapper/models'   if defined? DataMapper
+require 'fake_app/mongoid/models'       if defined? Mongoid
+require 'fake_app/mongo_mapper/models'  if defined? MongoMapper
 
 # controllers
 class ApplicationController < ActionController::Base; end
