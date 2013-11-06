@@ -21,7 +21,7 @@ Rails.backtrace_cleaner.remove_silencers!
 app.initialize!
 
 # Mountable engine
-if defined? ActiveRecord
+if defined? Rails
   module TheEngine
     class Engine < Rails::Engine; end
   end
@@ -35,7 +35,7 @@ end
 app.routes.draw do
   resources :users
 
-  mount(TheEngine::Engine => '/', :as => "my_engine") if defined? ActiveRecord
+  mount(TheEngine::Engine => '/', :as => "my_engine") if defined? Rails
 end
 
 # models
