@@ -1,5 +1,2 @@
 lib/**/*.rb
-bin/*
-- 
-features/**/*.feature
-LICENSE.txt
+MIT-LICENSE
