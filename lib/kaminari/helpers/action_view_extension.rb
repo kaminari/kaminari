@@ -146,6 +146,5 @@ module Kaminari
 
       output.html_safe
     end
-
   end
 end
