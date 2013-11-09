@@ -3,7 +3,7 @@ require 'spec_helper'
 
 feature 'Pagination properly works in mouted Engines' do
   background do
-    1.upto(10) {|i| User.create! :name => "user#{'%02d' % i}" }
+    1.upto(50) {|i| User.create! :name => "user#{'%02d' % i}" }
   end
   scenario 'Showing normal pagination links' do
     visit '/engine/users'
@@ -23,4 +23,4 @@ feature 'Pagination properly works in mouted Engines' do
       end
     end
   end
-end if Rails.version > '3.1.0'
+end if Rails.version > '3.1.0' # it works with Sinatra tests! :)

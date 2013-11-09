@@ -19,4 +19,12 @@ class SinatraApp < Sinatra::Base
 <%= paginate @users %>
 ERB
   end
+
+  get '/engine/users' do
+    @users = User.page params[:page]
+    erb <<-ERB
+<%= @users.map(&:name).join("\n") %>
+<%= paginate @users %>
+ERB
+  end
 end

@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe 'Kaminari::ActionViewExtension' do
-  # , :if => lambda{ defined? Rails }
   describe '#paginate for mountable engines'  do
     before do
       50.times {|i| Article.create! :title => "article#{i}"}
