@@ -14,6 +14,7 @@ gemfile:
   - gemfiles/data_mapper_12.gemfile
   - gemfiles/mongo_mapper.gemfile
   - gemfiles/mongoid_30.gemfile
+  - gemfiles/mongoid_31.gemfile
   - gemfiles/sinatra_13.gemfile
   - gemfiles/sinatra_14.gemfile
 
