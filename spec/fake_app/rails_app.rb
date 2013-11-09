@@ -17,6 +17,11 @@ app.config.root = File.dirname(__FILE__)
 Rails.backtrace_cleaner.remove_silencers!
 app.initialize!
 
+# routes
+app.routes.draw do
+  resources :users
+end
+
 #models
 require 'fake_app/active_record/models' if defined? ActiveRecord
 require 'fake_app/data_mapper/models' if defined? DataMapper
@@ -49,14 +54,3 @@ end
 
 # helpers
 Object.const_set(:ApplicationHelper, Module.new)
-
-# routes
-app.routes.draw do
-  resources :users
-
-  if Rails.version > '3.1.0'
-    $LOAD_PATH << File.join(File.dirname(__FILE__), 'engine/lib')
-    require 'engine'
-    mount Engine::Engine => '/engine'
-  end
-end
