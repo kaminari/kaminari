@@ -20,3 +20,8 @@ class Framework
   field :language, :type => String
   embedded_in :mongo_mongoid_extension_developer
 end
+
+class Article
+  include ::Mongoid::Document
+  field :title, :type => String
+end

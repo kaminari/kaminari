@@ -42,12 +42,16 @@ class User::Address < ActiveRecord::Base
   belongs_to :user
 end
 
+# a model for mountable engines test
+class Article < ActiveRecord::Base; end
+
 #migrations
 class CreateAllTables < ActiveRecord::Migration
   def self.up
     create_table(:gem_defined_models) { |t| t.string :name; t.integer :age }
     create_table(:users) {|t| t.string :name; t.integer :age}
     create_table(:books) {|t| t.string :title}
+    create_table(:articles) {|t| t.string :title}
     create_table(:readerships) {|t| t.integer :user_id; t.integer :book_id }
     create_table(:authorships) {|t| t.integer :user_id; t.integer :book_id }
     create_table(:user_addresses) {|t| t.string :street; t.integer :user_id }
