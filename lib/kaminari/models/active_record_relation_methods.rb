@@ -4,7 +4,7 @@ module Kaminari
     # if +limit_value+ is specified, load all the records and count them
     if ActiveRecord::VERSION::STRING < '3.1'
       def count(column_name = nil, options = {}) #:nodoc:
-        limit_value ? length : super(column_name, options)
+        limit_value && !options[:distinct] ? length : super(column_name, options)
       end
     end
 
