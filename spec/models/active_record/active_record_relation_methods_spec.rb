@@ -51,9 +51,9 @@ if defined? ActiveRecord
         end
       end
 
-      context "when count receives options" do
-        it "should return a distinct set by column for rails < 4.1" do
-          if ActiveRecord::VERSION::STRING < "4.1.0"
+      if ActiveRecord::VERSION::STRING < '4.1.0'
+        context 'when count receives options' do
+          it 'should return a distinct set by column for rails < 4.1' do
             User.page(1).count(:name, :distinct => true).should == 4
           end
         end
