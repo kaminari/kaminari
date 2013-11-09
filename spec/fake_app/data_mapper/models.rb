@@ -18,7 +18,7 @@ class Article
   include ::DataMapper::Resource
 
   property :id,   Serial
-  property :name, String, :required => true
+  property :title, String, :required => true
 end
 
 class Project

@@ -18,3 +18,13 @@ class Engine::UsersController < ::ApplicationController
 ERB
   end
 end
+
+# not isolated engine
+# for routes mounting test
+module TheEngine
+  class Engine < Rails::Engine; end
+end
+
+TheEngine::Engine.routes.draw do
+  resources :articles
+end
