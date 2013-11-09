@@ -14,6 +14,13 @@ class User::Address
   property :id, Serial
 end
 
+class Article
+  include ::DataMapper::Resource
+
+  property :id,   Serial
+  property :name, String, :required => true
+end
+
 class Project
   include ::DataMapper::Resource
 
