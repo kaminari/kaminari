@@ -42,6 +42,13 @@ class User::Address < ActiveRecord::Base
   belongs_to :user
 end
 
+# a class that uses abstract class
+class Product < ActiveRecord::Base
+  self.abstract_class = true
+end
+class Device < Product
+end
+
 #migrations
 class CreateAllTables < ActiveRecord::Migration
   def self.up
@@ -51,6 +58,7 @@ class CreateAllTables < ActiveRecord::Migration
     create_table(:readerships) {|t| t.integer :user_id; t.integer :book_id }
     create_table(:authorships) {|t| t.integer :user_id; t.integer :book_id }
     create_table(:user_addresses) {|t| t.string :street; t.integer :user_id }
+    create_table(:devices) {|t| t.string :name; t.integer :age}
   end
 end
 ActiveRecord::Migration.verbose = false

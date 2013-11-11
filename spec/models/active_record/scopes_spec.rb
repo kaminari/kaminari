@@ -15,9 +15,10 @@ if defined? ActiveRecord
     before do
       1.upto(100) {|i| User.create! :name => "user#{'%03d' % i}", :age => (i / 10)}
       1.upto(100) {|i| GemDefinedModel.create! :name => "user#{'%03d' % i}", :age => (i / 10)}
+      1.upto(100) {|i| Device.create! :name => "user#{'%03d' % i}", :age => (i / 10)}
     end
 
-    [User, Admin, GemDefinedModel].each do |model_class|
+    [User, Admin, GemDefinedModel, Device].each do |model_class|
       context "for #{model_class}" do
         describe '#page' do
           context 'page 1' do
