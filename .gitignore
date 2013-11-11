@@ -3,6 +3,7 @@
 .idea
 Gemfile.lock
 gemfiles/*.lock
+coverage/*
 pkg/*
 
 doc
