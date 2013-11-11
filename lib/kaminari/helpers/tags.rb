@@ -25,7 +25,24 @@ module Kaminari
       end
 
       def page_url_for(page)
-        @template.url_for @params.merge(@param_name => (page <= 1 ? nil : page))
+        url = @template.url_for @params.merge(@param_name => page)
+        url = strip_page_param_for(url, page) if strip_page_param_for?(page)
+        url
+      end
+
+      private
+
+      def strip_page_param_for?(page)
+        page <= 1
+      end
+
+      def strip_page_param_for(url, page)
+        uri = URI(url)
+        query = Rack::Utils.parse_query(uri.query)
+        query.delete('page')
+        uri.query = nil
+        uri.query = Rack::Utils.build_query(query) if query.count > 0
+        url = uri.to_s
       end
     end
 

@@ -20,6 +20,8 @@ app.initialize!
 # routes
 app.routes.draw do
   resources :users
+  # the remaining routes are specific to rails testing
+  get 'users/:var1/:var2/page/:page', to: 'users#index'
 end
 
 #models
