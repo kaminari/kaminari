@@ -289,7 +289,23 @@ Feel free to message me on Github (amatsuda) or Twitter (@a_matsuda)  ☇☇☇ 
 
 == Contributing to Kaminari
 
-* Fork, fix, then send me a pull request.
+Fork, fix, then send a pull request.
+
+To run the test suite locally against all supported frameworks:
+
+  % bundle install
+  % rake spec:all
+
+To target the test suite against one framework:
+
+  % rake spec:active_record_40
+
+You can find a list of supported spec tasks by running <tt>rake -T</tt>. You may also find it useful to run a specific test
+for a specific framework. To do so, you'll have to first make sure you have bundled everything for that configuration,
+then you can run the specific test:
+
+  % BUNDLE_GEMFILE='gemfiles/active_record_40.gemfile' bundle install
+  % BUNDLE_GEMFILE='gemfiles/active_record_40.gemfile' bundle exec rspec ./spec/requests/users_spec.rb
 
 
 == Copyright
