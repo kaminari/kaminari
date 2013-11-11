@@ -5,15 +5,12 @@ Bundler::GemHelper.install_tasks
 
 require 'rspec/core'
 require 'rspec/core/rake_task'
-require 'coveralls/rake/task'
-
-Coveralls::RakeTask.new
 
 RSpec::Core::RakeTask.new(:spec) do |spec|
   spec.pattern = FileList['spec/**/*_spec.rb']
 end
 
-task :default => ["spec:all", "coveralls:push"]
+task :default => "spec:all"
 
 namespace :spec do
   %w(active_record_edge active_record_40 active_record_32 active_record_31 active_record_30 data_mapper_12 mongoid_31 mongoid_30 mongoid_24 mongo_mapper sinatra_13 sinatra_14).each do |gemfile|
