@@ -19,7 +19,9 @@ app.initialize!
 
 # routes
 app.routes.draw do
-  resources :users
+  resources :users do
+    resources :books
+  end
 end
 
 #models
@@ -36,6 +38,17 @@ class UsersController < ApplicationController
     render :inline => <<-ERB
 <%= @users.map(&:name).join("\n") %>
 <%= paginate @users %>
+ERB
+  end
+end
+
+class BooksController < ApplicationController
+  def index
+    @books = User.find(params[:user_id]).books_authored.page params[:page]
+    render :inline => <<-ERB
+<span class="head"><%= rel_next_prev_link_tags @books %></span>
+<%= @books.map(&:title).join("\n") %>
+<%= paginate @books %>
 ERB
   end
 end
