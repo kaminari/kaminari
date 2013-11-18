@@ -28,9 +28,10 @@ module Kaminari
     module Collection
       extend ActiveSupport::Concern
       included do
-        include Kaminari::ConfigurationMethods::ClassMethods
         include Kaminari::DataMapperCollectionMethods
         include Paginatable
+
+        delegate :default_per_page, :max_per_page, :max_pages, :to => :model
       end
     end
 

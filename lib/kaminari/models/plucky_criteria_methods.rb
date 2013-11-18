@@ -1,7 +1,8 @@
 module Kaminari
   module PluckyCriteriaMethods
     include Kaminari::PageScopeMethods
-    include Kaminari::ConfigurationMethods::ClassMethods
+
+    delegate :default_per_page, :max_per_page, :max_pages, :to => :model
 
     def limit_value #:nodoc:
       options[:limit]
