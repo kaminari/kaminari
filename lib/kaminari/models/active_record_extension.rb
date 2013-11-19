@@ -8,14 +8,14 @@ module Kaminari
       class << self
         def inherited_with_kaminari(kls) #:nodoc:
           inherited_without_kaminari kls
-          kls.send(:include, Kaminari::ActiveRecordModelExtension) if kls.superclass == ActiveRecord::Base
+          kls.send(:include, Kaminari::ActiveRecordModelExtension) if kls < ActiveRecord::Base
         end
         alias_method_chain :inherited, :kaminari
       end
 
       # Existing subclasses pick up the model extension as well
       self.descendants.each do |kls|
-        kls.send(:include, Kaminari::ActiveRecordModelExtension) if kls.superclass == ActiveRecord::Base
+        kls.send(:include, Kaminari::ActiveRecordModelExtension) if kls < ActiveRecord::Base
       end
     end
   end
