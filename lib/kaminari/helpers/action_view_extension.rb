@@ -99,18 +99,18 @@ module Kaminari
       end
       entry_name = entry_name.pluralize unless collection.total_count == 1
 
-      count_str = number_with_delimiter(collection.total_count)
+      count_formatted = number_with_delimiter(collection.total_count)
 
       if collection.total_pages < 2
-        t('helpers.page_entries_info.one_page.display_entries', :entry_name => entry_name, :count => count_str)
+        t('helpers.page_entries_info.one_page.display_entries', :entry_name => entry_name, :count => count_formatted)
       else
         first = collection.offset_value + 1
-        first_str = number_with_delimiter(first)
+        first_formatted = number_with_delimiter(first)
 
         last = collection.last_page? ? collection.total_count : collection.offset_value + collection.limit_value
-        last_str = number_with_delimiter(last)
+        last_formatted = number_with_delimiter(last)
 
-        t('helpers.page_entries_info.more_pages.display_entries', :entry_name => entry_name, :first => first_str, :last => last_str, :total => count_str)
+        t('helpers.page_entries_info.more_pages.display_entries', :entry_name => entry_name, :first => first_formatted, :last => last_formatted, :total => count_formatted)
       end.html_safe
     end
 
