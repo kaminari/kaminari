@@ -144,6 +144,15 @@ describe 'Kaminari::ActionViewExtension' do
           end
         end
       end
+      
+      context 'format numbers' do
+        it 'should format numbers' do
+          50.times {|i| User.create! :name => "user#{i}"}
+          @users = User.page(1).per(25)
+          res = helper.page_entries_info @users, :count_number_formatter => ->(page_number){ "#{page_number}asd" }
+          res.should eq 'Displaying users <b>1asd&nbsp;-&nbsp;25asd</b> of <b>50asd</b> in total'
+        end
+      end
     end
     context 'on a model with namespace' do
       before do
