@@ -97,17 +97,22 @@ module Kaminari
           collection.model_name.human.downcase
         end
       end
+
+      count = collection.total_count
+      count_formatted = number_with_delimiter(count)
       entry_name = entry_name.pluralize unless collection.total_count == 1
 
-      count_formatted = number_with_delimiter(collection.total_count)
-
-      if collection.total_pages < 2
-        t('helpers.page_entries_info.one_page.display_entries', :entry_name => entry_name, :count => count_formatted)
+      if count == 0
+        t('helpers.page_entries_info.one_page.display_entries.zero', :entry_name => entry_name)
+      elsif count == 1
+        t('helpers.page_entries_info.one_page.display_entries.one', :entry_name => entry_name)
+      elsif collection.total_pages < 2
+        t('helpers.page_entries_info.one_page.display_entries.other', :entry_name => entry_name, :count => count_formatted)
       else
         first = collection.offset_value + 1
         first_formatted = number_with_delimiter(first)
 
-        last = collection.last_page? ? collection.total_count : collection.offset_value + collection.limit_value
+        last = collection.last_page? ? count : collection.offset_value + collection.limit_value
         last_formatted = number_with_delimiter(last)
 
         t('helpers.page_entries_info.more_pages.display_entries', :entry_name => entry_name, :first => first_formatted, :last => last_formatted, :total => count_formatted)
