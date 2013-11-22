@@ -29,7 +29,6 @@ template #381 [joker1007]
 
 * Fix arity problem with Rails 4.1.0 #449 [bricker]
 
-
 == 0.14.1
 
 * Changed the default "truncation" String from  "..." to &hellip; #264 [pjaspers]
