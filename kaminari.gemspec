@@ -33,5 +33,4 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'capybara', ['>= 1.0']
   s.add_development_dependency 'database_cleaner', ['~> 1.2.0']
   s.add_development_dependency 'rdoc', ['>= 0']
-  s.add_development_dependency 'coveralls', ['>= 0']
 end
