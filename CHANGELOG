@@ -19,6 +19,8 @@ template #381 [joker1007]
 
 * Add `PageScopeMethods#next_page`, `prev_page`, and `out_of_range?` [yuki24]
 
+* Use html_safe in view partials instead of raw fixed #73 [zzak]
+
 * Fix a bug that `PaginatableArray#total_pages` returns the wrong value #416 [yuki24]
 
 * Make `num_pages` to return the same value as `total_pages` for backward compat [yuki24, eitoball]
