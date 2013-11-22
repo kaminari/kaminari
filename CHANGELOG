@@ -1,3 +1,35 @@
+== 0.15.0
+
+* Allow count, total count to pass parameters to super #193 [bsimpson]
+
+* Add `max_pages` and `max_pages_per` methods to limit displayed pages per
+model or globally #301 [zpieslak]
+
+* Add support for Sinatra views overrides (add app views paths) #332 [j15e]
+
+* Fix wrong pagination when used with `padding` #359 [vladimir-vg, negipo]
+
+* check for Hash in addition to OrderedHash, which seems to break in Rails 4,
+for total_count #369 [aew]
+
+* Make `to_s` in paginator threadsafe #374 [bf4]
+
+* Fix Missing partial Error when 'paginate' called from different format
+template #381 [joker1007]
+
+* Add `PageScopeMethods#next_page`, `prev_page`, and `out_of_range?` [yuki24]
+
+* Fix a bug that `PaginatableArray#total_pages` returns the wrong value #416 [yuki24]
+
+* Make `num_pages` to return the same value as `total_pages` for backward compat [yuki24, eitoball]
+
+* Change #page_entries_info to use model name #340, #348 [znz, eitoball]
+
+* Change scope to class method #433 [kolodovskyy]
+
+* Fix arity problem with Rails 4.1.0 #449 [bricker]
+
+
 == 0.14.1
 
 * Changed the default "truncation" String from  "..." to &hellip; #264 [pjaspers]
