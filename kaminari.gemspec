@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.name        = 'kaminari'
   s.version     = Kaminari::VERSION
   s.platform    = Gem::Platform::RUBY
-  s.authors     = ['Akira Matsuda']
+  s.authors     = ['Akira Matsuda', 'Zachary Scott', 'Yuki Nishijima', 'Hiroshi Shibata']
   s.email       = ['ronnie@dio.jp']
   s.homepage    = 'https://github.com/amatsuda/kaminari'
   s.summary     = 'A pagination engine plugin for Rails 3+ or other modern frameworks'
