@@ -5,7 +5,7 @@ script: "bundle exec rake spec"
 rvm:
   - 1.9.3
   - 2.0.0
-  - rbx-19mode
+  - rbx-2.1.1
 
 gemfile:
   - gemfiles/active_record_30.gemfile
@@ -27,9 +27,9 @@ matrix:
       gemfile: gemfiles/active_record_edge.gemfile
     - rvm: 2.0.0
       gemfile: gemfiles/active_record_edge.gemfile
-    - rvm: rbx-19mode
+    - rvm: rbx-2.1.1
       gemfile: gemfiles/active_record_edge.gemfile
-    - rvm: rbx-19mode
+    - rvm: rbx-2.1.1
       gemfile: gemfiles/sinatra_13.gemfile
-    - rvm: rbx-19mode
+    - rvm: rbx-2.1.1
       gemfile: gemfiles/sinatra_14.gemfile
