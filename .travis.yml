@@ -28,8 +28,3 @@ matrix:
     - rvm: 2.0.0
       gemfile: gemfiles/active_record_edge.gemfile
     - rvm: rbx-2.1.1
-      gemfile: gemfiles/active_record_edge.gemfile
-    - rvm: rbx-2.1.1
-      gemfile: gemfiles/sinatra_13.gemfile
-    - rvm: rbx-2.1.1
-      gemfile: gemfiles/sinatra_14.gemfile
