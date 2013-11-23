@@ -26,7 +26,9 @@ module Kaminari
         end
         @template, @options = template, options
         @theme = @options[:theme] ? "#{@options[:theme]}/" : ''
-        @options[:current_page] = PageProxy.new @window_options.merge(@options), @options[:current_page], nil
+        @window_options.merge! @options
+        @window_options[:current_page] = @options[:current_page] = PageProxy.new @window_options, @options[:current_page], nil
+
         @last = nil
         # initialize the output_buffer for Context
         @output_buffer = ActionView::OutputBuffer.new
@@ -47,8 +49,8 @@ module Kaminari
       def each_relevant_page
         return to_enum(:each_relevant_page) unless block_given?
 
-        relevant_pages(@window_options.merge(@options)).each do |i|
-          yield PageProxy.new(@window_options.merge(@options), i, @last)
+        relevant_pages(@window_options).each do |i|
+          yield PageProxy.new(@window_options, i, @last)
         end
       end
       alias each_page each_relevant_page
@@ -95,12 +97,12 @@ module Kaminari
           end
 
           subscriber.render_without_logging = true
-          ret = super @window_options.merge(@options).merge :paginator => self
+          ret = super @window_options.merge :paginator => self
           subscriber.render_without_logging = false
 
           ret
         else
-          super @window_options.merge(@options).merge :paginator => self
+          super @window_options.merge :paginator => self
         end
       end
 
