@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 
 gem 'railties', '~> 3.1.12'
 gem 'activerecord', '~> 3.1.12', :require => 'active_record'
+gem 'sqlite3'
 gem 'rspec-rails', '>= 2.0'
 
 gemspec :path => '../'

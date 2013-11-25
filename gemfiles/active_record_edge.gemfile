@@ -5,6 +5,7 @@ git 'git://github.com/rails/rails.git' do
   gem 'activerecord', :require => 'active_record'
   gem 'actionview', :require => 'action_view'
 end
+gem 'sqlite3'
 
 gem 'rspec-rails', '>= 2.0'
 

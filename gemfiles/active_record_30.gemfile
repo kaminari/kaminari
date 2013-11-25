@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 
 gem 'railties', '~> 3.0.20'
 gem 'activerecord', '~> 3.0.20', :require => 'active_record'
+gem 'sqlite3'
 gem 'rspec-rails', '>= 2.0'
 gem 'nokogiri', '< 1.6'
 gem 'capybara', '< 2.1'
