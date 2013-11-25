@@ -5,6 +5,7 @@ script: "bundle exec rake spec"
 rvm:
   - 1.9.3
   - 2.0.0
+  - jruby-19mode
   - rbx-2.1.1
 
 gemfile:
