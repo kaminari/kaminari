@@ -14,6 +14,13 @@ describe 'Kaminari::ActionViewExtension' do
         lambda { helper.escape_javascript(helper.paginate @users, :params => {:controller => 'users', :action => 'index'}) }.should_not raise_error
       end
     end
+
+    if defined? Rails
+      context 'using custom route set' do
+        subject { helper.paginate @users, :params => {:controller => 'my_engine/items', :action => 'index'}, :route_set => my_engine }
+        it { should match(%r(/mounted_engine/items)) }
+      end
+    end
   end
 
   describe '#link_to_previous_page' do
@@ -32,6 +39,12 @@ describe 'Kaminari::ActionViewExtension' do
       context 'overriding rel=' do
         subject { helper.link_to_previous_page @users, 'Previous', :rel => 'external', :params => {:controller => 'users', :action => 'index'} }
         it { should match(/rel="external"/) }
+      end
+      if defined? Rails
+        context 'using custom route set' do
+          subject { helper.link_to_previous_page @users, 'Previous', :params => {:controller => 'my_engine/items', :action => 'index'}, :route_set => my_engine }
+          it { should match(%r(/mounted_engine/items)) }
+        end
       end
     end
     context 'the first page' do
@@ -59,6 +72,12 @@ describe 'Kaminari::ActionViewExtension' do
       context 'overriding rel=' do
         subject { helper.link_to_next_page @users, 'More', :rel => 'external', :params => {:controller => 'users', :action => 'index'} }
         it { should match(/rel="external"/) }
+      end
+      if defined? Rails
+        context 'using custom route set' do
+          subject { helper.link_to_next_page @users, 'More', :params => {:controller => 'my_engine/items', :action => 'index'}, :route_set => my_engine }
+          it { should match(%r(/mounted_engine/items)) }
+        end
       end
     end
     context 'the last page' do
@@ -225,6 +244,15 @@ describe 'Kaminari::ActionViewExtension' do
   end
 
   describe '#rel_next_prev_link_tags' do
+    shared_context 'using custom route set' do
+      if defined? Rails
+        context 'using custom route set' do
+          subject { helper.rel_next_prev_link_tags @users, :params => {:controller => 'my_engine/items', :action => 'index'}, :route_set => my_engine }
+          it { should match(%r(/mounted_engine/items)) }
+        end
+      end
+    end
+
     before do
       75.times {|i| User.create! :name => "user#{i}"}
     end
@@ -237,6 +265,7 @@ describe 'Kaminari::ActionViewExtension' do
       it { should be_a String }
       it { should match(/rel="next"/) }
       it { should_not match(/rel="prev"/) }
+      include_context 'using custom route set'
     end
     context 'the middle page' do
       before do
@@ -247,6 +276,7 @@ describe 'Kaminari::ActionViewExtension' do
       it { should be_a String }
       it { should match(/rel="next"/) }
       it { should match(/rel="prev"/) }
+      include_context 'using custom route set'
     end
     context 'the last page' do
       before do
@@ -257,6 +287,7 @@ describe 'Kaminari::ActionViewExtension' do
       it { should be_a String }
       it { should_not match(/rel="next"/) }
       it { should match(/rel="prev"/) }
+      include_context 'using custom route set'
     end
   end
 end
