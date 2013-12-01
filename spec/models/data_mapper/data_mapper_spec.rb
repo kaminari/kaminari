@@ -7,12 +7,6 @@ if defined? DataMapper
       100.times do |i|
         User.create(:name => "User#{i}", :age => i)
       end
-
-      worker0 = User[0]
-      50.times do |i|
-        worker0.projects << Project.create(:name => "Project#{i}")
-      end
-      worker0.projects.save
     end
 
     describe 'Model' do
@@ -34,12 +28,6 @@ if defined? DataMapper
       100.times do |i|
         User.create(:name => "User#{i}", :age => i)
       end
-
-      worker0 = User[0]
-      50.times do |i|
-        worker0.projects << Project.create(:name => "Project#{i}")
-      end
-      worker0.projects.save
     end
 
     describe 'Collection' do
@@ -181,26 +169,36 @@ if defined? DataMapper
         its(:total_pages) { should == 3 }
       end
 
-      context 'on query on association' do
-        subject { User[0].projects.page(3).all(:name.like => 'Project%').per(5) }
-        its(:current_page) { should == 3 }
-        its(:prev_page) { should == 2 }
-        its(:next_page) { should == 4 }
-        its('query.limit') { should == 5 }
-        its('query.offset') { should == 10 }
-        its(:total_count) { should == 50 }
-        its(:total_pages) { should == 10 }
-      end
+      context 'for association' do
+        before do
+          worker0 = User[0]
+          50.times do |i|
+            worker0.projects << Project.create(:name => "Project#{i}")
+          end
+          worker0.projects.save
+        end
 
-      context 'on query with association conditions' do
-        subject { User.page(3).all(:projects => Project.all).per(5) }
-        its(:current_page) { should == 3 }
-        its(:prev_page) { should == 2 }
-        its(:next_page) { should == 4 }
-        its('query.limit') { should == 5 }
-        its('query.offset') { should == 10 }
-        its(:total_count) { should == 50 }
-        its(:total_pages) { should == 10 }
+        context 'on query' do
+          subject { User[0].projects.page(3).all(:name.like => 'Project%').per(5) }
+          its(:current_page) { should == 3 }
+          its(:prev_page) { should == 2 }
+          its(:next_page) { should == 4 }
+          its('query.limit') { should == 5 }
+          its('query.offset') { should == 10 }
+          its(:total_count) { should == 50 }
+          its(:total_pages) { should == 10 }
+        end
+
+        context 'after association conditions' do
+          subject { User.page(3).all(:projects => Project.all).per(5) }
+          its(:current_page) { should == 3 }
+          its(:prev_page) { should == 2 }
+          its(:next_page) { should == 4 }
+          its('query.limit') { should == 5 }
+          its('query.offset') { should == 10 }
+          its(:total_count) { should == 50 }
+          its(:total_pages) { should == 10 }
+        end
       end
     end
   end
