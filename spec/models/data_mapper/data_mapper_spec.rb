@@ -4,14 +4,14 @@ if defined? DataMapper
   # tests for issue #203
   describe Kaminari::DataMapperCollectionMethods do
     before do
-      100.times do |i|
+      30.times do |i|
         User.create(:name => "User#{i}", :age => i)
       end
     end
 
     describe 'Model' do
       subject { User }
-      it { User.all.count.should == 100 }
+      it { User.all.count.should == 30 }
       it { User.page(1).length.should == 25 }
       it {
         User.paginates_per(5)
@@ -25,7 +25,7 @@ if defined? DataMapper
 
   describe Kaminari::DataMapperExtension do
     before do
-      100.times do |i|
+      90.times do |i|
         User.create(:name => "User#{i}", :age => i)
       end
     end
@@ -64,7 +64,7 @@ if defined? DataMapper
         its(:next_page) { should == 2 }
         its('query.limit') { should == 25 }
         its('query.offset') { should == 0 }
-        its(:total_count) { should == 100 }
+        its(:total_count) { should == 90 }
         its(:total_pages) { should == 4 }
       end
 
@@ -77,7 +77,7 @@ if defined? DataMapper
         its(:limit_value) { should == 25 }
         its('query.limit') { should == 25 }
         its('query.offset') { should == 25 }
-        its(:total_count) { should == 100 }
+        its(:total_count) { should == 90 }
         its(:total_pages) { should == 4 }
       end
 
@@ -89,7 +89,7 @@ if defined? DataMapper
         its(:next_page) { should == 2 }
         its('query.limit') { should == 25 }
         its('query.offset') { should == 0 }
-        its(:total_count) { should == 100 }
+        its(:total_count) { should == 90 }
         its(:total_pages) { should == 4 }
       end
 
@@ -128,7 +128,7 @@ if defined? DataMapper
         its('query.limit') { should == 20 }
         its(:limit_value) { should == 20 }
         its('query.offset') { should == 20 }
-        its(:total_count) { should == 100 }
+        its(:total_count) { should == 90 }
         its(:total_pages) { should == 5 }
       end
 
@@ -172,7 +172,7 @@ if defined? DataMapper
       context 'for association' do
         before do
           worker0 = User[0]
-          50.times do |i|
+          30.times do |i|
             worker0.projects << Project.create(:name => "Project#{i}")
           end
           worker0.projects.save
@@ -185,8 +185,8 @@ if defined? DataMapper
           its(:next_page) { should == 4 }
           its('query.limit') { should == 5 }
           its('query.offset') { should == 10 }
-          its(:total_count) { should == 50 }
-          its(:total_pages) { should == 10 }
+          its(:total_count) { should == 30 }
+          its(:total_pages) { should == 6 }
         end
 
         context 'after association conditions' do
@@ -196,8 +196,8 @@ if defined? DataMapper
           its(:next_page) { should == 4 }
           its('query.limit') { should == 5 }
           its('query.offset') { should == 10 }
-          its(:total_count) { should == 50 }
-          its(:total_pages) { should == 10 }
+          its(:total_count) { should == 30 }
+          its(:total_pages) { should == 6 }
         end
       end
     end
