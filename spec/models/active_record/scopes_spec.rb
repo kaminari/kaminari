@@ -2,6 +2,25 @@ require 'spec_helper'
 
 if defined? ActiveRecord
 
+  describe Kaminari::ActiveRecordModelExtension do
+    before do
+      Kaminari.configure do |config|
+        config.page_method_name = :per_page_kaminari
+      end
+      class Comment < ActiveRecord::Base; end
+    end
+
+    subject { Comment }
+    it { should respond_to(:per_page_kaminari) }
+    it { should_not respond_to(:page) }
+
+    after do
+      Kaminari.configure do |config|
+        config.page_method_name = :page
+      end
+    end
+  end
+
   shared_examples_for 'the first page' do
     it { should have(25).users }
     its('first.name') { should == 'user001' }
