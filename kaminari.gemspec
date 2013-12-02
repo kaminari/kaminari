@@ -12,6 +12,7 @@ Gem::Specification.new do |s|
   s.summary     = 'A pagination engine plugin for Rails 3+ or other modern frameworks'
   s.description = 'Kaminari is a Scope & Engine based, clean, powerful, agnostic, customizable and sophisticated paginator for Rails 3+'
 
+  s.required_ruby_version = '>= 1.9.3'
   s.rubyforge_project = 'kaminari'
 
   s.files         = `git ls-files`.split("\n")
