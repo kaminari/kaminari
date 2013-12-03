@@ -6,6 +6,8 @@ git 'git://github.com/rails/rails.git' do
   gem 'actionview', :require => 'action_view'
 end
 
+gem 'arel', :github => 'rails/arel'
+
 platforms :ruby, :rbx do
   gem 'sqlite3'
 end
