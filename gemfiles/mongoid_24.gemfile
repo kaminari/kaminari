@@ -9,5 +9,6 @@ gem 'capybara', '< 2.1'
 gem 'nokogiri', '< 1.6'
 gem 'rubyzip', '< 1'
 gem 'mime-types', '< 2'
+gem 'database_cleaner', '< 1.0.0'
 
 gemspec :path => '../'
