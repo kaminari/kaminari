@@ -5,8 +5,5 @@ gem 'mongoid', '~> 3.1.0'
 gem 'rspec-rails', '>= 2.0'
 gem 'origin'
 gem 'moped'
-gem 'nokogiri'
-gem 'xpath'
-gem 'mime-types'
 
 gemspec :path => '../'
