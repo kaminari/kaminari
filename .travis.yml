@@ -34,10 +34,4 @@ matrix:
     - rvm: 1.8.7
       gemfile: gemfiles/mongoid_31.gemfile
   allow_failures:
-    - rvm: 1.9.3
-      gemfile: gemfiles/active_record_edge.gemfile
-    - rvm: 2.0.0
-      gemfile: gemfiles/active_record_edge.gemfile
-    - rvm: jruby-19mode
-      gemfile: gemfiles/active_record_edge.gemfile
     - rvm: rbx-2.1.1
