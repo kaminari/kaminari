@@ -36,7 +36,7 @@ module Kaminari
 
       # render given block as a view template
       def render(&block)
-        instance_eval(&block) if @options[:total_pages] > 1
+        instance_eval(&block) if @options[:total_pages] == :infinite || @options[:total_pages] > 1
         @output_buffer
       end
 
@@ -56,11 +56,13 @@ module Kaminari
       alias each_page each_relevant_page
 
       def relevant_pages(options)
+        tmp_total_pages = options[:total_pages]
+        tmp_total_pages = 100000000 if tmp_total_pages == :infinite
         left_window_plus_one = 1.upto(options[:left] + 1).to_a
-        right_window_plus_one = (options[:total_pages] - options[:right]).upto(options[:total_pages]).to_a
+        right_window_plus_one = (tmp_total_pages - options[:right]).upto(tmp_total_pages).to_a
         inside_window_plus_each_sides = (options[:current_page] - options[:window] - 1).upto(options[:current_page] + options[:window] + 1).to_a
 
-        (left_window_plus_one + inside_window_plus_each_sides + right_window_plus_one).uniq.sort.reject {|x| (x < 1) || (x > options[:total_pages])}
+        (left_window_plus_one + inside_window_plus_each_sides + right_window_plus_one).uniq.sort.reject {|x| (x < 1) || (x > tmp_total_pages)}
       end
       private :relevant_pages
 
@@ -131,7 +133,11 @@ module Kaminari
 
         # the last page or not
         def last?
-          @page == @options[:total_pages]
+          @options[:total_pages] == :infinite ? false : @page == @options[:total_pages]
+        end
+
+        def infinite?
+          @options[:total_pages] == :infinite
         end
 
         # the previous page or not
@@ -151,7 +157,7 @@ module Kaminari
 
         # within the right outer window or not
         def right_outer?
-          @options[:total_pages] - @page < @options[:right]
+          @options[:total_pages] == :infinite ? false : @options[:total_pages] - @page < @options[:right]
         end
 
         # inside the inner window or not

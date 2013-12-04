@@ -19,15 +19,19 @@ module Kaminari
 
     # Total number of pages
     def total_pages
-      count_without_padding = total_count
-      count_without_padding -= @_padding if defined?(@_padding) && @_padding
-      count_without_padding = 0 if count_without_padding < 0
-
-      total_pages_count = (count_without_padding.to_f / limit_value).ceil
-      if max_pages.present? && max_pages < total_pages_count
-        max_pages
+      if infinite_pages?
+        :infinite
       else
-        total_pages_count
+        count_without_padding = total_count
+        count_without_padding -= @_padding if defined?(@_padding) && @_padding
+        count_without_padding = 0 if count_without_padding < 0
+
+        total_pages_count = (count_without_padding.to_f / limit_value).ceil
+        if max_pages.present? && max_pages < total_pages_count
+          max_pages
+        else
+          total_pages_count
+        end
       end
     end
     #FIXME for compatibility. remove num_pages at some time in the future
@@ -59,12 +63,12 @@ module Kaminari
 
     # Last page of the collection?
     def last_page?
-      current_page >= total_pages
+      total_pages == :infinite ? false : current_page >= total_pages
     end
 
     # Out of range of the collection?
     def out_of_range?
-      current_page > total_pages
+      total_pages == :infinite ? false : current_page > total_pages
     end
   end
 end
