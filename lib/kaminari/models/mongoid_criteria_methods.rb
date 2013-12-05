@@ -9,7 +9,7 @@ module Kaminari
     end
 
     def total_count #:nodoc:
-      embedded? ? unpage.count : count
+      embedded? ? unpage.length : length
     end
 
     private
