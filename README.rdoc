@@ -273,6 +273,12 @@ or edit gemfile:
 
     gem 'kaminari', :require => 'kaminari/sinatra'
 
+This line just enables model-side features, such as `Model#page` and `Model#per`. If you want to use view helpers, please explicitly `register` helpers in your Sinatra or Padrino app:
+
+    register Kaminari::Helpers::SinatraHelpers
+
+Or, you can implement your own awesome helper :)
+
 More features are coming, and again, this is still experimental. Please let us know if you found anything wrong with the Sinatra support.
 
 
