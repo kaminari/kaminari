@@ -34,7 +34,6 @@ require 'rdoc/task'
 
 Rake::RDocTask.new do |rdoc|
   require 'kaminari/version'
-
   rdoc.rdoc_dir = 'rdoc'
   rdoc.title = "kaminari #{Kaminari::VERSION}"
   rdoc.rdoc_files.include('README*')
