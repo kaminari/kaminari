@@ -12,6 +12,7 @@ if defined? ActiveRecord
         @books3 = 4.times.map {|i| @author3.books_authored.create!(:title => "subject%03d" % i) }
         @readers = 4.times.map { User.create! :name => 'reader' }
         @books.each {|book| book.readers << @readers }
+        @many_books = 1000.times.map { Book.create! :title => "random_title_#{rand(1..1000)}"}
       end
 
       context "when the scope includes an order which references a generated column" do
@@ -64,6 +65,16 @@ if defined? ActiveRecord
           lambda {
             @author.readers.by_read_count.page(1).total_count(:name, :distinct => true)
           }.should_not raise_exception
+        end
+      end
+
+      context "when there are thousands of records" do
+        it "should NOT do count(*) when no column is specified" do
+          Book.where("books.title LIKE 'random_title%'").page(1).total_count.should == 1000
+        end
+
+        it "should do a count(*) when a column is specified" do
+          Book.where("books.title LIKE 'random_title%'").page(1).total_count(:title).should == 1000
         end
       end
     end
