@@ -35,3 +35,4 @@ matrix:
       gemfile: gemfiles/mongoid_31.gemfile
   allow_failures:
     - rvm: rbx-2.1.1
+      gemfile: gemfiles/active_record_edge.gemfile
