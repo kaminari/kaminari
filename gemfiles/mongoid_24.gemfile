@@ -11,4 +11,11 @@ gem 'rubyzip', '< 1'
 gem 'mime-types', '< 2'
 gem 'database_cleaner', '< 1.0.0'
 
+platforms :rbx do
+  gem 'rubysl', '~> 2.0'
+  gem 'racc'
+  gem 'rubysl-test-unit'
+  gem 'rubinius-developer_tools'
+end
+
 gemspec :path => '../'

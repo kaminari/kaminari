@@ -30,13 +30,17 @@ namespace :spec do
   end
 end
 
-require 'rdoc/task'
+begin
+  require 'rdoc/task'
 
-Rake::RDocTask.new do |rdoc|
-  require 'kaminari/version'
+  Rake::RDocTask.new do |rdoc|
+    require 'kaminari/version'
 
-  rdoc.rdoc_dir = 'rdoc'
-  rdoc.title = "kaminari #{Kaminari::VERSION}"
-  rdoc.rdoc_files.include('README*')
-  rdoc.rdoc_files.include('lib/**/*.rb')
+    rdoc.rdoc_dir = 'rdoc'
+    rdoc.title = "kaminari #{Kaminari::VERSION}"
+    rdoc.rdoc_files.include('README*')
+    rdoc.rdoc_files.include('lib/**/*.rb')
+  end
+rescue LoadError
+  puts 'RDocTask is not supported on this VM and platform combination.'
 end
