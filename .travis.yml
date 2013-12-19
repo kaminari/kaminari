@@ -7,7 +7,7 @@ rvm:
   - 1.9.3
   - 2.0.0
   - jruby
-  - rbx-2.1.1
+  - rbx
 
 gemfile:
   - gemfiles/active_record_30.gemfile
@@ -34,5 +34,5 @@ matrix:
     - rvm: 1.8.7
       gemfile: gemfiles/mongoid_31.gemfile
   allow_failures:
-    - rvm: rbx-2.1.1
+    - rvm: rbx
       gemfile: gemfiles/active_record_edge.gemfile
