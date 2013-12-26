@@ -17,10 +17,10 @@ end
 platforms :rbx do
   gem 'rubysl', '~> 2.0'
   gem 'racc'
-  gem 'rubysl-test-unit'
+  gem 'minitest'
   gem 'rubinius-developer_tools'
 end
 
-gem 'rspec-rails', '>= 2.0'
+gem 'rspec-rails', '2.99.0.beta1'
 
 gemspec :path => '../'
