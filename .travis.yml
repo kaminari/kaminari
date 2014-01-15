@@ -37,3 +37,4 @@ matrix:
   allow_failures:
     - rvm: jruby
       gemfile: gemfiles/active_record_edge.gemfile
+  fast_finish: true
