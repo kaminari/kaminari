@@ -6,10 +6,10 @@ Gem::Specification.new do |s|
   s.name        = 'kaminari'
   s.version     = Kaminari::VERSION
   s.platform    = Gem::Platform::RUBY
-  s.authors     = ['Akira Matsuda', 'Zachary Scott', 'Yuki Nishijima', 'Hiroshi Shibata']
+  s.authors     = ['Akira Matsuda', 'Yuki Nishijima', 'Zachary Scott', 'Hiroshi Shibata']
   s.email       = ['ronnie@dio.jp']
   s.homepage    = 'https://github.com/amatsuda/kaminari'
-  s.summary     = 'A pagination engine plugin for Rails 3+ or other modern frameworks'
+  s.summary     = 'A pagination engine plugin for Rails 3+ and other modern frameworks'
   s.description = 'Kaminari is a Scope & Engine based, clean, powerful, agnostic, customizable and sophisticated paginator for Rails 3+'
 
   s.rubyforge_project = 'kaminari'

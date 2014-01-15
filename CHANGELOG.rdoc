@@ -1,3 +1,12 @@
+== 0.15.1
+
+* page_method_name option was not working in 0.15.0 #481 [mauriciopasquier]
+
+* Use the mongoid criteria #length method to cache the count of the collection
+per criteria #484 [camallen]
+
+* Don't inherit host, port, and protocol from the given params
+
 == 0.15.0
 
 * Allow count, total count to pass parameters to super #193 [bsimpson]
