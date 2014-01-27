@@ -141,7 +141,7 @@ module Kaminari
         output << '<link rel="prev" href="' + prv + '"/>'
       elsif scope.first_page?
         # If first page, add next link unless last page.
-        output << '<link rel="next" href="' + prv + '"/>' unless scope.last_page?
+        output << '<link rel="next" href="' + nxt + '"/>' unless scope.last_page?
       else
         # If last page, add prev link unless first page.
         output << '<link rel="prev" href="' + prv + '"/>' unless scope.first_page?
