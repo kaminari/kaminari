@@ -132,16 +132,19 @@ module Kaminari
 
       output = ""
 
+      nxt = url_for(params.merge(param_name => (scope.current_page + 1), :only_path => true))
+      prv = url_for(params.merge(param_name => (scope.current_page - 1), :only_path => true))
+
       if !scope.first_page? && !scope.last_page?
         # If not first and not last, then output both links.
-        output << '<link rel="next" href="' + url_for(params.merge(param_name => (scope.current_page + 1), :only_path => true)) + '"/>'
-        output << '<link rel="prev" href="' + url_for(params.merge(param_name => (scope.current_page - 1), :only_path => true)) + '"/>'
+        output << '<link rel="next" href="' + nxt + '"/>'
+        output << '<link rel="prev" href="' + prv + '"/>'
       elsif scope.first_page?
         # If first page, add next link unless last page.
-        output << '<link rel="next" href="' + url_for(params.merge(param_name => (scope.current_page + 1), :only_path => true)) + '"/>' unless scope.last_page?
+        output << '<link rel="next" href="' + prv + '"/>' unless scope.last_page?
       else
         # If last page, add prev link unless first page.
-        output << '<link rel="prev" href="' + url_for(params.merge(param_name => (scope.current_page - 1), :only_path => true)) + '"/>' unless scope.first_page?
+        output << '<link rel="prev" href="' + prv + '"/>' unless scope.first_page?
       end
 
       output.html_safe
