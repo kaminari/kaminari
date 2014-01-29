@@ -127,13 +127,11 @@ module Kaminari
     #   #-> <link rel="next" href="/items/page/3" /><link rel="prev" href="/items/page/1" />
     #
     def rel_next_prev_link_tags(scope, options = {})
-      params = options.delete(:params) || {}
-      param_name = options.delete(:param_name) || Kaminari.config.param_name
 
       output = ""
 
-      nxt = url_for(params.merge(param_name => (scope.current_page + 1), :only_path => true))
-      prv = url_for(params.merge(param_name => (scope.current_page - 1), :only_path => true))
+      nxt = next_prev_url_for(scope, :next_page, options)
+      prv = next_prev_url_for(scope, :previous_page, options)
 
       if !scope.first_page? && !scope.last_page?
         # If not first and not last, then output both links.
@@ -149,5 +147,11 @@ module Kaminari
 
       output.html_safe
     end
+  end
+
+  def next_prev_url_for(scope, direction, options = {})
+    params = options.delete(:params) || {}
+    param_name = options.delete(:param_name) || Kaminari.config.param_name
+    url_for(params.merge(param_name => scope.send(direction), :only_path => true))
   end
 end
