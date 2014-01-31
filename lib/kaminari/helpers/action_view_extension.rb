@@ -131,18 +131,8 @@ module Kaminari
       param_name = options.delete(:param_name) || Kaminari.config.param_name
 
       output = ""
-
-      if !scope.first_page? && !scope.last_page?
-        # If not first and not last, then output both links.
-        output << '<link rel="next" href="' + url_for(params.merge(param_name => (scope.current_page + 1), :only_path => true)) + '"/>'
-        output << '<link rel="prev" href="' + url_for(params.merge(param_name => (scope.current_page - 1), :only_path => true)) + '"/>'
-      elsif scope.first_page?
-        # If first page, add next link unless last page.
-        output << '<link rel="next" href="' + url_for(params.merge(param_name => (scope.current_page + 1), :only_path => true)) + '"/>' unless scope.last_page?
-      else
-        # If last page, add prev link unless first page.
-        output << '<link rel="prev" href="' + url_for(params.merge(param_name => (scope.current_page - 1), :only_path => true)) + '"/>' unless scope.first_page?
-      end
+      output << '<link rel="next" href="' + url_for(params.merge(param_name => scope.next_page, :only_path => true)) + '"/>' if scope.next_page
+      output << '<link rel="prev" href="' + url_for(params.merge(param_name => scope.prev_page, :only_path => true)) + '"/>' if scope.prev_page
 
       output.html_safe
     end
