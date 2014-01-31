@@ -259,7 +259,7 @@ describe 'Kaminari::ActionViewExtension' do
       subject { helper.rel_next_prev_link_tags @users, :params => {:controller => 'users', :action => 'index'} }
       it { should_not match(/rel="prev"/) }
       it { should match(/rel="next"/) }
-      it { should match(/href=\"\/users\?page=2\"/) }
+      it { should match(/\?page=2/) }
     end
 
     context 'the middle page' do
@@ -269,9 +269,9 @@ describe 'Kaminari::ActionViewExtension' do
 
       subject { helper.rel_next_prev_link_tags @users, :params => {:controller => 'users', :action => 'index'} }
       it { should match(/rel="prev"/) }
-      it { should match(/href="\/users\?page=1/) }
+      it { should match(/\?page=1/) }
       it { should match(/rel="next"/) }
-      it { should match(/href="\/users\?page=3/) }
+      it { should match(/\?page=3/) }
     end
 
     context 'the last page' do
@@ -281,7 +281,7 @@ describe 'Kaminari::ActionViewExtension' do
 
       subject { helper.rel_next_prev_link_tags @users, :params => {:controller => 'users', :action => 'index'} }
       it { should match(/rel="prev"/) }
-      it { should match(/href="\/users\?page=2"/) }
+      it { should match(/\?page=2"/) }
       it { should_not match(/rel="next"/) }
     end
   end
