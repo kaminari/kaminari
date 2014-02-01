@@ -248,7 +248,7 @@ describe 'Kaminari::ActionViewExtension' do
 
   describe '#rel_next_prev_link_tags' do
     before do
-      75.times {|i| User.create! :name => "user#{i}"}
+      80.times {|i| User.create! :name => "user#{i}"}
     end
 
     context 'the first page' do
@@ -264,24 +264,24 @@ describe 'Kaminari::ActionViewExtension' do
 
     context 'the middle page' do
       before do
-        @users = User.page(2).per(25)
-      end
-
-      subject { helper.rel_next_prev_link_tags @users, :params => {:controller => 'users', :action => 'index'} }
-      it { should match(/rel="prev"/) }
-      it { should match(/\?page=1/) }
-      it { should match(/rel="next"/) }
-      it { should match(/\?page=3/) }
-    end
-
-    context 'the last page' do
-      before do
         @users = User.page(3).per(25)
       end
 
       subject { helper.rel_next_prev_link_tags @users, :params => {:controller => 'users', :action => 'index'} }
       it { should match(/rel="prev"/) }
-      it { should match(/\?page=2"/) }
+      it { should match(/\?page=2/) }
+      it { should match(/rel="next"/) }
+      it { should match(/\?page=4/) }
+    end
+
+    context 'the last page' do
+      before do
+        @users = User.page(4).per(25)
+      end
+
+      subject { helper.rel_next_prev_link_tags @users, :params => {:controller => 'users', :action => 'index'} }
+      it { should match(/rel="prev"/) }
+      it { should match(/\?page=3"/) }
       it { should_not match(/rel="next"/) }
     end
   end
