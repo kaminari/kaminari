@@ -9,7 +9,17 @@ module Kaminari
     end
 
     def total_count #:nodoc:
-      embedded? ? unpage.length : length
+      @total_count ||=
+        if embedded?
+          unpage.count
+        else
+          counter_result = count
+          if options[:max_scan] and options[:max_scan] < counter_result
+            options[:max_scan]
+          else
+            counter_result
+          end
+        end
     end
 
     private

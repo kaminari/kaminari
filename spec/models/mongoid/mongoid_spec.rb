@@ -8,6 +8,60 @@ if defined? Mongoid
       end
     end
 
+    describe 'max_scan', :if => Mongoid::VERSION >= '3' do
+      context 'less than total' do
+        context 'page 1' do
+          subject { User.max_scan(20).page 1 }
+          it { should be_a Mongoid::Criteria }
+          its(:current_page) { should == 1   }
+          its(:prev_page)    { should be_nil }
+          its(:next_page)    { should be_nil }
+          its(:limit_value)  { should == 25  }
+          its(:total_pages)  { should == 1   }
+          its(:total_count)  { should == 20  }
+          it { should skip(0) }
+        end
+
+        context 'page 2' do
+          subject { User.max_scan(30).page 2 }
+          it { should be_a Mongoid::Criteria }
+          its(:current_page) { should == 2   }
+          its(:prev_page)    { should == 1   }
+          its(:next_page)    { should be_nil }
+          its(:limit_value)  { should == 25  }
+          its(:total_pages)  { should == 2   }
+          its(:total_count)  { should == 30  }
+          it { should skip 25 }
+        end
+      end
+
+      context 'more than total' do
+        context 'page 1' do
+          subject { User.max_scan(60).page 1 }
+          it { should be_a Mongoid::Criteria }
+          its(:current_page) { should == 1   }
+          its(:prev_page)    { should be_nil }
+          its(:next_page)    { should == 2   }
+          its(:limit_value)  { should == 25  }
+          its(:total_pages)  { should == 2   }
+          its(:total_count)  { should == 41  }
+          it { should skip(0) }
+        end
+
+        context 'page 2' do
+          subject { User.max_scan(60).page 2 }
+          it { should be_a Mongoid::Criteria }
+          its(:current_page) { should == 2   }
+          its(:prev_page) { should == 1      }
+          its(:next_page) { should be_nil    }
+          its(:limit_value) { should == 25   }
+          its(:total_pages) { should == 2    }
+          its(:total_count)  { should == 41  }
+          it { should skip 25 }
+        end
+      end
+    end
+
     describe '#page' do
 
       context 'page 1' do
