@@ -38,6 +38,6 @@ matrix:
     - rvm: 1.8.7
       gemfile: gemfiles/mongoid_40.gemfile
   allow_failures:
-    - rvm: jruby
-      gemfile: gemfiles/active_record_edge.gemfile
+    - rvm: rbx
+      gemfile: gemfiles/mongoid_40.gemfile
   fast_finish: true
