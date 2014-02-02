@@ -93,6 +93,18 @@ module Kaminari::Helpers
         paginator.to_s
       end
 
+      def link_to_previous_page(scope, name, options = {})
+        params = options.delete(:params) || (Rack::Utils.parse_query(env['QUERY_STRING']).symbolize_keys rescue {})
+        param_name = options.delete(:param_name) || Kaminari.config.param_name
+        placeholder = options.delete(:placeholder)
+        query = params.merge(param_name => (scope.current_page - 1))
+        unless scope.first_page?
+          link_to name, env['PATH_INFO'] + (query.empty? ? '' : "?#{query.to_query}"), options.reverse_merge(:rel => 'previous')
+        else
+          placeholder
+        end
+      end
+
       # A simple "Twitter like" pagination link that creates a link to the next page.
       # Works on Sinatra.
       #

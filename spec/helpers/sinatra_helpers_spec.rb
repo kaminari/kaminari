@@ -12,6 +12,17 @@ if defined? Sinatra
   </div>
 EOT
 
+  ERB_TEMPLATE_FOR_PREVIOUS_PAGE = <<EOT
+  <div>
+  <ul>
+  <% @users.each do |user| %>
+    <li class="user_info"><%= user.id %></li>
+  <% end %>
+  </ul>
+  <%= link_to_previous_page(@users, "Previous!", {:id => 'previous_page_link'}.merge(@options || {})) %>
+  </div>
+EOT
+
   ERB_TEMPLATE_FOR_NEXT_PAGE = <<EOT
   <div>
   <ul>
@@ -121,6 +132,48 @@ EOT
           last_document.search('.page a').should(be_all do |elm|
             elm.attribute('href').value =~ /user_page=\d+/
           end)
+        end
+      end
+    end
+
+    describe '#link_to_previous_page' do
+      before do
+        mock_app do
+          register Kaminari::Helpers::SinatraHelpers
+          get '/users' do
+            @page = params[:page] || 2
+            @users = User.page(@page)
+            erb ERB_TEMPLATE_FOR_PREVIOUS_PAGE
+          end
+
+          get '/users_placeholder' do
+            @page = params[:page] || 2
+            @options = {:placeholder => %{<span id='no_previous_page'>No Previous Page</span>}}
+            @users = User.page(@page)
+            erb ERB_TEMPLATE_FOR_PREVIOUS_PAGE
+          end
+        end
+      end
+
+      context 'having more page' do
+        it 'should have a more page link' do
+          get '/users'
+          last_document.search('a#previous_page_link').should be_present
+          last_document.search('a#previous_page_link').text.should match(/Previous!/)
+        end
+      end
+
+      context 'the first page' do
+        it 'should not have a more page link' do
+          get '/users?page=1'
+          last_document.search('a#previous_page_link').should be_empty
+        end
+
+        it 'should have a no more page notation using placeholder' do
+          get '/users_placeholder?page=1'
+          last_document.search('a#previous_page_link').should be_empty
+          last_document.search('span#no_previous_page').should be_present
+          last_document.search('span#no_previous_page').text.should match(/No Previous Page/)
         end
       end
     end
