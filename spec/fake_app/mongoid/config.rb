@@ -8,7 +8,7 @@ if RUBY_VERSION >= '1.9.2'
 end
 
 Mongoid.configure do |config|
-  if Mongoid::VERSION =~ /^3/
+  if Mongoid::VERSION > '3.0.0'
     config.sessions = {:default => {:hosts => ['localhost:27017'], :database => 'kaminari_test'}}
   else
     config.master = Mongo::Connection.new.db('kaminari_test')

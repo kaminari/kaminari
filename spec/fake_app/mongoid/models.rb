@@ -1,5 +1,9 @@
 class User
   include ::Mongoid::Document
+  if Mongoid::VERSION > '4.0.0'
+    include Mongoid::Attributes::Dynamic
+  end
+
   field :name, :type => String
   field :age, :type => Integer
 end

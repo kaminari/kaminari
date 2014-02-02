@@ -98,7 +98,7 @@ if defined? Mongoid
       end
 
       shared_examples 'complete valid pagination' do
-        if Mongoid::VERSION =~ /^3/
+        if Mongoid::VERSION > '3.0.0'
           its(:selector) { should == {'salary' => 1} }
         else
           its(:selector) { should == {:salary => 1} }
