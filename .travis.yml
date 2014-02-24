@@ -15,6 +15,7 @@ gemfile:
   - gemfiles/active_record_31.gemfile
   - gemfiles/active_record_32.gemfile
   - gemfiles/active_record_40.gemfile
+  - gemfiles/active_record_41.gemfile
   - gemfiles/active_record_edge.gemfile
   - gemfiles/data_mapper_12.gemfile
   - gemfiles/mongo_mapper.gemfile
@@ -29,6 +30,8 @@ matrix:
   exclude:
     - rvm: 1.8.7
       gemfile: gemfiles/active_record_40.gemfile
+    - rvm: 1.8.7
+      gemfile: gemfiles/active_record_41.gemfile
     - rvm: 1.8.7
       gemfile: gemfiles/active_record_edge.gemfile
     - rvm: 1.8.7
