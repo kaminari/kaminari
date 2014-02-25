@@ -19,7 +19,7 @@ EOT
     <li class="user_info"><%= user.id %></li>
   <% end %>
   </ul>
-  <%= link_to_previous_page(@users, "Previous!", {:id => 'previous_page_link'}.merge(@options || {})) %>
+  <%= link_to_previous_page(@users, "Previous!", {id: 'previous_page_link'}.merge(@options || {})) %>
   </div>
 EOT
 
@@ -30,13 +30,13 @@ EOT
     <li class="user_info"><%= user.id %></li>
   <% end %>
   </ul>
-  <%= link_to_next_page(@users, "Next!", {:id => 'next_page_link'}.merge(@options || {})) %>
+  <%= link_to_next_page(@users, "Next!", {id: 'next_page_link'}.merge(@options || {})) %>
   </div>
 EOT
 
   describe 'Kaminari::Helpers::SinatraHelper' do
     before do
-      50.times {|i| User.create! :name => "user#{i}"}
+      50.times {|i| User.create! name: "user#{i}"}
     end
 
     describe '#paginate' do
@@ -107,7 +107,7 @@ EOT
             get '/users' do
               @page = params[:page] || 1
               @users = User.page(@page).per(3)
-              @options = {:window => 10}
+              @options = {window: 10}
               erb ERB_TEMPLATE_FOR_PAGINATE
             end
           end
@@ -123,7 +123,7 @@ EOT
             get '/users' do
               @page = params[:page] || 1
               @users = User.page(@page).per(3)
-              @options = {:param_name => :user_page}
+              @options = {param_name: :user_page}
               erb ERB_TEMPLATE_FOR_PAGINATE
             end
           end
@@ -148,7 +148,7 @@ EOT
 
           get '/users_placeholder' do
             @page = params[:page] || 2
-            @options = {:placeholder => %{<span id='no_previous_page'>No Previous Page</span>}}
+            @options = {placeholder: %{<span id='no_previous_page'>No Previous Page</span>}}
             @users = User.page(@page)
             erb ERB_TEMPLATE_FOR_PREVIOUS_PAGE
           end
@@ -190,7 +190,7 @@ EOT
 
           get '/users_placeholder' do
             @page = params[:page] || 1
-            @options = {:placeholder => %{<span id='no_next_page'>No Next Page</span>}}
+            @options = {placeholder: %{<span id='no_next_page'>No Next Page</span>}}
             @users = User.page(@page)
             erb ERB_TEMPLATE_FOR_NEXT_PAGE
           end

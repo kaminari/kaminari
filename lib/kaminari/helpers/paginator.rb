@@ -65,7 +65,7 @@ module Kaminari
       private :relevant_pages
 
       def page_tag(page)
-        @last = Page.new @template, @options.merge(:page => page)
+        @last = Page.new @template, @options.merge(page: page)
       end
 
       %w[first_page prev_page next_page last_page gap].each do |tag|
@@ -97,12 +97,12 @@ module Kaminari
           end
 
           subscriber.render_without_logging = true
-          ret = super @window_options.merge :paginator => self
+          ret = super @window_options.merge paginator: self
           subscriber.render_without_logging = false
 
           ret
         else
-          super @window_options.merge :paginator => self
+          super @window_options.merge paginator: self
         end
       end
 

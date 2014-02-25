@@ -5,7 +5,7 @@ if defined? DataMapper
   describe Kaminari::DataMapperCollectionMethods do
     before do
       30.times do |i|
-        User.create(:name => "User#{i}", :age => i)
+        User.create(name: "User#{i}", age: i)
       end
     end
 
@@ -26,7 +26,7 @@ if defined? DataMapper
   describe Kaminari::DataMapperExtension do
     before do
       90.times do |i|
-        User.create(:name => "User#{i}", :age => i)
+        User.create(name: "User#{i}", age: i)
       end
     end
 
@@ -144,11 +144,11 @@ if defined? DataMapper
       end
 
       context 'on query with order' do
-        subject { User.page(5).all(:age.lte => 80, :order => [:age.asc]).per(13) }
-        it('includes user with age 52') { should include(User.first(:age => 52)) }
-        it('does not include user with age 51') { should_not include(User.first(:age => 51)) }
-        it('includes user with age 52') { should include(User.first(:age => 64)) }
-        it('does not include user with age 51') { should_not include(User.first(:age => 65)) }
+        subject { User.page(5).all(:age.lte => 80, order: [:age.asc]).per(13) }
+        it('includes user with age 52') { should include(User.first(age: 52)) }
+        it('does not include user with age 51') { should_not include(User.first(age: 51)) }
+        it('includes user with age 52') { should include(User.first(age: 64)) }
+        it('does not include user with age 51') { should_not include(User.first(age: 65)) }
         its(:current_page) { should == 5 }
         its(:prev_page) { should == 4 }
         its(:next_page) { should == 6 }
@@ -173,7 +173,7 @@ if defined? DataMapper
         before do
           worker0 = User[0]
           30.times do |i|
-            worker0.projects << Project.create(:name => "Project#{i}")
+            worker0.projects << Project.create(name: "Project#{i}")
           end
           worker0.projects.save
         end
@@ -190,7 +190,7 @@ if defined? DataMapper
         end
 
         context 'after association conditions' do
-          subject { User.page(3).all(:projects => Project.all).per(5) }
+          subject { User.page(3).all(projects: Project.all).per(5) }
           its(:current_page) { should == 3 }
           its(:prev_page) { should == 2 }
           its(:next_page) { should == 4 }

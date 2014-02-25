@@ -15,7 +15,7 @@ module Kaminari
     # * <tt>:remote</tt> - Ajax? (false by default)
     # * <tt>:ANY_OTHER_VALUES</tt> - Any other hash key & values would be directly passed into each tag as :locals value.
     def paginate(scope, options = {}, &block)
-      paginator = Kaminari::Helpers::Paginator.new self, options.reverse_merge(:current_page => scope.current_page, :total_pages => scope.total_pages, :per_page => scope.limit_value, :remote => false)
+      paginator = Kaminari::Helpers::Paginator.new self, options.reverse_merge(current_page: scope.current_page, total_pages: scope.total_pages, per_page: scope.limit_value, remote: false)
       paginator.to_s
     end
 
@@ -28,7 +28,7 @@ module Kaminari
     #
     # Ajax:
     #
-    #   <%= link_to_previous_page @items, 'Previous Page', :remote => true %>
+    #   <%= link_to_previous_page @items, 'Previous Page', remote: true %>
     #
     # By default, it renders nothing if there are no more results on the previous page.
     # You can customize this output by passing a block.
@@ -39,7 +39,7 @@ module Kaminari
     def link_to_previous_page(scope, name, options = {}, &block)
       params = options.delete(:params) || {}
       param_name = options.delete(:param_name) || Kaminari.config.param_name
-      link_to_unless scope.first_page?, name, params.merge(param_name => scope.prev_page), options.reverse_merge(:rel => 'previous') do
+      link_to_unless scope.first_page?, name, params.merge(param_name => scope.prev_page), options.reverse_merge(rel: 'previous') do
         block.call if block
       end
     end
@@ -53,7 +53,7 @@ module Kaminari
     #
     # Ajax:
     #
-    #   <%= link_to_next_page @items, 'Next Page', :remote => true %>
+    #   <%= link_to_next_page @items, 'Next Page', remote: true %>
     #
     # By default, it renders nothing if there are no more results on the next page.
     # You can customize this output by passing a block.
@@ -64,7 +64,7 @@ module Kaminari
     def link_to_next_page(scope, name, options = {}, &block)
       params = options.delete(:params) || {}
       param_name = options.delete(:param_name) || Kaminari.config.param_name
-      link_to_unless scope.last_page?, name, params.merge(param_name => scope.next_page), options.reverse_merge(:rel => 'next') do
+      link_to_unless scope.last_page?, name, params.merge(param_name => scope.next_page), options.reverse_merge(rel: 'next') do
         block.call if block
       end
     end
@@ -83,7 +83,7 @@ module Kaminari
     # The namespace will be cutted out and only the last name will be used.
     # Override this with the <tt>:entry_name</tt> parameter:
     #
-    #   <%= page_entries_info @posts, :entry_name => 'item' %>
+    #   <%= page_entries_info @posts, entry_name: 'item' %>
     #   #-> Displaying items 6 - 10 of 26 in total
     def page_entries_info(collection, options = {})
       entry_name = if options[:entry_name]
@@ -100,11 +100,11 @@ module Kaminari
       entry_name = entry_name.pluralize unless collection.total_count == 1
 
       if collection.total_pages < 2
-        t('helpers.page_entries_info.one_page.display_entries', :entry_name => entry_name, :count => collection.total_count)
+        t('helpers.page_entries_info.one_page.display_entries', entry_name: entry_name, count: collection.total_count)
       else
         first = collection.offset_value + 1
         last = collection.last_page? ? collection.total_count : collection.offset_value + collection.limit_value
-        t('helpers.page_entries_info.more_pages.display_entries', :entry_name => entry_name, :first => first, :last => last, :total => collection.total_count)
+        t('helpers.page_entries_info.more_pages.display_entries', entry_name: entry_name, first: first, last: last, total: collection.total_count)
       end.html_safe
     end
 
@@ -131,8 +131,8 @@ module Kaminari
       param_name = options.delete(:param_name) || Kaminari.config.param_name
 
       output = ""
-      output << '<link rel="next" href="' + url_for(params.merge(param_name => scope.next_page, :only_path => true)) + '"/>' if scope.next_page
-      output << '<link rel="prev" href="' + url_for(params.merge(param_name => scope.prev_page, :only_path => true)) + '"/>' if scope.prev_page
+      output << '<link rel="next" href="' + url_for(params.merge(param_name => scope.next_page, only_path: true)) + '"/>' if scope.next_page
+      output << '<link rel="prev" href="' + url_for(params.merge(param_name => scope.prev_page, only_path: true)) + '"/>' if scope.prev_page
 
       output.html_safe
     end

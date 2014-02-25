@@ -8,7 +8,7 @@ module Kaminari
           model = self
           model = self.model if self.is_a? DataMapper::Collection
           num = [num.to_i, 1].max - 1
-          all(:limit => model.default_per_page, :offset => model.default_per_page * num).extend Paginating
+          all(limit: model.default_per_page, offset: model.default_per_page * num).extend Paginating
         end
       RUBY
     end
@@ -31,7 +31,7 @@ module Kaminari
         include Kaminari::DataMapperCollectionMethods
         include Paginatable
 
-        delegate :default_per_page, :max_per_page, :max_pages, :to => :model
+        delegate :default_per_page, :max_per_page, :max_pages, to: :model
       end
     end
 
@@ -40,11 +40,11 @@ module Kaminari
       include Paginatable
 
       def limit(val)
-        all(:limit => val)
+        all(limit: val)
       end
 
       def offset(val)
-        all(:offset => val)
+        all(offset: val)
       end
     end
   end
