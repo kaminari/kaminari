@@ -87,8 +87,8 @@ module Kaminari::Helpers
         current_path = env['PATH_INFO'] rescue nil
         current_params = Rack::Utils.parse_query(env['QUERY_STRING']).symbolize_keys rescue {}
         paginator = Kaminari::Helpers::Paginator.new(
-          ActionViewTemplateProxy.new(:current_params => current_params, :current_path => current_path, :param_name => options[:param_name] || Kaminari.config.param_name),
-          options.reverse_merge(:current_page => scope.current_page, :total_pages => scope.total_pages, :per_page => scope.limit_value, :param_name => Kaminari.config.param_name, :remote => false)
+          ActionViewTemplateProxy.new(current_params: current_params, current_path: current_path, param_name: options[:param_name] || Kaminari.config.param_name),
+          options.reverse_merge(current_page: scope.current_page, total_pages: scope.total_pages, per_page: scope.limit_value, param_name: Kaminari.config.param_name, remote: false)
         )
         paginator.to_s
       end
@@ -103,12 +103,12 @@ module Kaminari::Helpers
       #
       # Ajax:
       #
-      #   <%= link_to_previous_page @items, 'Previous Page', :remote => true %>
+      #   <%= link_to_previous_page @items, 'Previous Page', remote: true %>
       #
       # By default, it renders nothing if there are no more results on the previous page.
       # You can customize this output by passing a parameter <tt>:placeholder</tt>.
       #
-      #   <%= link_to_previous_page @users, 'Previous Page', :placeholder => %{<span>At the Beginning</span>} %>
+      #   <%= link_to_previous_page @users, 'Previous Page', placeholder: %{<span>At the Beginning</span>} %>
       #
       def link_to_previous_page(scope, name, options = {})
         params = options.delete(:params) || (Rack::Utils.parse_query(env['QUERY_STRING']).symbolize_keys rescue {})
@@ -117,7 +117,7 @@ module Kaminari::Helpers
 
         unless scope.first_page?
           query = params.merge(param_name => scope.prev_page)
-          link_to name, env['PATH_INFO'] + (query.empty? ? '' : "?#{query.to_query}"), options.reverse_merge(:rel => 'previous')
+          link_to name, env['PATH_INFO'] + (query.empty? ? '' : "?#{query.to_query}"), options.reverse_merge(rel: 'previous')
         else
           placeholder
         end
@@ -133,12 +133,12 @@ module Kaminari::Helpers
       #
       # Ajax:
       #
-      #   <%= link_to_next_page @items, 'Next Page', :remote => true %>
+      #   <%= link_to_next_page @items, 'Next Page', remote: true %>
       #
       # By default, it renders nothing if there are no more results on the next page.
       # You can customize this output by passing a parameter <tt>:placeholder</tt>.
       #
-      #   <%= link_to_next_page @items, 'Next Page', :placeholder => %{<span>No More Pages</span>} %>
+      #   <%= link_to_next_page @items, 'Next Page', placeholder: %{<span>No More Pages</span>} %>
       #
       def link_to_next_page(scope, name, options = {})
         params = options.delete(:params) || (Rack::Utils.parse_query(env['QUERY_STRING']).symbolize_keys rescue {})
@@ -147,7 +147,7 @@ module Kaminari::Helpers
 
         unless scope.last_page?
           query = params.merge(param_name => scope.next_page)
-          link_to name, env['PATH_INFO'] + (query.empty? ? '' : "?#{query.to_query}"), options.reverse_merge(:rel => 'next')
+          link_to name, env['PATH_INFO'] + (query.empty? ? '' : "?#{query.to_query}"), options.reverse_merge(rel: 'next')
         else
           placeholder
         end

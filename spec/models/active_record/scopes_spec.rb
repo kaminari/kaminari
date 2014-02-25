@@ -32,9 +32,9 @@ if defined? ActiveRecord
 
   describe Kaminari::ActiveRecordExtension do
     before do
-      1.upto(100) {|i| User.create! :name => "user#{'%03d' % i}", :age => (i / 10)}
-      1.upto(100) {|i| GemDefinedModel.create! :name => "user#{'%03d' % i}", :age => (i / 10)}
-      1.upto(100) {|i| Device.create! :name => "user#{'%03d' % i}", :age => (i / 10)}
+      1.upto(100) {|i| User.create! name: "user#{'%03d' % i}", age: (i / 10)}
+      1.upto(100) {|i| GemDefinedModel.create! name: "user#{'%03d' % i}", age: (i / 10)}
+      1.upto(100) {|i| Device.create! name: "user#{'%03d' % i}", age: (i / 10)}
     end
 
     [User, Admin, GemDefinedModel, Device].each do |model_class|

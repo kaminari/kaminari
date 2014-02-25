@@ -4,7 +4,7 @@ if defined? MongoMapper
   describe Kaminari::MongoMapperExtension do
     before(:each) do
       User.destroy_all
-      41.times { User.create!({:salary => 1}) }
+      41.times { User.create!({salary: 1}) }
     end
 
     describe '#page' do
@@ -43,10 +43,10 @@ if defined? MongoMapper
 
       context 'with criteria before' do
         it "should have the proper criteria source" do
-          User.where(:salary => 1).page(2).criteria.source.should == {:salary => 1}
+          User.where(salary: 1).page(2).criteria.source.should == {salary: 1}
         end
 
-        subject { User.where(:salary => 1).page 2 }
+        subject { User.where(salary: 1).page 2 }
         its(:current_page) { should == 2 }
         its(:prev_page) { should == 1 }
         its(:next_page) { should be_nil }
@@ -57,10 +57,10 @@ if defined? MongoMapper
 
       context 'with criteria after' do
         it "should have the proper criteria source" do
-          User.where(:salary => 1).page(2).criteria.source.should == {:salary => 1}
+          User.where(salary: 1).page(2).criteria.source.should == {salary: 1}
         end
 
-        subject { User.page(2).where(:salary => 1) }
+        subject { User.page(2).where(salary: 1) }
         its(:current_page) { should == 2 }
         its(:prev_page) { should == 1 }
         its(:next_page) { should be_nil }
