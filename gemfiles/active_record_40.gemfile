@@ -4,7 +4,7 @@ gem 'railties', '~> 4.0.0'
 gem 'activerecord', '~> 4.0.0', :require => 'active_record'
 gem 'rspec-rails', '>= 2.0'
 
-platforms :ruby, :rbx do
+platforms :ruby do
   gem 'sqlite3', '1.3.8'
 end
 platforms :jruby do
