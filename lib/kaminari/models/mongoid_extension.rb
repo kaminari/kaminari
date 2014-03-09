@@ -2,18 +2,6 @@ require 'kaminari/models/mongoid_criteria_methods'
 
 module Kaminari
   module MongoidExtension
-    module Criteria
-      extend ActiveSupport::Concern
-
-      included do
-        class_eval <<-RUBY, __FILE__, __LINE__ + 1
-          def #{Kaminari.config.page_method_name}(*args)
-            super(*args).criteria.merge(self)
-          end
-        RUBY
-      end
-    end
-
     module Document
       extend ActiveSupport::Concern
       include Kaminari::ConfigurationMethods

@@ -120,6 +120,23 @@ if defined? Mongoid
         subject { User.page(2).where(:salary => 1) }
         it_should_behave_like 'complete valid pagination'
       end
+
+      context "with database:", :if => Mongoid::VERSION >= '3' do
+        before :all do
+          15.times { User.with(database: "default_db").create!(:salary => 1) }
+          10.times { User.with(database: "other_db").create!(:salary => 1) }
+        end
+
+        context "default_db" do
+          subject { User.with(database: "default_db").order_by(:artist.asc).page(1) }
+          its(:total_count) { should == 15 }
+        end
+
+        context "other_db" do
+          subject { User.with(database: "other_db").order_by(:artist.asc).page(1) }
+          its(:total_count) { should == 10 }
+        end
+      end
     end
 
     describe '#per' do

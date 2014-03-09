@@ -18,7 +18,6 @@ module Kaminari
       begin; require 'mongoid'; rescue LoadError; end
       if defined? ::Mongoid
         require 'kaminari/models/mongoid_extension'
-        ::Mongoid::Criteria.send :include, Kaminari::MongoidExtension::Criteria
         ::Mongoid::Document.send :include, Kaminari::MongoidExtension::Document
       end
 
