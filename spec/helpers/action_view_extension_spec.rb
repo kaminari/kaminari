@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'Kaminari::ActionViewExtension' do
+describe 'Kaminari::ActionViewExtension', :if => defined?(Rails)do
   describe '#paginate' do
     before do
       50.times {|i| User.create! :name => "user#{i}"}
