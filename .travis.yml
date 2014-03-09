@@ -41,6 +41,5 @@ matrix:
     - rvm: 1.8.7
       gemfile: gemfiles/mongoid_40.gemfile
   allow_failures:
-    - rvm: rbx
-      gemfile: gemfiles/mongoid_40.gemfile
+    - gemfile: gemfiles/mongoid_40.gemfile
   fast_finish: true
