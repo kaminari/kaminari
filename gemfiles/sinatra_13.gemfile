@@ -1,8 +1,6 @@
 source 'https://rubygems.org'
 
 gem 'activerecord', '~> 3.2.3', :require => 'active_record'
-gem 'railties', '~> 3.2.3'
-gem 'rspec-rails', '>= 2.0'
 gem 'sinatra', '~> 1.3.0'
 gem 'tilt', '~> 1.3.0'
 gem 'padrino-helpers', '~> 0.10.6'
