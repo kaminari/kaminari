@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'Kaminari::ActionViewExtension', :if => defined?(Rails)do
+describe 'Kaminari::ActionViewExtension', :if => defined?(Rails) do
   describe '#paginate' do
     before do
       50.times {|i| User.create! :name => "user#{i}"}
@@ -37,6 +37,15 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails)do
         subject { helper.link_to_previous_page @users, 'Previous', :rel => 'external', :params => {:controller => 'users', :action => 'index'} }
         it { should match(/rel="external"/) }
       end
+
+      context 'with params' do
+        before do
+          helper.params[:status] = "active"
+        end
+
+        subject { helper.link_to_previous_page @users, 'Previous', :params => {:controller => 'users', :action => 'index'} }
+        it { should match(/status=active/) }
+      end
     end
 
     context 'the first page' do
@@ -68,6 +77,15 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails)do
       context 'overriding rel=' do
         subject { helper.link_to_next_page @users, 'More', :rel => 'external', :params => {:controller => 'users', :action => 'index'} }
         it { should match(/rel="external"/) }
+      end
+
+      context 'with params' do
+        before do
+          helper.params[:status] = "active"
+        end
+
+        subject { helper.link_to_next_page @users, 'Previous', :params => {:controller => 'users', :action => 'index'} }
+        it { should match(/status=active/) }
       end
     end
 
