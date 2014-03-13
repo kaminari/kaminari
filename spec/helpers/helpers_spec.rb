@@ -18,6 +18,21 @@ describe 'Kaminari::Helpers::Paginator' do
     end
     subject { @paginator.page_tag(template).instance_variable_get('@params') }
     it { should == {:controller => 'foo', :action => 'bar'} }
+
+    context "when params has form params" do
+      before do
+        stub(template).params do
+          {
+            :authenticity_token => "token",
+            :commit => "submit",
+            :utf8 => "✓",
+            :_method => "patch"
+          }
+        end
+      end
+
+      it { should == {:controller => 'foo', :action => 'bar'} }
+    end
   end
 
   describe '#param_name' do

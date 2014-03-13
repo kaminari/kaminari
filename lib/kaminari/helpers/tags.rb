@@ -1,5 +1,7 @@
 module Kaminari
   module Helpers
+    PARAM_KEY_BLACKLIST = :authenticity_token, :commit, :utf8, :_method
+
     # A tag stands for an HTML tag inside the paginator.
     # Basically, a tag has its own partial template file, so every tag can be
     # rendered into String using its partial template.
@@ -17,7 +19,7 @@ module Kaminari
         @template, @options = template, options.dup
         @param_name = @options.delete(:param_name) || Kaminari.config.param_name
         @theme = @options[:theme] ? "#{@options.delete(:theme)}/" : ''
-        @params = @options[:params] ? template.params.merge(@options.delete :params) : template.params
+        @params = template.params.except(*PARAM_KEY_BLACKLIST).merge(@options.delete(:params) || {})
       end
 
       def to_s(locals = {}) #:nodoc:
