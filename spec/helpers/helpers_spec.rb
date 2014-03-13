@@ -25,7 +25,7 @@ describe 'Kaminari::Helpers::Paginator' do
           {
             :authenticity_token => "token",
             :commit => "submit",
-            :utf8 => "✓",
+            :utf8 => "true",
             :_method => "patch"
           }
         end
