@@ -8,8 +8,17 @@ describe 'Kaminari::Helpers::Paginator' do
       params { {} }
       options { {} }
       url_for {|h| "/foo?page=#{h[:page]}"}
+      link_to { "<a href='#'>link</a>" }
     end
     r
+  end
+
+  describe "view helper methods delegated to template" do
+    before do
+      @paginator = Paginator.new(template, :params => {})
+    end
+    subject { @paginator.link_to("link", "#") }
+    it { should == "<a href='#'>link</a>" }
   end
 
   describe '#params' do

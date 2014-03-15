@@ -106,6 +106,12 @@ module Kaminari
         end
       end
 
+      # delegates view helper methods to @template
+      def method_missing(name, *args, &block)
+        @template.respond_to?(name) ? @template.send(name, *args, &block) : super
+      end
+      private :method_missing
+
       # Wraps a "page number" and provides some utility methods
       class PageProxy
         include Comparable
