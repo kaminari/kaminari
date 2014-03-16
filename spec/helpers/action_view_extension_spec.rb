@@ -179,6 +179,38 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails) do
         end
       end
     end
+    
+    context 'with locale param' do    
+      
+      describe 'having 1 entry' do
+        before do
+          User.create! :name => 'user1'
+          @users = User.page(1).per(1)
+        end
+        subject { helper.page_entries_info @users, :locale => :en, :params => {:controller => 'users', :action => 'index'} }
+        it      { should == 'Displaying <b>1</b> user' }
+
+        context 'setting the entry name option to "member"' do
+          subject { helper.page_entries_info @users, :locale => :en, :entry_name => 'member', :params => {:controller => 'users', :action => 'index'} }
+          it      { should == 'Displaying <b>1</b> member' }
+        end
+      end
+
+      describe 'many results' do
+        before do
+          50.times {|i| User.create! :name => "user#{i}"}
+          @users = User.page(1).per(25)
+        end
+        subject { helper.page_entries_info @users, :locale => :en, :params => {:controller => 'users', :action => 'index'} }
+        it      { should == 'Displaying users <b>1&nbsp;-&nbsp;25</b> of <b>50</b> in total' }
+
+        context 'setting the entry name option to "member"' do
+          subject { helper.page_entries_info @users, :locale => :en, :entry_name => 'member', :params => {:controller => 'users', :action => 'index'} }
+          it      { should == 'Displaying members <b>1&nbsp;-&nbsp;25</b> of <b>50</b> in total' }
+        end
+      end
+    end
+
     context 'on a model with namespace' do
       before do
         @addresses = User::Address.page(1).per(25)
