@@ -99,12 +99,21 @@ module Kaminari
       end
       entry_name = entry_name.pluralize unless collection.total_count == 1
 
+      count = collection.total_count
+
+      options[:count_number_formatter] ||= ->(page_number){ page_number }
+      count_formatted = options[:count_number_formatter].call(count)
+
       if collection.total_pages < 2
-        t('helpers.page_entries_info.one_page.display_entries', :entry_name => entry_name, :count => collection.total_count)
+        t('helpers.page_entries_info.one_page.display_entries', :count => count, :entry_name => entry_name, :count_formatted => count_formatted)
       else
         first = collection.offset_value + 1
-        last = collection.last_page? ? collection.total_count : collection.offset_value + collection.limit_value
-        t('helpers.page_entries_info.more_pages.display_entries', :entry_name => entry_name, :first => first, :last => last, :total => collection.total_count)
+        first_formatted = options[:count_number_formatter].call(first)
+
+        last = collection.last_page? ? count : collection.offset_value + collection.limit_value
+        last_formatted = options[:count_number_formatter].call(last)
+
+        t('helpers.page_entries_info.more_pages.display_entries', :count => count, :entry_name => entry_name, :first => first_formatted, :last => last_formatted, :total => count_formatted)
       end.html_safe
     end
 
