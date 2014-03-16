@@ -89,15 +89,14 @@ module Kaminari
       entry_name = if options[:entry_name]
         options[:entry_name]
       elsif collection.is_a?(::Kaminari::PaginatableArray)
-        'entry'
+        t('helpers.page_entries_info.entry', :count => collection.count)
       else
         if collection.respond_to? :model  # DataMapper
-          collection.model.model_name.human.downcase
+          collection.model.model_name.human(:count => collection.count).downcase
         else  # AR
-          collection.model_name.human.downcase
+          collection.model_name.human(:count => collection.count).downcase
         end
       end
-      entry_name = entry_name.pluralize unless collection.total_count == 1
 
       if collection.total_pages < 2
         t('helpers.page_entries_info.one_page.display_entries', :entry_name => entry_name, :count => collection.total_count)
