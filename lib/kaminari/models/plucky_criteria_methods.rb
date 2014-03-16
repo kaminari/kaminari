@@ -4,6 +4,10 @@ module Kaminari
 
     delegate :default_per_page, :max_per_page, :max_pages, :to => :model
 
+    def entry_name
+      model.model_name.human.downcase
+    end
+
     def limit_value #:nodoc:
       options[:limit]
     end

@@ -1,5 +1,9 @@
 module Kaminari
   module MongoidCriteriaMethods
+    def entry_name
+      model_name.human.downcase
+    end
+
     def limit_value #:nodoc:
       options[:limit]
     end

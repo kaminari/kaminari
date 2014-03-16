@@ -86,17 +86,7 @@ module Kaminari
     #   <%= page_entries_info @posts, :entry_name => 'item' %>
     #   #-> Displaying items 6 - 10 of 26 in total
     def page_entries_info(collection, options = {})
-      entry_name = if options[:entry_name]
-        options[:entry_name]
-      elsif collection.is_a?(::Kaminari::PaginatableArray)
-        'entry'
-      else
-        if collection.respond_to? :model  # DataMapper
-          collection.model.model_name.human.downcase
-        else  # AR
-          collection.model_name.human.downcase
-        end
-      end
+      entry_name = options[:entry_name] || collection.entry_name
       entry_name = entry_name.pluralize unless collection.total_count == 1
 
       if collection.total_pages < 2

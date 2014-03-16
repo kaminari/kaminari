@@ -1,5 +1,9 @@
 module Kaminari
   module DataMapperCollectionMethods
+    def entry_name
+      model.model_name.human.downcase
+    end
+
     def limit_value #:nodoc:
       query.options[:limit] || 0
     end
