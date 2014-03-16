@@ -8,6 +8,10 @@ module Kaminari
       end
     end
 
+    def entry_name
+      model_name.human.downcase
+    end
+
     def total_count(column_name = :all, options = {}) #:nodoc:
       # #count overrides the #select which could include generated columns referenced in #order, so skip #order here, where it's irrelevant to the result anyway
       @total_count ||= begin

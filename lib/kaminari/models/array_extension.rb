@@ -24,6 +24,10 @@ module Kaminari
       end
     end
 
+    def entry_name
+      "entry"
+    end
+
     # items at the specified "page"
     class_eval <<-RUBY, __FILE__, __LINE__ + 1
       def #{Kaminari.config.page_method_name}(num = 1)
