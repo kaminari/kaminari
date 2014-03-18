@@ -19,17 +19,17 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails) do
 
   describe '#link_to_previous_page' do
     before do
-      50.times {|i| User.create! :name => "user#{i}"}
+      60.times {|i| User.create! :name => "user#{i}"}
     end
 
     context 'having previous pages' do
       before do
-        @users = User.page(50)
+        @users = User.page(3)
       end
 
       context 'the default behaviour' do
         subject { helper.link_to_previous_page @users, 'Previous', :params => {:controller => 'users', :action => 'index'} }
-        it { should be_a String }
+        it { should match(/page=2/) }
         it { should match(/rel="previous"/) }
       end
 
@@ -70,7 +70,7 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails) do
 
       context 'the default behaviour' do
         subject { helper.link_to_next_page @users, 'More', :params => {:controller => 'users', :action => 'index'} }
-        it { should be_a String }
+        it { should match(/page=2/) }
         it { should match(/rel="next"/) }
       end
 
