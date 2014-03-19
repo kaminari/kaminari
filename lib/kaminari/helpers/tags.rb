@@ -77,8 +77,6 @@ module Kaminari
     # The "previous" page of the current page
     class PrevPage < Tag
       include Link
-      attr_reader :options
-
       def page #:nodoc:
         @options[:current_page] - 1
       end
@@ -87,8 +85,6 @@ module Kaminari
     # The "next" page of the current page
     class NextPage < Tag
       include Link
-      attr_reader :options
-
       def page #:nodoc:
         @options[:current_page] + 1
       end

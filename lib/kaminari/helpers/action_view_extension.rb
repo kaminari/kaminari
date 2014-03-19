@@ -37,9 +37,9 @@ module Kaminari
     #     <span>At the Beginning</span>
     #   <% end %>
     def link_to_previous_page(scope, name, options = {}, &block)
-      prev_page = Kaminari::Helpers::PrevPage.new self, options.reverse_merge(:current_page => scope.current_page, :total_pages => scope.total_pages, :per_page => scope.limit_value, :remote => false)
+      prev_page = Kaminari::Helpers::PrevPage.new self, options.reverse_merge(:current_page => scope.current_page, :total_pages => scope.total_pages, :per_page => scope.limit_value)
 
-      link_to_unless scope.first_page?, name, prev_page.url, prev_page.options.reverse_merge(:rel => 'previous') do
+      link_to_unless scope.first_page?, name, prev_page.url, options.except(:params, :param_name).reverse_merge(:rel => 'previous') do
         block.call if block
       end
     end
@@ -62,9 +62,9 @@ module Kaminari
     #     <span>No More Pages</span>
     #   <% end %>
     def link_to_next_page(scope, name, options = {}, &block)
-      next_page = Kaminari::Helpers::NextPage.new self, options.reverse_merge(:current_page => scope.current_page, :total_pages => scope.total_pages, :per_page => scope.limit_value, :remote => false)
+      next_page = Kaminari::Helpers::NextPage.new self, options.reverse_merge(:current_page => scope.current_page, :total_pages => scope.total_pages, :per_page => scope.limit_value)
 
-      link_to_unless scope.last_page?, name, next_page.url, next_page.options.reverse_merge(:rel => 'next') do
+      link_to_unless scope.last_page?, name, next_page.url, options.except(:params, :param_name).reverse_merge(:rel => 'next') do
         block.call if block
       end
     end
