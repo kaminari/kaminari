@@ -303,4 +303,26 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails) do
       it { should_not match(/rel="next"/) }
     end
   end
+
+  if defined?(ActiveRecord)
+    context 'nested resources' do
+      before do
+        user = User.create! :name => "user0"
+        books = 50.times.map {|i| user.books_authored.create!(:title => "title%03d" % i) }
+      end
+      describe '#paginate' do
+        before { @books = Book.page(1) }
+        subject { helper.paginate @books, :params => {:controller => 'books', :action => 'index', :user_id => 1} }
+        it { should be_a String }
+      end
+
+      describe '#rel_next_prev_link_tags' do
+        before { @books = Book.page(1) }
+        subject { helper.rel_next_prev_link_tags @books, :params => {:controller => 'books', :action => 'index', :user_id => 1} }
+        it { should be_a String }
+        it { should match(/rel="next"/) }
+        it { should_not match(/rel="prev"/) }
+      end
+    end
+  end
 end
