@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe Kaminari::Configuration do
   subject { Kaminari.config }
+
   describe 'default_per_page' do
     context 'by default' do
       its(:default_per_page) { should == 25 }
@@ -86,6 +87,23 @@ describe Kaminari::Configuration do
       after do
         Kaminari.configure {|c| c.max_pages = nil}
       end
+    end
+  end
+
+  describe 'params_on_first_page' do
+    context 'by default' do
+      its(:params_on_first_page) { should be_false }
+    end
+
+    context 'configure via config block' do
+      before do
+        Kaminari.configure {|c| c.params_on_first_page = true }
+      end
+      after do
+        Kaminari.configure {|c| c.params_on_first_page = false }
+      end
+
+      its(:params_on_first_page) { should be_true }
     end
   end
 end

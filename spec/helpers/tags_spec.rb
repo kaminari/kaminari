@@ -4,6 +4,19 @@ include Kaminari::Helpers
 describe 'Kaminari::Helpers' do
   describe 'Tag' do
     describe '#page_url_for', :if => defined?(Rails) do
+      before { helper.request.assign_parameters(_routes, "users", "index") }
+
+      context "for first page" do
+        subject { Tag.new(helper).page_url_for(1) }
+        it { should == "/users" }
+
+        context 'config.params_on_first_page == false' do
+          before { Kaminari.config.params_on_first_page = true }
+          after  { Kaminari.config.params_on_first_page = false }
+          it { should == "/users?page=1" }
+        end
+      end
+
       context "with a friendly route setting" do
         before do
           helper.request.assign_parameters(_routes, "addresses", "index", :page => 3)
@@ -12,6 +25,12 @@ describe 'Kaminari::Helpers' do
         context "for first page" do
           subject { Tag.new(helper).page_url_for(1) }
           it { should == "/addresses" }
+
+          context 'config.params_on_first_page == false' do
+            before { Kaminari.config.params_on_first_page = true }
+            after  { Kaminari.config.params_on_first_page = false }
+            it { should match("/addresses/page/1") }
+          end
         end
 
         context "for other page" do
@@ -22,7 +41,6 @@ describe 'Kaminari::Helpers' do
 
       context "with param_name = 'user[page]' option" do
         before do
-          helper.request.assign_parameters(_routes, "users", "index")
           helper.params.merge!(:user => {:page => "3", :scope => "active"})
         end
 
