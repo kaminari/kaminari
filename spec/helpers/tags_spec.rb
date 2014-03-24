@@ -18,7 +18,7 @@ describe 'Kaminari::Helpers' do
       end
 
       context "for first page" do
-        subject { Tag.new(helper, param_name: "user[page]").page_url_for(1) }
+        subject { Tag.new(helper, :param_name => "user[page]").page_url_for(1) }
         if ActiveSupport::VERSION::STRING < "3.1.0"
           it { should_not match /user\[page\]=1/ }
           it { should match /user\[scope\]=active/ }
@@ -29,7 +29,7 @@ describe 'Kaminari::Helpers' do
       end
 
       context "for other page" do
-        subject { Tag.new(helper, param_name: "user[page]").page_url_for(2) }
+        subject { Tag.new(helper, :param_name => "user[page]").page_url_for(2) }
         if ActiveSupport::VERSION::STRING < "3.1.0"
           it { should match /user\[page\]=2/ }
           it { should match /user\[scope\]=active/ }
