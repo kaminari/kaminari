@@ -27,7 +27,13 @@ module Kaminari
       end
 
       def page_url_for(page)
-        @template.url_for @params.merge(@param_name => (page <= 1 ? nil : page), :only_path => true)
+        @template.url_for @params.deep_merge(page_param(page)).merge(:only_path => true)
+      end
+
+      private
+
+      def page_param(page)
+        Rack::Utils.parse_nested_query("#{@param_name}=#{page <= 1 ? nil : page}").symbolize_keys
       end
     end
 
