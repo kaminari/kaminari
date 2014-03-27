@@ -20,11 +20,11 @@ describe 'Kaminari::Helpers' do
       context "for first page" do
         subject { Tag.new(helper, :param_name => "user[page]").page_url_for(1) }
         if ActiveSupport::VERSION::STRING < "3.1.0"
-          it { should_not match /user\[page\]=1/ }
+          it { should_not match /user\[page\]/ }
           it { should match /user\[scope\]=active/ }
         else
-          it { should_not match /user%5Bpage%5D=1/ }   # match user[page]=1
-          it { should match /user%5Bscope%5D=active/ } # match user[scope]=active
+          it { should_not match /user%5Bpage%5D/ }     # not match user[page]
+          it { should match /user%5Bscope%5D=active/ } #     match user[scope]=active
         end
       end
 

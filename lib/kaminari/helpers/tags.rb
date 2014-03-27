@@ -27,13 +27,28 @@ module Kaminari
       end
 
       def page_url_for(page)
-        @template.url_for @params.deep_merge(page_param(page)).merge(:only_path => true)
+        @template.url_for params_for(page).merge(:only_path => true)
       end
 
       private
 
-      def page_param(page)
-        Rack::Utils.parse_nested_query("#{@param_name}=#{page <= 1 ? nil : page}").symbolize_keys
+      def params_for(page)
+        page_params = Rack::Utils.parse_nested_query("#{@param_name}=#{page}")
+        page_params = @params.with_indifferent_access.deep_merge(page_params)
+
+        if page <= 1
+          # This converts a hash:
+          #   from: {other: "params", page: 1}
+          #     to: {other: "params"}
+          #   (when @param_name == "page")
+          #
+          #   from: {other: "params", user: {name: "yuki", page: 1}}
+          #     to: {other: "params", user: {name: "yuki"}}
+          #   (when @param_name == "user[page]")
+          @param_name.to_s.scan(/\w+/)[0..-2].inject(page_params){|h, k| h[k] }.delete($&)
+        end
+
+        page_params
       end
     end
 
