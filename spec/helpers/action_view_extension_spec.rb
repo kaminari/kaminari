@@ -179,6 +179,28 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails) do
         end
       end
     end
+    context 'having more than 999 entries' do
+      before do
+        1000.times {|i| User.create! :name => "user#{i}"}
+      end
+
+      describe 'the last page' do
+        before do
+          @users = User.page(1000).per(1)
+        end
+
+        subject { helper.page_entries_info @users, :params => {:controller => 'users', :action => 'index'} }
+        it      { should == 'Displaying users <b>1,000&nbsp;-&nbsp;1,000</b> of <b>1,000</b> in total' }
+      end
+      describe 'the only page' do
+        before do
+          @users = User.page(1000).per(1000)
+        end
+
+        subject { helper.page_entries_info @users, :params => {:controller => 'users', :action => 'index'} }
+        it      { should == 'Displaying <b>all 1,000</b> users' }
+      end
+    end
     context 'on a model with namespace' do
       before do
         @addresses = User::Address.page(1).per(25)
