@@ -30,7 +30,7 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails) do
       context 'the default behaviour' do
         subject { helper.link_to_previous_page @users, 'Previous', :params => {:controller => 'users', :action => 'index'} }
         it { should match(/page=2/) }
-        it { should match(/rel="previous"/) }
+        it { should match(/rel="prev"/) }
       end
 
       context 'overriding rel=' do
