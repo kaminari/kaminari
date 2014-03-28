@@ -117,13 +117,12 @@ module Kaminari
     #   #-> <link rel="next" href="/items/page/3" /><link rel="prev" href="/items/page/1" />
     #
     def rel_next_prev_link_tags(scope, options = {})
-      params = options.delete(:params) || {}
-      param_name = options.delete(:param_name) || Kaminari.config.param_name
+      next_page = Kaminari::Helpers::NextPage.new self, options.reverse_merge(:current_page => scope.current_page)
+      prev_page = Kaminari::Helpers::PrevPage.new self, options.reverse_merge(:current_page => scope.current_page)
 
       output = ""
-      output << '<link rel="next" href="' + url_for(params.merge(param_name => scope.next_page, :only_path => true)) + '"/>' if scope.next_page
-      output << '<link rel="prev" href="' + url_for(params.merge(param_name => scope.prev_page, :only_path => true)) + '"/>' if scope.prev_page
-
+      output << tag(:link, :rel => "next", :href => next_page.url) if scope.next_page
+      output << tag(:link, :rel => "prev", :href => prev_page.url) if scope.prev_page
       output.html_safe
     end
   end
