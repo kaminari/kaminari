@@ -88,13 +88,14 @@ module Kaminari
     def page_entries_info(collection, options = {})
       entry_name = options[:entry_name] || collection.entry_name
       entry_name = entry_name.pluralize unless collection.total_count == 1
+      total = collection.total_count > 1 ? number_with_delimiter(collection.total_count) : collection.total_count
 
       if collection.total_pages < 2
-        t('helpers.page_entries_info.one_page.display_entries', :entry_name => entry_name, :count => collection.total_count)
+        t('helpers.page_entries_info.one_page.display_entries', :entry_name => entry_name, :count => total)
       else
         first = collection.offset_value + 1
         last = collection.last_page? ? collection.total_count : collection.offset_value + collection.limit_value
-        t('helpers.page_entries_info.more_pages.display_entries', :entry_name => entry_name, :first => first, :last => last, :total => collection.total_count)
+        t('helpers.page_entries_info.more_pages.display_entries', :entry_name => entry_name, :first => number_with_delimiter(first), :last => number_with_delimiter(last), :total => total)
       end.html_safe
     end
 
