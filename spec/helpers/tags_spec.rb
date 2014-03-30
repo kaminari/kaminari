@@ -2,40 +2,42 @@ require 'spec_helper'
 include Kaminari::Helpers
 
 describe 'Kaminari::Helpers' do
-  describe '#page_url_for', :if => defined?(Rails) do
-    context "with param_name = 'user[page]' option" do
-      before do
-        stub(helper).params do
-          {
-            :controller => 'users',
-            :action => 'index',
-            :user => {
-              :scope => "active",
-              :page => 3
-            }
-          }.with_indifferent_access
+  describe 'Tag' do
+    describe '#page_url_for', :if => defined?(Rails) do
+      context "with param_name = 'user[page]' option" do
+        before do
+          stub(helper).params do
+            {
+              :controller => 'users',
+              :action => 'index',
+              :user => {
+                :scope => "active",
+                :page => 3
+              }
+            }.with_indifferent_access
+          end
         end
-      end
 
-      context "for first page" do
-        subject { Tag.new(helper, :param_name => "user[page]").page_url_for(1) }
-        if ActiveSupport::VERSION::STRING < "3.1.0"
-          it { should_not match(/user\[page\]/) }
-          it { should match(/user\[scope\]=active/) }
-        else
-          it { should_not match(/user%5Bpage%5D/) }     # not match user[page]
-          it { should match(/user%5Bscope%5D=active/) } #     match user[scope]=active
+        context "for first page" do
+          subject { Tag.new(helper, :param_name => "user[page]").page_url_for(1) }
+          if ActiveSupport::VERSION::STRING < "3.1.0"
+            it { should_not match(/user\[page\]/) }
+            it { should match(/user\[scope\]=active/) }
+          else
+            it { should_not match(/user%5Bpage%5D/) }     # not match user[page]
+            it { should match(/user%5Bscope%5D=active/) } #     match user[scope]=active
+          end
         end
-      end
 
-      context "for other page" do
-        subject { Tag.new(helper, :param_name => "user[page]").page_url_for(2) }
-        if ActiveSupport::VERSION::STRING < "3.1.0"
-          it { should match(/user\[page\]=2/) }
-          it { should match(/user\[scope\]=active/) }
-        else
-          it { should match(/user%5Bpage%5D=2/) }       # match user[page]=2
-          it { should match(/user%5Bscope%5D=active/) } # match user[scope]=active
+        context "for other page" do
+          subject { Tag.new(helper, :param_name => "user[page]").page_url_for(2) }
+          if ActiveSupport::VERSION::STRING < "3.1.0"
+            it { should match(/user\[page\]=2/) }
+            it { should match(/user\[scope\]=active/) }
+          else
+            it { should match(/user%5Bpage%5D=2/) }       # match user[page]=2
+            it { should match(/user%5Bscope%5D=active/) } # match user[scope]=active
+          end
         end
       end
     end
