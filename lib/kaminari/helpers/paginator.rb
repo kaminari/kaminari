@@ -49,8 +49,8 @@ module Kaminari
       def each_relevant_page
         return to_enum(:each_relevant_page) unless block_given?
 
-        relevant_pages(@window_options).each do |i|
-          yield PageProxy.new(@window_options, i, @last)
+        relevant_pages(@window_options).each do |page|
+          yield PageProxy.new(@window_options, page, @last)
         end
       end
       alias each_page each_relevant_page
