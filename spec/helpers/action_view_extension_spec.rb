@@ -4,10 +4,33 @@ describe 'Kaminari::ActionViewExtension' do
   describe '#paginate' do
     before do
       50.times {|i| User.create! :name => "user#{i}"}
-      @users = User.page(1)
+      @users = User.page(2).per(10)
     end
-    subject { helper.paginate @users, :params => {:controller => 'users', :action => 'index'} }
-    it { should be_a String }
+
+    describe "default behaviour" do
+      subject { helper.paginate @users, :params => {:controller => 'users', :action => 'index'} }
+      it { should be_a String }
+      it { should match /rel="next">3/ }
+      it { should match /rel="next">Next/ }
+      it { should match /rel="prev">(.*)Prev/ }
+      it { should match /rel="prev">1/ }
+    end
+
+    describe "next without rel" do
+      subject { helper.paginate @users, :params => {:controller => 'users', :action => 'index'}, :rel_next => nil }
+      it { should_not match /rel="next">3/ }
+      it { should_not match /rel="next">Next/ }
+      it { should match /rel="prev">(.*)Prev/ }
+      it { should match /rel="prev">1/ }
+    end
+
+    describe "previous without rel" do
+      subject { helper.paginate @users, :params => {:controller => 'users', :action => 'index'}, :rel_prev => nil }
+      it { should match /rel="next">3/ }
+      it { should match /rel="next">Next/ }
+      it { should_not match /rel="prev">(.*)Prev/ }
+      it { should_not match /rel="prev">1/ }
+    end
 
     context 'escaping the pagination for javascript' do
       it 'should escape for javascript' do
@@ -32,6 +55,10 @@ describe 'Kaminari::ActionViewExtension' do
       context 'overriding rel=' do
         subject { helper.link_to_previous_page @users, 'Previous', :rel => 'external', :params => {:controller => 'users', :action => 'index'} }
         it { should match(/rel="external"/) }
+      end
+      context "without rel" do
+        subject { helper.link_to_previous_page @users, 'Previous', :rel => nil, :params => {:controller => 'users', :action => 'index'} }
+        it { should_not match(/rel=/) }
       end
     end
     context 'the first page' do
@@ -59,6 +86,10 @@ describe 'Kaminari::ActionViewExtension' do
       context 'overriding rel=' do
         subject { helper.link_to_next_page @users, 'More', :rel => 'external', :params => {:controller => 'users', :action => 'index'} }
         it { should match(/rel="external"/) }
+      end
+      context "without rel" do
+        subject { helper.link_to_next_page @users, 'More', :rel => nil, :params => {:controller => 'users', :action => 'index'} }
+        it { should_not match(/rel=/) }
       end
     end
     context 'the last page' do
