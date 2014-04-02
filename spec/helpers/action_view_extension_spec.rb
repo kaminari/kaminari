@@ -266,7 +266,7 @@ describe 'Kaminari::ActionViewExtension' do
 
       subject { helper.rel_next_prev_link_tags @users, :params => {:controller => 'users', :action => 'index'} }
       it { should be_a String }
-      it { should match(/rel="next"/) }
+      it { should match(/rel="next".*page=2/) }
       it { should_not match(/rel="prev"/) }
     end
     context 'the middle page' do
@@ -276,8 +276,8 @@ describe 'Kaminari::ActionViewExtension' do
 
       subject { helper.rel_next_prev_link_tags @users, :params => {:controller => 'users', :action => 'index'} }
       it { should be_a String }
-      it { should match(/rel="next"/) }
-      it { should match(/rel="prev"/) }
+      it { should match(/rel="next".*page=3/) }
+      it { should match(/rel="prev".*page=1/) }
     end
     context 'the last page' do
       before do
@@ -287,7 +287,39 @@ describe 'Kaminari::ActionViewExtension' do
       subject { helper.rel_next_prev_link_tags @users, :params => {:controller => 'users', :action => 'index'} }
       it { should be_a String }
       it { should_not match(/rel="next"/) }
-      it { should match(/rel="prev"/) }
+      it { should match(/rel="prev".*page=2/) }
+    end
+    context "with :first_as_root" do
+      context 'the first page' do
+        before do
+          @users = User.page(1).per(25)
+        end
+
+        subject { helper.rel_next_prev_link_tags @users, :params => {:controller => 'users', :action => 'index'}, :first_as_root => true  }
+        it { puts subject ; should be_a String }
+        it { should match(/rel="next".*page=2/) }
+        it { should_not match(/rel="prev"/) }
+      end
+      context 'the middle page' do
+        before do
+          @users = User.page(2).per(25)
+        end
+
+        subject { helper.rel_next_prev_link_tags @users, :params => {:controller => 'users', :action => 'index'}, :first_as_root => true  }
+        it { puts subject ; should be_a String }
+        it { should match(/rel="next".*page=3/) }
+        it { should match(/rel="prev".*"\/users"/) }
+      end
+      context "the last page" do
+        before do
+          @users = User.page(3).per(25)
+        end
+
+        subject { helper.rel_next_prev_link_tags @users, :params => {:controller => 'users', :action => 'index'}, :first_as_root => true }
+        it { puts subject ; should be_a String }
+        it { should_not match(/rel="next"/) }
+        it { should match(/rel="prev".*page=2/) }
+      end
     end
   end
 end

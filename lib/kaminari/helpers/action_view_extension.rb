@@ -131,13 +131,18 @@ module Kaminari
     def rel_next_prev_link_tags(scope, options = {})
       params = options.delete(:params) || {}
       param_name = options.delete(:param_name) || Kaminari.config.param_name
+      first_as_root = options.delete(:first_as_root) || false
 
       output = ""
 
       if !scope.first_page? && !scope.last_page?
         # If not first and not last, then output both links.
         output << '<link rel="next" href="' + url_for(params.merge(param_name => (scope.current_page + 1))) + '"/>'
-        output << '<link rel="prev" href="' + url_for(params.merge(param_name => (scope.current_page - 1))) + '"/>'
+        if first_as_root && (scope.current_page - 1) == 1
+          output << '<link rel="prev" href="' + url_for(params) + '"/>'
+        else
+          output << '<link rel="prev" href="' + url_for(params.merge(param_name => (scope.current_page - 1))) + '"/>'
+        end
       elsif scope.first_page?
         # If first page, add next link unless last page.
         output << '<link rel="next" href="' + url_for(params.merge(param_name => (scope.current_page + 1))) + '"/>' unless scope.last_page?
