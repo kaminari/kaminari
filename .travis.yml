@@ -41,5 +41,5 @@ matrix:
       gemfile: gemfiles/mongoid_40.gemfile
   allow_failures:
     - gemfile: gemfiles/mongoid_40.gemfile
-    - gemfiles/active_record_edge.gemfile
+    - gemfile: gemfiles/active_record_edge.gemfile
   fast_finish: true
