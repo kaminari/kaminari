@@ -119,7 +119,7 @@ module Kaminari::Helpers
           query = params.merge(param_name => scope.prev_page)
           link_to name, env['PATH_INFO'] + (query.empty? ? '' : "?#{query.to_query}"), options.reverse_merge(:rel => 'previous')
         else
-          placeholder
+          placeholder.to_s.html_safe
         end
       end
 
@@ -149,7 +149,7 @@ module Kaminari::Helpers
           query = params.merge(param_name => scope.next_page)
           link_to name, env['PATH_INFO'] + (query.empty? ? '' : "?#{query.to_query}"), options.reverse_merge(:rel => 'next')
         else
-          placeholder
+          placeholder.to_s.html_safe
         end
       end
     end
