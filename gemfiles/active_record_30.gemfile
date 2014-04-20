@@ -10,7 +10,7 @@ gem 'capybara', '< 2.1'
 gem 'rubyzip', '< 1'
 gem 'mime-types', '< 2'
 
-platforms :ruby, :rbx do
+platforms :ruby do
   if RUBY_VERSION > "2.1.0"
     gem 'sqlite3'
   else
