@@ -1,10 +1,8 @@
 source 'https://rubygems.org'
 
-git 'git://github.com/rails/rails.git', branch: '4-1-stable' do
-  gem 'railties'
-  gem 'activerecord', :require => 'active_record'
-  gem 'actionview', :require => 'action_view'
-end
+gem 'railties', '~> 4.1.0'
+gem 'activerecord', '~> 4.1.0', :require => 'active_record'
+gem 'rspec-rails', '>= 2.0'
 
 gem 'rspec-rails', '>= 2.0'
 
