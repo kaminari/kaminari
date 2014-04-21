@@ -15,6 +15,7 @@ module Kaminari
     # * <tt>:remote</tt> - Ajax? (false by default)
     # * <tt>:ANY_OTHER_VALUES</tt> - Any other hash key & values would be directly passed into each tag as :locals value.
     def paginate(scope, options = {}, &block)
+      return '' if scope.try(:current_page).nil?
       paginator = Kaminari::Helpers::Paginator.new self, options.reverse_merge(:current_page => scope.current_page, :total_pages => scope.total_pages, :per_page => scope.limit_value, :remote => false)
       paginator.to_s
     end
@@ -37,6 +38,7 @@ module Kaminari
     #     <span>At the Beginning</span>
     #   <% end %>
     def link_to_previous_page(scope, name, options = {}, &block)
+      return '' if scope.try(:current_page).nil?
       prev_page = Kaminari::Helpers::PrevPage.new self, options.reverse_merge(:current_page => scope.current_page)
 
       link_to_unless scope.first_page?, name, prev_page.url, options.except(:params, :param_name).reverse_merge(:rel => 'prev') do
@@ -62,6 +64,7 @@ module Kaminari
     #     <span>No More Pages</span>
     #   <% end %>
     def link_to_next_page(scope, name, options = {}, &block)
+      return '' if scope.try(:current_page).nil?
       next_page = Kaminari::Helpers::NextPage.new self, options.reverse_merge(:current_page => scope.current_page)
 
       link_to_unless scope.last_page?, name, next_page.url, options.except(:params, :param_name).reverse_merge(:rel => 'next') do
@@ -86,7 +89,8 @@ module Kaminari
     #   <%= page_entries_info @posts, :entry_name => 'item' %>
     #   #-> Displaying items 6 - 10 of 26 in total
     def page_entries_info(collection, options = {})
-      entry_name = options[:entry_name] || collection.entry_name
+      entry_name = options[:entry_name] || collection.try(:entry_name)
+      return '' if entry_name.nil?
       entry_name = entry_name.pluralize unless collection.total_count == 1
 
       if collection.total_pages < 2
@@ -117,10 +121,11 @@ module Kaminari
     #   #-> <link rel="next" href="/items/page/3" /><link rel="prev" href="/items/page/1" />
     #
     def rel_next_prev_link_tags(scope, options = {})
+      return '' if scope.try(:current_page).nil?
       next_page = Kaminari::Helpers::NextPage.new self, options.reverse_merge(:current_page => scope.current_page)
       prev_page = Kaminari::Helpers::PrevPage.new self, options.reverse_merge(:current_page => scope.current_page)
 
-      output = ""
+      output = ''
       output << tag(:link, :rel => "next", :href => next_page.url) if scope.next_page
       output << tag(:link, :rel => "prev", :href => prev_page.url) if scope.prev_page
       output.html_safe
