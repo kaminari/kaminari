@@ -15,6 +15,19 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails) do
         lambda { helper.escape_javascript(helper.paginate @users, :params => {:controller => 'users', :action => 'index'}) }.should_not raise_error
       end
     end
+
+    context 'having empty payload' do
+      it 'should call model extensions to NilClass' do
+        lambda {helper.paginate nil}.should_not raise_error
+      end
+    end
+
+    context 'calling methods on unexposed model extensions' do
+      it 'should not call unexposed models wrapped in an Array' do
+        lambda {helper.paginate []}.should_not raise_error
+      end
+    end
+
   end
 
   describe '#link_to_previous_page' do
@@ -56,6 +69,18 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails) do
       subject { helper.link_to_previous_page @users, 'Previous', :params => {:controller => 'users', :action => 'index'} }
       it { should_not be }
     end
+
+    context 'having empty payload' do
+      it 'should call model extensions to NilClass' do
+        lambda {helper.link_to_previous_page nil, 'Previous'}.should_not raise_error
+      end
+    end
+
+    context 'calling methods on unexposed model extensions' do
+      it 'should not call unexposed models wrapped in an Array' do
+        lambda {helper.link_to_previous_page [], 'Previous'}.should_not raise_error
+      end
+    end
   end
 
   describe '#link_to_next_page' do
@@ -96,6 +121,18 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails) do
 
       subject { helper.link_to_next_page @users, 'More', :params => {:controller => 'users', :action => 'index'} }
       it { should_not be }
+    end
+
+    context 'having empty payload' do
+      it 'should call model extensions to NilClass' do
+        lambda {helper.link_to_next_page nil, 'Next'}.should_not raise_error
+      end
+    end
+
+    context 'calling methods on unexposed model extensions' do
+      it 'should not call unexposed models wrapped in an Array' do
+        lambda {helper.link_to_next_page [], 'Next'}.should_not raise_error
+      end
     end
   end
 
@@ -262,6 +299,18 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails) do
       subject { helper.page_entries_info @numbers }
       it      { should == 'Displaying <b>all 3</b> entries' }
     end
+
+    context 'having empty payload' do
+      it 'should call model extensions to NilClass' do
+        lambda {helper.page_entries_info nil}.should_not raise_error
+      end
+    end
+
+    context 'calling methods on unexposed model extensions' do
+      it 'should not call unexposed models wrapped in an Array' do
+        lambda {helper.page_entries_info []}.should_not raise_error
+      end
+    end
   end
 
   describe '#rel_next_prev_link_tags' do
@@ -294,6 +343,18 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails) do
       it { should match(/rel="prev"/) }
       it { should match(/\?page=3"/) }
       it { should_not match(/rel="next"/) }
+    end
+
+    context 'having empty payload' do
+      it 'should call model extensions to NilClass' do
+        lambda {helper.rel_next_prev_link_tags nil}.should_not raise_error
+      end
+    end
+
+    context 'calling methods on unexposed model extensions' do
+      it 'should not call unexposed models wrapped in an Array' do
+        lambda {helper.rel_next_prev_link_tags []}.should_not raise_error
+      end
     end
   end
 end
