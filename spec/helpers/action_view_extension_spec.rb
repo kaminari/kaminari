@@ -18,13 +18,13 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails) do
 
     context 'having empty payload' do
       it 'should call model extensions to NilClass' do
-        lambda {helper.paginate nil}.should_not raise_error
+        lambda { helper.paginate nil }.should_not raise_error
       end
     end
 
     context 'calling methods on unexposed model extensions' do
       it 'should not call unexposed models wrapped in an Array' do
-        lambda {helper.paginate []}.should_not raise_error
+        lambda { helper.paginate [] }.should_not raise_error
       end
     end
 
@@ -72,13 +72,13 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails) do
 
     context 'having empty payload' do
       it 'should call model extensions to NilClass' do
-        lambda {helper.link_to_previous_page nil, 'Previous'}.should_not raise_error
+        lambda { helper.link_to_previous_page nil, 'Previous' }.should_not raise_error
       end
     end
 
     context 'calling methods on unexposed model extensions' do
       it 'should not call unexposed models wrapped in an Array' do
-        lambda {helper.link_to_previous_page [], 'Previous'}.should_not raise_error
+        lambda { helper.link_to_previous_page [], 'Previous' }.should_not raise_error
       end
     end
   end
@@ -125,13 +125,13 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails) do
 
     context 'having empty payload' do
       it 'should call model extensions to NilClass' do
-        lambda {helper.link_to_next_page nil, 'Next'}.should_not raise_error
+        lambda { helper.link_to_next_page nil, 'Next' }.should_not raise_error
       end
     end
 
     context 'calling methods on unexposed model extensions' do
       it 'should not call unexposed models wrapped in an Array' do
-        lambda {helper.link_to_next_page [], 'Next'}.should_not raise_error
+        lambda { helper.link_to_next_page [], 'Next' }.should_not raise_error
       end
     end
   end
@@ -302,13 +302,13 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails) do
 
     context 'having empty payload' do
       it 'should call model extensions to NilClass' do
-        lambda {helper.page_entries_info nil}.should_not raise_error
+        lambda { helper.page_entries_info nil }.should_not raise_error
       end
     end
 
     context 'calling methods on unexposed model extensions' do
       it 'should not call unexposed models wrapped in an Array' do
-        lambda {helper.page_entries_info []}.should_not raise_error
+        lambda { helper.page_entries_info [] }.should_not raise_error
       end
     end
   end
@@ -347,13 +347,13 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails) do
 
     context 'having empty payload' do
       it 'should call model extensions to NilClass' do
-        lambda {helper.rel_next_prev_link_tags nil}.should_not raise_error
+        lambda { helper.rel_next_prev_link_tags nil }.should_not raise_error
       end
     end
 
     context 'calling methods on unexposed model extensions' do
       it 'should not call unexposed models wrapped in an Array' do
-        lambda {helper.rel_next_prev_link_tags []}.should_not raise_error
+        lambda { helper.rel_next_prev_link_tags [] }.should_not raise_error
       end
     end
   end
