@@ -50,6 +50,7 @@ describe 'Kaminari::Helpers' do
             it { should match(/user%5Bscope%5D=active/) } # match user[scope]=active
           end
         end
+
       end
     end
   end
