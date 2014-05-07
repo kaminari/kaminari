@@ -17,11 +17,11 @@ module Kaminari
         extend Kaminari::PageScopeMethods
       end
 
-      if options[:total_count]
-        super original_array
-      else
-        super(original_array[@_offset_value, @_limit_value] || [])
+      if @_total_count
+        original_array = original_array.first(@_total_count)
       end
+
+      super(original_array[@_offset_value, @_limit_value] || [])
     end
 
     def entry_name
