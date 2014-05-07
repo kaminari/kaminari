@@ -151,7 +151,7 @@ describe Kaminari::PaginatableArray do
     end
 
     context "total_count == size of the given array" do
-      subject { Kaminari.paginate_array((1..15).to_a, total_count: 15).page(1).per(10) }
+      subject { Kaminari.paginate_array((1..15).to_a, :total_count => 15).page(1).per(10) }
 
       it { should have(10).items }
       its(:first) { should == 1 }
@@ -159,7 +159,7 @@ describe Kaminari::PaginatableArray do
     end
 
     context "total_count < size of the given array" do
-      subject { Kaminari.paginate_array((1..25).to_a, total_count: 15).page(2).per(10) }
+      subject { Kaminari.paginate_array((1..25).to_a, :total_count => 15).page(2).per(10) }
 
       it { should have(5).items }
       its(:first) { should == 11 }
