@@ -17,7 +17,7 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails)do
     end
 
     context 'accepts :view_prefixes option' do
-      subject { helper.paginate @users, :views_prefix => "alternative/" }
+      subject { helper.paginate @users, :views_prefix => "alternative/kaminari" }
       it { should eq("<p>1</p>") }
     end
   end
