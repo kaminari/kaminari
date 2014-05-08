@@ -15,6 +15,11 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails)do
         lambda { helper.escape_javascript(helper.paginate @users, :params => {:controller => 'users', :action => 'index'}) }.should_not raise_error
       end
     end
+
+    context 'accepts :view_prefixes option' do
+      subject { helper.paginate @users, :views_prefix => "alternative/" }
+      it { should eq("<p>1</p>") }
+    end
   end
 
   describe '#link_to_previous_page' do
