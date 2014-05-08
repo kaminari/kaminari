@@ -4,9 +4,8 @@
     current_page:  a page object for the currently displayed page
     total_pages:   total number of pages
     per_page:      number of items to fetch per page
-    remote:        data-remote
-    options:       any HTML options like class: 'list'
+    html:       any HTML options like class: 'list'
 -%>
 <span class="first">
-  <%= link_to_unless current_page.first?, raw(t 'views.pagination.first'), url, { :remote => remote }.merge(options||={}) %>
+  <%= link_to_unless current_page.first?, raw(t 'views.pagination.first'), url, html||={} %>
 </span>
