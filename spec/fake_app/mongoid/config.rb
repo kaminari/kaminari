@@ -3,6 +3,8 @@
 # Psych does not yet support YAML 1.1 merge keys.
 # Merge keys is often used in mongoid.yml
 # See: http://redmine.ruby-lang.org/issues/show/4300
+require 'mongoid/version'
+
 if RUBY_VERSION >= '1.9.2'
   YAML::ENGINE.yamler = 'syck'
 end
