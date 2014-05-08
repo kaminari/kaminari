@@ -168,6 +168,11 @@ Run the following generator command, then edit the generated file.
     <%= paginate @users, :remote => true %>
   This would add <tt>data-remote="true"</tt> to all the links inside.
 
+* specifying an alternative views directory (default is <tt>kaminari/</tt>)
+
+    <%= paginate @users, :views_prefix => '../templates/pagination' %>
+  This would search for partials in <tt>app/views/../templates/pagination</tt>.
+
 * the +link_to_next_page+ and +link_to_previous_page+ helper method
 
     <%= link_to_next_page @items, 'Next Page' %>
