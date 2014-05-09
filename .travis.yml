@@ -45,5 +45,4 @@ matrix:
     - rvm: ruby-head
     - rvm: rbx
     - gemfile: gemfiles/mongoid_40.gemfile
-    - gemfile: gemfiles/active_record_edge.gemfile
   fast_finish: true
