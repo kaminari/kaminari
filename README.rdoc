@@ -170,8 +170,8 @@ Run the following generator command, then edit the generated file.
 
 * specifying an alternative views directory (default is <tt>kaminari/</tt>)
 
-    <%= paginate @users, :views_prefix => '../templates/pagination' %>
-  This would search for partials in <tt>app/views/../templates/pagination</tt>.
+    <%= paginate @users, :views_prefix => 'templates/' %>
+  This would search for partials in <tt>app/views/templates/kaminari</tt>. This option makes it easier to do things like A/B testing pagination templates/themes, using new/old templates at the same time as well as better intergration with other gems sush as [cells](https://github.com/apotonick/cells).
 
 * the +link_to_next_page+ and +link_to_previous_page+ helper method
 

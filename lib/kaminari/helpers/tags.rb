@@ -19,6 +19,7 @@ module Kaminari
         @template, @options = template, options.dup
         @param_name = @options.delete(:param_name) || Kaminari.config.param_name
         @theme = @options.delete(:theme)
+        @views_prefix = @options.delete(:views_prefix)
         @params = template.params.except(*PARAM_KEY_BLACKLIST).merge(@options.delete(:params) || {})
       end
 
@@ -52,7 +53,9 @@ module Kaminari
       end
 
       def partial_path
-        [@options[:views_prefix] || "kaminari",
+        [
+         @views_prefix,
+         "kaminari",
          @theme,
          self.class.name.demodulize.underscore
         ].compact.join("/")
