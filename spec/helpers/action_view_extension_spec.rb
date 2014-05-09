@@ -16,7 +16,8 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails)do
       end
     end
 
-    context 'accepts :view_prefixes option' do
+    context 'accepts :view_prefix option' do
+      before { helper.controller.append_view_path "spec/fake_app/views" }
       subject { helper.paginate @users, :views_prefix => "alternative/" }
       it { should eq("<p>1</p>") }
     end
