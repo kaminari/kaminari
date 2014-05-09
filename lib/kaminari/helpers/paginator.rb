@@ -25,7 +25,7 @@ module Kaminari
           h[:right] = outer_window if h[:right] == 0
         end
         @template, @options = template, options
-        @theme = @options[:theme] ? "#{@options[:theme]}/" : ''
+        @theme = @options.delete(:theme)
         @window_options.merge! @options
         @window_options[:current_page] = @options[:current_page] = PageProxy.new(@window_options, @options[:current_page], nil)
 

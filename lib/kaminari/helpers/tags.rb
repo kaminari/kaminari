@@ -18,12 +18,12 @@ module Kaminari
       def initialize(template, options = {}) #:nodoc:
         @template, @options = template, options.dup
         @param_name = @options.delete(:param_name) || Kaminari.config.param_name
-        @theme = @options[:theme] ? "#{@options.delete(:theme)}/" : ''
+        @theme = @options.delete(:theme)
         @params = template.params.except(*PARAM_KEY_BLACKLIST).merge(@options.delete(:params) || {})
       end
 
       def to_s(locals = {}) #:nodoc:
-        @template.render :partial => "kaminari/#{@theme}#{self.class.name.demodulize.underscore}", :locals => @options.merge(locals), :formats => [:html]
+        @template.render :partial => partial_path, :locals => @options.merge(locals), :formats => [:html]
       end
 
       def page_url_for(page)
@@ -49,6 +49,13 @@ module Kaminari
         end
 
         page_params
+      end
+
+      def partial_path
+        [@options[:views_prefix] || "kaminari",
+         @theme,
+         self.class.name.demodulize.underscore
+        ].compact.join("/")
       end
     end
 
