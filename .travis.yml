@@ -9,7 +9,7 @@ rvm:
   - 2.1
   - ruby-head
   - jruby
-  - rbx
+  - rbx-2
 
 gemfile:
   - gemfiles/active_record_30.gemfile
@@ -43,7 +43,9 @@ matrix:
       gemfile: gemfiles/mongoid_40.gemfile
   allow_failures:
     - rvm: ruby-head
-    - rvm: rbx
     - gemfile: gemfiles/mongoid_40.gemfile
     - gemfile: gemfile/active_record_edge.gemfile
+    - rvm: rbx-2
+      gemfile: gemfiles/mongo_mapper.gemfile
+      gemfile: gemfiles/mongoid_24.gemfile
   fast_finish: true
