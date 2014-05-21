@@ -41,6 +41,12 @@ matrix:
       gemfile: gemfiles/mongoid_31.gemfile
     - rvm: 1.8.7
       gemfile: gemfiles/mongoid_40.gemfile
+    - rvm: ruby-head
+      gemfile: gemfiles/active_record_30.gemfile
+    - rvm: ruby-head
+      gemfile: gemfiles/active_record_31.gemfile
+    - rvm: ruby-head
+      gemfile: gemfiles/active_record_32.gemfile
   allow_failures:
     - rvm: ruby-head
     - gemfile: gemfiles/mongoid_40.gemfile
