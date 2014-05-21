@@ -50,7 +50,6 @@ matrix:
   allow_failures:
     - rvm: ruby-head
     - gemfile: gemfiles/mongoid_40.gemfile
-    - gemfile: gemfile/active_record_edge.gemfile
     - rvm: rbx-2
       gemfile: gemfiles/mongo_mapper.gemfile
     - rvm: rbx-2
