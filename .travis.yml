@@ -50,8 +50,4 @@ matrix:
   allow_failures:
     - rvm: ruby-head
     - gemfile: gemfiles/mongoid_40.gemfile
-    - rvm: rbx-2
-      gemfile: gemfiles/mongo_mapper.gemfile
-    - rvm: rbx-2
-      gemfile: gemfiles/mongoid_24.gemfile
   fast_finish: true
