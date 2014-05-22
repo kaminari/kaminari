@@ -20,6 +20,9 @@ app.initialize!
 # routes
 app.routes.draw do
   resources :users
+  resources :addresses do
+    get 'page/:page', :action => :index, :on => :collection
+  end
 end
 
 #models

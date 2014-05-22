@@ -4,27 +4,35 @@ include Kaminari::Helpers
 describe 'Kaminari::Helpers' do
   describe 'Tag' do
     describe '#page_url_for', :if => defined?(Rails) do
+      context "with a friendly route setting" do
+        before do
+          helper.request.assign_parameters(_routes, "addresses", "index", :page => 3)
+        end
+
+        context "for first page" do
+          subject { Tag.new(helper).page_url_for(1) }
+          it { should == "/addresses" }
+        end
+
+        context "for other page" do
+          subject { Tag.new(helper).page_url_for(5) }
+          it { should == "/addresses/page/5" }
+        end
+      end
+
       context "with param_name = 'user[page]' option" do
         before do
-          stub(helper).params do
-            {
-              :controller => 'users',
-              :action => 'index',
-              :user => {
-                :scope => "active",
-                :page => 3
-              }
-            }.with_indifferent_access
-          end
+          helper.request.assign_parameters(_routes, "users", "index")
+          helper.params.merge!(:user => {:page => "3", :scope => "active"})
         end
 
         context "for first page" do
           subject { Tag.new(helper, :param_name => "user[page]").page_url_for(1) }
           if ActiveSupport::VERSION::STRING < "3.1.0"
-            it { should_not match(/user\[page\]/) }
+            it { should_not match(/user\[page\]=\d+/) }
             it { should match(/user\[scope\]=active/) }
           else
-            it { should_not match(/user%5Bpage%5D/) }     # not match user[page]
+            it { should_not match(/user%5Bpage%5D=\d+/) } # not match user[page]=\d+
             it { should match(/user%5Bscope%5D=active/) } #     match user[scope]=active
           end
         end
