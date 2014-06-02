@@ -15,7 +15,12 @@ module Kaminari
     # * <tt>:remote</tt> - Ajax? (false by default)
     # * <tt>:ANY_OTHER_VALUES</tt> - Any other hash key & values would be directly passed into each tag as :locals value.
     def paginate(scope, options = {}, &block)
-      paginator = Kaminari::Helpers::Paginator.new self, options.reverse_merge(:current_page => @current_page, :total_pages => scope.total_pages, :per_page => scope.limit_value, :remote => false)
+      if @current_page
+        cpage = @current_page
+      else
+        cpage = scope.current_page
+      end
+      paginator = Kaminari::Helpers::Paginator.new self, options.reverse_merge(:current_page => cpage, :total_pages => scope.total_pages, :per_page => scope.limit_value, :remote => false)
       paginator.to_s
     end
 
