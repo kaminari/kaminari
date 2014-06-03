@@ -6,6 +6,7 @@ gem 'tilt', '~> 1.3.0'
 gem 'padrino-helpers', '~> 0.10.6'
 gem 'rack-test', '>= 0'
 gem 'sinatra-contrib', '~> 1.3.0'
+gem 'rspec', '~> 2.14.1'
 
 # stick to versions that work under Ruby 1.8 for now
 gem 'mime-types', '< 2.0'
