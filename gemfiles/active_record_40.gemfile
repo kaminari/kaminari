@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 gem 'railties', '~> 4.0.0'
 gem 'activerecord', '~> 4.0.0', :require => 'active_record'
-gem 'rspec-rails', '>= 2.0'
+gem 'rspec-rails', '~> 2.14.1'
 
 platforms :ruby do
   if RUBY_VERSION > "2.1.0"
