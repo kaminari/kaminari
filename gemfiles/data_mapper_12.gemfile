@@ -7,7 +7,7 @@ gem 'dm-aggregates', '~> 1.2.0'
 gem 'dm-transactions', '~> 1.2.0'
 gem 'dm-active_model', '~> 1.2.1'
 gem 'dm-sqlite-adapter', '~> 1.2.0'
-gem 'rspec-rails', '>= 2.0'
+gem 'rspec-rails', '~> 2.14.1'
 
 # stick to versions that work under Ruby 1.8 for now
 gem 'capybara', '< 2.1'
