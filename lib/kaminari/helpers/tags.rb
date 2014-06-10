@@ -17,7 +17,7 @@ module Kaminari
         @template, @options = template, options.dup
         @param_name = @options.delete(:param_name) || Kaminari.config.param_name
         @theme = @options.delete(:theme)
-        @views_prefix = @options[:views_prefix]
+        @views_prefix = @options.delete(:views_prefix)
         @params = @options[:params] ? template.params.merge(@options.delete :params) : template.params
       end
 
