@@ -1,3 +1,8 @@
+== 0.16.1
+
+* Fix a bug where :theme option for #paginate method doesn't work properly
+#566 [commstratdev]
+
 == 0.16.0
 
 * Add support for mongoid max_scan option #500 [aptx4869]
