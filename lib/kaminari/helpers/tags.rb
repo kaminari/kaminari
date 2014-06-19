@@ -19,7 +19,7 @@ module Kaminari
         @template, @options = template, options.dup
         @param_name = @options.delete(:param_name) || Kaminari.config.param_name
         @theme = @options.delete(:theme)
-        @views_prefix = @options[:views_prefix]
+        @views_prefix = @options.delete(:views_prefix)
         @params = template.params.except(*PARAM_KEY_BLACKLIST).merge(@options.delete(:params) || {})
       end
 
