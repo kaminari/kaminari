@@ -14,6 +14,12 @@ if defined? ActiveRecord
         @books.each {|book| book.readers << @readers }
       end
 
+      context "when the scope is cloned" do
+        it "should reset total_coount momoization" do
+          User.page.tap(&:total_count).where(:name => 'author').total_count.should == 1
+        end
+      end
+
       context "when the scope includes an order which references a generated column" do
         it "should successfully count the results" do
           @author.readers.by_read_count.page(1).total_count.should == @readers.size

@@ -12,6 +12,11 @@ module Kaminari
       model_name.human.downcase
     end
 
+    def reset #:nodoc:
+      @total_count = nil
+      super
+    end
+
     def total_count(column_name = :all, options = {}) #:nodoc:
       # #count overrides the #select which could include generated columns referenced in #order, so skip #order here, where it's irrelevant to the result anyway
       @total_count ||= begin

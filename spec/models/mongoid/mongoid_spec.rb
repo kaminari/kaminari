@@ -1,6 +1,20 @@
 require 'spec_helper'
 
 if defined? Mongoid
+  describe Kaminari::MongoidCriteriaMethods do
+    describe "#total_count" do
+      before do
+        2.times {|i| User.create!(:salary => i) }
+      end
+
+      context "when the scope is cloned" do
+        it "should reset total_coount momoization" do
+          User.page.tap(&:total_count).where(:salary => 1).total_count.should == 1
+        end
+      end
+    end
+  end
+
   describe Kaminari::MongoidExtension do
     before(:each) do
       41.times do
