@@ -24,6 +24,15 @@ module Kaminari
         args = [column_name]
         args << options if ActiveRecord::VERSION::STRING < '4.1.0'
 
+        # If group_by is used alongside column aliases, 'count' will destroy the select part of the
+        # query to construct the count. This means aliases will be used without being defined.
+        # In this case we want to construct a query with a count running on the relation
+        # as a sub-query
+        count_sql = c.to_sql.downcase
+        group_with_alias = count_sql.include?(" group by ") && count_sql.include?(" as ")
+        if group_with_alias
+          return self.connection.execute("select count(*) as full_count from (#{c.to_sql}) as rel").first.first.to_i
+        end
         # .group returns an OrderdHash that responds to #count
         c = c.count(*args)
         if c.is_a?(Hash) || c.is_a?(ActiveSupport::OrderedHash)
