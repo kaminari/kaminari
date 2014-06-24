@@ -31,14 +31,20 @@ module Kaminari
         count_sql = c.to_sql.downcase
         group_with_alias = count_sql.include?(" group by ") && count_sql.include?(" as ")
         if group_with_alias
-          return self.connection.execute("select count(*) as full_count from (#{c.to_sql}) as rel").first.first.to_i
-        end
-        # .group returns an OrderdHash that responds to #count
-        c = c.count(*args)
-        if c.is_a?(Hash) || c.is_a?(ActiveSupport::OrderedHash)
-          c.count
+          c = self.connection.execute("select count(*) as full_count from (#{c.to_sql}) as rel").first
+          if c.is_a?(Hash) || c.is_a?(ActiveSupport::OrderedHash)
+            c['full_count']
+          else
+            c.first.to_i
+          end
         else
-          c.respond_to?(:count) ? c.count(*args) : c
+          # .group returns an OrderdHash that responds to #count
+          c = c.count(*args)
+          if c.is_a?(Hash) || c.is_a?(ActiveSupport::OrderedHash)
+            c.count
+          else
+            c.respond_to?(:count) ? c.count(*args) : c
+          end
         end
       end
     end
