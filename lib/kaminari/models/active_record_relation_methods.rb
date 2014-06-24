@@ -31,10 +31,21 @@ module Kaminari
         # In both these cases, using a sub-query to count groups resolves the issue.
         is_group = c.to_sql.downcase.include?(" group by ")
         if is_group
-          sm = Arel::SelectManager.new c.engine
-          select_value = "count(*) as count"
-          counting_subquery = sm.project(select_value).from(c.arel.as("subquery_for_count"))
-          connection.select_one(counting_subquery)['count']
+          if ActiveRecord::VERSION::STRING >= '3.1'
+            sm = Arel::SelectManager.new c.engine
+            select_value = "count(*) as count"
+            counting_subquery = sm.project(select_value).from(c.arel.as("subquery_for_count"))
+            connection.select_one(counting_subquery)['count']
+          else
+            # With ActiveRecord 3 fall back to string interpolation
+            c = self.connection.execute("select count(*) as subquery_count " +
+                                        "from (#{c.to_sql}) as subquery_for_count").first
+            if c.is_a?(Hash) || c.is_a?(ActiveSupport::OrderedHash)
+              c['subquery_count']
+            else
+              c.first.to_i
+            end
+          end
         else
           c.respond_to?(:count) ? c.count(*args) : c
         end
