@@ -76,7 +76,6 @@ if defined? ActiveRecord
           @books.each {|book| book.readers << @readers[0..1] }
 
           readerships = Readership.select('user_id, count(user_id) as read_count, book_id').group('user_id, book_id')
-          readerships.count.count.should_not == readerships.page(1).total_count
           readerships.page(1).total_count.should == 8
         end
 
@@ -84,7 +83,6 @@ if defined? ActiveRecord
           @books.each {|book| book.readers << @readers[0..1] }
 
           readerships = Readership.select('user_id, count(user_id), book_id').group('user_id, book_id')
-          readerships.count.count.should_not == readerships.page(1).total_count
           readerships.page(1).total_count.should == 8
         end
       end
