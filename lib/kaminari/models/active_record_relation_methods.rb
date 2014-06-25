@@ -25,7 +25,7 @@ module Kaminari
         args << options if ActiveRecord::VERSION::STRING < '4.1.0'
 
         # If group_by is used alongside column aliases, 'count' will destroy the select part of the
-        # query to construct the count. This will cause an exception
+        # query to construct the count. This will cause an exception.
         # Some group_by counts return hashes, which cannot be used to calculate the number of
         # groups.
         # In both these cases, using a sub-query to count groups resolves the issue.
