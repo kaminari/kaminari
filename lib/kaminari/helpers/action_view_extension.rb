@@ -42,7 +42,13 @@ module Kaminari
     #     <span>At the Beginning</span>
     #   <% end %>
     def link_to_previous_page(scope, name, options = {}, &block)
-      prev_page = Kaminari::Helpers::PrevPage.new self, options.reverse_merge(:current_page => scope.current_page)
+      if @current_page
+        cpage = @current_page
+      else
+        cpage = scope.current_page
+      end
+      
+      prev_page = Kaminari::Helpers::PrevPage.new self, options.reverse_merge(:current_page => cpage)
 
       link_to_unless scope.first_page?, name, prev_page.url, options.except(:params, :param_name).reverse_merge(:rel => 'prev') do
         block.call if block
@@ -67,7 +73,13 @@ module Kaminari
     #     <span>No More Pages</span>
     #   <% end %>
     def link_to_next_page(scope, name, options = {}, &block)
-      next_page = Kaminari::Helpers::NextPage.new self, options.reverse_merge(:current_page => scope.current_page)
+      if @current_page
+        cpage = @current_page
+      else
+        cpage = scope.current_page
+      end
+      
+      next_page = Kaminari::Helpers::NextPage.new self, options.reverse_merge(:current_page => cpage)
 
       link_to_unless scope.last_page?, name, next_page.url, options.except(:params, :param_name).reverse_merge(:rel => 'next') do
         block.call if block
@@ -122,8 +134,14 @@ module Kaminari
     #   #-> <link rel="next" href="/items/page/3" /><link rel="prev" href="/items/page/1" />
     #
     def rel_next_prev_link_tags(scope, options = {})
-      next_page = Kaminari::Helpers::NextPage.new self, options.reverse_merge(:current_page => scope.current_page)
-      prev_page = Kaminari::Helpers::PrevPage.new self, options.reverse_merge(:current_page => scope.current_page)
+      if @current_page
+        cpage = @current_page
+      else
+        cpage = scope.current_page
+      end
+      
+      next_page = Kaminari::Helpers::NextPage.new self, options.reverse_merge(:current_page => cpage)
+      prev_page = Kaminari::Helpers::PrevPage.new self, options.reverse_merge(:current_page => cpage)
 
       output = ""
       output << tag(:link, :rel => "next", :href => next_page.url) if scope.next_page
