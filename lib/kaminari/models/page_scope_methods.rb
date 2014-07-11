@@ -44,27 +44,57 @@ module Kaminari
 
     # Next page number in the collection
     def next_page
-      current_page + 1 unless last_page?
+      if @current_page
+        cpage = @current_page
+      else
+        cpage = current_page
+      end
+      
+      cpage + 1 unless last_page?
     end
 
     # Previous page number in the collection
     def prev_page
-      current_page - 1 unless first_page?
+      if @current_page
+        cpage = @current_page
+      else
+        cpage = current_page
+      end
+      
+      cpage - 1 unless first_page?
     end
 
     # First page of the collection?
     def first_page?
-      current_page == 1
+      if @current_page
+        cpage = @current_page
+      else
+        cpage = current_page
+      end
+      
+      cpage == 1
     end
 
     # Last page of the collection?
     def last_page?
-      current_page >= total_pages
+      if @current_page
+        cpage = @current_page
+      else
+        cpage = current_page
+      end
+      
+      cpage >= total_pages
     end
 
     # Out of range of the collection?
     def out_of_range?
-      current_page > total_pages
+      if @current_page
+        cpage = @current_page
+      else
+        cpage = current_page
+      end
+      
+      cpage > total_pages
     end
   end
 end
