@@ -74,6 +74,12 @@ describe Kaminari::Configuration do
     end
   end
 
+  describe 'url_helper' do
+    context 'by default' do
+      its(:url_helper) { should == :url_for }
+    end
+  end
+
   describe 'max_pages' do
     context 'by default' do
       its(:max_pages) { should == nil }

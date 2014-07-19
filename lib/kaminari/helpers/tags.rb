@@ -28,7 +28,8 @@ module Kaminari
       end
 
       def page_url_for(page)
-        @template.url_for params_for(page).merge(:only_path => true)
+        helper = @options[:url_helper] || Kaminari.config.url_helper
+        @template.send helper, params_for(page).merge(only_path: true)
       end
 
       private
