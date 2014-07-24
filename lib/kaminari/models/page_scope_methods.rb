@@ -44,7 +44,7 @@ module Kaminari
 
     # Next page number in the collection
     def next_page
-      current_page + 1 unless last_page?
+      current_page + 1 unless last_page? || out_of_range?
     end
 
     # Previous page number in the collection
@@ -59,7 +59,7 @@ module Kaminari
 
     # Last page of the collection?
     def last_page?
-      current_page >= total_pages
+      current_page == total_pages
     end
 
     # Out of range of the collection?

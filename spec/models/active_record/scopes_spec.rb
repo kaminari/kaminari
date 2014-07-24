@@ -210,8 +210,13 @@ if defined? ActiveRecord
             its(:last_page?) { should == true }
           end
 
-          context 'not on last page' do
+          context 'within range' do
             subject { model_class.page(1).per(10) }
+            its(:last_page?) { should == false }
+          end
+
+          context 'out of range' do
+            subject { model_class.page(11).per(10) }
             its(:last_page?) { should == false }
           end
         end
