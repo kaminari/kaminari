@@ -29,7 +29,8 @@ module Kaminari
         # Some group_by counts return hashes, which cannot be used to calculate the number of
         # groups.
         # In both these cases, using a sub-query to count groups resolves the issue.
-        is_group = c.to_sql.downcase.include?(" group by ")
+        sql = c.to_sql.downcase
+        is_group = sql =~ /\s(group\sby|having)\s/
         if is_group
           if ActiveRecord::VERSION::STRING >= '3.1'
             sm = Arel::SelectManager.new c.engine
