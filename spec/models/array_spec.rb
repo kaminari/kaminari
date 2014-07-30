@@ -8,6 +8,11 @@ describe Kaminari::PaginatableArray do
     its(:current_page) { should == 3 }
   end
 
+  context 'specifying limit of zero when initializing' do
+    subject { Kaminari::PaginatableArray.new((1..100).to_a, :limit => 0, :offset => 0) }
+    its(:current_page) { should == 1 }
+  end
+
   let(:array) { Kaminari::PaginatableArray.new((1..100).to_a) }
   describe '#page' do
     shared_examples_for 'the first page of array' do
