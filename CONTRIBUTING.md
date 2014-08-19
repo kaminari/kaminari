@@ -1,4 +1,5 @@
 Kaminari is a volunteer effort. We encourage you to pitch in.
+
 __*We only accept bug reports and pull requests in GitHub*__. Join the team!
 
 * If you have a support question about how to use kaminari, please [ask on StackOverflow](http://stackoverflow.com/search?tab=newest&q=kaminari).
