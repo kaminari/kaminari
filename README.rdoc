@@ -271,6 +271,14 @@ Because of the +page+ parameter and Rails 3 routing, you can easily generate SEO
       get 'page/:page', :action => :index, :on => :collection
     end
 
+If you are using Rails 4 or later, you can simplify route definitions by using `concern`:
+
+    concern :paginatable do
+      get '(page/:page)', :action => :index, :on => :collection, :as => ''
+    end
+
+    resources :my_resources, :concerns => :paginatable
+
 This will create URLs like <tt>/my_resources/page/33</tt> instead of <tt>/my_resources?page=33</tt>. This is now a friendly URL, but it also has other added benefits...
 
 Because the +page+ parameter is now a URL segment, we can leverage on Rails page caching[http://guides.rubyonrails.org/caching_with_rails.html#page-caching]!
