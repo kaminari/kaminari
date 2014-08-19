@@ -19,12 +19,12 @@ module Kaminari
 
     def total_count #:nodoc:
       @total_count ||= if embedded?
-        unpage.count
+        unpage.size
       else
-        if options[:max_scan] && options[:max_scan] < count
+        if options[:max_scan] && options[:max_scan] < size
           options[:max_scan]
         else
-          count
+          size
         end
       end
     end
