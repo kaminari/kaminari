@@ -66,7 +66,7 @@ module Kaminari
     def link_to_next_page(scope, name, options = {}, &block)
       next_page = Kaminari::Helpers::NextPage.new self, options.reverse_merge(:current_page => scope.current_page)
 
-      link_to_unless scope.last_page?, name, next_page.url, options.except(:params, :param_name).reverse_merge(:rel => 'next') do
+      link_to_unless scope.last_page? || scope.out_of_range?, name, next_page.url, options.except(:params, :param_name).reverse_merge(:rel => 'next') do
         block.call if block
       end
     end
