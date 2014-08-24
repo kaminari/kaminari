@@ -3,7 +3,7 @@ module Kaminari
     # Specify the <tt>per_page</tt> value for the preceding <tt>page</tt> scope
     #   Model.page(3).per(10)
     def per(num)
-      if (n = num.to_i) <= 0
+      if (n = num.to_i) <= 0 || limit_value <= 0
         self
       elsif max_per_page && max_per_page < n
         limit(max_per_page).offset(offset_value / limit_value * max_per_page)
@@ -23,6 +23,7 @@ module Kaminari
       count_without_padding -= @_padding if defined?(@_padding) && @_padding
       count_without_padding = 0 if count_without_padding < 0
 
+      return 1 if limit_value <= 0
       total_pages_count = (count_without_padding.to_f / limit_value).ceil
       if max_pages.present? && max_pages < total_pages_count
         max_pages
@@ -39,6 +40,7 @@ module Kaminari
       offset_without_padding -= @_padding if defined?(@_padding) && @_padding
       offset_without_padding = 0 if offset_without_padding < 0
 
+      return 1 if limit_value <= 0
       (offset_without_padding / limit_value) + 1
     end
 

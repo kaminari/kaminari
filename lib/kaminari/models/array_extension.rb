@@ -25,6 +25,10 @@ module Kaminari
         original_array = original_array[@_offset_value, @_limit_value]
       end
 
+      if @_limit_value <= 0
+        original_array.clear
+      end
+
       super(original_array || [])
     end
 
