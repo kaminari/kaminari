@@ -26,6 +26,7 @@ EOC
 
 # load Kaminari components
 require 'kaminari/config'
+require 'kaminari/exceptions'
 require 'kaminari/helpers/action_view_extension'
 require 'kaminari/helpers/paginator'
 require 'kaminari/models/page_scope_methods'

@@ -54,6 +54,11 @@ describe Kaminari::PaginatableArray do
       it { should have(5).users }
       its(:first) { should == 1 }
     end
+
+    context "page 1 per 0" do
+      subject { array.page(1).per(0) }
+      it { should have(0).users }
+    end
   end
 
   describe '#total_pages' do
@@ -72,9 +77,11 @@ describe Kaminari::PaginatableArray do
       its(:total_pages) { should == 1 }
     end
 
-    context 'per 0 (using default)' do
+    context 'per 0' do
       subject { array.page(50).per(0) }
-      its(:total_pages) { should == 4 }
+      it "raises Kaminari::ZeroPerPageOperation" do
+        expect { subject.total_pages }.to raise_error(Kaminari::ZeroPerPageOperation)
+      end
     end
 
     context 'per -1 (using default)' do
@@ -94,6 +101,13 @@ describe Kaminari::PaginatableArray do
   end
 
   describe '#current_page' do
+    context 'any page, per 0' do
+      subject { array.page.per(0) }
+      it "raises Kaminari::ZeroPerPageOperation" do
+        expect { subject.current_page }.to raise_error(Kaminari::ZeroPerPageOperation)
+      end
+    end
+
     context 'page 1' do
       subject { array.page }
       its(:current_page) { should == 1 }
