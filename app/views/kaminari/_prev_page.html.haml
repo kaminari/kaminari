@@ -4,6 +4,6 @@
 -#    current_page:  a page object for the currently displayed page
 -#    total_pages:   total number of pages
 -#    per_page:      number of items to fetch per page
--#    remote:        data-remote
+-#    html:          any HTML options like data-push: 'true'
 %span.prev
-  = link_to_unless current_page.first?, t('views.pagination.previous').html_safe, url, :rel => 'prev', :remote => remote
+  = link_to_unless current_page.first?, t('views.pagination.previous').html_safe, url, {:rel => 'prev'}.merge(html||={})
