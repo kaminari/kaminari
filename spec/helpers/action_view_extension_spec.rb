@@ -23,6 +23,19 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails) do
       it { should match(/bootstrap-page-link/) }
     end
 
+    context 'should take default theme if non given' do
+      before do
+        Kaminari.configure {|c| c.default_theme = 'bootstrap'}
+        helper.controller.append_view_path "spec/fake_app/views"
+      end
+      subject { helper.paginate @users, :params => {:controller => 'users', :action => 'index'} }
+      it { should match(/bootstrap-paginator/) }
+      it { should match(/bootstrap-page-link/) }
+      after do
+        Kaminari.configure {|c| c.default_theme = nil}
+      end
+    end
+
     context 'accepts :view_prefix option' do
       before { helper.controller.append_view_path "spec/fake_app/views" }
       subject { helper.paginate @users, :views_prefix => "alternative/", :params => {:controller => 'users', :action => 'index'} }

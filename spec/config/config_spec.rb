@@ -88,4 +88,19 @@ describe Kaminari::Configuration do
       end
     end
   end
+
+  describe 'default_theme' do
+    context 'by default' do
+      its(:default_theme) { should == nil }
+    end
+    context 'configure via config block' do
+      before do
+        Kaminari.configure {|c| c.default_theme = 'twitter-bootstrap-3'}
+      end
+      its(:default_theme) { should == 'twitter-bootstrap-3' }
+      after do
+        Kaminari.configure {|c| c.default_theme = nil}
+      end
+    end
+  end
 end
