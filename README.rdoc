@@ -78,6 +78,7 @@ Then bundle:
 
 You can configure the following default values by overriding these values using <tt>Kaminari.configure</tt> method.
   default_per_page  # 25 by default
+  default_theme     # nil by default
   max_per_page      # nil by default
   max_pages         # nil by default
   window            # 4 by default
@@ -247,9 +248,9 @@ Kaminari includes a handy template generator.
 
     <%= paginate @users, :theme => 'my_custom_theme' %>
 
-  Customize away!
+  Customize away! If no theme is specified, the one configured in Kaminari.config.default_theme will be used.
 
-  Note: if the theme isn't present or none is specified, kaminari will default back to the views included within the gem.
+  Note: if the theme isn't present, kaminari will default back to the views included within the gem.
 
 === Paginating a generic Array object
 
