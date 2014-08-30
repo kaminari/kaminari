@@ -25,6 +25,7 @@ module Kaminari
           h[:right] = outer_window if h[:right] == 0
         end
         @template, @options = template, options
+        @options[:theme] ||= Kaminari.config.default_theme
         @theme = @options[:theme]
         @views_prefix = @options[:views_prefix]
         @window_options.merge! @options
