@@ -15,6 +15,8 @@ module Kaminari
     # * <tt>:remote</tt> - Ajax? (false by default)
     # * <tt>:ANY_OTHER_VALUES</tt> - Any other hash key & values would be directly passed into each tag as :locals value.
     def paginate(scope, options = {}, &block)
+      return nil if scope.out_of_range?
+
       options[:total_pages] ||= scope.total_pages
 
       paginator = Kaminari::Helpers::Paginator.new(self, options.reverse_merge(:current_page => scope.current_page, :per_page => scope.limit_value, :remote => false))
@@ -41,7 +43,7 @@ module Kaminari
     def link_to_previous_page(scope, name, options = {}, &block)
       prev_page = Kaminari::Helpers::PrevPage.new self, options.reverse_merge(:current_page => scope.current_page)
 
-      link_to_unless scope.first_page? || (scope.current_page - 1 > scope.total_pages), name, prev_page.url, options.except(:params, :param_name).reverse_merge(:rel => 'prev') do
+      link_to_unless scope.first_page? || scope.out_of_range?, name, prev_page.url, options.except(:params, :param_name).reverse_merge(:rel => 'prev') do
         block.call if block
       end
     end
@@ -124,7 +126,7 @@ module Kaminari
 
       output = ""
       output << tag(:link, :rel => "next", :href => next_page.url) unless scope.last_page?  || scope.out_of_range?
-      output << tag(:link, :rel => "prev", :href => prev_page.url) unless scope.first_page? || (scope.current_page - 1 > scope.total_pages)
+      output << tag(:link, :rel => "prev", :href => prev_page.url) unless scope.first_page? || scope.out_of_range?
       output.html_safe
     end
   end

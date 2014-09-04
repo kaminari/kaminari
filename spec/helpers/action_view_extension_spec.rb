@@ -28,6 +28,14 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails) do
       subject { helper.paginate @users, :views_prefix => "alternative/", :params => {:controller => 'users', :action => 'index'} }
       it { should eq("  <b>1</b>\n") }
     end
+
+    context 'out of range' do
+      before do
+        @users = User.page(1000)
+      end
+      subject { helper.paginate @users, :params => {:controller => 'users', :action => 'index', :page => 1000} }
+      it { should_not be }
+    end
   end
 
   describe '#link_to_previous_page' do
@@ -68,16 +76,6 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails) do
 
       subject { helper.link_to_previous_page @users, 'Previous', :params => {:controller => 'users', :action => 'index'} }
       it { should_not be }
-    end
-
-    context 'page after last page' do
-      before do
-        @users = User.page(61).per(1)
-      end
-
-      subject { helper.link_to_previous_page @users, 'Previous', :params => {:controller => 'users', :action => 'index', :page => 61} }
-      it { should match(/page=60/) }
-      it { should match(/rel="prev"/) }
     end
 
     context 'out of range page' do
@@ -334,13 +332,6 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails) do
 
       it { should match(/rel="prev"/) }
       it { should match(/\?page=3"/) }
-      it { should_not match(/rel="next"/) }
-    end
-
-    context 'page after last page' do
-      let(:users) { User.page(32).per(1) }
-
-      it { should match(/rel="prev"/) } # On the 32nd page, we still have prev page of 31.
       it { should_not match(/rel="next"/) }
     end
 
