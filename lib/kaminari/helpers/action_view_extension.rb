@@ -41,7 +41,7 @@ module Kaminari
     def link_to_previous_page(scope, name, options = {}, &block)
       prev_page = Kaminari::Helpers::PrevPage.new self, options.reverse_merge(:current_page => scope.current_page)
 
-      link_to_unless scope.first_page?, name, prev_page.url, options.except(:params, :param_name).reverse_merge(:rel => 'prev') do
+      link_to_unless scope.first_page? || (scope.current_page - 1 > scope.total_pages), name, prev_page.url, options.except(:params, :param_name).reverse_merge(:rel => 'prev') do
         block.call if block
       end
     end
@@ -123,8 +123,8 @@ module Kaminari
       prev_page = Kaminari::Helpers::PrevPage.new self, options.reverse_merge(:current_page => scope.current_page)
 
       output = ""
-      output << tag(:link, :rel => "next", :href => next_page.url) if scope.next_page
-      output << tag(:link, :rel => "prev", :href => prev_page.url) if scope.prev_page
+      output << tag(:link, :rel => "next", :href => next_page.url) unless scope.last_page?  || scope.out_of_range?
+      output << tag(:link, :rel => "prev", :href => prev_page.url) unless scope.first_page? || (scope.current_page - 1 > scope.total_pages)
       output.html_safe
     end
   end
