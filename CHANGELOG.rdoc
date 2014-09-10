@@ -1,3 +1,27 @@
+== 0.16.1
+
+* Fix a bug where :theme option for #paginate method doesn't work properly #566 [commstratdev]
+
+== 0.16.0
+
+* Add support for mongoid max_scan option #500 [aptx4869]
+
+* Add `link_to_previous_page` helper for Sinatra #504 [ikeay]
+
+* Add :views_prefix option to #paginate for alternative views directory #552 [apotonick]
+
+* Simplify `page_entries_info` by adding entry_name interface to each ORM
+
+* Refer ActiveRecord::Base from top level namespace for more safety when inherited class's namespace has 'ActiveRecord' constant #522 [yuroyoro]
+
+* Fix a bug where runtime persistence not taken into account with mongoid/kaminari #326 [nubeod]
+
+* Fix a bug where helper methods were not available from inside `paginator.render do ... end` block #239 [damien-roche]
+
+* Fix a bug where theme generator didn't work on Rails 4.1 #526 [jimryan]
+
+* Fix a bug that paginatable arrays with `total_count` option always returns whole array #516 [abhichvn]
+
 == 0.15.1
 
 * page_method_name option was not working in 0.15.0 #481 [mauriciopasquier]
