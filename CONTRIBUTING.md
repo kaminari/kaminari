@@ -4,7 +4,7 @@ __*We only accept bug reports and pull requests in GitHub*__. Join the team!
 
 * If you have a support question about how to use kaminari, please [ask on StackOverflow](http://stackoverflow.com/search?tab=newest&q=kaminari).
 * Bug reports should include the following:
-  - Minimal code example of code to reproduce the bug
+  - Minimal example of code to reproduce the bug
   - Stacktrace
   - What you expected to see, and what you actually saw.
 
