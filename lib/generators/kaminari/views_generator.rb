@@ -24,9 +24,10 @@ BANNER
       def copy_or_fetch #:nodoc:
         return copy_default_views if file_name == 'default'
 
-        themes = self.class.themes
-        if theme = themes.detect {|t| t.name == file_name}
-          download_templates theme
+        if theme = self.class.themes.detect {|t| t.name == file_name}
+          if download_templates(theme).empty?
+            say %Q[template_engine: #{template_engine} is not available for theme: #{file_name}]
+          end
         else
           say %Q[no such theme: #{file_name}\n  avaliable themes: #{themes.map(&:name).join ", "}]
         end
