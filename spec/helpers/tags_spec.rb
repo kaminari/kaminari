@@ -233,6 +233,23 @@ describe 'Kaminari::Helpers' do
           its("gap for 8") { gap_for(8).should be_a_single_gap }
         end
       end
+
+      describe "#out_of_range?" do
+        context 'within range' do
+          subject { Paginator::PageProxy.new({:total_pages => 5}, 4, nil).out_of_range? }
+          it { should == false }
+        end
+
+        context 'on last page' do
+          subject { Paginator::PageProxy.new({:total_pages => 5}, 5, nil).out_of_range? }
+          it { should == false }
+        end
+
+        context 'out of range' do
+          subject { Paginator::PageProxy.new({:total_pages => 5}, 6, nil).out_of_range? }
+          it { should == true }
+        end
+      end
     end
   end
 end

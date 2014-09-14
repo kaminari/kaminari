@@ -171,6 +171,10 @@ module Kaminari
             (@page.to_i == @options[:current_page] + @options[:window] + 1) && (@page.to_i == @options[:total_pages] - @options[:right])
         end
 
+        def out_of_range?
+          @page > @options[:total_pages]
+        end
+
         # The last rendered tag was "truncated" or not
         def was_truncated?
           @last.is_a? Gap
