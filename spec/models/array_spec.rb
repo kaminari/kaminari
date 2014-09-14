@@ -137,13 +137,13 @@ describe Kaminari::PaginatableArray do
       its(:prev_page) { should be_nil }
     end
 
-    context 'page 5' do
-      subject { array.page 5 }
-      its(:prev_page) { should == 4 }
+    context 'page 3' do
+      subject { array.page 3 }
+      its(:prev_page) { should == 2 }
     end
 
-    context 'page 6' do
-      subject { array.page 6 }
+    context 'page 5' do
+      subject { array.page 5 }
       its(:prev_page) { should be_nil }
     end
   end
