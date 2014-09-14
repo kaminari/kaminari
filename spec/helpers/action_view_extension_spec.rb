@@ -69,6 +69,13 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails) do
       subject { helper.link_to_previous_page @users, 'Previous', :params => {:controller => 'users', :action => 'index'} }
       it { should_not be }
     end
+
+    context 'out of range' do
+      before { @users = User.page(5) }
+
+      subject { helper.link_to_next_page @users, 'More', :params => {:controller => 'users', :action => 'index'} }
+      it { should_not be }
+    end
   end
 
   describe '#link_to_next_page' do
@@ -106,6 +113,13 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails) do
       before do
         @users = User.page(2)
       end
+
+      subject { helper.link_to_next_page @users, 'More', :params => {:controller => 'users', :action => 'index'} }
+      it { should_not be }
+    end
+
+    context 'out of range' do
+      before { @users = User.page(5) }
 
       subject { helper.link_to_next_page @users, 'More', :params => {:controller => 'users', :action => 'index'} }
       it { should_not be }

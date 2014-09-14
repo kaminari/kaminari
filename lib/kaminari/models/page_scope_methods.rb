@@ -55,7 +55,7 @@ module Kaminari
 
     # Previous page number in the collection
     def prev_page
-      current_page - 1 unless first_page?
+      current_page - 1 unless first_page? || current_page > (total_pages + 1)
     end
 
     # First page of the collection?

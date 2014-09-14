@@ -204,6 +204,11 @@ if defined? ActiveRecord
             subject { model_class.page(5) }
             its(:prev_page) { should == 4 }
           end
+
+          context 'page 6' do
+            subject { model_class.page(6) }
+            its(:prev_page) { should be_nil }
+          end
         end
 
         describe '#first_page?' do
