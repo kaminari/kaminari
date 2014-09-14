@@ -104,7 +104,7 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails) do
           helper.params[:status] = "active"
         end
 
-        subject { helper.link_to_next_page @users, 'Previous', :params => {:controller => 'users', :action => 'index'} }
+        subject { helper.link_to_next_page @users, 'More', :params => {:controller => 'users', :action => 'index'} }
         it { should match(/status=active/) }
       end
     end
