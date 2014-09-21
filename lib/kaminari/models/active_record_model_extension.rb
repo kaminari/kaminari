@@ -11,7 +11,7 @@ module Kaminari
       #   Model.page(5)
       eval <<-RUBY
         def self.#{Kaminari.config.page_method_name}(num = nil)
-          limit(default_per_page).offset(default_per_page * ([num.to_i, 1].max - 1)).extending do
+          limit(default_per_page).offset(default_per_page * ([(num.class.public_method_defined?(:to_i) ? num.to_i : 0), 1].max - 1)).extending do
             include Kaminari::ActiveRecordRelationMethods
             include Kaminari::PageScopeMethods
           end
