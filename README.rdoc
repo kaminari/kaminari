@@ -65,7 +65,7 @@ Then bundle:
 
   Keep in mind that +per+ utilizes internally +limit+ and so it will override any +limit+ that was set previously
     User.count                  # => 1000
-    a = User.limit(5).count     # => 5
+    a = User.limit(5); a.count  # => 5
     b = a.page(1).per(20).size  # => 20
 
 * the +padding+ scope
