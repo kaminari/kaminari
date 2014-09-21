@@ -7,7 +7,7 @@ module Kaminari
         def #{Kaminari.config.page_method_name}(num = 1)
           model = self
           model = self.model if self.is_a? DataMapper::Collection
-          num = [(num.class.public_method_defined?(:to_i) ? num.to_i : 0)].max - 1
+          num = [(num.class.public_method_defined?(:to_i) ? num.to_i : 0), 1].max - 1
           all(:limit => model.default_per_page, :offset => model.default_per_page * num).extend Paginating
         end
       RUBY
