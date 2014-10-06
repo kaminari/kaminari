@@ -5,7 +5,7 @@ module Kaminari
     delegate :default_per_page, :max_per_page, :max_pages, :to => :model
 
     def entry_name
-      model.model_name.human.downcase
+      count == 1 ? model_name.human.downcase : model_name.human.pluralize.downcase
     end
 
     def limit_value #:nodoc:
