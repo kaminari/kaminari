@@ -29,7 +29,7 @@ module Kaminari
     end
 
     def entry_name
-      "entry"
+      I18n.t('helpers.page_entries_info.entry', :count => length)
     end
 
     # items at the specified "page"

@@ -6,7 +6,7 @@ module Kaminari
     end
 
     def entry_name
-      model_name.human.downcase
+      model_name.human.pluralize(count).downcase
     end
 
     def limit_value #:nodoc:

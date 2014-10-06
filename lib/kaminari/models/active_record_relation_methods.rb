@@ -1,7 +1,8 @@
 module Kaminari
   module ActiveRecordRelationMethods
     def entry_name
-      model_name.human.downcase
+      default = count == 1 ? model_name.human.downcase : model_name.human.pluralize.downcase
+      model_name.human(:count => count, :default => default).downcase
     end
 
     def reset #:nodoc:
