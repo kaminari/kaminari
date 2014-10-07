@@ -90,9 +90,9 @@ module Kaminari
     def page_entries_info(collection, options = {})
       entry_name = options.delete(:entry_name)
       entry_name = if entry_name
-                     collection.length == 1 ? entry_name : entry_name.pluralize
+                     collection.size == 1 ? entry_name : entry_name.pluralize
                    else
-                     collection.entry_name
+                     collection.entry_name.downcase
                    end
 
       if collection.total_pages < 2
