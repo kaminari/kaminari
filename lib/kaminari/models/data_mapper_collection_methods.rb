@@ -1,7 +1,7 @@
 module Kaminari
   module DataMapperCollectionMethods
     def entry_name
-      count == 1 ? model_name.human.downcase : model_name.human.pluralize.downcase
+      count == 1 ? model_name.human : model_name.human.pluralize
     end
 
     def limit_value #:nodoc:
