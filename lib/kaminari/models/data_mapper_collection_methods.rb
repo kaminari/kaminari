@@ -1,6 +1,7 @@
 module Kaminari
   module DataMapperCollectionMethods
-    def entry_name
+    def entry_name(options = {})
+      count = options.fetch(:count, 1)
       count == 1 ? model_name.human : model_name.human.pluralize
     end
 

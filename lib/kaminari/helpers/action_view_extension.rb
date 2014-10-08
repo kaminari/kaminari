@@ -92,7 +92,7 @@ module Kaminari
       entry_name = if entry_name
                      collection.size == 1 ? entry_name : entry_name.pluralize
                    else
-                     collection.entry_name.downcase
+                     collection.entry_name(:count => collection.total_count).downcase
                    end
 
       if collection.total_pages < 2

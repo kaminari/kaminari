@@ -8,8 +8,13 @@ module Kaminari
       end
     end
 
-    def entry_name
-      default = count == 1 ? model_name.human : model_name.human.pluralize
+    def entry_name(options = {})
+      count = options.fetch(:count, 1)
+      default = if ActiveRecord::VERSION::STRING >= '3.2.0'
+                  model_name.human.pluralize(count)
+                else
+                  count == 1 ? model_name.human : model_name.human.pluralize
+                end
       model_name.human(:count => count, :default => default)
     end
 
