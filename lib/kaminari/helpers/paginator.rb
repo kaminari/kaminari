@@ -119,6 +119,7 @@ module Kaminari
 
         def initialize(options, page, last) #:nodoc:
           @options, @page, @last = options, page, last
+          @current_page = @options[:current_page]
         end
 
         # the page number
@@ -128,7 +129,7 @@ module Kaminari
 
         # current page or not
         def current?
-          @page == @options[:current_page]
+          @page == @current_page
         end
 
         # the first page or not
@@ -143,12 +144,12 @@ module Kaminari
 
         # the previous page or not
         def prev?
-          @page == @options[:current_page] - 1
+          @page == @current_page - 1
         end
 
         # the next page or not
         def next?
-          @page == @options[:current_page] + 1
+          @page == @current_page + 1
         end
 
         # within the left outer window or not
@@ -163,12 +164,12 @@ module Kaminari
 
         # inside the inner window or not
         def inside_window?
-          (@options[:current_page] - @page).abs <= @options[:window]
+          (@current_page - @page).abs <= @options[:window]
         end
 
         def single_gap?
-          (@page.to_i == @options[:current_page] - @options[:window] - 1) && (@page.to_i == @options[:left] + 1) ||
-            (@page.to_i == @options[:current_page] + @options[:window] + 1) && (@page.to_i == @options[:total_pages] - @options[:right])
+          (@page.to_i == @current_page - @options[:window] - 1) && (@page.to_i == @options[:left] + 1) ||
+            (@page.to_i == @current_page + @options[:window] + 1) && (@page.to_i == @options[:total_pages] - @options[:right])
         end
 
         def out_of_range?
