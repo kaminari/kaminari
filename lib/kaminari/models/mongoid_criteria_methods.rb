@@ -6,8 +6,8 @@ module Kaminari
     end
 
     def entry_name(options = {})
-      count = options.fetch(:count, 1)
-      count == 1 ? model_name.human : model_name.human.pluralize
+      count == options[:count] || 1
+      count == 1 ? model.model_name.human : model.model_name.human.pluralize
     end
 
     def limit_value #:nodoc:

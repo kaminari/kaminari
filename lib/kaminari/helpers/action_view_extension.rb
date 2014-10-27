@@ -88,7 +88,7 @@ module Kaminari
     #   <%= page_entries_info @posts, :entry_name => 'item' %>
     #   #-> Displaying items 6 - 10 of 26 in total
     def page_entries_info(collection, options = {})
-      entry_name = options.delete(:entry_name)
+      entry_name = options[:entry_name]
       entry_name = if entry_name
                      collection.size == 1 ? entry_name : entry_name.pluralize
                    else
