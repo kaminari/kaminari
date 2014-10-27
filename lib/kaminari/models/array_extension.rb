@@ -29,8 +29,7 @@ module Kaminari
     end
 
     def entry_name(options = {})
-      count = options.fetch(:count, 1)
-      I18n.t('helpers.page_entries_info.entry', :count => count)
+      I18n.t('helpers.page_entries_info.entry', :count => (options[:count] || 1))
     end
 
     # items at the specified "page"

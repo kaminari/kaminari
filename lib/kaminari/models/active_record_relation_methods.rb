@@ -9,7 +9,7 @@ module Kaminari
     end
 
     def entry_name(options = {})
-      count = options.fetch(:count, 1)
+      count = options[:count] || 1
       default = if ActiveRecord::VERSION::STRING >= '3.2.0'
                   model_name.human.pluralize(count)
                 else
