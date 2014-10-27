@@ -5,7 +5,7 @@ module Kaminari
     delegate :default_per_page, :max_per_page, :max_pages, :to => :model
 
     def entry_name(options = {})
-      count = options.fetch(:count, 1)
+      count = options[:count] || 1
       count == 1 ? model_name.human : model_name.human.pluralize
     end
 
