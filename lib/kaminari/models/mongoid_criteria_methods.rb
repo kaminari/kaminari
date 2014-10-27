@@ -7,7 +7,7 @@ module Kaminari
 
     def entry_name(options = {})
       count == options[:count] || 1
-      count == 1 ? model.model_name.human : model.model_name.human.pluralize
+      count == 1 ? model_name.human : model_name.human.pluralize
     end
 
     def limit_value #:nodoc:
