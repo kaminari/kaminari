@@ -13,12 +13,28 @@ describe 'Kaminari::Helpers::Paginator' do
     r
   end
 
-  describe "view helper methods delegated to template" do
+  describe '#method_missing' do
+    let(:paginator) { Paginator.new(template, :params => {}) }
+
     before do
-      @paginator = Paginator.new(template, :params => {})
+      Paginator.remove_possible_method(:link_to)
     end
-    subject { @paginator.link_to("link", "#") }
-    it { should == "<a href='#'>link</a>" }
+
+    it 'delegates view helper methods to template' do
+      paginator.link_to("link", "#").should == "<a href='#'>link</a>"
+    end
+
+    it 'defines method in class' do
+      expect { paginator.link_to('link', '#') }.to change {
+        paginator.class.instance_methods.include?(:link_to)
+      }.from(false).to(true)
+    end
+  end
+
+  describe '#respond_to?' do
+    it 'returns true for delegated methods' do
+      expect { Paginator.new(template).respond_to?(:url_for) }.to be_true
+    end
   end
 
   describe '#params' do
