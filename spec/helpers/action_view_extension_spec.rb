@@ -28,18 +28,11 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails) do
       subject { helper.paginate @users, :views_prefix => "alternative/", :params => {:controller => 'users', :action => 'index'} }
       it { should eq("  <b>1</b>\n") }
     end
-  end
 
-  specify '#total_pages' do
-    @users = User.page(1).per(1)
-    result = helper.paginate @users, :total_pages => 3, :params => {:controller => 'users', :action => 'index'}
-    expect(result.scan('<span class="page">').count).to eq(2)
-  end
-
-  specify '#total_pages legacy' do
-    @users = User.page(1).per(1)
-    result = helper.paginate @users, :num_pages => 3, :params => {:controller => 'users', :action => 'index'}
-    expect(result.scan('<span class="page">').count).to eq(2)
+    context "num_pages: 3" do
+      subject { helper.paginate @users, :num_pages => 3, :params => {:controller => 'users', :action => 'index'} }
+      it { should match(/<a href="\/users\?page=3">Last/) }
+    end
   end
 
   describe '#link_to_previous_page' do
