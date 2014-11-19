@@ -10,10 +10,17 @@ RSpec.configure do |config|
     DatabaseCleaner.clean_with :truncation if defined? Mongoid
     DatabaseCleaner.clean_with :truncation if defined? MongoMapper
   end
-  config.before :each do
-    DatabaseCleaner.start
-  end
-  config.after :each do
-    DatabaseCleaner.clean
+
+  if defined? NoBrainer
+    config.before :each do
+      NoBrainer.purge!
+    end
+  else
+    config.before :each do
+      DatabaseCleaner.start
+    end
+    config.after :each do
+      DatabaseCleaner.clean
+    end
   end
 end
