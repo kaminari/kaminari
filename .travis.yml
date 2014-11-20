@@ -1,5 +1,7 @@
 services: mongodb
 
+before_script: if [ -n "$NOBRAINER" ]; then ./.travis-nobrainer.sh; fi
+
 script: "bundle exec rake spec"
 
 rvm:
@@ -50,6 +52,13 @@ matrix:
       gemfile: gemfiles/active_record_31.gemfile
     - rvm: ruby-head
       gemfile: gemfiles/active_record_32.gemfile
+  include:
+    - gemfile: gemfiles/nobrainer.gemfile
+      env: NOBRAINER=true
+      rvm: 2.0.0
+    - gemfile: gemfiles/nobrainer.gemfile
+      env: NOBRAINER=true
+      rvm: 2.1
   allow_failures:
     - rvm: ruby-head
     - gemfile: gemfiles/active_record_edge.gemfile

@@ -21,6 +21,12 @@ module Kaminari
         ::Mongoid::Document.send :include, Kaminari::MongoidExtension::Document
       end
 
+      begin; require 'nobrainer'; rescue LoadError; end
+      if defined? ::NoBrainer
+        require 'kaminari/models/nobrainer_extension'
+        ::NoBrainer::Document.send :include, Kaminari::NoBrainerExtension::Document
+      end
+
       ActiveSupport.on_load(:mongo_mapper) do
         require 'kaminari/models/mongo_mapper_extension'
         ::MongoMapper::Document.send :include, Kaminari::MongoMapperExtension::Document

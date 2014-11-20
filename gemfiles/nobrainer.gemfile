@@ -1,0 +1,14 @@
+source 'https://rubygems.org'
+
+gem 'railties', '~> 4.0'
+gem 'nobrainer', '>= 0.19.0'
+gem 'rspec-rails', '~> 2.14.1'
+
+platforms :rbx do
+  gem 'rubysl', '~> 2.0'
+  gem 'racc'
+  gem 'minitest'
+  gem 'rubinius-developer_tools'
+end
+
+gemspec :path => '../'
