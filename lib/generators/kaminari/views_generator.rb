@@ -90,7 +90,7 @@ BANNER
       end
 
       def templates_for(template_engine) #:nodoc:
-        @templates.select {|t| !t.description?}.select {|t| !t.view? || (t.engine == template_engine)}
+        @templates.select {|t| t.engine == template_engine }
       end
     end
 
