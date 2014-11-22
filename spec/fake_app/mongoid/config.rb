@@ -11,7 +11,7 @@ end
 
 Mongoid.configure do |config|
   if Mongoid::VERSION > '3.0.0'
-    config.sessions = {:default => {:hosts => ['localhost:27017'], :database => 'kaminari_test'}}
+    config.sessions = {:default => {:hosts => ['0.0.0.0:27017'], :database => 'kaminari_test'}}
   else
     config.master = Mongo::Connection.new.db('kaminari_test')
   end
