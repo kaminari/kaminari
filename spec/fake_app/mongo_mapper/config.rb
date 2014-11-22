@@ -1,2 +1,2 @@
-MongoMapper.connection = Mongo::Connection.new 'localhost', 27017
+MongoMapper.connection = Mongo::Connection.new '0.0.0.0', 27017
 MongoMapper.database = 'kaminari_test'
