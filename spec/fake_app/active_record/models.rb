@@ -10,7 +10,7 @@ class User < ActiveRecord::Base
     User.joins(:books_read => :authors).where(:authors_books => {:id => self})
   end
 
-  scope :by_name, ->{ order(:name) }
+  scope :by_name, lambda { order(:name) }
   scope :by_read_count, lambda {
     cols = if connection.adapter_name == "PostgreSQL"
       column_names.map { |column| %{"users"."#{column}"} }.join(", ")
