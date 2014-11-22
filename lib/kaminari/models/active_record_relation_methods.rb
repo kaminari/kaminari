@@ -1,13 +1,5 @@
 module Kaminari
   module ActiveRecordRelationMethods
-    # a workaround for AR 3.0.x that returns 0 for #count when page > 1
-    # if +limit_value+ is specified, load all the records and count them
-    if ActiveRecord::VERSION::STRING < '3.1'
-      def count(column_name = nil, options = {}) #:nodoc:
-        limit_value && !options[:distinct] ? length : super(column_name, options)
-      end
-    end
-
     def entry_name
       model_name.human.downcase
     end
