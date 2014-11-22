@@ -21,7 +21,6 @@ namespace :spec do
     active_record_32
     active_record_31
     active_record_30
-    data_mapper_12
     mongoid_40
     mongoid_31
     mongoid_30
