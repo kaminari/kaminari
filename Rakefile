@@ -20,10 +20,6 @@ namespace :spec do
     active_record_40
     active_record_32
     mongoid_40
-    mongoid_31
-    mongoid_30
-    mongoid_24
-    mongo_mapper
     sinatra_14
   )
 
