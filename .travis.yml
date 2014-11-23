@@ -7,6 +7,7 @@ rvm:
   - 2.1
   - ruby-head
   - jruby
+  - jruby-head
   - rbx-2
 
 gemfile:
@@ -40,6 +41,6 @@ matrix:
       gemfile: gemfiles/active_record_32.gemfile
   allow_failures:
     - rvm: ruby-head
-    - rvm: jruby
+    - rvm: jruby-head
     - rvm: rbx-2
   fast_finish: true
