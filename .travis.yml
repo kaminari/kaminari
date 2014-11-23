@@ -15,9 +15,6 @@ gemfile:
   - gemfiles/active_record_41.gemfile
   - gemfiles/active_record_42.gemfile
   - gemfiles/active_record_edge.gemfile
-  - gemfiles/mongoid_24.gemfile
-  - gemfiles/mongoid_30.gemfile
-  - gemfiles/mongoid_31.gemfile
   - gemfiles/mongoid_40.gemfile
   - gemfiles/sinatra_13.gemfile
   - gemfiles/sinatra_14.gemfile
@@ -38,10 +35,6 @@ matrix:
       gemfile: gemfiles/active_record_42.gemfile
     - rvm: 1.8.7
       gemfile: gemfiles/active_record_edge.gemfile
-    - rvm: 1.8.7
-      gemfile: gemfiles/mongoid_30.gemfile
-    - rvm: 1.8.7
-      gemfile: gemfiles/mongoid_31.gemfile
     - rvm: 1.8.7
       gemfile: gemfiles/mongoid_40.gemfile
     - rvm: ruby-head
