@@ -15,7 +15,6 @@ gemfile:
   - gemfiles/active_record_41.gemfile
   - gemfiles/active_record_42.gemfile
   - gemfiles/active_record_edge.gemfile
-  - gemfiles/mongo_mapper.gemfile
   - gemfiles/mongoid_24.gemfile
   - gemfiles/mongoid_30.gemfile
   - gemfiles/mongoid_31.gemfile
