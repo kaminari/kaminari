@@ -40,5 +40,4 @@ matrix:
       gemfile: gemfiles/active_record_32.gemfile
   allow_failures:
     - rvm: ruby-head
-    - gemfile: gemfiles/active_record_edge.gemfile
   fast_finish: true
