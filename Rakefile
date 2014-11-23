@@ -24,7 +24,6 @@ namespace :spec do
     mongoid_30
     mongoid_24
     mongo_mapper
-    sinatra_13
     sinatra_14
   )
 

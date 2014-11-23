@@ -16,7 +16,6 @@ gemfile:
   - gemfiles/active_record_42.gemfile
   - gemfiles/active_record_edge.gemfile
   - gemfiles/mongoid_40.gemfile
-  - gemfiles/sinatra_13.gemfile
   - gemfiles/sinatra_14.gemfile
 
 sudo: false
