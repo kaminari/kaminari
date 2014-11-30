@@ -35,7 +35,7 @@ The pagination helper outputs the HTML5 <nav> tag by default. Plus, the helper s
 
 * Haml 3+
 
-* Mongoid 4+
+* Mongoid 2+
 
 == Install
 

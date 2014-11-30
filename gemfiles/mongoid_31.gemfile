@@ -1,0 +1,16 @@
+source 'https://rubygems.org'
+
+gem 'railties', '~> 3.2'
+gem 'mongoid', '~> 3.1.0'
+gem 'rspec-rails', '~> 2.14.1'
+gem 'origin'
+gem 'moped'
+
+platforms :rbx do
+  gem 'rubysl', '~> 2.0'
+  gem 'racc'
+  gem 'rubysl-test-unit'
+  gem 'rubinius-developer_tools'
+end
+
+gemspec :path => '../'

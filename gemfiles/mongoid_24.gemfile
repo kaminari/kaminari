@@ -1,0 +1,21 @@
+source 'https://rubygems.org'
+
+gem 'railties', '>= 3.2.3'
+gem 'mongoid', '~> 2.4.0'
+gem 'rspec-rails', '~> 2.14.1'
+
+# stick to versions that work under Ruby 1.8 for now
+gem 'capybara', '< 2.1'
+gem 'nokogiri', '< 1.6'
+gem 'rubyzip', '< 1'
+gem 'mime-types', '< 2'
+gem 'database_cleaner', '< 1.0.0'
+
+platforms :rbx do
+  gem 'rubysl', '~> 2.0'
+  gem 'racc'
+  gem 'minitest'
+  gem 'rubinius-developer_tools'
+end
+
+gemspec :path => '../'
