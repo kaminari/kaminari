@@ -179,6 +179,12 @@ Run the following generator command, then edit the generated file.
     <%= page_entries_info @users %>
   This renders a helpful message with numbers of displayed vs. total entries.
 
+* the +rel_next_prev_link_tags+ helper method
+
+    <%= rel_next_prev_link_tags @users %>
+  This renders the rel next and prev link tags for the head.
+
+
 === I18n and labels
 
 The default labels for 'first', 'last', 'previous', '...' and 'next' are stored in the I18n yaml inside the engine, and rendered through I18n API. You can switch the label value per I18n.locale for your internationalized application.
