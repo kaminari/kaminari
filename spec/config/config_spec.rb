@@ -88,4 +88,19 @@ describe Kaminari::Configuration do
       end
     end
   end
+
+  describe 'link_options' do
+    context 'by default' do
+      its(:link_options) { should == {} }
+    end
+    context 'configure via config block' do
+      before do
+        Kaminari.configure {|c| c.link_options = {:data => {:push => true}} }
+      end
+      its(:link_options) { should == {:data => {:push => true}} }
+      after do
+        Kaminari.configure {|c| c.link_options = {} }
+      end
+    end
+  end
 end

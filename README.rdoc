@@ -82,6 +82,7 @@ You can configure the following default values by overriding these values using 
   right             # 0 by default
   page_method_name  # :page by default
   param_name        # :page by default
+  link_options      # {} by default
 
 There's a handy generator that generates the default configuration file into config/initializers directory.
 Run the following generator command, then edit the generated file.
@@ -159,10 +160,15 @@ Run the following generator command, then edit the generated file.
     <%= paginate @users, :params => {:controller => 'foo', :action => 'bar'} %>
   This would modify each link's +url_option+. :+controller+ and :+action+ might be the keys in common.
 
+* Custom link options
+
+    <%= paginate @users, :link_options => {:data => {:push => true}} %>
+  This would add <tt>data-push="true"</tt> to all the links inside.
+
 * Ajax links (crazy simple, but works perfectly!)
 
     <%= paginate @users, :remote => true %>
-  This would add <tt>data-remote="true"</tt> to all the links inside.
+  This would add <tt>data-remote="true"</tt> to all the links inside. It's a shortcut for <tt>:link_options => {:remote => true}<tt>.
 
 * specifying an alternative views directory (default is <tt>kaminari/</tt>)
 

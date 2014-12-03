@@ -16,7 +16,14 @@ module Kaminari
     #   e.g.)  Paginator  ->  $GEM_HOME/kaminari-x.x.x/app/views/kaminari/_paginator.html.erb
     class Tag
       def initialize(template, options = {}) #:nodoc:
-        @template, @options = template, options.dup
+        @template = template
+        @options = options.reverse_merge(:link_options => Kaminari.config.link_options)
+        # we keep the remote-key in the options to remain backwards compatibility
+        if @options.has_key?(:remote)
+          @options[:link_options][:remote] = @options[:remote]
+        else
+          @options[:remote] = @options[:link_options][:remote]
+        end
         @param_name = @options.delete(:param_name) || Kaminari.config.param_name
         @theme = @options.delete(:theme)
         @views_prefix = @options.delete(:views_prefix)
