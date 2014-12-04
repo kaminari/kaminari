@@ -81,6 +81,7 @@ module Kaminari::Helpers
       # * <tt>:right</tt> - The "right outer window" size (0 by default).
       # * <tt>:params</tt> - url_for parameters for the links (:id, :locale, etc.)
       # * <tt>:param_name</tt> - parameter name for page number in the links (:page by default)
+      # * <tt>:html</tt> - custom link attributes, e.g data-push, class
       # * <tt>:remote</tt> - Ajax? (false by default)
       # * <tt>:ANY_OTHER_VALUES</tt> - Any other hash key & values would be directly passed into each tag as :locals value.
       def paginate(scope, options = {}, &block)
@@ -88,7 +89,7 @@ module Kaminari::Helpers
         current_params = Rack::Utils.parse_query(env['QUERY_STRING']).symbolize_keys rescue {}
         paginator = Kaminari::Helpers::Paginator.new(
           ActionViewTemplateProxy.new(:current_params => current_params, :current_path => current_path, :param_name => options[:param_name] || Kaminari.config.param_name),
-          options.reverse_merge(:current_page => scope.current_page, :total_pages => scope.total_pages, :per_page => scope.limit_value, :param_name => Kaminari.config.param_name, :remote => false)
+          options.reverse_merge(:current_page => scope.current_page, :total_pages => scope.total_pages, :per_page => scope.limit_value, :param_name => Kaminari.config.param_name, :html => {:remote => options[:remote]})
         )
         paginator.to_s
       end
