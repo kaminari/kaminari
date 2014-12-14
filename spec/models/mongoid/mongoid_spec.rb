@@ -207,5 +207,17 @@ if defined? Mongoid
         its(:total_pages) { should == 2 }
       end
     end
+
+    describe '#paginates_per' do
+      context 'when paginates_per is not defined in superclass' do
+        subject { Product.all.page 1 }
+        its(:limit_value) { should == 25 }
+      end
+
+      context 'when paginates_per is defined in subclass' do
+        subject { Device.all.page 1 }
+        its(:limit_value) { should == 100 }
+      end
+    end
   end
 end
