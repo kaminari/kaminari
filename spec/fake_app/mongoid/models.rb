@@ -12,6 +12,14 @@ class User::Address
   include ::Mongoid::Document
 end
 
+class Product
+  include ::Mongoid::Document
+end
+
+class Device < Product
+  paginates_per 100
+end
+
 class MongoMongoidExtensionDeveloper
   include ::Mongoid::Document
   field :salary, :type => Integer
