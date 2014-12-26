@@ -48,8 +48,16 @@ matrix:
       gemfile: gemfiles/active_record_edge.gemfile
     - rvm: 2.0.0
       gemfile: gemfiles/active_record_edge.gemfile
+    - rvm: 2.1
+      gemfile: gemfiles/active_record_edge.gemfile
     - rvm: ruby-head
       gemfile: gemfiles/active_record_32.gemfile
+    - rvm: jruby
+      gemfile: gemfiles/active_record_edge.gemfile
+    - rvm: jruby-head
+      gemfile: gemfiles/active_record_edge.gemfile
+    - rvm: rbx-2
+      gemfile: gemfiles/active_record_edge.gemfile
   allow_failures:
     - rvm: ruby-head
     - rvm: jruby
