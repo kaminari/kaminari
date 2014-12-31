@@ -1,7 +1,6 @@
 language: ruby
 
 rvm:
-  - 1.8.7
   - 1.9.3
   - 2.0.0
   - 2.1
@@ -32,20 +31,6 @@ cache: bundler
 
 matrix:
   exclude:
-    - rvm: 1.8.7
-      gemfile: gemfiles/active_record_40.gemfile
-    - rvm: 1.8.7
-      gemfile: gemfiles/active_record_41.gemfile
-    - rvm: 1.8.7
-      gemfile: gemfiles/active_record_42.gemfile
-    - rvm: 1.8.7
-      gemfile: gemfiles/active_record_edge.gemfile
-    - rvm: 1.8.7
-      gemfile: gemfiles/mongoid_30.gemfile
-    - rvm: 1.8.7
-      gemfile: gemfiles/mongoid_31.gemfile
-    - rvm: 1.8.7
-      gemfile: gemfiles/mongoid_40.gemfile
     - rvm: 1.9.3
       gemfile: gemfiles/active_record_edge.gemfile
     - rvm: 2.0.0
