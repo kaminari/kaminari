@@ -11,6 +11,10 @@ gem 'rubyzip', '< 1'
 gem 'mime-types', '< 2'
 gem 'database_cleaner', '< 1.0.0'
 
+if RUBY_VERSION <= "1.8.7"
+  gem 'i18n', '< 0.7.0'
+end
+
 platforms :rbx do
   gem 'rubysl', '~> 2.0'
   gem 'racc'

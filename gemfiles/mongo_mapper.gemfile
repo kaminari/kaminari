@@ -13,6 +13,7 @@ gem 'mime-types', '< 2'
 
 if RUBY_VERSION == '1.8.7'
   gem 'activesupport', '~> 3.2.18'
+  gem 'i18n', '< 0.7.0'
 end
 
 platforms :rbx do
