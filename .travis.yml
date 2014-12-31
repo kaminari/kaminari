@@ -50,6 +50,8 @@ matrix:
       gemfile: gemfiles/active_record_edge.gemfile
     - rvm: 2.1
       gemfile: gemfiles/active_record_edge.gemfile
+    - rvm: 2.2
+      gemfile: gemfiles/active_record_32.gemfile
     - rvm: ruby-head
       gemfile: gemfiles/active_record_32.gemfile
     - rvm: jruby
