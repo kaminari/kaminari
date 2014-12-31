@@ -6,14 +6,19 @@ gem 'mongo_mapper', '>= 0.11.0'
 gem 'rspec-rails', '~> 2.14.1'
 
 # stick to versions that work under Ruby 1.8 for now
-gem 'capybara', '< 2.1'
-gem 'nokogiri', '< 1.6'
-gem 'rubyzip', '< 1'
-gem 'mime-types', '< 2'
-
 if RUBY_VERSION == '1.8.7'
+  gem 'capybara', '< 2.1'
+  gem 'nokogiri', '< 1.6'
+  gem 'rubyzip', '< 1'
+  gem 'mime-types', '< 2'
+
   gem 'activesupport', '~> 3.2.18'
   gem 'i18n', '< 0.7.0'
+else
+  gem 'capybara'
+  gem 'nokogiri'
+  gem 'rubyzip'
+  gem 'mime-types'
 end
 
 platforms :rbx do
