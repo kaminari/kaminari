@@ -5,7 +5,7 @@
 # See: http://redmine.ruby-lang.org/issues/show/4300
 require 'mongoid/version'
 
-if RUBY_VERSION >= '1.9.2'
+if RUBY_VERSION >= '1.9.2' && RUBY_VERSION < '2.2.0'
   YAML::ENGINE.yamler = 'syck'
 end
 
