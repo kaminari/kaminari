@@ -51,6 +51,8 @@ matrix:
       gemfile: gemfiles/active_record_31.gemfile
     - rvm: 2.2
       gemfile: gemfiles/active_record_32.gemfile
+    - rvm: 2.2
+      gemfile: gemfiles/mongoid_24.gemfile
   allow_failures:
     - rvm: jruby
     - rvm: rbx-2
