@@ -56,6 +56,8 @@ matrix:
     - rvm: 2.2
       gemfile: gemfiles/mongoid_24.gemfile
   allow_failures:
+    - rvm: 1.8.7
+      gemfile: gemfiles/mongoid_24.gemfile
     - rvm: jruby
     - rvm: rbx-2
   fast_finish: true
