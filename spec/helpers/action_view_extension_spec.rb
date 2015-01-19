@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'Kaminari::ActionViewExtension', :if => defined?(Rails) do
+describe 'Kaminari::ActionViewExtension', :type => :helper, :if => defined?(Rails) do
   describe '#paginate' do
     before do
       50.times {|i| User.create! :name => "user#{i}"}
@@ -8,30 +8,30 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails) do
     end
 
     subject { helper.paginate @users, :params => {:controller => 'users', :action => 'index'} }
-    it { should be_a String }
+    it { is_expected.to be_a String }
 
     context 'escaping the pagination for javascript' do
       it 'should escape for javascript' do
-        lambda { helper.escape_javascript(helper.paginate @users, :params => {:controller => 'users', :action => 'index'}) }.should_not raise_error
+        expect { helper.escape_javascript(helper.paginate @users, :params => {:controller => 'users', :action => 'index'}) }.not_to raise_error
       end
     end
 
     context 'accepts :theme option' do
       before { helper.controller.append_view_path "spec/fake_app/views" }
       subject { helper.paginate @users, :theme => "bootstrap", :params => {:controller => 'users', :action => 'index'} }
-      it { should match(/bootstrap-paginator/) }
-      it { should match(/bootstrap-page-link/) }
+      it { is_expected.to match(/bootstrap-paginator/) }
+      it { is_expected.to match(/bootstrap-page-link/) }
     end
 
     context 'accepts :view_prefix option' do
       before { helper.controller.append_view_path "spec/fake_app/views" }
       subject { helper.paginate @users, :views_prefix => "alternative/", :params => {:controller => 'users', :action => 'index'} }
-      it { should eq("  <b>1</b>\n") }
+      it { is_expected.to eq("  <b>1</b>\n") }
     end
 
     context "num_pages: 3" do
       subject { helper.paginate @users, :num_pages => 3, :params => {:controller => 'users', :action => 'index'} }
-      it { should match(/<a href="\/users\?page=3">Last/) }
+      it { is_expected.to match(/<a href="\/users\?page=3">Last/) }
     end
   end
 
@@ -47,13 +47,13 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails) do
 
       context 'the default behaviour' do
         subject { helper.link_to_previous_page @users, 'Previous', :params => {:controller => 'users', :action => 'index'} }
-        it { should match(/page=2/) }
-        it { should match(/rel="prev"/) }
+        it { is_expected.to match(/page=2/) }
+        it { is_expected.to match(/rel="prev"/) }
       end
 
       context 'overriding rel=' do
         subject { helper.link_to_previous_page @users, 'Previous', :rel => 'external', :params => {:controller => 'users', :action => 'index'} }
-        it { should match(/rel="external"/) }
+        it { is_expected.to match(/rel="external"/) }
       end
 
       context 'with params' do
@@ -62,7 +62,7 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails) do
         end
 
         subject { helper.link_to_previous_page @users, 'Previous', :params => {:controller => 'users', :action => 'index'} }
-        it { should match(/status=active/) }
+        it { is_expected.to match(/status=active/) }
       end
     end
 
@@ -72,14 +72,14 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails) do
       end
 
       subject { helper.link_to_previous_page @users, 'Previous', :params => {:controller => 'users', :action => 'index'} }
-      it { should_not be }
+      it { is_expected.not_to be }
     end
 
     context 'out of range' do
       before { @users = User.page(5) }
 
       subject { helper.link_to_next_page @users, 'More', :params => {:controller => 'users', :action => 'index'} }
-      it { should_not be }
+      it { is_expected.not_to be }
     end
   end
 
@@ -95,13 +95,13 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails) do
 
       context 'the default behaviour' do
         subject { helper.link_to_next_page @users, 'More', :params => {:controller => 'users', :action => 'index'} }
-        it { should match(/page=2/) }
-        it { should match(/rel="next"/) }
+        it { is_expected.to match(/page=2/) }
+        it { is_expected.to match(/rel="next"/) }
       end
 
       context 'overriding rel=' do
         subject { helper.link_to_next_page @users, 'More', :rel => 'external', :params => {:controller => 'users', :action => 'index'} }
-        it { should match(/rel="external"/) }
+        it { is_expected.to match(/rel="external"/) }
       end
 
       context 'with params' do
@@ -110,7 +110,7 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails) do
         end
 
         subject { helper.link_to_next_page @users, 'More', :params => {:controller => 'users', :action => 'index'} }
-        it { should match(/status=active/) }
+        it { is_expected.to match(/status=active/) }
       end
     end
 
@@ -120,14 +120,14 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails) do
       end
 
       subject { helper.link_to_next_page @users, 'More', :params => {:controller => 'users', :action => 'index'} }
-      it { should_not be }
+      it { is_expected.not_to be }
     end
 
     context 'out of range' do
       before { @users = User.page(5) }
 
       subject { helper.link_to_next_page @users, 'More', :params => {:controller => 'users', :action => 'index'} }
-      it { should_not be }
+      it { is_expected.not_to be }
     end
   end
 
@@ -139,11 +139,11 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails) do
 
       context 'having no entries' do
         subject { helper.page_entries_info @users, :params => {:controller => 'users', :action => 'index'} }
-        it      { should == 'No users found' }
+        it      { is_expected.to eq('No users found') }
 
         context 'setting the entry name option to "member"' do
           subject { helper.page_entries_info @users, :entry_name => 'member', :params => {:controller => 'users', :action => 'index'} }
-          it      { should == 'No members found' }
+          it      { is_expected.to eq('No members found') }
         end
       end
 
@@ -154,11 +154,11 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails) do
         end
 
         subject { helper.page_entries_info @users, :params => {:controller => 'users', :action => 'index'} }
-        it      { should == 'Displaying <b>1</b> user' }
+        it      { is_expected.to eq('Displaying <b>1</b> user') }
 
         context 'setting the entry name option to "member"' do
           subject { helper.page_entries_info @users, :entry_name => 'member', :params => {:controller => 'users', :action => 'index'} }
-          it      { should == 'Displaying <b>1</b> member' }
+          it      { is_expected.to eq('Displaying <b>1</b> member') }
         end
       end
 
@@ -169,11 +169,11 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails) do
         end
 
         subject { helper.page_entries_info @users, :params => {:controller => 'users', :action => 'index'} }
-        it      { should == 'Displaying <b>all 10</b> users' }
+        it      { is_expected.to eq('Displaying <b>all 10</b> users') }
 
         context 'setting the entry name option to "member"' do
           subject { helper.page_entries_info @users, :entry_name => 'member', :params => {:controller => 'users', :action => 'index'} }
-          it      { should == 'Displaying <b>all 10</b> members' }
+          it      { is_expected.to eq('Displaying <b>all 10</b> members') }
         end
       end
 
@@ -188,11 +188,11 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails) do
           end
 
           subject { helper.page_entries_info @users, :params => {:controller => 'users', :action => 'index'} }
-          it      { should == 'Displaying users <b>1&nbsp;-&nbsp;25</b> of <b>50</b> in total' }
+          it      { is_expected.to eq('Displaying users <b>1&nbsp;-&nbsp;25</b> of <b>50</b> in total') }
 
           context 'setting the entry name option to "member"' do
             subject { helper.page_entries_info @users, :entry_name => 'member', :params => {:controller => 'users', :action => 'index'} }
-            it      { should == 'Displaying members <b>1&nbsp;-&nbsp;25</b> of <b>50</b> in total' }
+            it      { is_expected.to eq('Displaying members <b>1&nbsp;-&nbsp;25</b> of <b>50</b> in total') }
           end
         end
 
@@ -202,11 +202,11 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails) do
           end
 
           subject { helper.page_entries_info @users, :params => {:controller => 'users', :action => 'index'} }
-          it      { should == 'Displaying users <b>26&nbsp;-&nbsp;50</b> of <b>50</b> in total' }
+          it      { is_expected.to eq('Displaying users <b>26&nbsp;-&nbsp;50</b> of <b>50</b> in total') }
 
           context 'setting the entry name option to "member"' do
             subject { helper.page_entries_info @users, :entry_name => 'member', :params => {:controller => 'users', :action => 'index'} }
-            it      { should == 'Displaying members <b>26&nbsp;-&nbsp;50</b> of <b>50</b> in total' }
+            it      { is_expected.to eq('Displaying members <b>26&nbsp;-&nbsp;50</b> of <b>50</b> in total') }
           end
         end
       end
@@ -218,7 +218,7 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails) do
 
       context 'having no entries' do
         subject { helper.page_entries_info @addresses, :params => {:controller => 'addresses', :action => 'index'} }
-        it      { should == 'No addresses found' }
+        it      { is_expected.to eq('No addresses found') }
       end
 
       context 'having 1 entry' do
@@ -228,11 +228,11 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails) do
         end
 
         subject { helper.page_entries_info @addresses, :params => {:controller => 'addresses', :action => 'index'} }
-        it      { should == 'Displaying <b>1</b> address' }
+        it      { is_expected.to eq('Displaying <b>1</b> address') }
 
         context 'setting the entry name option to "place"' do
           subject { helper.page_entries_info @addresses, :entry_name => 'place', :params => {:controller => 'addresses', :action => 'index'} }
-          it      { should == 'Displaying <b>1</b> place' }
+          it      { is_expected.to eq('Displaying <b>1</b> place') }
         end
       end
 
@@ -243,11 +243,11 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails) do
         end
 
         subject { helper.page_entries_info @addresses, :params => {:controller => 'addresses', :action => 'index'} }
-        it      { should == 'Displaying <b>all 10</b> addresses' }
+        it      { is_expected.to eq('Displaying <b>all 10</b> addresses') }
 
         context 'setting the entry name option to "place"' do
           subject { helper.page_entries_info @addresses, :entry_name => 'place', :params => {:controller => 'addresses', :action => 'index'} }
-          it      { should == 'Displaying <b>all 10</b> places' }
+          it      { is_expected.to eq('Displaying <b>all 10</b> places') }
         end
       end
 
@@ -262,11 +262,11 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails) do
           end
 
           subject { helper.page_entries_info @addresses, :params => {:controller => 'addresses', :action => 'index'} }
-          it      { should == 'Displaying addresses <b>1&nbsp;-&nbsp;25</b> of <b>50</b> in total' }
+          it      { is_expected.to eq('Displaying addresses <b>1&nbsp;-&nbsp;25</b> of <b>50</b> in total') }
 
           context 'setting the entry name option to "place"' do
             subject { helper.page_entries_info @addresses, :entry_name => 'place', :params => {:controller => 'addresses', :action => 'index'} }
-            it      { should == 'Displaying places <b>1&nbsp;-&nbsp;25</b> of <b>50</b> in total' }
+            it      { is_expected.to eq('Displaying places <b>1&nbsp;-&nbsp;25</b> of <b>50</b> in total') }
           end
         end
 
@@ -276,11 +276,11 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails) do
           end
 
           subject { helper.page_entries_info @addresses, :params => {:controller => 'addresses', :action => 'index'} }
-          it      { should == 'Displaying addresses <b>26&nbsp;-&nbsp;50</b> of <b>50</b> in total' }
+          it      { is_expected.to eq('Displaying addresses <b>26&nbsp;-&nbsp;50</b> of <b>50</b> in total') }
 
           context 'setting the entry name option to "place"' do
             subject { helper.page_entries_info @addresses, :entry_name => 'place', :params => {:controller => 'addresses', :action => 'index'} }
-            it      { should == 'Displaying places <b>26&nbsp;-&nbsp;50</b> of <b>50</b> in total' }
+            it      { is_expected.to eq('Displaying places <b>26&nbsp;-&nbsp;50</b> of <b>50</b> in total') }
           end
         end
       end
@@ -292,7 +292,7 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails) do
       end
 
       subject { helper.page_entries_info @numbers }
-      it      { should == 'Displaying <b>all 3</b> entries' }
+      it      { is_expected.to eq('Displaying <b>all 3</b> entries') }
     end
   end
 
@@ -306,26 +306,26 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails) do
     context 'the first page' do
       let(:users) { User.page(1).per(10) }
 
-      it { should_not match(/rel="prev"/) }
-      it { should match(/rel="next"/) }
-      it { should match(/\?page=2/) }
+      it { is_expected.not_to match(/rel="prev"/) }
+      it { is_expected.to match(/rel="next"/) }
+      it { is_expected.to match(/\?page=2/) }
     end
 
     context 'the second page' do
       let(:users) { User.page(2).per(10) }
 
-      it { should match(/rel="prev"/) }
-      it { should_not match(/\?page=1/) }
-      it { should match(/rel="next"/) }
-      it { should match(/\?page=3/) }
+      it { is_expected.to match(/rel="prev"/) }
+      it { is_expected.not_to match(/\?page=1/) }
+      it { is_expected.to match(/rel="next"/) }
+      it { is_expected.to match(/\?page=3/) }
     end
 
     context 'the last page' do
       let(:users) { User.page(4).per(10) }
 
-      it { should match(/rel="prev"/) }
-      it { should match(/\?page=3"/) }
-      it { should_not match(/rel="next"/) }
+      it { is_expected.to match(/rel="prev"/) }
+      it { is_expected.to match(/\?page=3"/) }
+      it { is_expected.not_to match(/rel="next"/) }
     end
   end
 end

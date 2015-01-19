@@ -2,7 +2,7 @@ require 'spec_helper'
 
 if defined? ActiveRecord
 
-  describe Kaminari::ActiveRecordModelExtension do
+  describe Kaminari::ActiveRecordModelExtension, :type => :model do
     before do
       Kaminari.configure do |config|
         config.page_method_name = :per_page_kaminari
@@ -11,8 +11,8 @@ if defined? ActiveRecord
     end
 
     subject { Comment }
-    it { should respond_to(:per_page_kaminari) }
-    it { should_not respond_to(:page) }
+    it { is_expected.to respond_to(:per_page_kaminari) }
+    it { is_expected.not_to respond_to(:page) }
 
     after do
       Kaminari.configure do |config|
@@ -22,15 +22,26 @@ if defined? ActiveRecord
   end
 
   shared_examples_for 'the first page' do
-    it { should have(25).users }
-    its('first.name') { should == 'user001' }
+    it 'has 25 users' do
+      expect(subject.size).to eq(25)
+    end
+
+    describe '#first' do
+      subject { super().first }
+      describe '#name' do
+        subject { super().name }
+        it { is_expected.to eq('user001') }
+      end
+    end
   end
 
   shared_examples_for 'blank page' do
-    it { should have(0).users }
+    it 'has no users' do
+      expect(subject.size).to eq(0)
+    end
   end
 
-  describe Kaminari::ActiveRecordExtension do
+  describe Kaminari::ActiveRecordExtension, :type => :model do
     before do
       1.upto(100) {|i| User.create! :name => "user#{'%03d' % i}", :age => (i / 10)}
       1.upto(100) {|i| GemDefinedModel.create! :name => "user#{'%03d' % i}", :age => (i / 10)}
@@ -47,8 +58,17 @@ if defined? ActiveRecord
 
           context 'page 2' do
             subject { model_class.page 2 }
-            it { should have(25).users }
-            its('first.name') { should == 'user026' }
+            it 'has 25 users' do
+              expect(subject.size).to eq(25)
+            end
+
+            describe '#first' do
+              subject { super().first }
+              describe '#name' do
+                subject { super().name }
+                it { is_expected.to eq('user026') }
+              end
+            end
           end
 
           context 'page without an argument' do
@@ -68,56 +88,105 @@ if defined? ActiveRecord
 
           describe 'ensure #order_values is preserved' do
             subject { model_class.order('id').page 1 }
-            its('order_values.uniq') { should == ['id'] }
+
+            describe '#order_values' do
+              subject { super().order_values }
+              describe '#uniq' do
+                subject { super().uniq }
+                it { is_expected.to eq(['id']) }
+              end
+            end
           end
         end
 
         describe '#per' do
           context 'page 1 per 5' do
             subject { model_class.page(1).per(5) }
-            it { should have(5).users }
-            its('first.name') { should == 'user001' }
+            it 'has 5 users' do
+              expect(subject.size).to eq(5)
+            end
+
+            describe '#first' do
+              subject { super().first }
+              describe '#name' do
+                subject { super().name }
+                it { is_expected.to eq('user001') }
+              end
+            end
           end
 
           context "page 1 per nil (using default)" do
             subject { model_class.page(1).per(nil) }
-            it { should have(model_class.default_per_page).users }
+            it 'has model_class.default_per_page users' do
+              expect(subject.size).to eq(model_class.default_per_page)
+            end
           end
 
           context "page 1 per 0" do
             subject { model_class.page(1).per(0) }
-            it { should have(0).users }
+            it 'has no users' do
+              expect(subject.size).to eq(0)
+            end
           end
         end
 
         describe '#padding' do
           context 'page 1 per 5 padding 1' do
             subject { model_class.page(1).per(5).padding(1) }
-            it { should have(5).users }
-            its('first.name') { should == 'user002' }
+            it 'has 5 users' do
+              expect(subject.size).to eq(5)
+            end
+
+            describe '#first' do
+              subject { super().first }
+              describe '#name' do
+                subject { super().name }
+                it { is_expected.to eq('user002') }
+              end
+            end
           end
 
           context 'page 19 per 5 padding 5' do
             subject { model_class.page(19).per(5).padding(5) }
-            its(:current_page) { should == 19 }
-            its(:total_pages) { should == 19 }
+
+            describe '#current_page' do
+              subject { super().current_page }
+              it { is_expected.to eq(19) }
+            end
+
+            describe '#total_pages' do
+              subject { super().total_pages }
+              it { is_expected.to eq(19) }
+            end
           end
         end
 
         describe '#total_pages' do
           context 'per 25 (default)' do
             subject { model_class.page }
-            its(:total_pages) { should == 4 }
+
+            describe '#total_pages' do
+              subject { super().total_pages }
+              it { is_expected.to eq(4) }
+            end
           end
 
           context 'per 7' do
             subject { model_class.page(2).per(7) }
-            its(:total_pages) { should == 15 }
+
+            describe '#total_pages' do
+              subject { super().total_pages }
+              it { is_expected.to eq(15) }
+            end
           end
 
           context 'per 65536' do
             subject { model_class.page(50).per(65536) }
-            its(:total_pages) { should == 1 }
+
+            describe '#total_pages' do
+              subject { super().total_pages }
+              it { is_expected.to eq(1) }
+            end
           end
 
           context 'per 0' do
@@ -129,37 +198,61 @@ if defined? ActiveRecord
 
           context 'per -1 (using default)' do
             subject { model_class.page(5).per(-1) }
-            its(:total_pages) { should == 4 }
+
+            describe '#total_pages' do
+              subject { super().total_pages }
+              it { is_expected.to eq(4) }
+            end
           end
 
           context 'per "String value that can not be converted into Number" (using default)' do
             subject { model_class.page(5).per('aho') }
-            its(:total_pages) { should == 4 }
+
+            describe '#total_pages' do
+              subject { super().total_pages }
+              it { is_expected.to eq(4) }
+            end
           end
 
           context 'with max_pages < total pages count from database' do
             before { model_class.max_pages_per 3 }
             subject { model_class.page }
-            its(:total_pages) { should == 3 }
+
+            describe '#total_pages' do
+              subject { super().total_pages }
+              it { is_expected.to eq(3) }
+            end
             after { model_class.max_pages_per nil }
           end
 
           context 'with max_pages > total pages count from database' do
             before { model_class.max_pages_per 11 }
             subject { model_class.page }
-            its(:total_pages) { should == 4 }
+
+            describe '#total_pages' do
+              subject { super().total_pages }
+              it { is_expected.to eq(4) }
+            end
             after { model_class.max_pages_per nil }
           end
 
           context 'with max_pages is nil' do
             before { model_class.max_pages_per nil }
             subject { model_class.page }
-            its(:total_pages) { should == 4 }
+
+            describe '#total_pages' do
+              subject { super().total_pages }
+              it { is_expected.to eq(4) }
+            end
           end
 
           context "with per(nil) using default" do
             subject { model_class.page.per(nil) }
-            its(:total_pages) { should == 4 }
+
+            describe '#total_pages' do
+              subject { super().total_pages }
+              it { is_expected.to eq(4) }
+            end
           end
         end
 
@@ -173,112 +266,192 @@ if defined? ActiveRecord
 
           context 'page 1' do
             subject { model_class.page }
-            its(:current_page) { should == 1 }
+
+            describe '#current_page' do
+              subject { super().current_page }
+              it { is_expected.to eq(1) }
+            end
           end
 
           context 'page 2' do
             subject { model_class.page(2).per 3 }
-            its(:current_page) { should == 2 }
+
+            describe '#current_page' do
+              subject { super().current_page }
+              it { is_expected.to eq(2) }
+            end
           end
         end
 
         describe '#next_page' do
           context 'page 1' do
             subject { model_class.page }
-            its(:next_page) { should == 2 }
+
+            describe '#next_page' do
+              subject { super().next_page }
+              it { is_expected.to eq(2) }
+            end
           end
 
           context 'page 5' do
             subject { model_class.page(5) }
-            its(:next_page) { should be_nil }
+
+            describe '#next_page' do
+              subject { super().next_page }
+              it { is_expected.to be_nil }
+            end
           end
         end
 
         describe '#prev_page' do
           context 'page 1' do
             subject { model_class.page }
-            its(:prev_page) { should be_nil }
+
+            describe '#prev_page' do
+              subject { super().prev_page }
+              it { is_expected.to be_nil }
+            end
           end
 
           context 'page 3' do
             subject { model_class.page(3) }
-            its(:prev_page) { should == 2 }
+
+            describe '#prev_page' do
+              subject { super().prev_page }
+              it { is_expected.to eq(2) }
+            end
           end
 
           context 'page 5' do
             subject { model_class.page(5) }
-            its(:prev_page) { should be_nil }
+
+            describe '#prev_page' do
+              subject { super().prev_page }
+              it { is_expected.to be_nil }
+            end
           end
         end
 
         describe '#first_page?' do
           context 'on first page' do
             subject { model_class.page(1).per(10) }
-            its(:first_page?) { should == true }
+
+            describe '#first_page?' do
+              subject { super().first_page? }
+              it { is_expected.to eq(true) }
+            end
           end
 
           context 'not on first page' do
             subject { model_class.page(5).per(10) }
-            its(:first_page?) { should == false }
+
+            describe '#first_page?' do
+              subject { super().first_page? }
+              it { is_expected.to eq(false) }
+            end
           end
         end
 
         describe '#last_page?' do
           context 'on last page' do
             subject { model_class.page(10).per(10) }
-            its(:last_page?) { should == true }
+
+            describe '#last_page?' do
+              subject { super().last_page? }
+              it { is_expected.to eq(true) }
+            end
           end
 
           context 'within range' do
             subject { model_class.page(1).per(10) }
-            its(:last_page?) { should == false }
+
+            describe '#last_page?' do
+              subject { super().last_page? }
+              it { is_expected.to eq(false) }
+            end
           end
 
           context 'out of range' do
             subject { model_class.page(11).per(10) }
-            its(:last_page?) { should == false }
+
+            describe '#last_page?' do
+              subject { super().last_page? }
+              it { is_expected.to eq(false) }
+            end
           end
         end
 
         describe '#out_of_range?' do
           context 'on last page' do
             subject { model_class.page(10).per(10) }
-            its(:out_of_range?) { should == false }
+
+            describe '#out_of_range?' do
+              subject { super().out_of_range? }
+              it { is_expected.to eq(false) }
+            end
           end
 
           context 'within range' do
             subject { model_class.page(1).per(10) }
-            its(:out_of_range?) { should == false }
+
+            describe '#out_of_range?' do
+              subject { super().out_of_range? }
+              it { is_expected.to eq(false) }
+            end
           end
 
           context 'out of range' do
             subject { model_class.page(11).per(10) }
-            its(:out_of_range?) { should == true }
+
+            describe '#out_of_range?' do
+              subject { super().out_of_range? }
+              it { is_expected.to eq(true) }
+            end
           end
         end
 
         describe '#count' do
           context 'page 1' do
             subject { model_class.page }
-            its(:count) { should == 25 }
+
+            describe '#count' do
+              subject { super().count }
+              it { is_expected.to eq(25) }
+            end
           end
 
           context 'page 2' do
             subject { model_class.page 2 }
-            its(:count) { should == 25 }
+
+            describe '#count' do
+              subject { super().count }
+              it { is_expected.to eq(25) }
+            end
           end
         end
 
         context 'chained with .group' do
           subject { model_class.group('age').page(2).per 5 }
           # 0..10
-          its(:total_count) { should == 11 }
-          its(:total_pages) { should == 3 }
+
+          describe '#total_count' do
+            subject { super().total_count }
+            it { is_expected.to eq(11) }
+          end
+
+          describe '#total_pages' do
+            subject { super().total_pages }
+            it { is_expected.to eq(3) }
+          end
         end
 
         context 'activerecord descendants' do
           subject { ActiveRecord::Base.descendants }
-          its(:length) { should_not == 0 }
+
+          describe '#length' do
+            subject { super().length }
+            it { is_expected.not_to eq(0) }
+          end
         end
       end
     end

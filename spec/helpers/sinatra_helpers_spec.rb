@@ -34,7 +34,7 @@ EOT
   </div>
 EOT
 
-  describe 'Kaminari::Helpers::SinatraHelper' do
+  describe 'Kaminari::Helpers::SinatraHelper', :type => :helper do
     before do
       50.times {|i| User.create! :name => "user#{i}"}
     end
@@ -56,29 +56,29 @@ EOT
         before { get '/users' }
 
         it 'should have a navigation tag' do
-          last_document.search('nav.pagination').should_not be_empty
+          expect(last_document.search('nav.pagination')).not_to be_empty
         end
 
         it 'should have pagination links' do
-          last_document.search('.page a').should have_at_least(1).items
-          last_document.search('.next a').should have_at_least(1).items
-          last_document.search('.last a').should have_at_least(1).items
+          expect(last_document.search('.page a').size).to be >= 1
+          expect(last_document.search('.next a').size).to be >= 1
+          expect(last_document.search('.last a').size).to be >= 1
         end
 
         it 'should point to current page' do
-          last_document.search('.current').text.should match(/1/)
+          expect(last_document.search('.current').text).to match(/1/)
 
           get '/users?page=2'
-          last_document.search('.current').text.should match(/2/)
+          expect(last_document.search('.current').text).to match(/2/)
         end
 
         it 'should load 25 users' do
-          last_document.search('li.user_info').should have(25).items
+          expect(last_document.search('li.user_info').size).to eq(25)
         end
 
         it 'should preserve params' do
           get '/users?foo=bar'
-          last_document.search('.page a').should(be_all do |elm|
+          expect(last_document.search('.page a')).to(be_all do |elm|
             elm.attribute('href').value =~ /foo=bar/
           end)
         end
@@ -97,8 +97,8 @@ EOT
           end
 
           get '/users'
-          last_document.search('.page').should have(6).items
-          last_document.search('.gap').should have(1).item
+          expect(last_document.search('.page').size).to eq(6)
+          expect(last_document.search('.gap').size).to eq(1)
         end
 
         it 'should controll the inner window size' do
@@ -113,8 +113,8 @@ EOT
           end
 
           get '/users'
-          last_document.search('.page').should have(12).items
-          last_document.search('.gap').should have(1).item
+          expect(last_document.search('.page').size).to eq(12)
+          expect(last_document.search('.gap').size).to eq(1)
         end
 
         it 'should specify a page param name' do
@@ -129,7 +129,7 @@ EOT
           end
 
           get '/users'
-          last_document.search('.page a').should(be_all do |elm|
+          expect(last_document.search('.page a')).to(be_all do |elm|
             elm.attribute('href').value =~ /user_page=\d+/
           end)
         end
@@ -158,22 +158,22 @@ EOT
       context 'having more page' do
         it 'should have a more page link' do
           get '/users'
-          last_document.search('a#previous_page_link').should be_present
-          last_document.search('a#previous_page_link').text.should match(/Previous!/)
+          expect(last_document.search('a#previous_page_link')).to be_present
+          expect(last_document.search('a#previous_page_link').text).to match(/Previous!/)
         end
       end
 
       context 'the first page' do
         it 'should not have a more page link' do
           get '/users?page=1'
-          last_document.search('a#previous_page_link').should be_empty
+          expect(last_document.search('a#previous_page_link')).to be_empty
         end
 
         it 'should have a no more page notation using placeholder' do
           get '/users_placeholder?page=1'
-          last_document.search('a#previous_page_link').should be_empty
-          last_document.search('span#no_previous_page').should be_present
-          last_document.search('span#no_previous_page').text.should match(/No Previous Page/)
+          expect(last_document.search('a#previous_page_link')).to be_empty
+          expect(last_document.search('span#no_previous_page')).to be_present
+          expect(last_document.search('span#no_previous_page').text).to match(/No Previous Page/)
         end
       end
     end
@@ -200,22 +200,22 @@ EOT
       context 'having more page' do
         it 'should have a more page link' do
           get '/users'
-          last_document.search('a#next_page_link').should be_present
-          last_document.search('a#next_page_link').text.should match(/Next!/)
+          expect(last_document.search('a#next_page_link')).to be_present
+          expect(last_document.search('a#next_page_link').text).to match(/Next!/)
         end
       end
 
       context 'the last page' do
         it 'should not have a more page link' do
           get '/users?page=2'
-          last_document.search('a#next_page_link').should be_empty
+          expect(last_document.search('a#next_page_link')).to be_empty
         end
 
         it 'should have a no more page notation using placeholder' do
           get '/users_placeholder?page=2'
-          last_document.search('a#next_page_link').should be_empty
-          last_document.search('span#no_next_page').should be_present
-          last_document.search('span#no_next_page').text.should match(/No Next Page/)
+          expect(last_document.search('a#next_page_link')).to be_empty
+          expect(last_document.search('span#no_next_page')).to be_present
+          expect(last_document.search('span#no_next_page').text).to match(/No Next Page/)
         end
       end
     end
