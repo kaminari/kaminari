@@ -2,10 +2,10 @@ source 'https://rubygems.org'
 
 gem 'railties', '~> 3.2.3'
 gem 'activerecord', '~> 3.2.3', :require => 'active_record'
-gem 'rspec-rails', '~> 2.14.1'
+gem 'rspec-rails', '~> 3.1.0'
 
 # Stick To Versions That Work Under Ruby 1.8 For Now
-gem 'capybara', '< 2.1'
+gem 'capybara'
 gem 'nokogiri', '< 1.6'
 gem 'rubyzip', '< 1'
 gem 'mime-types', '< 2'
