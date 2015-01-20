@@ -1,3 +1,26 @@
+== 0.16.2
+
+* Fixed a bug where cloned Relations remember previous relations'
+@total_count value #565 [inkstak]
+
+* Fixed a bug where `paginate_array()` with total_count option returns whole
+array for every page #516 [abhichvn]
+
+* Fixed a bug where :num_pages option was backwards-incompatible #605
+[klebershimabuku]
+
+* Fixed a bug where themed views generator attempts to overwrite README.md
+#623 [swrobel]
+
+* Fixed a bug that ruby raises a NameError when theme was not found #622
+[maxprokopiev]
+
+* Fixed a bug that paginates_per does not work with subclasses on mongoid #634
+[kouyaf77]
+
+* Show an error message if a proper template was not found for the generator
+theme #600 [meltedice]
+
 == 0.16.1
 
 * Fix a bug where :theme option for #paginate method doesn't work properly
