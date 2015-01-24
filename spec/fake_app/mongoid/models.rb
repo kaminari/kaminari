@@ -20,6 +20,10 @@ class Device < Product
   paginates_per 100
 end
 
+class Android < Device
+  paginates_per 200
+end
+
 class MongoMongoidExtensionDeveloper
   include ::Mongoid::Document
   field :salary, :type => Integer

@@ -218,6 +218,11 @@ if defined? Mongoid
         subject { Device.all.page 1 }
         its(:limit_value) { should == 100 }
       end
+
+      context 'when paginates_per is defined in subclass of subclass' do
+        subject { Android.all.page 1 }
+        its(:limit_value) { should == 200 }
+      end
     end
   end
 end
