@@ -20,7 +20,7 @@ module Kaminari
             kls.send(:include, Kaminari::MongoidExtension::Document.dup)
           end
           alias_method_chain :inherited, :kaminari
-        end
+        end unless respond_to?(:inherited_with_kaminari)
       end
     end
   end
