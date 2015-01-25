@@ -1,7 +1,7 @@
 require 'spec_helper'
 include Kaminari::Helpers
 
-describe 'Kaminari::Helpers::Paginator' do
+describe 'Kaminari::Helpers::Paginator', :type => :helper do
   let :template do
     stub(r = Object.new) do
       render.with_any_args
@@ -18,7 +18,7 @@ describe 'Kaminari::Helpers::Paginator' do
       @paginator = Paginator.new(template, :params => {})
     end
     subject { @paginator.link_to("link", "#") }
-    it { should == "<a href='#'>link</a>" }
+    it { is_expected.to eq("<a href='#'>link</a>") }
   end
 
   describe '#params' do
@@ -26,7 +26,7 @@ describe 'Kaminari::Helpers::Paginator' do
       @paginator = Paginator.new(template, :params => {:controller => 'foo', :action => 'bar'})
     end
     subject { @paginator.page_tag(template).instance_variable_get('@params') }
-    it { should == {:controller => 'foo', :action => 'bar'} }
+    it { is_expected.to eq({:controller => 'foo', :action => 'bar'}) }
 
     context "when params has form params" do
       before do
@@ -40,7 +40,7 @@ describe 'Kaminari::Helpers::Paginator' do
         end
       end
 
-      it { should == {:controller => 'foo', :action => 'bar'} }
+      it { is_expected.to eq({:controller => 'foo', :action => 'bar'}) }
     end
   end
 
@@ -49,7 +49,7 @@ describe 'Kaminari::Helpers::Paginator' do
       @paginator = Paginator.new(template, :param_name => :pagina)
     end
     subject { @paginator.page_tag(template).instance_variable_get('@param_name') }
-    it { should == :pagina }
+    it { is_expected.to eq(:pagina) }
   end
 
   #TODO test somehow...

@@ -10,7 +10,7 @@ feature 'Users' do
 
     within 'nav.pagination' do
       within 'span.page.current' do
-        page.should have_content '1'
+        expect(page).to have_content '1'
       end
       within 'span.next' do
         click_link 'Next ›'
@@ -19,7 +19,7 @@ feature 'Users' do
 
     within 'nav.pagination' do
       within 'span.page.current' do
-        page.should have_content '2'
+        expect(page).to have_content '2'
       end
       within 'span.last' do
         click_link 'Last »'
@@ -28,7 +28,7 @@ feature 'Users' do
 
     within 'nav.pagination' do
       within 'span.page.current' do
-        page.should have_content '4'
+        expect(page).to have_content '4'
       end
       within 'span.prev' do
         click_link '‹ Prev'
@@ -37,7 +37,7 @@ feature 'Users' do
 
     within 'nav.pagination' do
       within 'span.page.current' do
-        page.should have_content '3'
+        expect(page).to have_content '3'
       end
       within 'span.first' do
         click_link '« First'
@@ -46,7 +46,7 @@ feature 'Users' do
 
     within 'nav.pagination' do
       within 'span.page.current' do
-        page.should have_content '1'
+        expect(page).to have_content '1'
       end
     end
   end

@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 if defined? Mongoid
-  describe Kaminari::MongoidCriteriaMethods do
+  describe Kaminari::MongoidCriteriaMethods, :type => :model do
     describe "#total_count" do
       before do
         2.times {|i| User.create!(:salary => i) }
@@ -9,13 +9,13 @@ if defined? Mongoid
 
       context "when the scope is cloned" do
         it "should reset total_coount momoization" do
-          User.page.tap(&:total_count).where(:salary => 1).total_count.should == 1
+          expect(User.page.tap(&:total_count).where(:salary => 1).total_count).to eq(1)
         end
       end
     end
   end
 
-  describe Kaminari::MongoidExtension do
+  describe Kaminari::MongoidExtension, :type => :model do
     before(:each) do
       41.times do
         User.create!({:salary => 1})
@@ -26,52 +26,148 @@ if defined? Mongoid
       context 'less than total' do
         context 'page 1' do
           subject { User.max_scan(20).page 1 }
-          it { should be_a Mongoid::Criteria }
-          its(:current_page) { should == 1   }
-          its(:prev_page)    { should be_nil }
-          its(:next_page)    { should be_nil }
-          its(:limit_value)  { should == 25  }
-          its(:total_pages)  { should == 1   }
-          its(:total_count)  { should == 20  }
-          it { should skip(0) }
+          it { is_expected.to be_a Mongoid::Criteria }
+
+          describe '#current_page' do
+            subject { super().current_page }
+            it { is_expected.to eq(1)   }
+          end
+
+          describe '#prev_page' do
+            subject { super().prev_page }
+            it { is_expected.to be_nil }
+          end
+
+          describe '#next_page' do
+            subject { super().next_page }
+            it { is_expected.to be_nil }
+          end
+
+          describe '#limit_value' do
+            subject { super().limit_value }
+            it { is_expected.to eq(25)  }
+          end
+
+          describe '#total_pages' do
+            subject { super().total_pages }
+            it { is_expected.to eq(1)   }
+          end
+
+          describe '#total_count' do
+            subject { super().total_count }
+            it { is_expected.to eq(20)  }
+          end
+          it { is_expected.to skip(0) }
         end
 
         context 'page 2' do
           subject { User.max_scan(30).page 2 }
-          it { should be_a Mongoid::Criteria }
-          its(:current_page) { should == 2   }
-          its(:prev_page)    { should == 1   }
-          its(:next_page)    { should be_nil }
-          its(:limit_value)  { should == 25  }
-          its(:total_pages)  { should == 2   }
-          its(:total_count)  { should == 30  }
-          it { should skip 25 }
+          it { is_expected.to be_a Mongoid::Criteria }
+
+          describe '#current_page' do
+            subject { super().current_page }
+            it { is_expected.to eq(2)   }
+          end
+
+          describe '#prev_page' do
+            subject { super().prev_page }
+            it { is_expected.to eq(1)   }
+          end
+
+          describe '#next_page' do
+            subject { super().next_page }
+            it { is_expected.to be_nil }
+          end
+
+          describe '#limit_value' do
+            subject { super().limit_value }
+            it { is_expected.to eq(25)  }
+          end
+
+          describe '#total_pages' do
+            subject { super().total_pages }
+            it { is_expected.to eq(2)   }
+          end
+
+          describe '#total_count' do
+            subject { super().total_count }
+            it { is_expected.to eq(30)  }
+          end
+          it { is_expected.to skip 25 }
         end
       end
 
       context 'more than total' do
         context 'page 1' do
           subject { User.max_scan(60).page 1 }
-          it { should be_a Mongoid::Criteria }
-          its(:current_page) { should == 1   }
-          its(:prev_page)    { should be_nil }
-          its(:next_page)    { should == 2   }
-          its(:limit_value)  { should == 25  }
-          its(:total_pages)  { should == 2   }
-          its(:total_count)  { should == 41  }
-          it { should skip(0) }
+          it { is_expected.to be_a Mongoid::Criteria }
+
+          describe '#current_page' do
+            subject { super().current_page }
+            it { is_expected.to eq(1)   }
+          end
+
+          describe '#prev_page' do
+            subject { super().prev_page }
+            it { is_expected.to be_nil }
+          end
+
+          describe '#next_page' do
+            subject { super().next_page }
+            it { is_expected.to eq(2)   }
+          end
+
+          describe '#limit_value' do
+            subject { super().limit_value }
+            it { is_expected.to eq(25)  }
+          end
+
+          describe '#total_pages' do
+            subject { super().total_pages }
+            it { is_expected.to eq(2)   }
+          end
+
+          describe '#total_count' do
+            subject { super().total_count }
+            it { is_expected.to eq(41)  }
+          end
+          it { is_expected.to skip(0) }
         end
 
         context 'page 2' do
           subject { User.max_scan(60).page 2 }
-          it { should be_a Mongoid::Criteria }
-          its(:current_page) { should == 2   }
-          its(:prev_page) { should == 1      }
-          its(:next_page) { should be_nil    }
-          its(:limit_value) { should == 25   }
-          its(:total_pages) { should == 2    }
-          its(:total_count)  { should == 41  }
-          it { should skip 25 }
+          it { is_expected.to be_a Mongoid::Criteria }
+
+          describe '#current_page' do
+            subject { super().current_page }
+            it { is_expected.to eq(2)   }
+          end
+
+          describe '#prev_page' do
+            subject { super().prev_page }
+            it { is_expected.to eq(1)      }
+          end
+
+          describe '#next_page' do
+            subject { super().next_page }
+            it { is_expected.to be_nil    }
+          end
+
+          describe '#limit_value' do
+            subject { super().limit_value }
+            it { is_expected.to eq(25)   }
+          end
+
+          describe '#total_pages' do
+            subject { super().total_pages }
+            it { is_expected.to eq(2)    }
+          end
+
+          describe '#total_count' do
+            subject { super().total_count }
+            it { is_expected.to eq(41)  }
+          end
+          it { is_expected.to skip 25 }
         end
       end
     end
@@ -80,49 +176,135 @@ if defined? Mongoid
 
       context 'page 1' do
         subject { User.page 1 }
-        it { should be_a Mongoid::Criteria }
-        its(:current_page) { should == 1 }
-        its(:prev_page) { should be_nil }
-        its(:next_page) { should == 2 }
-        its(:limit_value) { should == 25 }
-        its(:total_pages) { should == 2 }
-        it { should skip(0) }
+        it { is_expected.to be_a Mongoid::Criteria }
+
+        describe '#current_page' do
+          subject { super().current_page }
+          it { is_expected.to eq(1) }
+        end
+
+        describe '#prev_page' do
+          subject { super().prev_page }
+          it { is_expected.to be_nil }
+        end
+
+        describe '#next_page' do
+          subject { super().next_page }
+          it { is_expected.to eq(2) }
+        end
+
+        describe '#limit_value' do
+          subject { super().limit_value }
+          it { is_expected.to eq(25) }
+        end
+
+        describe '#total_pages' do
+          subject { super().total_pages }
+          it { is_expected.to eq(2) }
+        end
+        it { is_expected.to skip(0) }
       end
 
       context 'page 2' do
         subject { User.page 2 }
-        it { should be_a Mongoid::Criteria }
-        its(:current_page) { should == 2 }
-        its(:prev_page) { should == 1 }
-        its(:next_page) { should be_nil }
-        its(:limit_value) { should == 25 }
-        its(:total_pages) { should == 2 }
-        it { should skip 25 }
+        it { is_expected.to be_a Mongoid::Criteria }
+
+        describe '#current_page' do
+          subject { super().current_page }
+          it { is_expected.to eq(2) }
+        end
+
+        describe '#prev_page' do
+          subject { super().prev_page }
+          it { is_expected.to eq(1) }
+        end
+
+        describe '#next_page' do
+          subject { super().next_page }
+          it { is_expected.to be_nil }
+        end
+
+        describe '#limit_value' do
+          subject { super().limit_value }
+          it { is_expected.to eq(25) }
+        end
+
+        describe '#total_pages' do
+          subject { super().total_pages }
+          it { is_expected.to eq(2) }
+        end
+        it { is_expected.to skip 25 }
       end
 
       context 'page "foobar"' do
         subject { User.page 'foobar' }
-        it { should be_a Mongoid::Criteria }
-        its(:current_page) { should == 1 }
-        its(:prev_page) { should be_nil }
-        its(:next_page) { should == 2 }
-        its(:limit_value) { should == 25 }
-        its(:total_pages) { should == 2 }
-        it { should skip 0 }
+        it { is_expected.to be_a Mongoid::Criteria }
+
+        describe '#current_page' do
+          subject { super().current_page }
+          it { is_expected.to eq(1) }
+        end
+
+        describe '#prev_page' do
+          subject { super().prev_page }
+          it { is_expected.to be_nil }
+        end
+
+        describe '#next_page' do
+          subject { super().next_page }
+          it { is_expected.to eq(2) }
+        end
+
+        describe '#limit_value' do
+          subject { super().limit_value }
+          it { is_expected.to eq(25) }
+        end
+
+        describe '#total_pages' do
+          subject { super().total_pages }
+          it { is_expected.to eq(2) }
+        end
+        it { is_expected.to skip 0 }
       end
 
       shared_examples 'complete valid pagination' do
         if Mongoid::VERSION > '3.0.0'
-          its(:selector) { should == {'salary' => 1} }
+          describe '#selector' do
+            subject { super().selector }
+            it { is_expected.to eq({'salary' => 1}) }
+          end
         else
-          its(:selector) { should == {:salary => 1} }
+          describe '#selector' do
+            subject { super().selector }
+            it { is_expected.to eq({:salary => 1}) }
+          end
         end
-        its(:current_page) { should == 2 }
-        its(:prev_page) { should == 1 }
-        its(:next_page) { should be_nil }
-        its(:limit_value) { should == 25 }
-        its(:total_pages) { should == 2 }
-        it { should skip 25 }
+
+        describe '#current_page' do
+          subject { super().current_page }
+          it { is_expected.to eq(2) }
+        end
+
+        describe '#prev_page' do
+          subject { super().prev_page }
+          it { is_expected.to eq(1) }
+        end
+
+        describe '#next_page' do
+          subject { super().next_page }
+          it { is_expected.to be_nil }
+        end
+
+        describe '#limit_value' do
+          subject { super().limit_value }
+          it { is_expected.to eq(25) }
+        end
+
+        describe '#total_pages' do
+          subject { super().total_pages }
+          it { is_expected.to eq(2) }
+        end
+        it { is_expected.to skip 25 }
       end
 
       context 'with criteria before' do
@@ -143,25 +325,53 @@ if defined? Mongoid
 
         context "default_db" do
           subject { User.with(:database => "default_db").order_by(:artist.asc).page(1) }
-          its(:total_count) { should == 15 }
+
+          describe '#total_count' do
+            subject { super().total_count }
+            it { is_expected.to eq(15) }
+          end
         end
 
         context "other_db" do
           subject { User.with(:database => "other_db").order_by(:artist.asc).page(1) }
-          its(:total_count) { should == 10 }
+
+          describe '#total_count' do
+            subject { super().total_count }
+            it { is_expected.to eq(10) }
+          end
         end
       end
     end
 
     describe '#per' do
       subject { User.page(2).per(10) }
-      it { should be_a Mongoid::Criteria }
-      its(:current_page) { should == 2 }
-      its(:prev_page) { should == 1 }
-      its(:next_page) { should == 3 }
-      its(:limit_value) { should == 10 }
-      its(:total_pages) { should == 5 }
-      it { should skip 10 }
+      it { is_expected.to be_a Mongoid::Criteria }
+
+      describe '#current_page' do
+        subject { super().current_page }
+        it { is_expected.to eq(2) }
+      end
+
+      describe '#prev_page' do
+        subject { super().prev_page }
+        it { is_expected.to eq(1) }
+      end
+
+      describe '#next_page' do
+        subject { super().next_page }
+        it { is_expected.to eq(3) }
+      end
+
+      describe '#limit_value' do
+        subject { super().limit_value }
+        it { is_expected.to eq(10) }
+      end
+
+      describe '#total_pages' do
+        subject { super().total_pages }
+        it { is_expected.to eq(5) }
+      end
+      it { is_expected.to skip 10 }
     end
 
     describe '#page in embedded documents' do
@@ -176,47 +386,127 @@ if defined? Mongoid
 
       context 'page 1' do
         subject { @mongo_developer.frameworks.page(1).per(1) }
-        it { should be_a Mongoid::Criteria }
-        its(:total_count) { should == 5 }
-        its(:limit_value) { should == 1 }
-        its(:current_page) { should == 1 }
-        its(:prev_page) { should be_nil }
-        its(:next_page) { should == 2 }
-        its(:total_pages) { should == 5 }
+        it { is_expected.to be_a Mongoid::Criteria }
+
+        describe '#total_count' do
+          subject { super().total_count }
+          it { is_expected.to eq(5) }
+        end
+
+        describe '#limit_value' do
+          subject { super().limit_value }
+          it { is_expected.to eq(1) }
+        end
+
+        describe '#current_page' do
+          subject { super().current_page }
+          it { is_expected.to eq(1) }
+        end
+
+        describe '#prev_page' do
+          subject { super().prev_page }
+          it { is_expected.to be_nil }
+        end
+
+        describe '#next_page' do
+          subject { super().next_page }
+          it { is_expected.to eq(2) }
+        end
+
+        describe '#total_pages' do
+          subject { super().total_pages }
+          it { is_expected.to eq(5) }
+        end
       end
 
       context 'with criteria after' do
         subject { @mongo_developer.frameworks.page(1).per(2).where(:language => "ruby") }
-        it { should be_a Mongoid::Criteria }
-        its(:total_count) { should == 3 }
-        its(:limit_value) { should == 2 }
-        its(:current_page) { should == 1 }
-        its(:prev_page) { should be_nil }
-        its(:next_page) { should == 2 }
-        its(:total_pages) { should == 2 }
+        it { is_expected.to be_a Mongoid::Criteria }
+
+        describe '#total_count' do
+          subject { super().total_count }
+          it { is_expected.to eq(3) }
+        end
+
+        describe '#limit_value' do
+          subject { super().limit_value }
+          it { is_expected.to eq(2) }
+        end
+
+        describe '#current_page' do
+          subject { super().current_page }
+          it { is_expected.to eq(1) }
+        end
+
+        describe '#prev_page' do
+          subject { super().prev_page }
+          it { is_expected.to be_nil }
+        end
+
+        describe '#next_page' do
+          subject { super().next_page }
+          it { is_expected.to eq(2) }
+        end
+
+        describe '#total_pages' do
+          subject { super().total_pages }
+          it { is_expected.to eq(2) }
+        end
       end
 
       context 'with criteria before' do
         subject { @mongo_developer.frameworks.where(:language => "ruby").page(1).per(2) }
-        it { should be_a Mongoid::Criteria }
-        its(:total_count) { should == 3 }
-        its(:limit_value) { should == 2 }
-        its(:current_page) { should == 1 }
-        its(:prev_page) { should be_nil }
-        its(:next_page) { should == 2 }
-        its(:total_pages) { should == 2 }
+        it { is_expected.to be_a Mongoid::Criteria }
+
+        describe '#total_count' do
+          subject { super().total_count }
+          it { is_expected.to eq(3) }
+        end
+
+        describe '#limit_value' do
+          subject { super().limit_value }
+          it { is_expected.to eq(2) }
+        end
+
+        describe '#current_page' do
+          subject { super().current_page }
+          it { is_expected.to eq(1) }
+        end
+
+        describe '#prev_page' do
+          subject { super().prev_page }
+          it { is_expected.to be_nil }
+        end
+
+        describe '#next_page' do
+          subject { super().next_page }
+          it { is_expected.to eq(2) }
+        end
+
+        describe '#total_pages' do
+          subject { super().total_pages }
+          it { is_expected.to eq(2) }
+        end
       end
     end
 
     describe '#paginates_per' do
       context 'when paginates_per is not defined in superclass' do
         subject { Product.all.page 1 }
-        its(:limit_value) { should == 25 }
+
+        describe '#limit_value' do
+          subject { super().limit_value }
+          it { is_expected.to eq(25) }
+        end
       end
 
       context 'when paginates_per is defined in subclass' do
         subject { Device.all.page 1 }
-        its(:limit_value) { should == 100 }
+
+        describe '#limit_value' do
+          subject { super().limit_value }
+          it { is_expected.to eq(100) }
+        end
       end
 
       context 'when paginates_per is defined in subclass of subclass' do

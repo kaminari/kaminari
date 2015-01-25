@@ -4,13 +4,20 @@ describe Kaminari::Configuration do
   subject { Kaminari.config }
   describe 'default_per_page' do
     context 'by default' do
-      its(:default_per_page) { should == 25 }
+      describe '#default_per_page' do
+        subject { super().default_per_page }
+        it { is_expected.to eq(25) }
+      end
     end
     context 'configured via config block' do
       before do
         Kaminari.configure {|c| c.default_per_page = 17}
       end
-      its(:default_per_page) { should == 17 }
+
+      describe '#default_per_page' do
+        subject { super().default_per_page }
+        it { is_expected.to eq(17) }
+      end
       after do
         Kaminari.configure {|c| c.default_per_page = 25}
       end
@@ -19,13 +26,20 @@ describe Kaminari::Configuration do
 
   describe 'max_per_page' do
     context 'by default' do
-      its(:max_per_page) { should == nil }
+      describe '#max_per_page' do
+        subject { super().max_per_page }
+        it { is_expected.to eq(nil) }
+      end
     end
     context 'configure via config block' do
       before do
         Kaminari.configure {|c| c.max_per_page = 100}
       end
-      its(:max_per_page) { should == 100 }
+
+      describe '#max_per_page' do
+        subject { super().max_per_page }
+        it { is_expected.to eq(100) }
+      end
       after do
         Kaminari.configure {|c| c.max_per_page = nil}
       end
@@ -34,31 +48,46 @@ describe Kaminari::Configuration do
 
   describe 'window' do
     context 'by default' do
-      its(:window) { should == 4 }
+      describe '#window' do
+        subject { super().window }
+        it { is_expected.to eq(4) }
+      end
     end
   end
 
   describe 'outer_window' do
     context 'by default' do
-      its(:outer_window) { should == 0 }
+      describe '#outer_window' do
+        subject { super().outer_window }
+        it { is_expected.to eq(0) }
+      end
     end
   end
 
   describe 'left' do
     context 'by default' do
-      its(:left) { should == 0 }
+      describe '#left' do
+        subject { super().left }
+        it { is_expected.to eq(0) }
+      end
     end
   end
 
   describe 'right' do
     context 'by default' do
-      its(:right) { should == 0 }
+      describe '#right' do
+        subject { super().right }
+        it { is_expected.to eq(0) }
+      end
     end
   end
 
   describe 'param_name' do
     context 'by default' do
-      its(:param_name) { should == :page }
+      describe '#param_name' do
+        subject { super().param_name }
+        it { is_expected.to eq(:page) }
+      end
     end
 
     context 'configured via config block' do
@@ -66,7 +95,10 @@ describe Kaminari::Configuration do
         Kaminari.configure {|c| c.param_name = lambda { :test } }
       end
 
-      its(:param_name) { should == :test }
+      describe '#param_name' do
+        subject { super().param_name }
+        it { is_expected.to eq(:test) }
+      end
 
       after do
         Kaminari.configure {|c| c.param_name = :page }
@@ -76,13 +108,20 @@ describe Kaminari::Configuration do
 
   describe 'max_pages' do
     context 'by default' do
-      its(:max_pages) { should == nil }
+      describe '#max_pages' do
+        subject { super().max_pages }
+        it { is_expected.to eq(nil) }
+      end
     end
     context 'configure via config block' do
       before do
         Kaminari.configure {|c| c.max_pages = 5}
       end
-      its(:max_pages) { should == 5 }
+
+      describe '#max_pages' do
+        subject { super().max_pages }
+        it { is_expected.to eq(5) }
+      end
       after do
         Kaminari.configure {|c| c.max_pages = nil}
       end

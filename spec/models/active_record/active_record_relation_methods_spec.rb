@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 if defined? ActiveRecord
-  describe Kaminari::ActiveRecordRelationMethods do
+  describe Kaminari::ActiveRecordRelationMethods, :type => :model do
     describe '#total_count' do
       before do
         @author = User.create! :name => 'author'
@@ -16,13 +16,13 @@ if defined? ActiveRecord
 
       context "when the scope is cloned" do
         it "should reset total_coount momoization" do
-          User.page.tap(&:total_count).where(:name => 'author').total_count.should == 1
+          expect(User.page.tap(&:total_count).where(:name => 'author').total_count).to eq(1)
         end
       end
 
       context "when the scope includes an order which references a generated column" do
         it "should successfully count the results" do
-          @author.readers.by_read_count.page(1).total_count.should == @readers.size
+          expect(@author.readers.by_read_count.page(1).total_count).to eq(@readers.size)
         end
       end
 
@@ -30,29 +30,29 @@ if defined? ActiveRecord
         it "should keep includes and successfully count the results" do
           # Only @author and @author2 have books titled with the title00x partern
           if ActiveRecord::VERSION::STRING >= "4.1.0"
-            User.includes(:books_authored).references(:books).where("books.title LIKE 'title00%'").page(1).total_count.should == 2
+            expect(User.includes(:books_authored).references(:books).where("books.title LIKE 'title00%'").page(1).total_count).to eq(2)
           else
-            User.includes(:books_authored).where("books.title LIKE 'title00%'").page(1).total_count.should == 2
+            expect(User.includes(:books_authored).where("books.title LIKE 'title00%'").page(1).total_count).to eq(2)
           end
         end
       end
 
       context 'when the Relation has custom select clause' do
         specify do
-          lambda { User.select('*, 1 as one').page(1).total_count }.should_not raise_exception
+          expect { User.select('*, 1 as one').page(1).total_count }.not_to raise_exception
         end
       end
 
       context "when total_count receives options" do
         it "should return a distinct total count for rails < 4.1" do
           if ActiveRecord::VERSION::STRING < "4.1.0"
-            User.page(1).total_count(:name, :distinct => true).should == 4
+            expect(User.page(1).total_count(:name, :distinct => true)).to eq(4)
           end
         end
 
         it "should ignore the options for rails 4.1+" do
           if ActiveRecord::VERSION::STRING >= "4.1.0"
-            User.page(1).total_count(:name, :distinct => true).should == 7
+            expect(User.page(1).total_count(:name, :distinct => true)).to eq(7)
           end
         end
       end
@@ -60,16 +60,16 @@ if defined? ActiveRecord
       if ActiveRecord::VERSION::STRING < '4.1.0'
         context 'when count receives options' do
           it 'should return a distinct set by column for rails < 4.1' do
-            User.page(1).count(:name, :distinct => true).should == 4
+            expect(User.page(1).count(:name, :distinct => true)).to eq(4)
           end
         end
       end
 
       context "when the scope returns an ActiveSupport::OrderedHash" do
         it "should not throw exception by passing options to count" do
-          lambda {
+          expect {
             @author.readers.by_read_count.page(1).total_count(:name, :distinct => true)
-          }.should_not raise_exception
+          }.not_to raise_exception
         end
       end
     end

@@ -1,20 +1,23 @@
 require 'spec_helper'
 
-describe "configuration methods" do
+describe "configuration methods", :type => :model do
   let(:model){ User }
 
   describe "#default_per_page" do
     if defined? ActiveRecord
       describe 'AR::Base' do
         subject { ActiveRecord::Base }
-        it { should_not respond_to :paginates_per }
+        it { is_expected.not_to respond_to :paginates_per }
       end
     end
 
     subject { model.page(1) }
 
     context "by default" do
-      its(:limit_value){ should == 25 }
+      describe '#limit_value' do
+        subject { super().limit_value }
+        it { is_expected.to eq(25) }
+      end
     end
 
     context "when configuring both on global and model-level" do
@@ -23,7 +26,10 @@ describe "configuration methods" do
         model.paginates_per 100
       end
 
-      its(:limit_value){ should == 100 }
+      describe '#limit_value' do
+        subject { super().limit_value }
+        it { is_expected.to eq(100) }
+      end
     end
 
     context "when configuring multiple times" do
@@ -32,7 +38,10 @@ describe "configuration methods" do
         Kaminari.configure {|c| c.default_per_page = 20 }
       end
 
-      its(:limit_value){ should == 20 }
+      describe '#limit_value' do
+        subject { super().limit_value }
+        it { is_expected.to eq(20) }
+      end
     end
 
     after do
@@ -45,14 +54,17 @@ describe "configuration methods" do
     if defined? ActiveRecord
       describe 'AR::Base' do
         subject { ActiveRecord::Base }
-        it { should_not respond_to :max_pages_per }
+        it { is_expected.not_to respond_to :max_pages_per }
       end
     end
 
     subject { model.page(1).per(1000) }
 
     context "by default" do
-      its(:limit_value){ should == 1000 }
+      describe '#limit_value' do
+        subject { super().limit_value }
+        it { is_expected.to eq(1000) }
+      end
     end
 
     context "when configuring both on global and model-level" do
@@ -61,7 +73,10 @@ describe "configuration methods" do
         model.max_paginates_per 100
       end
 
-      its(:limit_value){ should == 100 }
+      describe '#limit_value' do
+        subject { super().limit_value }
+        it { is_expected.to eq(100) }
+      end
     end
 
     context "when configuring multiple times" do
@@ -70,7 +85,10 @@ describe "configuration methods" do
         Kaminari.configure {|c| c.max_per_page = 20 }
       end
 
-      its(:limit_value){ should == 20 }
+      describe '#limit_value' do
+        subject { super().limit_value }
+        it { is_expected.to eq(20) }
+      end
     end
 
     after do
@@ -83,7 +101,7 @@ describe "configuration methods" do
     if defined? ActiveRecord
       describe 'AR::Base' do
         subject { ActiveRecord::Base }
-        it { should_not respond_to :max_paginates_per }
+        it { is_expected.not_to respond_to :max_paginates_per }
       end
     end
 
@@ -96,7 +114,10 @@ describe "configuration methods" do
     subject { model.page(1).per(5) }
 
     context "by default" do
-      its(:total_pages){ should == 20 }
+      describe '#total_pages' do
+        subject { super().total_pages }
+        it { is_expected.to eq(20) }
+      end
     end
 
     context "when configuring both on global and model-level" do
@@ -105,7 +126,10 @@ describe "configuration methods" do
         model.max_pages_per 15
       end
 
-      its(:total_pages){ should == 15 }
+      describe '#total_pages' do
+        subject { super().total_pages }
+        it { is_expected.to eq(15) }
+      end
     end
 
     context "when configuring multiple times" do
@@ -114,7 +138,10 @@ describe "configuration methods" do
         Kaminari.configure {|c| c.max_pages = 15 }
       end
 
-      its(:total_pages){ should == 15 }
+      describe '#total_pages' do
+        subject { super().total_pages }
+        it { is_expected.to eq(15) }
+      end
     end
 
     after do
