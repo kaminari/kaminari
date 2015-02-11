@@ -13,14 +13,13 @@ module Kaminari
           include Kaminari::MongoidCriteriaMethods
           include Kaminari::PageScopeMethods
         end
+      end
 
-        class << self
-          def inherited_with_kaminari(kls)
-            inherited_without_kaminari(kls)
-            kls.send(:include, Kaminari::MongoidExtension::Document.dup)
-          end
-          alias_method_chain :inherited, :kaminari
-        end unless respond_to?(:inherited_with_kaminari)
+      module ClassMethods
+        def inherited(kls)
+          super
+          kls.send(:include, Kaminari::MongoidExtension::Document.dup)
+        end
       end
     end
   end
