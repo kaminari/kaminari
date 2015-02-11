@@ -37,7 +37,7 @@ module Kaminari
         page_params = Rack::Utils.parse_nested_query("#{@param_name}=#{page}")
         page_params = @params.with_indifferent_access.deep_merge(page_params)
 
-        if page <= 1
+        if page <= 1 && !@options[:use_page_one_param]
           # This converts a hash:
           #   from: {other: "params", page: 1}
           #     to: {other: "params", page: nil}
