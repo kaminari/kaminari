@@ -1,3 +1,10 @@
+== 0.16.3
+
+* Fixed a "stack level too deep" bug in mongoid #642 [bartes]
+
+* Fixed a bug that Kaminari possibly crashes when combined with other gems
+that define `inherited` method on model classes, such as aasm. #651 [zeitnot]
+
 == 0.16.2
 
 * Fixed a bug where cloned Relations remember previous relations'
