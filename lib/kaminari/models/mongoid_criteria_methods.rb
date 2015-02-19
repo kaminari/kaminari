@@ -6,7 +6,11 @@ module Kaminari
     end
 
     def entry_name
-      model_name.human.downcase
+      if size == 1
+        model_name.human(count: size)
+      else
+        model_name.human(count: size, default: model_name.human.pluralize)
+      end
     end
 
     def limit_value #:nodoc:
