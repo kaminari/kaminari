@@ -29,7 +29,8 @@ module Kaminari
     end
 
     def entry_name
-      "entry"
+      #TODO implement i18n here
+      (@_total_count == 1) ? "entry" : "entry".pluralize
     end
 
     # items at the specified "page"
