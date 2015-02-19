@@ -194,6 +194,11 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails) do
             subject { helper.page_entries_info @users, :entry_name => 'member', :params => {:controller => 'users', :action => 'index'} }
             it      { should == 'Displaying members <b>1&nbsp;-&nbsp;25</b> of <b>50</b> in total' }
           end
+
+          context 'setting the entries name option to "Benutzer" (irregular pluralization)' do
+            subject { helper.page_entries_info @users, :entries_name => 'Benutzer', :params => {:controller => 'users', :action => 'index'} }
+            it      { should == 'Displaying Benutzer <b>1&nbsp;-&nbsp;25</b> of <b>50</b> in total' }
+          end
         end
 
         describe 'the next page' do
@@ -207,6 +212,11 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails) do
           context 'setting the entry name option to "member"' do
             subject { helper.page_entries_info @users, :entry_name => 'member', :params => {:controller => 'users', :action => 'index'} }
             it      { should == 'Displaying members <b>26&nbsp;-&nbsp;50</b> of <b>50</b> in total' }
+          end
+
+          context 'setting the entries name option to "Benutzer" (irregular pluralization)' do
+            subject { helper.page_entries_info @users, :entries_name => 'Benutzer', :params => {:controller => 'users', :action => 'index'} }
+            it      { should == 'Displaying Benutzer <b>26&nbsp;-&nbsp;50</b> of <b>50</b> in total' }
           end
         end
       end
@@ -249,6 +259,11 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails) do
           subject { helper.page_entries_info @addresses, :entry_name => 'place', :params => {:controller => 'addresses', :action => 'index'} }
           it      { should == 'Displaying <b>all 10</b> places' }
         end
+
+        context 'setting the entries name option to "Orte" (irregular pluralization)' do
+          subject { helper.page_entries_info @addresses, :entries_name => 'Orte', :params => {:controller => 'addresses', :action => 'index'} }
+          it      { should == 'Displaying <b>all 10</b> Orte' }
+        end
       end
 
       context 'having more than one page of entries' do
@@ -268,6 +283,11 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails) do
             subject { helper.page_entries_info @addresses, :entry_name => 'place', :params => {:controller => 'addresses', :action => 'index'} }
             it      { should == 'Displaying places <b>1&nbsp;-&nbsp;25</b> of <b>50</b> in total' }
           end
+
+          context 'setting the entries name option to "Orte" (irregular pluralization)' do
+            subject { helper.page_entries_info @addresses, :entries_name => 'Orte', :params => {:controller => 'addresses', :action => 'index'} }
+            it      { should == 'Displaying Orte <b>1&nbsp;-&nbsp;25</b> of <b>50</b> in total' }
+          end
         end
 
         describe 'the next page' do
@@ -281,6 +301,11 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails) do
           context 'setting the entry name option to "place"' do
             subject { helper.page_entries_info @addresses, :entry_name => 'place', :params => {:controller => 'addresses', :action => 'index'} }
             it      { should == 'Displaying places <b>26&nbsp;-&nbsp;50</b> of <b>50</b> in total' }
+          end
+
+          context 'setting the entries name option to "Orte" (irregular pluralization)' do
+            subject { helper.page_entries_info @addresses, :entries_name => 'Orte', :params => {:controller => 'addresses', :action => 'index'} }
+            it      { should == 'Displaying Orte <b>26&nbsp;-&nbsp;50</b> of <b>50</b> in total' }
           end
         end
       end
