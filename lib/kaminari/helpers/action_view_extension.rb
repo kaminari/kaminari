@@ -82,14 +82,31 @@ module Kaminari
     #
     # By default, the message will use the humanized class name of objects
     # in collection: for instance, "project types" for ProjectType models.
-    # The namespace will be cutted out and only the last name will be used.
+    # The namespace will be cut out and only the last name will be used.
     # Override this with the <tt>:entry_name</tt> parameter:
     #
     #   <%= page_entries_info @posts, :entry_name => 'item' %>
     #   #-> Displaying items 6 - 10 of 26 in total
+    # Override the pluralized version with the <tt>:entries_name</tt> parameter:
+    #
+    #   <%= page_entries_info @posts, :entries_name => 'Einträge' %>
+    #   #-> Displaying Einträge 6 - 10 of 26 in total
+    # By default, all entry names are down-cased. If you want to keep the given case,
+    # so set the option <tt>:default_case</tt> to true:
+    #   <%= page_entries_info @posts, :entry_name => 'Item', :default_case => true %>
+    #   #-> Displaying Item 6 - 10 of 26 in total
     def page_entries_info(collection, options = {})
-      entry_name = options[:entry_name] || collection.entry_name
-      entry_name = entry_name.pluralize unless collection.total_count == 1
+      entry_name = options[:entry_name]
+      unless collection.total_count == 1
+        entry_name = options[:entries_name]
+        entry_name ||= options[:entry_name].pluralize if options[:entry_name]
+      end
+
+      entry_name ||= collection.entry_name
+
+      unless options[:default_case]
+        entry_name.downcase!
+      end
 
       if collection.total_pages < 2
         t('helpers.page_entries_info.one_page.display_entries', :entry_name => entry_name, :count => collection.total_count)

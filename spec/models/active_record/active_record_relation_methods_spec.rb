@@ -2,6 +2,23 @@ require 'spec_helper'
 
 if defined? ActiveRecord
   describe Kaminari::ActiveRecordRelationMethods do
+    describe '#entry_name' do
+
+      context "when only one item is in the collection" do
+        it "should have a singular entry name" do
+          User.create! :name => 'author'
+          User.page.entry_name.should == 'User'
+        end
+      end
+
+      context "when multiple items are in the collection" do
+        it "should have a plural entry name" do
+          User.create! :name => 'author1'
+          User.create! :name => 'author2'
+          User.page.entry_name.should == 'Users'
+        end
+      end
+    end
     describe '#total_count' do
       before do
         @author = User.create! :name => 'author'
@@ -15,7 +32,7 @@ if defined? ActiveRecord
       end
 
       context "when the scope is cloned" do
-        it "should reset total_coount momoization" do
+        it "should reset total_count momoization" do
           User.page.tap(&:total_count).where(:name => 'author').total_count.should == 1
         end
       end
