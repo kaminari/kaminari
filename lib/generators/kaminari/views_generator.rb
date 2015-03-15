@@ -29,7 +29,7 @@ BANNER
             say %Q[template_engine: #{template_engine} is not available for theme: #{file_name}]
           end
         else
-          say %Q[no such theme: #{file_name}\n  avaliable themes: #{self.class.themes.map(&:name).join ", "}]
+          say %Q[no such theme: #{file_name}\n  available themes: #{self.class.themes.map(&:name).join ", "}]
         end
       end
 
