@@ -229,6 +229,13 @@ Kaminari includes a handy template generator.
 
     % rails g kaminari:views default -e haml
 
+* multiple templates
+
+  In case you need different templates for your paginator (for example public and admin), you can pass <tt>--views-prefix directory</tt> like this:
+    % rails g kaminari:views default --views-prefix admin
+
+  that will generate partials in <tt>app/views/admin/kaminari/</tt> directory.
+
 * themes
 
   The generator has the ability to fetch several sample template themes from

@@ -5,6 +5,7 @@ module Kaminari
       source_root File.expand_path('../../../../app/views/kaminari', __FILE__)
 
       class_option :template_engine, :type => :string, :aliases => '-e', :desc => 'Template engine for the views. Available options are "erb", "haml", and "slim".'
+      class_option :views_prefix, :type => :string, :desc => 'Prefix for path to put views in.'
 
       def self.banner #:nodoc:
         <<-BANNER.chomp
@@ -47,15 +48,23 @@ BANNER
       def download_templates(theme)
         theme.templates_for(template_engine).each do |template|
           say "      downloading #{template.name} from kaminari_themes..."
-          create_file template.name, GitHubApiHelper.get_content_for("#{theme.name}/#{template.name}")
+          create_file view_path_for(template.name), GitHubApiHelper.get_content_for("#{theme.name}/#{template.name}")
         end
       end
 
       def copy_default_views
         filename_pattern = File.join self.class.source_root, "*.html.#{template_engine}"
         Dir.glob(filename_pattern).map {|f| File.basename f}.each do |f|
-          copy_file f, "app/views/kaminari/#{f}"
+          copy_file f, view_path_for(f)
         end
+      end
+
+      def view_path_for(file)
+        ['app', 'views', views_prefix, 'kaminari', File.basename(file)].compact.join('/')
+      end
+
+      def views_prefix
+        options[:views_prefix].try(:to_s)
       end
 
       def template_engine
