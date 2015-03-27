@@ -66,6 +66,22 @@ describe 'Kaminari::Helpers' do
           end
         end
       end
+
+      context "with param_name = 'foo.page' option" do
+        before do
+          helper.params.merge!(:'foo.page' => 2)
+        end
+
+        context "for first page" do
+          subject { Tag.new(helper, :param_name => "foo.page").page_url_for(1) }
+          it { should_not match(/foo\.page=\d+/) }
+        end
+
+        context "for other page" do
+          subject { Tag.new(helper, :param_name => "foo.page").page_url_for(2) }
+          it { should match(/foo\.page=\d+/) }
+        end
+      end
     end
   end
 
