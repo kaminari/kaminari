@@ -87,9 +87,21 @@ module Kaminari
     #
     #   <%= page_entries_info @posts, :entry_name => 'item' %>
     #   #-> Displaying items 6 - 10 of 26 in total
+    #
+    # It is possible to customize locale for inflection,
+    # Override this with the <tt>:entry_locale</tt> parameter,
+    # the default value is <tt>I18n.locale</tt>:
+    #
+    #   <%= page_entries_info @posts, :entry_locale => :'zh-TW' %>
+    #   #-> Displaying 文章 6 - 10 of 26 in total
     def page_entries_info(collection, options = {})
       entry_name = options[:entry_name] || collection.entry_name
-      entry_name = entry_name.pluralize unless collection.total_count == 1
+      entry_locale = options[:entry_locale] || I18n.locale
+      if ActiveSupport::VERSION::STRING >= '4.0.0'
+        entry_name = entry_name.pluralize(collection.total_count, entry_locale)
+      else
+        entry_name = entry_name.pluralize unless collection.total_count == 1
+      end
 
       if collection.total_pages < 2
         t('helpers.page_entries_info.one_page.display_entries', :entry_name => entry_name, :count => collection.total_count)
