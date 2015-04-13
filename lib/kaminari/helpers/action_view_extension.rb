@@ -94,7 +94,7 @@ module Kaminari
         entry_name = entry_name.pluralize unless collection.total_count == 1
       else
         # Use human pluralizer (see: http://stackoverflow.com/a/6179686/1784062)
-        entry_name = collection.model.human(:count => collection.total_count).downcase
+        entry_name = collection.model.model_name.human(:count => collection.total_count).downcase
       end
 
       if collection.total_pages < 2
