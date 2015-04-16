@@ -1,6 +1,14 @@
 require 'kaminari/models/active_record_relation_methods'
 
 module Kaminari
+  module ActiveRecordModelConfigExtension
+    extend ActiveSupport::Concern
+
+    included do
+      self.send(:include, Kaminari::ConfigurationMethods)
+    end
+  end
+
   module ActiveRecordModelExtension
     extend ActiveSupport::Concern
 

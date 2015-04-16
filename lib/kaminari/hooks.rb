@@ -1,5 +1,12 @@
 module Kaminari
   class Hooks
+    def self.before_init
+      ActiveSupport.on_load(:active_record) do
+        require 'kaminari/models/active_record_config_extension'
+        ::ActiveRecord::Base.send :include, Kaminari::ActiveRecordConfigExtension
+      end
+    end
+
     def self.init
       ActiveSupport.on_load(:active_record) do
         require 'kaminari/models/active_record_extension'

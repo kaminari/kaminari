@@ -1,12 +1,12 @@
 module Kaminari
   class Railtie < ::Rails::Railtie #:nodoc:
     initializer 'kaminari' do |_app|
-      if Rails.env.test?
-        ActiveSupport.on_load(:active_record) do
-          ::ActiveRecord::Base.send :include, Kaminari::ConfigurationMethods
-        end
-      end
+      # load static non-evaluated extensions methods before they are called
+      # (devised to load the Rails testing environment correctly)
+      Kaminari::Hooks.before_init
 
+      # evaluate dynamic extensions after Rails initialization 
+      # to enable custom configuration for gem defined models
       config.after_initialize do
         Kaminari::Hooks.init
       end
