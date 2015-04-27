@@ -128,13 +128,29 @@ module Kaminari
       output.html_safe
     end
 
-    # A helper that calculates the path to the next page
+    # A helper that calculates the path to the next page.
+    #
+    # ==== Examples
+    # Basic usage:
+    #
+    #   <%= path_to_next_page @items %>
+    #   #-> /items?page=2
+    #
+    # It will return `nil` if there is no next page.
     def path_to_next_page(scope, options = {})
       return nil unless scope.next_page.present?
       Kaminari::Helpers::NextPage.new(self, options.reverse_merge(:current_page => scope.current_page)).url
     end
 
-    # A helper that calculates the path to the previous page
+    # A helper that calculates the path to the previous page.
+    #
+    # ==== Examples
+    # Basic usage:
+    #
+    #   <%= path_to_prev_page @items %>
+    #   #-> /items
+    #
+    # It will return `nil` if there is no previous page.
     def path_to_prev_page(scope, options = {})
       return nil unless scope.prev_page.present?
       Kaminari::Helpers::PrevPage.new(self, options.reverse_merge(:current_page => scope.current_page)).url

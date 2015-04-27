@@ -188,6 +188,15 @@ Run the following generator command, then edit the generated file.
     <%= rel_next_prev_link_tags @users %>
   This renders the rel next and prev link tags for the head.
 
+* the +path_to_next_page+ helper method
+
+    <%= path_to_next_page @users %>
+  This returns the server relative path to the next page.
+
+* the +path_to_prev_page+ helper method
+
+    <%= path_to_prev_page @users %>
+  This returns the server relative path to the previous page.
 
 === I18n and labels
 
