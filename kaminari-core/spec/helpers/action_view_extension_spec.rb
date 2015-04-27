@@ -368,4 +368,45 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(::Rails::Railtie) && d
       it { should_not match(/rel="next"/) }
     end
   end
+
+  describe '#path_to_next_page' do
+    before do
+      2.times {|i| User.create! :name => "user#{i}"}
+    end
+
+    subject { helper.path_to_next_page users, :params => {:controller => 'users', :action => 'index'} }
+
+    context 'the first page' do
+      let(:users) { User.page(1).per(1) }
+      it { should eql '/users?page=2' }
+    end
+
+    context 'the last page' do
+      let(:users) { User.page(2).per(1) }
+      it { should be nil }
+    end
+  end
+
+  describe '#path_to_prev_page' do
+    before do
+      3.times {|i| User.create! :name => "user#{i}"}
+    end
+
+    subject { helper.path_to_prev_page users, :params => {:controller => 'users', :action => 'index'} }
+
+    context 'the first page' do
+      let(:users) { User.page(1).per(1) }
+      it { should be nil }
+    end
+
+    context 'the second page' do
+      let(:users) { User.page(2).per(1) }
+      it { should eql '/users' }
+    end
+
+    context 'the last page' do
+      let(:users) { User.page(3).per(1) }
+      it { should eql '/users?page=2' }
+    end
+  end
 end
