@@ -39,9 +39,9 @@ module Kaminari
     #     <span>At the Beginning</span>
     #   <% end %>
     def link_to_previous_page(scope, name, options = {}, &block)
-      prev_page = Kaminari::Helpers::PrevPage.new self, options.reverse_merge(:current_page => scope.current_page)
+      prev_page = path_to_prev_page(scope, options)
 
-      link_to_if scope.prev_page.present?, name, prev_page.url, options.except(:params, :param_name).reverse_merge(:rel => 'prev') do
+      link_to_if prev_page, name, prev_page, options.except(:params, :param_name).reverse_merge(:rel => 'prev') do
         block.call if block
       end
     end
@@ -64,9 +64,9 @@ module Kaminari
     #     <span>No More Pages</span>
     #   <% end %>
     def link_to_next_page(scope, name, options = {}, &block)
-      next_page = Kaminari::Helpers::NextPage.new self, options.reverse_merge(:current_page => scope.current_page)
+      next_page = path_to_next_page(scope, options)
 
-      link_to_if scope.next_page.present?, name, next_page.url, options.except(:params, :param_name).reverse_merge(:rel => 'next') do
+      link_to_if next_page, name, next_page, options.except(:params, :param_name).reverse_merge(:rel => 'next') do
         block.call if block
       end
     end
@@ -119,13 +119,25 @@ module Kaminari
     #   #-> <link rel="next" href="/items/page/3" /><link rel="prev" href="/items/page/1" />
     #
     def rel_next_prev_link_tags(scope, options = {})
-      next_page = Kaminari::Helpers::NextPage.new self, options.reverse_merge(:current_page => scope.current_page)
-      prev_page = Kaminari::Helpers::PrevPage.new self, options.reverse_merge(:current_page => scope.current_page)
+      next_page = path_to_next_page(scope, options)
+      prev_page = path_to_prev_page(scope, options)
 
       output = ""
-      output << tag(:link, :rel => "next", :href => next_page.url) if scope.next_page.present?
-      output << tag(:link, :rel => "prev", :href => prev_page.url) if scope.prev_page.present?
+      output << tag(:link, :rel => "next", :href => next_page) if next_page
+      output << tag(:link, :rel => "prev", :href => prev_page) if prev_page
       output.html_safe
+    end
+
+    # A helper that calculates the path to the next page
+    def path_to_next_page(scope, options = {})
+      return nil unless scope.next_page.present?
+      Kaminari::Helpers::NextPage.new(self, options.reverse_merge(:current_page => scope.current_page)).url
+    end
+
+    # A helper that calculates the path to the previous page
+    def path_to_prev_page(scope, options = {})
+      return nil unless scope.prev_page.present?
+      Kaminari::Helpers::PrevPage.new(self, options.reverse_merge(:current_page => scope.current_page)).url
     end
   end
 end
