@@ -17,7 +17,7 @@ module Kaminari
     def paginate(scope, options = {}, &block)
       options[:total_pages] ||= options[:num_pages] || scope.total_pages
 
-      paginator = Kaminari::Helpers::Paginator.new(self, options.reverse_merge(:current_page => scope.current_page, :per_page => scope.limit_value, :remote => false))
+      paginator = Kaminari::Helpers::Paginator.new(self, options.reverse_merge(:current_page => scope.current_page, :per_page => scope.limit_value, :html => {:remote => options[:remote]}))
       paginator.to_s
     end
 

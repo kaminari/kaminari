@@ -166,7 +166,12 @@ Run the following generator command, then edit the generated file.
 * Ajax links (crazy simple, but works perfectly!)
 
     <%= paginate @users, :remote => true %>
-  This would add <tt>data-remote="true"</tt> to all the links inside.
+  This would add <tt>data-remote="true"</tt> to all the links inside. It's a shortcut for <tt>:html => {:remote => true}<tt>.
+
+* Custom link html attributes
+
+    <%= paginate @users, :html => {:data => {:push => true}} %>
+  This would add <tt>data-push="true"</tt> to all the links inside.
 
 * specifying an alternative views directory (default is <tt>kaminari/</tt>)
 
