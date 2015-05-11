@@ -72,6 +72,15 @@ if defined? ActiveRecord
           }.should_not raise_exception
         end
       end
+
+      context "when total_count is set" do
+        it "should be set total_count" do
+          relation = User.page(1)
+          relation.total_count.should_not == 100
+          relation.total_count = 100
+          relation.total_count.should == 100
+        end
+      end
     end
   end
 end
