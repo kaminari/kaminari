@@ -5,8 +5,9 @@ module Kaminari
       super
     end
 
-    def entry_name
-      model_name.human.downcase
+    def entry_name(options = {})
+      count == options[:count] || 1
+      count == 1 ? model_name.human : model_name.human.pluralize
     end
 
     def limit_value #:nodoc:

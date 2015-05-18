@@ -1,7 +1,9 @@
 module Kaminari
   module ActiveRecordRelationMethods
-    def entry_name
-      model_name.human.downcase
+    def entry_name(options = {})
+      count = options[:count] || 1
+      default = count == 1 ? model_name.human : model_name.human.pluralize
+      model_name.human(:count => count, :default => default)
     end
 
     def reset #:nodoc:

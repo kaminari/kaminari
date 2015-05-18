@@ -28,8 +28,8 @@ module Kaminari
       super(original_array || [])
     end
 
-    def entry_name
-      "entry"
+    def entry_name(options = {})
+      I18n.t('helpers.page_entries_info.entry', :count => (options[:count] || 1))
     end
 
     # items at the specified "page"
