@@ -9,13 +9,26 @@ module Kaminari
       super
     end
 
+    # return the relation without any pagination
+    #
+    #
+    # Example:
+    #   user.books_authored.page(1).unpaged
+    # => return user's all books without pagination
+    #
+    def unpaged
+      _unpaged = except(:offset, :limit, :order)
+
+      # Remove includes only if they are irrelevant
+      _unpaged.except(:includes) unless references_eager_loaded_tables?
+
+      _unpaged
+    end
+
     def total_count(column_name = :all, options = {}) #:nodoc:
       # #count overrides the #select which could include generated columns referenced in #order, so skip #order here, where it's irrelevant to the result anyway
       @total_count ||= begin
-        c = except(:offset, :limit, :order)
-
-        # Remove includes only if they are irrelevant
-        c = c.except(:includes) unless references_eager_loaded_tables?
+        c = unpaged
 
         # Rails 4.1 removes the `options` argument from AR::Relation#count
         args = [column_name]
