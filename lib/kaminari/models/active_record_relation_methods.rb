@@ -28,14 +28,12 @@ module Kaminari
     def total_count(column_name = :all, options = {}) #:nodoc:
       # #count overrides the #select which could include generated columns referenced in #order, so skip #order here, where it's irrelevant to the result anyway
       @total_count ||= begin
-        c = unpaged
-
         # Rails 4.1 removes the `options` argument from AR::Relation#count
         args = [column_name]
         args << options if ActiveRecord::VERSION::STRING < '4.1.0'
 
         # .group returns an OrderdHash that responds to #count
-        c = c.count(*args)
+        c = unpaged.count(*args)
         if c.is_a?(Hash) || c.is_a?(ActiveSupport::OrderedHash)
           c.count
         else
