@@ -73,5 +73,19 @@ if defined? ActiveRecord
         end
       end
     end
+
+    describe '#unpaged' do
+      it 'should return a relation' do
+        User.page.unpaged.should be_a(ActiveRecord::Relation)
+      end
+
+      it 'should include pagination related keys in the valuess of the relation using page' do
+        User.page.values.keys.should include(:offset, :limit)
+      end
+
+      it 'should not include any pagination related key in the values of the relation using unpaged' do
+        User.page.unpaged.values.keys.should_not include(:offset, :limit)
+      end
+    end
   end
 end
