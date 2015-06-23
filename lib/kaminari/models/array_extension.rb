@@ -11,7 +11,11 @@ module Kaminari
     # * <tt>:offset</tt> - offset
     # * <tt>:total_count</tt> - total_count
     def initialize(original_array = [], options = {})
-      @_original_array, @_limit_value, @_offset_value, @_total_count, @_padding = original_array, (options[:limit] || default_per_page).to_i, options[:offset].to_i, options[:total_count], options[:padding].to_i
+      @_original_array, @_limit_value, @_offset_value, @_total_count, @_padding, @_max_num_pages = original_array, (options[:limit] || default_per_page).to_i, options[:offset].to_i, options[:total_count], options[:padding].to_i, (options[:page_limit] || Kaminari.config.max_pages)
+
+      if @_max_num_pages.present?
+        original_array = original_array[0, @_limit_value * @_max_num_pages.to_i]
+      end
 
       if options[:limit] && options[:offset]
         extend Kaminari::PageScopeMethods
@@ -41,7 +45,7 @@ module Kaminari
 
     # returns another chunk of the original array
     def limit(num)
-      self.class.new @_original_array, :limit => num, :offset => @_offset_value, :total_count => @_total_count, :padding => @_padding
+      self.class.new @_original_array, :limit => num, :offset => @_offset_value, :total_count => @_total_count, :padding => @_padding, :page_limit => @_max_num_pages
     end
 
     # total item numbers of the original array
@@ -51,7 +55,11 @@ module Kaminari
 
     # returns another chunk of the original array
     def offset(num)
-      self.class.new @_original_array, :limit => @_limit_value, :offset => num, :total_count => @_total_count, :padding => @_padding
+      self.class.new @_original_array, :limit => @_limit_value, :offset => num, :total_count => @_total_count, :padding => @_padding, :page_limit => @_max_num_pages
+    end
+
+    def max_page_number(num)
+      self.class.new @_original_array, :limit => @_limit_value, :offset => @_offset_value, :total_count => @_total_count, :padding => @_padding, :page_limit => num
     end
   end
 

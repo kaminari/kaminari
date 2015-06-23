@@ -98,6 +98,11 @@ describe Kaminari::PaginatableArray do
       subject { array.page(1).padding(25) }
       its(:total_pages) { should == 3 }
     end
+
+    context 'per 25, page_limit 2' do
+      subject { array.page(1).page_limit(2) }
+      its(:total_pages) { should == 2 }
+    end
   end
 
   describe '#current_page' do
@@ -186,6 +191,25 @@ describe Kaminari::PaginatableArray do
       its(:first) { should == 11 }
       its(:current_page) { should == 2 }
       its(:total_count) { should == 15 }
+    end
+  end
+
+  describe "#page_limit" do
+    context 'page 1 max_pages 1' do
+      subject { array.page(1).per(5).page_limit(1) }
+      it { should have(5).users }
+      its(:first) { should == 1 }
+    end
+
+    context "page 2 max_pages 1" do
+      subject { array.page(2).per(5).page_limit(1) }
+      it { should have(0).users }
+    end
+
+    context "page 2 max_pages 2" do
+      subject { array.page(2).per(5).page_limit(2) }
+      it { should have(5).users }
+      its(:first) { should == 6 }
     end
   end
 end
