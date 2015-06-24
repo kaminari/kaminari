@@ -76,7 +76,12 @@ module Kaminari
     end
 
     def page_limit num
-      self.max_page_number(num)
+      @_max_num_pages = num
+      if num < current_page
+        empty_instance
+      else
+        self
+      end
     end
   end
 end

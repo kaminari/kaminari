@@ -29,6 +29,10 @@ module Kaminari
       end
     end
 
+    def empty_instance
+      self.where(id: nil)
+    end
+
     private
     def unpage
       clone.tap do |crit|

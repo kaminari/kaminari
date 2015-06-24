@@ -30,5 +30,9 @@ module Kaminari
         end
       end
     end
+
+    def empty_instance
+      self.where('1 = 0')
+    end
   end
 end

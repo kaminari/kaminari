@@ -58,8 +58,8 @@ module Kaminari
       self.class.new @_original_array, :limit => @_limit_value, :offset => num, :total_count => @_total_count, :padding => @_padding, :page_limit => @_max_num_pages
     end
 
-    def max_page_number(num)
-      self.class.new @_original_array, :limit => @_limit_value, :offset => @_offset_value, :total_count => @_total_count, :padding => @_padding, :page_limit => num
+    def empty_instance
+      self.class.new([])
     end
   end
 
