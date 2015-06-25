@@ -29,10 +29,20 @@ module Kaminari
           c.respond_to?(:count) ? c.count(*args) : c
         end
       end
+
+      if @_max_num_pages.present? && @_max_num_pages < @total_count
+        self.count * @_max_num_pages
+      else
+        @total_count
+      end
     end
 
     def empty_instance
-      self.where('1 = 0')
+      if defined? self.model
+        self.model.none
+      else
+        self.where('1 = 0')
+      end
     end
   end
 end

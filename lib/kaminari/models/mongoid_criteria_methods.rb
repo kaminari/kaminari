@@ -27,6 +27,12 @@ module Kaminari
           size
         end
       end
+
+      if @_max_num_pages.present? && @_max_num_pages < @total_count
+        limit_value * @_max_num_pages
+      else
+        @total_count
+      end
     end
 
     def empty_instance
