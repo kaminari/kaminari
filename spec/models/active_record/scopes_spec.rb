@@ -272,6 +272,11 @@ if defined? ActiveRecord
           end
         end
 
+        describe '#set_total_count' do
+          subject { model_class.page(1).set_total_count(123) }
+          its(:total_count) { should == 123 }
+        end
+
         context 'chained with .group' do
           subject { model_class.group('age').page(2).per 5 }
           # 0..10
