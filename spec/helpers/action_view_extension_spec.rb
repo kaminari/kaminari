@@ -33,6 +33,14 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails) do
       subject { helper.paginate @users, :num_pages => 3, :params => {:controller => 'users', :action => 'index'} }
       it { should match(/<a href="\/users\?page=3">Last/) }
     end
+
+    context "page_limit: 2" do
+      before do
+        @users.page_limit 2
+      end
+      subject { helper.paginate @users, :params => {:controller => 'users', :action => 'index'} }
+      it { should match(/<a href="\/users\?page=2">Last/) }
+    end
   end
 
   describe '#link_to_previous_page' do
@@ -129,6 +137,15 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails) do
       subject { helper.link_to_next_page @users, 'More', :params => {:controller => 'users', :action => 'index'} }
       it { should_not be }
     end
+
+    context 'the limit page' do
+      before do
+        @users = User.page(1).page_limit(1)
+      end
+
+      subject { helper.link_to_next_page @users, 'More', :params => {:controller => 'users', :action => 'index'} }
+      it { should_not be }
+    end
   end
 
   describe '#page_entries_info' do
@@ -210,7 +227,23 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails) do
           end
         end
       end
+
+      context 'having page limit' do
+        before do
+          50.times {|i| User.create! :name => "user#{i}"}
+          @users = User.page(1).per(5).page_limit(4)
+        end
+
+        subject { helper.page_entries_info @users, :params => {:controller => 'users', :action => 'index'} }
+        it      { should == 'Displaying users <b>1&nbsp;-&nbsp;5</b> of <b>20</b> in total' }
+
+        context 'setting the entry name option to "member"' do
+          subject { helper.page_entries_info @users, :entry_name => 'member', :params => {:controller => 'users', :action => 'index'} }
+          it      { should == 'Displaying members <b>1&nbsp;-&nbsp;5</b> of <b>20</b> in total' }
+        end
+      end
     end
+
     context 'on a model with namespace' do
       before do
         @addresses = User::Address.page(1).per(25)
@@ -283,6 +316,20 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails) do
             it      { should == 'Displaying places <b>26&nbsp;-&nbsp;50</b> of <b>50</b> in total' }
           end
         end
+
+        describe 'with page limit' do
+          before do
+            @addresses = User::Address.page(2).per(5).page_limit(2)
+          end
+
+          subject { helper.page_entries_info @addresses, :params => {:controller => 'addresses', :action => 'index'} }
+          it      { should == 'Displaying addresses <b>6&nbsp;-&nbsp;10</b> of <b>10</b> in total' }
+
+          context 'setting the entry name option to "place"' do
+            subject { helper.page_entries_info @addresses, :entry_name => 'place', :params => {:controller => 'addresses', :action => 'index'} }
+            it      { should == 'Displaying places <b>6&nbsp;-&nbsp;10</b> of <b>10</b> in total' }
+          end
+        end
       end
     end
 
@@ -293,6 +340,15 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails) do
 
       subject { helper.page_entries_info @numbers }
       it      { should == 'Displaying <b>all 3</b> entries' }
+
+      context 'with page limit 2' do
+        before do
+          @numbers = @numbers.per(1).page_limit(2)
+        end
+
+        subject { helper.page_entries_info @numbers }
+        it      { should == 'Displaying entries <b>1&nbsp;-&nbsp;1</b> of <b>2</b> in total' }
+      end
     end
   end
 

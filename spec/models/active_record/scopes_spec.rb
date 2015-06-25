@@ -283,6 +283,25 @@ if defined? ActiveRecord
           subject { ActiveRecord::Base.descendants }
           its(:length) { should_not == 0 }
         end
+
+        describe "#page_limit" do
+          context 'page 1 max_pages 1' do
+            subject { model_class.page(1).per(5).page_limit(1) }
+            its(:count) { should == 5 }
+            its('first.name') { should == 'user001' }
+          end
+
+          context "page 2 max_pages 1" do
+            subject { model_class.page(2).per(5).page_limit(1) }
+            its(:count) { should == 0 }
+          end
+
+          context "page 2 max_pages 2" do
+            subject { model_class.page(2).per(5).page_limit(2) }
+            its(:count) { should == 5 }
+            its('first.name') { should == 'user006' }
+          end
+        end
       end
     end
   end

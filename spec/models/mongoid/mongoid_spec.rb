@@ -224,5 +224,40 @@ if defined? Mongoid
         its(:limit_value) { should == 200 }
       end
     end
+
+    describe "#page_limit" do
+      context 'page 1 max_pages 1' do
+        subject { User.page(1).per(5).page_limit(1) }
+        it { should be_a Mongoid::Criteria }
+        its(:current_page) { should == 1 }
+        its(:prev_page) { should be_nil }
+        its(:next_page) { should be nil }
+        its(:limit_value) { should == 5 }
+        its(:total_pages) { should == 1 }
+        it { should skip(0) }
+      end
+
+      context "page 2 max_pages 1" do
+        subject { User.page(2).per(5).page_limit(1) }
+        it { should be_a Mongoid::Criteria }
+        its(:total_count) { should == 0 }
+        #its(:current_page) { should be nil }
+        its(:prev_page) { should be nil }
+        its(:next_page) { should be nil }
+        its(:limit_value) { should == 5 }
+        its(:total_pages) { should == 0 }
+      end
+
+      context "page 2 max_pages 2" do
+        subject { User.page(2).per(5).page_limit(2) }
+        it { should be_a Mongoid::Criteria }
+        its(:current_page) { should == 2 }
+        its(:prev_page) { should == 1 }
+        its(:next_page) { should be nil }
+        its(:limit_value) { should == 5 }
+        its(:total_pages) { should == 2 }
+        it { should skip(5) }
+      end
+    end
   end
 end

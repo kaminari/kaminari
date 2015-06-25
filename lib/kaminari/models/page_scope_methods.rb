@@ -26,7 +26,9 @@ module Kaminari
       count_without_padding = 0 if count_without_padding < 0
 
       total_pages_count = (count_without_padding.to_f / limit_value).ceil
-      if max_pages.present? && max_pages < total_pages_count
+      if @_max_num_pages.present? && @_max_num_pages < total_pages_count
+        @_max_num_pages
+      elsif max_pages.present? && max_pages < total_pages_count
         max_pages
       else
         total_pages_count
@@ -71,6 +73,15 @@ module Kaminari
     # Out of range of the collection?
     def out_of_range?
       current_page > total_pages
+    end
+
+    def page_limit num
+      @_max_num_pages = num
+      if num < current_page
+        empty_instance
+      else
+        self
+      end
     end
   end
 end
