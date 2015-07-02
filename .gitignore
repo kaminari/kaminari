@@ -8,3 +8,4 @@ pkg/*
 
 doc
 log
+.DS_Store
