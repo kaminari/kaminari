@@ -14,6 +14,7 @@ module Kaminari
       def initialize(template, options) #:nodoc:
         #FIXME for compatibility. remove num_pages at some time in the future
         options[:num_pages] ||= options[:total_pages]
+        options[:total_count] ||= options[:total_count]
 
         @window_options = {}.tap do |h|
           h[:window] = options.delete(:window) || options.delete(:inner_window) || Kaminari.config.window
