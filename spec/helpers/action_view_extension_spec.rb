@@ -33,6 +33,13 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails) do
       subject { helper.paginate @users, :num_pages => 3, :params => {:controller => 'users', :action => 'index'} }
       it { should match(/<a href="\/users\?page=3">Last/) }
     end
+
+    context "page: 20 (out of range)" do
+      before  { @users = User.page(20) }
+      subject { helper.paginate @users, :params => {:controller => 'users', :action => 'index'} }
+      it { should_not match(/Last/) }
+      it { should_not match(/Next/) }
+    end
   end
 
   describe '#link_to_previous_page' do
