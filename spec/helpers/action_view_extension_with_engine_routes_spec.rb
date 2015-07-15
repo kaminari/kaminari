@@ -1,32 +1,6 @@
 require 'spec_helper'
 
 describe 'Kaminari::ActionViewExtension with engine routes', :if => defined?(Rails) do
-  before do
-    # fake engine
-    module MyEngine
-      class Engine < ::Rails::Engine
-        isolate_namespace MyEngine
-        routes.draw do
-          resources :items
-        end
-      end
-    end
-
-    $app.routes.draw do
-      mount MyEngine::Engine, :at => '/mounted_engine'
-    end
-  end
-
-  after do
-    # Reset to default routes without a mounted engine
-    $app.routes.clear!
-    $app.routes.draw do
-      resources :users
-      resources :addresses do
-        get 'page/:page', :action => :index, :on => :collection
-      end
-    end
-  end
 
   let(:num_users) { 50 }
   before do
