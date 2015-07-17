@@ -31,7 +31,7 @@ module Kaminari
       else
         total_pages_count
       end
-    rescue FloatDomainError => e
+    rescue FloatDomainError
       raise ZeroPerPageOperation, "The number of total pages was incalculable. Perhaps you called .per(0)?"
     end
     #FIXME for compatibility. remove num_pages at some time in the future
@@ -44,7 +44,7 @@ module Kaminari
       offset_without_padding = 0 if offset_without_padding < 0
 
       (offset_without_padding / limit_value) + 1
-    rescue ZeroDivisionError => e
+    rescue ZeroDivisionError
       raise ZeroPerPageOperation, "Current page was incalculable. Perhaps you called .per(0)?"
     end
 
