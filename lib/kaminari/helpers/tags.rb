@@ -21,7 +21,7 @@ module Kaminari
         @theme = @options.delete(:theme)
         @views_prefix = @options.delete(:views_prefix)
         @params = template.params.except(*PARAM_KEY_BLACKLIST).merge(@options.delete(:params) || {})
-        @params = @params.with_indifferent_access
+        @params = @params.with_indifferent_access if @params.respond_to? :with_indifferent_access
       end
 
       def to_s(locals = {}) #:nodoc:
