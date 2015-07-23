@@ -26,7 +26,7 @@ describe 'Kaminari::Helpers::Paginator' do
       @paginator = Paginator.new(template, :params => {:controller => 'foo', :action => 'bar'})
     end
     subject { @paginator.page_tag(template).instance_variable_get('@params') }
-    it { should == {:controller => 'foo', :action => 'bar'} }
+    it { should == {'controller' => 'foo', 'action' => 'bar'} }
 
     context "when params has form params" do
       before do
@@ -40,7 +40,7 @@ describe 'Kaminari::Helpers::Paginator' do
         end
       end
 
-      it { should == {:controller => 'foo', :action => 'bar'} }
+      it { should == {'controller' => 'foo', 'action' => 'bar'} }
     end
   end
 
