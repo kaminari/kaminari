@@ -17,11 +17,11 @@ module Kaminari
         extend Kaminari::PageScopeMethods
       end
 
-      if @_total_count.present? && (@_total_count <= original_array.count)
+      if @_total_count && (@_total_count <= original_array.count)
         original_array = original_array.first(@_total_count)[@_offset_value, @_limit_value]
       end
 
-      if @_total_count.nil?
+      unless @_total_count
         original_array = original_array[@_offset_value, @_limit_value]
       end
 
