@@ -166,8 +166,8 @@ module Kaminari
         end
 
         def single_gap?
-          (@page.to_i == @options[:current_page] - @options[:window] - 1) && (@page.to_i == @options[:left] + 1) ||
-            (@page.to_i == @options[:current_page] + @options[:window] + 1) && (@page.to_i == @options[:total_pages] - @options[:right])
+          (@page == @options[:current_page] - @options[:window] - 1) && (@page == @options[:left] + 1) ||
+            (@page == @options[:current_page] + @options[:window] + 1) && (@page == @options[:total_pages] - @options[:right])
         end
 
         def out_of_range?
