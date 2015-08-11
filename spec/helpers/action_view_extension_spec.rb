@@ -280,6 +280,19 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails)do
       it { should match(/\?page=2/) }
     end
 
+    context 'the second page' do
+      before do
+        @users = User.page(2).per(25)
+      end
+
+      subject { helper.rel_next_prev_link_tags @users, :params => {:controller => 'users', :action => 'index'} }
+      it { should match(/rel="prev"/) }
+      it { should match(/"\/users"/) }
+      it { should_not match(/\?page=1/) }
+      it { should match(/rel="next"/) }
+      it { should match(/\?page=3/) }
+    end
+
     context 'the middle page' do
       before do
         @users = User.page(3).per(25)
