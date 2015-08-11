@@ -124,8 +124,9 @@ module Kaminari
 
       output = ""
       output << '<link rel="next" href="' + url_for(params.merge(param_name => scope.next_page, :only_path => true)) + '"/>' if scope.next_page
-      output << '<link rel="prev" href="' + url_for(params.merge(param_name => scope.prev_page, :only_path => true)) + '"/>' if scope.prev_page
-
+      prev_page = scope.prev_page
+      prev_page = nil if prev_page == 1
+      output << '<link rel="prev" href="' + url_for(params.merge(param_name => prev_page, :only_path => true)) + '"/>' if scope.prev_page
       output.html_safe
     end
   end
