@@ -170,6 +170,15 @@ describe Kaminari::PaginatableArray do
       its(:total_count) { should == 9999 }
     end
 
+    context "array 1..10, page 5, per 5, total_count 9999" do
+      subject { Kaminari::PaginatableArray.new((1..10).to_a, :total_count => 9999).page(5).per(5) }
+
+      it { should have(5).items }
+      its(:first) { should == 1 }
+      its(:current_page) { should == 5 }
+      its(:total_count) { should == 9999 }
+    end
+
     context "array 1..15, page 1, per 10, total_count 15" do
       subject { Kaminari.paginate_array((1..15).to_a, :total_count => 15).page(1).per(10) }
 
