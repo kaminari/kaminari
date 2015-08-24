@@ -6,6 +6,7 @@ git 'git://github.com/rails/rails.git' do
   gem 'actionview', :require => 'action_view'
 end
 
+gem 'rack', :git => 'git://github.com/rack/rack.git'
 gem 'arel', :github => 'rails/arel'
 
 platforms :ruby do
