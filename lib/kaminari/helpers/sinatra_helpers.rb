@@ -116,11 +116,11 @@ module Kaminari::Helpers
         param_name = options.delete(:param_name) || Kaminari.config.param_name
         placeholder = options.delete(:placeholder)
 
-        unless scope.first_page?
+        if scope.first_page?
+          placeholder.to_s.html_safe
+        else
           query = params.merge(param_name => scope.prev_page)
           link_to name, env['PATH_INFO'] + (query.empty? ? '' : "?#{query.to_query}"), options.reverse_merge(:rel => 'previous')
-        else
-          placeholder.to_s.html_safe
         end
       end
 
@@ -146,11 +146,11 @@ module Kaminari::Helpers
         param_name = options.delete(:param_name) || Kaminari.config.param_name
         placeholder = options.delete(:placeholder)
 
-        unless scope.last_page? || scope.out_of_range?
+        if scope.last_page? || scope.out_of_range?
+          placeholder.to_s.html_safe
+        else
           query = params.merge(param_name => scope.next_page)
           link_to name, env['PATH_INFO'] + (query.empty? ? '' : "?#{query.to_query}"), options.reverse_merge(:rel => 'next')
-        else
-          placeholder.to_s.html_safe
         end
       end
     end
