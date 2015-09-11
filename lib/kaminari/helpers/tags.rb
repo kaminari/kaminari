@@ -18,6 +18,7 @@ module Kaminari
       def initialize(template, options = {}) #:nodoc:
         @template, @options = template, options.dup
         @param_name = @options.delete(:param_name) || Kaminari.config.param_name
+        @route_set = @options.delete(:route_set)
         @theme = @options.delete(:theme)
         @views_prefix = @options.delete(:views_prefix)
         @params = template.params.except(*PARAM_KEY_BLACKLIST).merge(@options.delete(:params) || {})
@@ -34,7 +35,7 @@ module Kaminari
       end
 
       def page_url_for(page)
-        @template.url_for params_for(page).merge(:only_path => true)
+        (@route_set || @template).url_for params_for(page).merge(:only_path => true)
       end
 
       private
