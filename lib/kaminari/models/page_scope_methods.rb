@@ -2,12 +2,14 @@ module Kaminari
   module PageScopeMethods
     # Specify the <tt>per_page</tt> value for the preceding <tt>page</tt> scope
     #   Model.page(3).per(10)
-    def per(num)
+    def per(num, override_max: nil)
       if (n = num.to_i) < 0 || !(/^\d/ =~ num.to_s)
         self
       elsif n.zero?
         limit(n)
-      elsif max_per_page && max_per_page < n
+      elsif override_max && override_max < n
+        limit(override_max).offset(offset_value / limit_value * override_max)
+      elsif !override_max && max_per_page && max_per_page < n
         limit(max_per_page).offset(offset_value / limit_value * max_per_page)
       else
         limit(n).offset(offset_value / limit_value * n)
