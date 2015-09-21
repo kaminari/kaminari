@@ -15,7 +15,7 @@ if defined? ActiveRecord
       end
 
       context "when the scope is cloned" do
-        it "should reset total_coount momoization" do
+        it "should reset total_count memoization" do
           User.page.tap(&:total_count).where(:name => 'author').total_count.should == 1
         end
       end
