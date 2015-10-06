@@ -4,12 +4,12 @@ if defined? Mongoid
   describe Kaminari::MongoidCriteriaMethods do
     describe "#total_count" do
       before do
-        2.times {|i| User.create!(:salary => i) }
+        2.times {|i| User.create!(salary: i) }
       end
 
       context "when the scope is cloned" do
         it "should reset total_coount momoization" do
-          User.page.tap(&:total_count).where(:salary => 1).total_count.should == 1
+          User.page.tap(&:total_count).where(salary: 1).total_count.should == 1
         end
       end
     end
@@ -18,11 +18,11 @@ if defined? Mongoid
   describe Kaminari::MongoidExtension do
     before(:each) do
       41.times do
-        User.create!({:salary => 1})
+        User.create!({salary: 1})
       end
     end
 
-    describe 'max_scan', :if => Mongoid::VERSION >= '3' do
+    describe 'max_scan', if: Mongoid::VERSION >= '3' do
       context 'less than total' do
         context 'page 1' do
           subject { User.max_scan(20).page 1 }
@@ -115,7 +115,7 @@ if defined? Mongoid
         if Mongoid::VERSION > '3.0.0'
           its(:selector) { should == {'salary' => 1} }
         else
-          its(:selector) { should == {:salary => 1} }
+          its(:selector) { should == {salary: 1} }
         end
         its(:current_page) { should == 2 }
         its(:prev_page) { should == 1 }
@@ -126,28 +126,28 @@ if defined? Mongoid
       end
 
       context 'with criteria before' do
-        subject { User.where(:salary => 1).page 2 }
+        subject { User.where(salary: 1).page 2 }
         it_should_behave_like 'complete valid pagination'
       end
 
       context 'with criteria after' do
-        subject { User.page(2).where(:salary => 1) }
+        subject { User.page(2).where(salary: 1) }
         it_should_behave_like 'complete valid pagination'
       end
 
-      context "with database:", :if => Mongoid::VERSION >= '3' do
+      context "with database:", if: Mongoid::VERSION >= '3' do
         before :all do
-          15.times { User.with(:database => "default_db").create!(:salary => 1) }
-          10.times { User.with(:database => "other_db").create!(:salary => 1) }
+          15.times { User.with(database: "default_db").create!(salary: 1) }
+          10.times { User.with(database: "other_db").create!(salary: 1) }
         end
 
         context "default_db" do
-          subject { User.with(:database => "default_db").order_by(:artist.asc).page(1) }
+          subject { User.with(database: "default_db").order_by(:artist.asc).page(1) }
           its(:total_count) { should == 15 }
         end
 
         context "other_db" do
-          subject { User.with(:database => "other_db").order_by(:artist.asc).page(1) }
+          subject { User.with(database: "other_db").order_by(:artist.asc).page(1) }
           its(:total_count) { should == 10 }
         end
       end
@@ -167,11 +167,11 @@ if defined? Mongoid
     describe '#page in embedded documents' do
       before do
         @mongo_developer = MongoMongoidExtensionDeveloper.new
-        @mongo_developer.frameworks.new(:name => "rails", :language => "ruby")
-        @mongo_developer.frameworks.new(:name => "merb", :language => "ruby")
-        @mongo_developer.frameworks.new(:name => "sinatra", :language => "ruby")
-        @mongo_developer.frameworks.new(:name => "cakephp", :language => "php")
-        @mongo_developer.frameworks.new(:name => "tornado", :language => "python")
+        @mongo_developer.frameworks.new(name: "rails", language: "ruby")
+        @mongo_developer.frameworks.new(name: "merb", language: "ruby")
+        @mongo_developer.frameworks.new(name: "sinatra", language: "ruby")
+        @mongo_developer.frameworks.new(name: "cakephp", language: "php")
+        @mongo_developer.frameworks.new(name: "tornado", language: "python")
       end
 
       context 'page 1' do
@@ -186,7 +186,7 @@ if defined? Mongoid
       end
 
       context 'with criteria after' do
-        subject { @mongo_developer.frameworks.page(1).per(2).where(:language => "ruby") }
+        subject { @mongo_developer.frameworks.page(1).per(2).where(language: "ruby") }
         it { should be_a Mongoid::Criteria }
         its(:total_count) { should == 3 }
         its(:limit_value) { should == 2 }
@@ -197,7 +197,7 @@ if defined? Mongoid
       end
 
       context 'with criteria before' do
-        subject { @mongo_developer.frameworks.where(:language => "ruby").page(1).per(2) }
+        subject { @mongo_developer.frameworks.where(language: "ruby").page(1).per(2) }
         it { should be_a Mongoid::Criteria }
         its(:total_count) { should == 3 }
         its(:limit_value) { should == 2 }

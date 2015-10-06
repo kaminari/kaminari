@@ -4,7 +4,7 @@ describe Kaminari::PaginatableArray do
   it { should have(0).items }
 
   context 'specifying limit and offset when initializing' do
-    subject { Kaminari::PaginatableArray.new((1..100).to_a, :limit => 10, :offset => 20) }
+    subject { Kaminari::PaginatableArray.new((1..100).to_a, limit: 10, offset: 20) }
     its(:current_page) { should == 3 }
   end
 
@@ -162,7 +162,7 @@ describe Kaminari::PaginatableArray do
 
   context 'when setting total count explicitly' do
     context "array 1..10, page 5, per 10, total_count 9999" do
-      subject { Kaminari::PaginatableArray.new((1..10).to_a, :total_count => 9999).page(5).per(10) }
+      subject { Kaminari::PaginatableArray.new((1..10).to_a, total_count: 9999).page(5).per(10) }
 
       it { should have(10).items }
       its(:first) { should == 1 }
@@ -171,7 +171,7 @@ describe Kaminari::PaginatableArray do
     end
 
     context "array 1..15, page 1, per 10, total_count 15" do
-      subject { Kaminari.paginate_array((1..15).to_a, :total_count => 15).page(1).per(10) }
+      subject { Kaminari.paginate_array((1..15).to_a, total_count: 15).page(1).per(10) }
 
       it { should have(10).items }
       its(:first) { should == 1 }
@@ -180,7 +180,7 @@ describe Kaminari::PaginatableArray do
     end
 
     context "array 1..25, page 2, per 10, total_count 15" do
-      subject { Kaminari.paginate_array((1..25).to_a, :total_count => 15).page(2).per(10) }
+      subject { Kaminari.paginate_array((1..25).to_a, total_count: 15).page(2).per(10) }
 
       it { should have(5).items }
       its(:first) { should == 11 }

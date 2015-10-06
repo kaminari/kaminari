@@ -3,7 +3,7 @@ require 'spec_helper'
 
 feature 'Users' do
   background do
-    1.upto(100) {|i| User.create! :name => "user#{'%03d' % i}" }
+    1.upto(100) {|i| User.create! name: "user#{'%03d' % i}" }
   end
   scenario 'navigating by pagination links' do
     visit '/users'

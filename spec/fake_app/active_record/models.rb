@@ -2,12 +2,12 @@
 class User < ActiveRecord::Base
   has_many :authorships
   has_many :readerships
-  has_many :books_authored, :through => :authorships, :source => :book
-  has_many :books_read, :through => :readerships, :source => :book
-  has_many :addresses, :class_name => 'User::Address'
+  has_many :books_authored, through: :authorships, source: :book
+  has_many :books_read, through: :readerships, source: :book
+  has_many :addresses, class_name: 'User::Address'
 
   def readers
-    User.joins(:books_read => :authors).where(:authors_books => {:id => self})
+    User.joins(books_read: :authors).where(authors_books: {id: self})
   end
 
   scope :by_name, lambda { order(:name) }
@@ -31,8 +31,8 @@ end
 class Book < ActiveRecord::Base
   has_many :authorships
   has_many :readerships
-  has_many :authors, :through => :authorships, :source => :user
-  has_many :readers, :through => :readerships, :source => :user
+  has_many :authors, through: :authorships, source: :user
+  has_many :readers, through: :readerships, source: :user
 end
 # a model that is a descendant of AR::Base but doesn't directly inherit AR::Base
 class Admin < User
