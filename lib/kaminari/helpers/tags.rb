@@ -30,11 +30,11 @@ module Kaminari
       end
 
       def to_s(locals = {}) #:nodoc:
-        @template.render :partial => partial_path, :locals => @options.merge(locals), :formats => [:html]
+        @template.render partial: partial_path, locals: @options.merge(locals), formats: [:html]
       end
 
       def page_url_for(page)
-        @template.url_for params_for(page).merge(:only_path => true)
+        @template.url_for params_for(page).merge(only_path: true)
       end
 
       private
@@ -79,7 +79,7 @@ module Kaminari
         page_url_for page
       end
       def to_s(locals = {}) #:nodoc:
-        super locals.merge(:url => url)
+        super locals.merge(url: url)
       end
     end
 
@@ -91,7 +91,7 @@ module Kaminari
         @options[:page]
       end
       def to_s(locals = {}) #:nodoc:
-        super locals.merge(:page => page)
+        super locals.merge(page: page)
       end
     end
 

@@ -41,7 +41,7 @@ module Kaminari
 
     # returns another chunk of the original array
     def limit(num)
-      self.class.new @_original_array, :limit => num, :offset => @_offset_value, :total_count => @_total_count, :padding => @_padding
+      self.class.new @_original_array, limit: num, offset: @_offset_value, total_count: @_total_count, padding: @_padding
     end
 
     # total item numbers of the original array
@@ -51,7 +51,7 @@ module Kaminari
 
     # returns another chunk of the original array
     def offset(num)
-      self.class.new @_original_array, :limit => @_limit_value, :offset => num, :total_count => @_total_count, :padding => @_padding
+      self.class.new @_original_array, limit: @_limit_value, offset: num, total_count: @_total_count, padding: @_padding
     end
   end
 

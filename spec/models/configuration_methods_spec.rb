@@ -89,7 +89,7 @@ describe "configuration methods" do
 
     before do
       100.times do |count|
-        model.create!(:name => "User#{count}")
+        model.create!(name: "User#{count}")
       end
     end
 
