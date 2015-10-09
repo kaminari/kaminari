@@ -13,11 +13,13 @@ module Kaminari
     # * <tt>:params</tt> - url_for parameters for the links (:controller, :action, etc.)
     # * <tt>:param_name</tt> - parameter name for page number in the links (:page by default)
     # * <tt>:remote</tt> - Ajax? (false by default)
+    # * <tt>:paginator_class</tt> - Specify a custom Paginator (Kaminari::Helpers::Paginator by default)
     # * <tt>:ANY_OTHER_VALUES</tt> - Any other hash key & values would be directly passed into each tag as :locals value.
     def paginate(scope, options = {}, &block)
       options[:total_pages] ||= options[:num_pages] || scope.total_pages
+      options[:paginator_class] ||= Kaminari::Helpers::Paginator
 
-      paginator = Kaminari::Helpers::Paginator.new(self, options.reverse_merge(:current_page => scope.current_page, :per_page => scope.limit_value, :remote => false))
+      paginator = options[:paginator_class].new(self, options.reverse_merge(:current_page => scope.current_page, :per_page => scope.limit_value, :remote => false))
       paginator.to_s
     end
 
