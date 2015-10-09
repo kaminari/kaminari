@@ -33,6 +33,19 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(::Rails::Railtie) && d
       it { should eq("  <b>1</b>\n") }
     end
 
+    context 'accepts :paginator_class option' do
+      let(:custom_paginator) do
+        Class.new(Kaminari::Helpers::Paginator) do
+          def to_s
+            "CUSTOM PAGINATION"
+          end
+        end
+      end
+
+      subject { helper.paginate @users, :paginator_class => custom_paginator, :params => {:controller => 'users', :action => 'index'} }
+      it { should eq("CUSTOM PAGINATION") }
+    end
+
     context "total_pages: 3" do
       subject { helper.paginate @users, :total_pages => 3, :params => {:controller => 'users', :action => 'index'} }
       it { should match(/<a href="\/users\?page=3">Last/) }
