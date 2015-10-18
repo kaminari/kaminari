@@ -122,7 +122,7 @@ module Kaminari
       next_page = Kaminari::Helpers::NextPage.new self, options.reverse_merge(:current_page => scope.current_page)
       prev_page = Kaminari::Helpers::PrevPage.new self, options.reverse_merge(:current_page => scope.current_page)
 
-      output = ""
+      output = String.new
       output << tag(:link, :rel => "next", :href => next_page.url) if scope.next_page.present?
       output << tag(:link, :rel => "prev", :href => prev_page.url) if scope.prev_page.present?
       output.html_safe
