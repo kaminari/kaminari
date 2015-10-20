@@ -1,3 +1,7 @@
+== Next
+
+* Mongoid 5 ready! [dblock]
+
 == 0.16.2
 
 * Fixed a bug where cloned Relations remember previous relations'

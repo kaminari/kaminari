@@ -137,6 +137,8 @@ if defined? Mongoid
 
       context "with database:", :if => Mongoid::VERSION >= '3' do
         before :all do
+          User.with(:database => "default_db").delete_all
+          User.with(:database => "other_db").delete_all
           15.times { User.with(:database => "default_db").create!(:salary => 1) }
           10.times { User.with(:database => "other_db").create!(:salary => 1) }
         end
