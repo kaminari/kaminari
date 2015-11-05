@@ -5,8 +5,7 @@ gem 'mongoid', '~> 5.0.0'
 gem 'rspec-rails', '~> 2.14.1'
 
 group :development, :test do
-  # see https://github.com/DatabaseCleaner/database_cleaner/issues/390, upgrade to 1.5.1 when released
-  gem 'database_cleaner', github: 'DatabaseCleaner/database_cleaner'
+  gem 'database_cleaner', '~> 1.5.1'
 end
 
 platforms :mri do
