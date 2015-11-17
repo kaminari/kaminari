@@ -19,6 +19,17 @@ module Kaminari
       offset(offset_value + num.to_i)
     end
 
+    # Change current_page if page is out of range of the collection
+    def repaginate_out_of_range
+      return self unless out_of_range?
+
+      case when_out_of_range
+        when :first then page(1).per(limit_value)
+        when :last  then page(total_pages).per(limit_value)
+        else self
+      end
+    end
+
     # Total number of pages
     def total_pages
       count_without_padding = total_count
