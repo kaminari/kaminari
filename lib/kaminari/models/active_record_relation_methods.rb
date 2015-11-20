@@ -1,8 +1,11 @@
 module Kaminari
   module ActiveRecordRelationMethods
-    def entry_name
-      model_name.human.downcase
-    end
+    def entry_name( options = {} )
+      count = options.fetch(:count, 1) # back compatibility where default was singular humanized model name
+      downcase = options.fetch(:downcase, true) # back compatibility where default was to downcase entry_name
+      entry_name = model_name.human(count: count)
+      downcase ? entry_name.downcase : entry_name
+     end
 
     def reset #:nodoc:
       @total_count = nil
