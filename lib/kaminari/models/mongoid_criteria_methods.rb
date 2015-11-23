@@ -1,12 +1,12 @@
+require 'kaminari/models/entry_methods'
+
 module Kaminari
   module MongoidCriteriaMethods
+    include Kaminari::EntryMethods
+
     def initialize_copy(other) #:nodoc:
       @total_count = nil
       super
-    end
-
-    def entry_name
-      model_name.human.downcase
     end
 
     def limit_value #:nodoc:
