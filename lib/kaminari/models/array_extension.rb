@@ -28,8 +28,8 @@ module Kaminari
       super(original_array || [])
     end
 
-    def entry_name
-      "entry"
+    def entry_name( options = {} )
+      options.fetch(:count, 1) == 1 ? "entry" : "entries"
     end
 
     # items at the specified "page"
