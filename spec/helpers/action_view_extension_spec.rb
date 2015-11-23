@@ -145,6 +145,21 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails) do
           subject { helper.page_entries_info @users, :entry_name => 'member', :params => {:controller => 'users', :action => 'index'} }
           it      { should == 'No members found' }
         end
+
+        context 'setting downcase option to false' do
+          subject { helper.page_entries_info @users, :downcase => false, :params => {:controller => 'users', :action => 'index'} }
+          it      { should == 'No Users found' }
+
+          context 'setting the entry name option to "member"' do
+            subject { helper.page_entries_info @users, :entry_name => 'member', :downcase => false, :params => {:controller => 'users', :action => 'index'} }
+            it      { should == 'No members found' }
+          end
+
+          context 'setting the entry name option to "Member"' do
+            subject { helper.page_entries_info @users, :entry_name => 'Member', :downcase => false, :params => {:controller => 'users', :action => 'index'} }
+            it      { should == 'No Members found' }
+          end
+        end
       end
 
       context 'having 1 entry' do
@@ -160,6 +175,21 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails) do
           subject { helper.page_entries_info @users, :entry_name => 'member', :params => {:controller => 'users', :action => 'index'} }
           it      { should == 'Displaying <b>1</b> member' }
         end
+
+        context 'setting downcase option to false' do
+          subject { helper.page_entries_info @users, :downcase => false, :params => {:controller => 'users', :action => 'index'} }
+          it      { should == 'Displaying <b>1</b> User' }
+
+          context 'setting the entry name option to "member"' do
+            subject { helper.page_entries_info @users, :entry_name => 'member', :downcase => false, :params => {:controller => 'users', :action => 'index'} }
+            it      { should == 'Displaying <b>1</b> member' }
+          end
+
+          context 'setting the entry name option to "Member"' do
+            subject { helper.page_entries_info @users, :entry_name => 'Member', :downcase => false, :params => {:controller => 'users', :action => 'index'} }
+            it      { should == 'Displaying <b>1</b> Member' }
+          end
+        end
       end
 
       context 'having more than 1 but less than a page of entries' do
@@ -174,6 +204,21 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails) do
         context 'setting the entry name option to "member"' do
           subject { helper.page_entries_info @users, :entry_name => 'member', :params => {:controller => 'users', :action => 'index'} }
           it      { should == 'Displaying <b>all 10</b> members' }
+        end
+
+        context 'setting downcase option to false' do
+          subject { helper.page_entries_info @users, :downcase => false, :params => {:controller => 'users', :action => 'index'} }
+          it      { should == 'Displaying <b>all 10</b> Users' }
+
+          context 'setting the entry name option to "member"' do
+            subject { helper.page_entries_info @users, :entry_name => 'member', :downcase => false, :params => {:controller => 'users', :action => 'index'} }
+            it      { should == 'Displaying <b>all 10</b> members' }
+          end
+
+          context 'setting the entry name option to "Member"' do
+            subject { helper.page_entries_info @users, :entry_name => 'Member', :downcase => false, :params => {:controller => 'users', :action => 'index'} }
+            it      { should == 'Displaying <b>all 10</b> Members' }
+          end
         end
       end
 
@@ -194,6 +239,21 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails) do
             subject { helper.page_entries_info @users, :entry_name => 'member', :params => {:controller => 'users', :action => 'index'} }
             it      { should == 'Displaying members <b>1&nbsp;-&nbsp;25</b> of <b>50</b> in total' }
           end
+
+          context 'setting downcase option to false' do
+            subject { helper.page_entries_info @users, :downcase => false, :params => {:controller => 'users', :action => 'index'} }
+            it      { should == 'Displaying Users <b>1&nbsp;-&nbsp;25</b> of <b>50</b> in total' }
+
+            context 'setting the entry name option to "member"' do
+              subject { helper.page_entries_info @users, :entry_name => 'member', :downcase => false, :params => {:controller => 'users', :action => 'index'} }
+              it      { should == 'Displaying members <b>1&nbsp;-&nbsp;25</b> of <b>50</b> in total' }
+            end
+
+            context 'setting the entry name option to "Member"' do
+              subject { helper.page_entries_info @users, :entry_name => 'Member', :downcase => false, :params => {:controller => 'users', :action => 'index'} }
+              it      { should == 'Displaying Members <b>1&nbsp;-&nbsp;25</b> of <b>50</b> in total' }
+            end
+          end
         end
 
         describe 'the next page' do
@@ -208,6 +268,21 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails) do
             subject { helper.page_entries_info @users, :entry_name => 'member', :params => {:controller => 'users', :action => 'index'} }
             it      { should == 'Displaying members <b>26&nbsp;-&nbsp;50</b> of <b>50</b> in total' }
           end
+
+          context 'setting downcase option to false' do
+            subject { helper.page_entries_info @users, :downcase => false, :params => {:controller => 'users', :action => 'index'} }
+            it      { should == 'Displaying Users <b>26&nbsp;-&nbsp;50</b> of <b>50</b> in total' }
+
+            context 'setting the entry name option to "member"' do
+              subject { helper.page_entries_info @users, :entry_name => 'member', :downcase => false, :params => {:controller => 'users', :action => 'index'} }
+              it      { should == 'Displaying members <b>26&nbsp;-&nbsp;50</b> of <b>50</b> in total' }
+            end
+
+            context 'setting the entry name option to "Member"' do
+              subject { helper.page_entries_info @users, :entry_name => 'Member', :downcase => false, :params => {:controller => 'users', :action => 'index'} }
+              it      { should == 'Displaying Members <b>26&nbsp;-&nbsp;50</b> of <b>50</b> in total' }
+            end
+          end
         end
       end
     end
@@ -219,6 +294,11 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails) do
       context 'having no entries' do
         subject { helper.page_entries_info @addresses, :params => {:controller => 'addresses', :action => 'index'} }
         it      { should == 'No addresses found' }
+
+        context 'setting downcase option to false' do
+          subject { helper.page_entries_info @addresses, :downcase => false, :params => {:controller => 'addresses', :action => 'index'} }
+          it      { should == 'No Addresses found' }
+        end
       end
 
       context 'having 1 entry' do
@@ -234,6 +314,21 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails) do
           subject { helper.page_entries_info @addresses, :entry_name => 'place', :params => {:controller => 'addresses', :action => 'index'} }
           it      { should == 'Displaying <b>1</b> place' }
         end
+
+        context 'setting downcase option to false' do
+          subject { helper.page_entries_info @addresses, :downcase => false, :params => {:controller => 'addresses', :action => 'index'} }
+          it      { should == 'Displaying <b>1</b> Address' }
+
+          context 'setting the entry name option to "place"' do
+            subject { helper.page_entries_info @addresses, :entry_name => 'place', :downcase => false, :params => {:controller => 'addresses', :action => 'index'} }
+            it      { should == 'Displaying <b>1</b> place' }
+          end
+
+          context 'setting the entry name option to "Place"' do
+            subject { helper.page_entries_info @addresses, :entry_name => 'Place', :downcase => false, :params => {:controller => 'addresses', :action => 'index'} }
+            it      { should == 'Displaying <b>1</b> Place' }
+          end
+        end
       end
 
       context 'having more than 1 but less than a page of entries' do
@@ -248,6 +343,21 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails) do
         context 'setting the entry name option to "place"' do
           subject { helper.page_entries_info @addresses, :entry_name => 'place', :params => {:controller => 'addresses', :action => 'index'} }
           it      { should == 'Displaying <b>all 10</b> places' }
+        end
+
+        context 'setting downcase option to false' do
+          subject { helper.page_entries_info @addresses, :downcase => false, :params => {:controller => 'addresses', :action => 'index'} }
+          it      { should == 'Displaying <b>all 10</b> Addresses' }
+
+          context 'setting the entry name option to "place"' do
+            subject { helper.page_entries_info @addresses, :entry_name => 'place', :downcase => false, :params => {:controller => 'addresses', :action => 'index'} }
+            it      { should == 'Displaying <b>all 10</b> places' }
+          end
+
+          context 'setting the entry name option to "Place"' do
+            subject { helper.page_entries_info @addresses, :entry_name => 'Place', :downcase => false, :params => {:controller => 'addresses', :action => 'index'} }
+            it      { should == 'Displaying <b>all 10</b> Places' }
+          end
         end
       end
 
@@ -268,6 +378,21 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails) do
             subject { helper.page_entries_info @addresses, :entry_name => 'place', :params => {:controller => 'addresses', :action => 'index'} }
             it      { should == 'Displaying places <b>1&nbsp;-&nbsp;25</b> of <b>50</b> in total' }
           end
+
+          context 'setting downcase option to false' do
+            subject { helper.page_entries_info @addresses, :downcase => false, :params => {:controller => 'addresses', :action => 'index'} }
+            it      { should == 'Displaying Addresses <b>1&nbsp;-&nbsp;25</b> of <b>50</b> in total' }
+
+            context 'setting the entry name option to "place"' do
+              subject { helper.page_entries_info @addresses, :entry_name => 'place', :downcase => false, :params => {:controller => 'addresses', :action => 'index'} }
+              it      { should == 'Displaying places <b>1&nbsp;-&nbsp;25</b> of <b>50</b> in total' }
+            end
+
+            context 'setting the entry name option to "Place"' do
+              subject { helper.page_entries_info @addresses, :entry_name => 'Place', :downcase => false, :params => {:controller => 'addresses', :action => 'index'} }
+              it      { should == 'Displaying Places <b>1&nbsp;-&nbsp;25</b> of <b>50</b> in total' }
+            end
+          end
         end
 
         describe 'the next page' do
@@ -282,6 +407,21 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails) do
             subject { helper.page_entries_info @addresses, :entry_name => 'place', :params => {:controller => 'addresses', :action => 'index'} }
             it      { should == 'Displaying places <b>26&nbsp;-&nbsp;50</b> of <b>50</b> in total' }
           end
+
+          context 'setting downcase option to false' do
+            subject { helper.page_entries_info @addresses, :downcase => false, :params => {:controller => 'addresses', :action => 'index'} }
+            it      { should == 'Displaying Addresses <b>26&nbsp;-&nbsp;50</b> of <b>50</b> in total' }
+
+            context 'setting the entry name option to "place"' do
+              subject { helper.page_entries_info @addresses, :entry_name => 'place', :downcase => false, :params => {:controller => 'addresses', :action => 'index'} }
+              it      { should == 'Displaying places <b>26&nbsp;-&nbsp;50</b> of <b>50</b> in total' }
+            end
+
+            context 'setting the entry name option to "Place"' do
+              subject { helper.page_entries_info @addresses, :entry_name => 'Place', :downcase => false, :params => {:controller => 'addresses', :action => 'index'} }
+              it      { should == 'Displaying Places <b>26&nbsp;-&nbsp;50</b> of <b>50</b> in total' }
+            end
+          end
         end
       end
     end
@@ -293,6 +433,26 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails) do
 
       subject { helper.page_entries_info @numbers }
       it      { should == 'Displaying <b>all 3</b> entries' }
+
+      context 'setting the entry name option to "item"' do
+        subject { helper.page_entries_info @numbers, :entry_name => 'item' }
+        it      { should == 'Displaying <b>all 3</b> items' }
+      end
+
+      context 'setting downcase option to false' do
+        subject { helper.page_entries_info @numbers, :downcase => false }
+        it      { should == 'Displaying <b>all 3</b> entries' }
+
+        context 'setting the entry name option to "item"' do
+          subject { helper.page_entries_info @numbers, :entry_name => 'item', :downcase => false }
+          it      { should == 'Displaying <b>all 3</b> items' }
+        end
+
+        context 'setting the entry name option to "Item"' do
+          subject { helper.page_entries_info @numbers, :entry_name => 'Item', :downcase => false }
+          it      { should == 'Displaying <b>all 3</b> Items' }
+        end
+      end
     end
   end
 

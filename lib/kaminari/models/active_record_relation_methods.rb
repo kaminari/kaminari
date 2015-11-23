@@ -1,8 +1,8 @@
+require 'kaminari/models/entry_methods'
+
 module Kaminari
   module ActiveRecordRelationMethods
-    def entry_name
-      model_name.human.downcase
-    end
+    include Kaminari::EntryMethods
 
     def reset #:nodoc:
       @total_count = nil

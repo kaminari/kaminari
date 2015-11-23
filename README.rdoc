@@ -192,6 +192,12 @@ Run the following generator command, then edit the generated file.
     <%= page_entries_info @posts, :entry_name => 'item' %>
     #-> Displaying items 6 - 10 of 26 in total
 
+  By default, the message will downcase the object name.
+  Override this with the <tt>:downcase</tt> parameter:
+    
+    <%= page_entries_info @posts, :downcase => false %>
+    #-> Displaying Posts 6 - 10 of 26 in total
+
 * the +rel_next_prev_link_tags+ helper method
 
     <%= rel_next_prev_link_tags @users %>
