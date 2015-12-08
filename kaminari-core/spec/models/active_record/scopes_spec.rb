@@ -94,6 +94,36 @@ if defined? ActiveRecord
           end
         end
 
+        describe '#max_paginates_per' do
+          before do
+            model_class.max_paginates_per 10
+          end
+
+          context 'max_paginates_per 20 per 15' do
+            subject { model_class.page(1).per(15).max_paginates_per(20) }
+            it { should have(15).users }
+          end
+
+          context 'max_paginates_per 20 per 30' do
+            subject { model_class.page(1).per(30).max_paginates_per(20) }
+            it { should have(20).users }
+          end
+
+          context 'max_paginates_per 20 per 5' do
+            subject { model_class.page(1).per(5).max_paginates_per(20) }
+            it { should have(5).users }
+          end
+
+          context 'max_paginates_per 20 per nil' do
+            subject { model_class.page(1).per(nil).max_paginates_per(20) }
+            it { should have(model_class.default_per_page).users }
+          end
+
+          after do
+            model_class.max_paginates_per nil
+          end
+        end
+
         describe '#padding' do
           context 'page 1 per 5 padding 1' do
             subject { model_class.page(1).per(5).padding(1) }
