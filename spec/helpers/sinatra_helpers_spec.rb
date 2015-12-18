@@ -101,7 +101,7 @@ EOT
           last_document.search('.gap').should have(1).item
         end
 
-        it 'should controll the inner window size' do
+        it 'should control the inner window size' do
           mock_app do
             register Kaminari::Helpers::SinatraHelpers
             get '/users' do

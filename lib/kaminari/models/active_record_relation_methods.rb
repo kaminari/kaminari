@@ -21,7 +21,7 @@ module Kaminari
         args = [column_name]
         args << options if ActiveRecord::VERSION::STRING < '4.1.0'
 
-        # .group returns an OrderdHash that responds to #count
+        # .group returns an OrderedHash that responds to #count
         c = c.count(*args)
         if c.is_a?(Hash) || c.is_a?(ActiveSupport::OrderedHash)
           c.count

@@ -28,7 +28,7 @@ if defined? ActiveRecord
 
       context "when the scope use conditions on includes" do
         it "should keep includes and successfully count the results" do
-          # Only @author and @author2 have books titled with the title00x partern
+          # Only @author and @author2 have books titled with the title00x pattern
           if ActiveRecord::VERSION::STRING >= "4.1.0"
             User.includes(:books_authored).references(:books).where("books.title LIKE 'title00%'").page(1).total_count.should == 2
           else
