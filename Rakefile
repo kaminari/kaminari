@@ -23,7 +23,6 @@ namespace :spec do
     mongoid_40
     mongoid_31
     mongoid_30
-    sinatra_14
   )
 
   mappers.each do |gemfile|

@@ -20,9 +20,6 @@ if defined? Rails
 
   require 'rspec/rails'
 end
-if defined? Sinatra
-  require 'spec_helper_for_sinatra'
-end
 
 # Requires supporting files with custom matchers and macros, etc,
 # in ./support/ and its subdirectories.
