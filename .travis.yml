@@ -37,7 +37,7 @@ matrix:
       gemfile: gemfiles/active_record_edge.gemfile
     - rvm: 2.0.0
       gemfile: gemfiles/active_record_edge.gemfile
-    - rvm: 2.1
+    - rvm: 2.1.8
       gemfile: gemfiles/active_record_edge.gemfile
     - rvm: 2.2.4
       gemfile: gemfiles/active_record_32.gemfile
