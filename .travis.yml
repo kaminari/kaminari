@@ -24,6 +24,7 @@ gemfile:
   - gemfiles/mongoid_30.gemfile
   - gemfiles/mongoid_31.gemfile
   - gemfiles/mongoid_40.gemfile
+  - gemfiles/mongoid_50.gemfile
   - gemfiles/sinatra_13.gemfile
   - gemfiles/sinatra_14.gemfile
 
@@ -51,6 +52,8 @@ matrix:
       gemfile: gemfiles/mongoid_31.gemfile
     - rvm: 1.8.7
       gemfile: gemfiles/mongoid_40.gemfile
+    - rvm: 1.8.7
+      gemfile: gemfiles/mongoid_50.gemfile
     - rvm: 1.8.7
       gemfile: gemfiles/mongo_mapper.gemfile
     - rvm: 1.9.3

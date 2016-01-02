@@ -1,0 +1,23 @@
+source 'https://rubygems.org'
+
+gem 'railties', '~> 4.0'
+gem 'mongoid', '~> 5.0.0'
+gem 'rspec-rails', '~> 2.14.1'
+gem 'mime-types', '2.99' if RUBY_VERSION > '1.9.3'
+
+group :development, :test do
+  gem 'database_cleaner', '~> 1.5.1'
+end
+
+platforms :mri do
+  gem 'test-unit' if RUBY_VERSION > '2.1.0'
+end
+
+platforms :rbx do
+  gem 'rubysl', '~> 2.0'
+  gem 'racc'
+  gem 'minitest'
+  gem 'rubinius-developer_tools'
+end
+
+gemspec :path => '../'
