@@ -10,6 +10,7 @@ gem 'capybara', '< 2.1'
 gem 'nokogiri', '< 1.6'
 gem 'rubyzip', '< 1'
 gem 'mime-types', '< 2'
+gem 'test-unit' if RUBY_VERSION > "2.1.0"
 
 platforms :ruby do
   if RUBY_VERSION > "2.1.0"
