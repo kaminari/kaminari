@@ -10,7 +10,9 @@ if RUBY_VERSION >= '1.9.2' && RUBY_VERSION < '2.2.0'
 end
 
 Mongoid.configure do |config|
-  if Mongoid::VERSION > '3.0.0'
+  if Mongoid::VERSION >= '5.0.0'
+    config.connect_to 'kaminari_test'
+  elsif Mongoid::VERSION > '3.0.0'
     config.sessions = {:default => {:hosts => ['0.0.0.0:27017'], :database => 'kaminari_test'}}
   else
     config.master = Mongo::Connection.new.db('kaminari_test')
