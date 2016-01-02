@@ -4,7 +4,6 @@ gem 'railties', '>= 3.2.3'
 gem 'bson', '~> 1.9.2'
 gem 'mongo_mapper', '>= 0.11.0'
 gem 'rspec-rails', '~> 2.14.1'
-gem 'mime-types', '2.99' if RUBY_VERSION == '1.9.3'
 
 # stick to versions that work under Ruby 1.8 for now
 if RUBY_VERSION == '1.8.7'
@@ -20,7 +19,12 @@ else
   gem 'capybara'
   gem 'nokogiri'
   gem 'rubyzip'
-  gem 'mime-types'
+
+  if RUBY_VERSION == '1.9.3'
+    gem 'mime-types', '2.99'
+  else
+    gem 'mime-types'
+  end
 end
 
 platforms :rbx do
