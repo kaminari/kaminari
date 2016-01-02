@@ -4,10 +4,9 @@ include Kaminari::Helpers
 describe 'Kaminari::Helpers' do
   describe 'Tag' do
     describe '#page_url_for', :if => defined?(Rails) do
-      if ActionPack::VERSION::STRING > '5'
-        before { helper.request.assign_parameters(_routes, "users", "index", {}, '', []) }
-      else
-        before { helper.request.assign_parameters(_routes, "users", "index") }
+      before do
+        helper.params[:controller] = 'users'
+        helper.params[:action]     = 'index'
       end
 
       context "for first page" do
@@ -22,10 +21,10 @@ describe 'Kaminari::Helpers' do
       end
 
       context "with a friendly route setting" do
-        if ActionPack::VERSION::STRING > '5'
-          before { helper.request.assign_parameters(_routes, "addresses", "index", {:page => 3}, '', []) }
-        else
-          before { helper.request.assign_parameters(_routes, "addresses", "index", :page => 3) }
+        before do
+          helper.params[:controller] = 'addresses'
+          helper.params[:action]     = 'index'
+          helper.params[:page]       = 3
         end
 
         context "for first page" do
