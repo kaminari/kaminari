@@ -4,9 +4,11 @@ rvm:
   - 1.8.7
   - 1.9.3
   - 2.0.0
-  - 2.1
-  - 2.2
-  - jruby
+  - 2.1.8
+  - 2.2.4
+  - 2.3.0
+  - jruby-1.7.23
+  - jruby-9.0.4.0
   - rbx-2
 
 gemfile:
@@ -16,6 +18,7 @@ gemfile:
   - gemfiles/active_record_40.gemfile
   - gemfiles/active_record_41.gemfile
   - gemfiles/active_record_42.gemfile
+  - gemfiles/active_record_edge.gemfile
   - gemfiles/data_mapper_12.gemfile
   - gemfiles/mongo_mapper.gemfile
   - gemfiles/mongoid_24.gemfile
@@ -42,22 +45,39 @@ matrix:
     - rvm: 1.8.7
       gemfile: gemfiles/active_record_42.gemfile
     - rvm: 1.8.7
+      gemfile: gemfiles/active_record_edge.gemfile
+    - rvm: 1.8.7
       gemfile: gemfiles/mongoid_30.gemfile
     - rvm: 1.8.7
       gemfile: gemfiles/mongoid_31.gemfile
     - rvm: 1.8.7
       gemfile: gemfiles/mongoid_40.gemfile
-    - rvm: 2.2
+    - rvm: 1.9.3
+      gemfile: gemfiles/active_record_edge.gemfile
+    - rvm: 2.1.8
+      gemfile: gemfiles/active_record_edge.gemfile
+    - rvm: 2.2.4
       gemfile: gemfiles/active_record_30.gemfile
-    - rvm: 2.2
+    - rvm: 2.2.4
       gemfile: gemfiles/active_record_31.gemfile
-    - rvm: 2.2
+    - rvm: 2.2.4
       gemfile: gemfiles/active_record_32.gemfile
-    - rvm: 2.2
+    - rvm: 2.2.4
       gemfile: gemfiles/mongoid_24.gemfile
+    - rvm: 2.3.0
+      gemfile: gemfiles/active_record_30.gemfile
+    - rvm: 2.3.0
+      gemfile: gemfiles/active_record_31.gemfile
+    - rvm: 2.3.0
+      gemfile: gemfiles/active_record_32.gemfile
+    - rvm: 2.3.0
+      gemfile: gemfiles/mongoid_24.gemfile
+    - rvm: jruby-1.7.23
+      gemfile: gemfiles/active_record_edge.gemfile
   allow_failures:
     - rvm: 1.8.7
       gemfile: gemfiles/mongoid_24.gemfile
-    - rvm: jruby
+    - rvm: jruby-1.7.23
+    - rvm: jruby-9.0.4.0
     - rvm: rbx-2
   fast_finish: true
