@@ -54,6 +54,8 @@ matrix:
       gemfile: gemfiles/mongoid_40.gemfile
     - rvm: 1.9.3
       gemfile: gemfiles/active_record_edge.gemfile
+    - rvm: 2.0.0
+      gemfile: gemfiles/active_record_edge.gemfile
     - rvm: 2.1.8
       gemfile: gemfiles/active_record_edge.gemfile
     - rvm: 2.2.4
