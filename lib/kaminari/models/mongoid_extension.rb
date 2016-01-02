@@ -20,7 +20,7 @@ module Kaminari
           super
           kls.send(:include, Kaminari::MongoidExtension::Document.dup)
         end
-      end
+      end if Mongoid::VERSION < '5.0.0'
     end
   end
 end
