@@ -5,6 +5,7 @@ gem 'mongoid', '~> 3.1.0'
 gem 'rspec-rails', '~> 2.14.1'
 gem 'origin'
 gem 'moped'
+gem 'mime-types', '2.99' if RUBY_VERSION == '1.9.3'
 
 platforms :mri do
   gem 'test-unit' if RUBY_VERSION > "2.1.0"
