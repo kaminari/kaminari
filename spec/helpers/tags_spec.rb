@@ -47,7 +47,7 @@ describe 'Kaminari::Helpers' do
 
       context "with param_name = 'user[page]' option" do
         before do
-          helper.params.merge!(:user => {:page => "3", :scope => "active"})
+          helper.params[:user] = {:page => "3", :scope => "active"}
         end
 
         context "for first page" do
@@ -75,7 +75,7 @@ describe 'Kaminari::Helpers' do
 
       context "with param_name = 'foo.page' option" do
         before do
-          helper.params.merge!(:'foo.page' => 2)
+          helper.params['foo.page'] = 2
         end
 
         context "for first page" do
