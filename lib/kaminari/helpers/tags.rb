@@ -1,6 +1,6 @@
 module Kaminari
   module Helpers
-    PARAM_KEY_BLACKLIST = :authenticity_token, :commit, :utf8, :_method
+    PARAM_KEY_BLACKLIST = :authenticity_token, :commit, :utf8, :_method, :script_name
 
     # A tag stands for an HTML tag inside the paginator.
     # Basically, a tag has its own partial template file, so every tag can be
@@ -20,13 +20,10 @@ module Kaminari
         @param_name = @options.delete(:param_name) || Kaminari.config.param_name
         @theme = @options.delete(:theme)
         @views_prefix = @options.delete(:views_prefix)
-        @params = template.params.except(*PARAM_KEY_BLACKLIST).merge(@options.delete(:params) || {})
+        @params = template.params
         # @params in Rails 5 no longer inherits from Hash
-        if @params.respond_to?(:to_unsafe_h)
-          @params = @params.to_unsafe_h
-        else
-          @params = @params.with_indifferent_access
-        end
+        @params = @params.to_unsafe_h if @params.respond_to?(:to_unsafe_h)
+        @params = @params.with_indifferent_access.except(*PARAM_KEY_BLACKLIST).merge(@options.delete(:params) || {})
       end
 
       def to_s(locals = {}) #:nodoc:
