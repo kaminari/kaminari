@@ -4,6 +4,7 @@ gem 'railties', '~> 3.2.3'
 gem 'activerecord', '~> 3.2.3', :require => 'active_record'
 gem 'rspec-rails', '~> 2.14.1'
 gem 'test-unit'
+gem 'mime-types', '2.99' if RUBY_VERSION < '2.0.0'
 
 platforms :ruby do
   if RUBY_VERSION > "2.1.0"

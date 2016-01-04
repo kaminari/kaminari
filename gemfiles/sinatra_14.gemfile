@@ -6,6 +6,7 @@ gem 'rspec', '~> 2.14.1'
 gem 'padrino-helpers', '~> 0.12.0'
 gem 'rack-test', '>= 0'
 gem 'sinatra-contrib', '~> 1.4.0'
+gem 'mime-types', '2.99' if RUBY_VERSION < '2.0.0'
 
 platforms :ruby do
   if RUBY_VERSION > "2.1.0"
