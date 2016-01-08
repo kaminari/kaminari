@@ -22,10 +22,15 @@ module Kaminari
         @views_prefix = @options.delete(:views_prefix)
         @params = template.params.except(*PARAM_KEY_BLACKLIST).merge(@options.delete(:params) || {})
         # @params in Rails 5 does no more inherits from Hash but composes a Hash
-        if @params.instance_variable_defined?(:@parameters) && !@params.respond_to?(:deep_merge)
-          @params = @params.instance_variable_get :@parameters
+        
+        if defined?(::Rails) and ::Rails::VERSION::MAJOR >= 5
+          @params = @params.permit!.to_h.with_indifferent_access
         else
-          @params = @params.with_indifferent_access
+          if @params.instance_variable_defined?(:@parameters) && !@params.respond_to?(:deep_merge)
+            @params = @params.instance_variable_get :@parameters
+          else
+            @params = @params.with_indifferent_access
+          end
         end
       end
 
