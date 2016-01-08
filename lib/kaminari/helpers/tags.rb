@@ -19,9 +19,9 @@ module Kaminari
         @theme = @options.delete(:theme)
         @views_prefix = @options.delete(:views_prefix)
         @params = @options[:params] ? template.params.merge(@options.delete :params) : template.params
-        # @params in Rails 5 does no more inherits from Hash but composes a Hash
-        if @params.instance_variable_defined?(:@parameters) && !@params.respond_to?(:deep_merge)
-          @params = @params.instance_variable_get :@parameters
+        # @params in Rails 5 no longer inherits from Hash
+        if @params.respond_to?(:to_unsafe_h)
+          @params = @params.to_unsafe_h
         else
           @params = @params.with_indifferent_access
         end
