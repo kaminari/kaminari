@@ -21,7 +21,7 @@ module Kaminari
         @params = template.params
         # @params in Rails 5 no longer inherits from Hash
         @params = @params.to_unsafe_h if @params.respond_to?(:to_unsafe_h)
-        @params = @params.expect(:script_name).merge(@options.delete(:params) || {})
+        @params = @params.except(:script_name).merge(@options.delete(:params) || {})
       end
 
       def to_s(locals = {}) #:nodoc:
