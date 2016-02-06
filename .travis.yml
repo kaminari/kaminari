@@ -2,9 +2,9 @@ language: ruby
 
 rvm:
   - 2.0.0
-  - 2.1.8
-  - 2.2.4
-  - 2.3.0
+  - 2.1
+  - 2.2
+  - 2.3
   - ruby-head
   - jruby
   - jruby-head
@@ -34,11 +34,11 @@ matrix:
   exclude:
     - rvm: 2.0.0
       gemfile: gemfiles/active_record_edge.gemfile
-    - rvm: 2.1.8
+    - rvm: 2.1
       gemfile: gemfiles/active_record_edge.gemfile
-    - rvm: 2.2.4
+    - rvm: 2.2
       gemfile: gemfiles/active_record_32.gemfile
-    - rvm: 2.3.0
+    - rvm: 2.3
       gemfile: gemfiles/active_record_32.gemfile
     - rvm: ruby-head
       gemfile: gemfiles/active_record_32.gemfile
