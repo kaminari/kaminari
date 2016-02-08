@@ -196,7 +196,7 @@ module Kaminari
         end
 
         def <=>(other)
-          to_i <=> other.to_i
+          other.is_a?(self.class) ? (to_i <=> other.to_i) : nil
         end
       end
     end
