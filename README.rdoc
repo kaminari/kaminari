@@ -27,15 +27,15 @@ The pagination helper outputs the HTML5 <nav> tag by default. Plus, the helper s
 
 == Supported versions
 
-* Ruby 1.8.7, 1.9.2, 1.9.3, 2.0.0, 2.1.x, 2.2.x, 2.3.x, 2.4
+* Ruby 2.0.0, 2.1.x, 2.2.x, 2.3.x, 2.4
 
-* Rails 3.0, 3.1, 3.2, 4.0, 4.1, 4.2
+* Rails 3.2, 4.0, 4.1, 4.2, 5.0 (edge)
 
 * Sinatra 1.4
 
 * Haml 3+
 
-* Mongoid 2+
+* Mongoid 3+
 
 == Install
 
