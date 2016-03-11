@@ -324,7 +324,7 @@ More features are coming, and again, this is still experimental. Please let us k
 
 == Grape support
 
-If you're using Grape on Rack you have a chance to use kaminary without Sinatra or Rails. It is just enough to require Grape extension for kaminary
+If you're using Grape on Rack you have a chance to use kaminari without Sinatra or Rails. It is just enough to require Grape extension for kaminari
 
 To use kaminari with Grape:
 
