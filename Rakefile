@@ -19,10 +19,6 @@ namespace :spec do
     active_record_41
     active_record_40
     active_record_32
-    mongoid_50
-    mongoid_40
-    mongoid_31
-    mongoid_30
   )
 
   mappers.each do |gemfile|

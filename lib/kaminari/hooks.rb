@@ -6,12 +6,6 @@ module Kaminari
         ::ActiveRecord::Base.send :include, Kaminari::ActiveRecordExtension
       end
 
-      begin; require 'mongoid'; rescue LoadError; end
-      if defined? ::Mongoid
-        require 'kaminari/models/mongoid_extension'
-        ::Mongoid::Document.send :include, Kaminari::MongoidExtension::Document
-      end
-
       require 'kaminari/models/array_extension'
 
       ActiveSupport.on_load(:action_view) do
