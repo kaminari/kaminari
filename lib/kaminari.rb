@@ -34,7 +34,7 @@ require 'kaminari/models/configuration_methods'
 require 'kaminari/hooks'
 
 # if not using Railtie, call `Kaminari::Hooks.init` directly
-if defined? Rails
+if defined? Rails::Raltie
   require 'kaminari/railtie'
   require 'kaminari/engine'
 end
