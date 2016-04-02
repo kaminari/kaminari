@@ -150,6 +150,15 @@ module Kaminari
           @page == @options[:current_page] + 1
         end
 
+        # relationship with the current page
+        def rel
+          if next?
+            'next'
+          elsif prev?
+            'prev'
+          end
+        end
+
         # within the left outer window or not
         def left_outer?
           @page <= @options[:left]

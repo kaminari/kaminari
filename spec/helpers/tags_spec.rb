@@ -139,6 +139,21 @@ describe 'Kaminari::Helpers' do
         end
       end
 
+      describe '#rel' do
+        context 'page == current_page - 1' do
+          subject { Paginator::PageProxy.new({:current_page => 77}, 76, nil) }
+          its(:rel) { should eq 'prev' }
+        end
+        context 'page == current_page' do
+          subject { Paginator::PageProxy.new({:current_page => 78}, 78, nil) }
+          its(:rel) { should be_nil }
+        end
+        context 'page == current_page + 1' do
+          subject { Paginator::PageProxy.new({:current_page => 52}, 53, nil) }
+          its(:rel) { should eq 'next' }
+        end
+      end
+
       describe '#left_outer?' do
         context 'current_page == left' do
           subject { Paginator::PageProxy.new({:left => 3}, 3, nil) }
