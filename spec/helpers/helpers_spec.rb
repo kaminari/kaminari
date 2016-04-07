@@ -21,6 +21,17 @@ describe 'Kaminari::Helpers::Paginator' do
     it { should == "<a href='#'>link</a>" }
   end
 
+  describe '#render' do
+    context 'when always_display is on' do
+      before do
+        @paginator = Paginator.new(template, total_pages: 1, always_display: true)
+        @paginator.render { @non_exist = :called }
+      end
+      subject { @paginator.instance_variable_get('@non_exist') }
+      it { should == :called }
+    end
+  end
+
   describe '#params' do
     before do
       @paginator = Paginator.new(template, :params => {:controller => 'foo', :action => 'bar'})
