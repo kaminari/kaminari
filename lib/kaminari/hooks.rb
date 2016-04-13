@@ -6,10 +6,16 @@ module Kaminari
         ::ActiveRecord::Base.send :include, Kaminari::ActiveRecordExtension
       end
 
-      begin; require 'mongoid'; rescue LoadError; end
-      if defined? ::Mongoid
-        require 'kaminari/models/mongoid_extension'
-        ::Mongoid::Document.send :include, Kaminari::MongoidExtension::Document
+      ## mongoid
+      begin
+        require 'kaminari/mongoid'
+      rescue LoadError
+        begin; require 'mongoid'; rescue LoadError; end
+        if defined? ::Mongoid
+          ActiveSupport::Deprecation.warn 'Kaminari Mongoid support has been extracted to a separate gem, and will be removed in the next 1.0 release. Please bundle kaminari-mongoid gem.'
+          require 'kaminari/models/mongoid_extension'
+          ::Mongoid::Document.send :include, Kaminari::MongoidExtension::Document
+        end
       end
 
       require 'kaminari/models/array_extension'
