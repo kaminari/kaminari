@@ -15,10 +15,16 @@ module Kaminari
         # ::DataMapper::Model.send :extend, Kaminari::DataMapperExtension::Model
       end
 
-      begin; require 'mongoid'; rescue LoadError; end
-      if defined? ::Mongoid
-        require 'kaminari/models/mongoid_extension'
-        ::Mongoid::Document.send :include, Kaminari::MongoidExtension::Document
+      ## mongoid
+      begin
+        require 'kaminari/mongoid'
+      rescue LoadError
+        begin; require 'mongoid'; rescue LoadError; end
+        if defined? ::Mongoid
+          ActiveSupport::Deprecation.warn 'Kaminari Mongoid support has been extracted to a separate gem, and will be removed in the next 1.0 release. Please bundle kaminari-mongoid gem.'
+          require 'kaminari/models/mongoid_extension'
+          ::Mongoid::Document.send :include, Kaminari::MongoidExtension::Document
+        end
       end
 
       ActiveSupport.on_load(:mongo_mapper) do
