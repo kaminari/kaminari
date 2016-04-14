@@ -6,13 +6,18 @@ module Kaminari
         ::ActiveRecord::Base.send :include, Kaminari::ActiveRecordExtension
       end
 
-      begin; require 'data_mapper'; rescue LoadError; end
-      if defined? ::DataMapper
-        require 'dm-aggregates'
-        require 'kaminari/models/data_mapper_extension'
-        ::DataMapper::Collection.send :include, Kaminari::DataMapperExtension::Collection
-        ::DataMapper::Model.append_extensions Kaminari::DataMapperExtension::Model
-        # ::DataMapper::Model.send :extend, Kaminari::DataMapperExtension::Model
+      # data_mapper
+      begin
+        require 'kaminari/data_mapper'
+      rescue LoadError
+        begin; require 'data_mapper'; rescue LoadError; end
+        if defined? ::DataMapper
+          require 'dm-aggregates'
+          require 'kaminari/models/data_mapper_extension'
+          ::DataMapper::Collection.send :include, Kaminari::DataMapperExtension::Collection
+          ::DataMapper::Model.append_extensions Kaminari::DataMapperExtension::Model
+          # ::DataMapper::Model.send :extend, Kaminari::DataMapperExtension::Model
+        end
       end
 
       ## mongoid
