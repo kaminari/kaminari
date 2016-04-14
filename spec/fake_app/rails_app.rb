@@ -3,6 +3,7 @@ require 'action_controller/railtie'
 require 'action_view/railtie'
 
 require 'fake_app/active_record/config' if defined? ActiveRecord
+require 'fake_app/data_mapper/config' if defined? DataMapper
 require 'fake_app/mongoid/config' if defined? Mongoid
 require 'fake_app/mongo_mapper/config' if defined? MongoMapper
 # config
@@ -26,6 +27,7 @@ end
 
 #models
 require 'fake_app/active_record/models' if defined? ActiveRecord
+require 'fake_app/data_mapper/models' if defined? DataMapper
 require 'fake_app/mongoid/models' if defined? Mongoid
 require 'fake_app/mongo_mapper/models' if defined? MongoMapper
 
