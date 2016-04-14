@@ -34,8 +34,11 @@ module Kaminari
     rescue FloatDomainError
       raise ZeroPerPageOperation, "The number of total pages was incalculable. Perhaps you called .per(0)?"
     end
-    #FIXME for compatibility. remove num_pages at some time in the future
-    alias num_pages total_pages
+
+    def num_pages
+      ActiveSupport::Deprecation.warn 'num_pages is deprecated and will be removed in Kaminari 1.0. Please use total_pages instead.'
+      total_pages
+    end
 
     # Current page number
     def current_page
