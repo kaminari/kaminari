@@ -12,7 +12,7 @@ module Kaminari
       include ::ActionView::Context
 
       def initialize(template, options) #:nodoc:
-        #FIXME for compatibility. remove num_pages at some time in the future
+        ActiveSupport::Deprecation.warn 'num_pages is deprecated and will be removed in Kaminari 1.0. Please use total_pages instead.' if options.has_key? :num_pages
         options[:num_pages] ||= options[:total_pages]
 
         @window_options = {}.tap do |h|
