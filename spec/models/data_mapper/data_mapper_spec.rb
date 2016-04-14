@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-if defined? DataMapper
+if defined?(DataMapper) && !defined?(Kaminari::DataMapper)
   # tests for issue #203
   describe Kaminari::DataMapperCollectionMethods do
     before do
