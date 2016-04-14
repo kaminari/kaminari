@@ -37,7 +37,7 @@ module Kaminari
         begin
           require 'kaminari/mongo_mapper'
         rescue LoadError
-          ActiveSupport::Deprecation.warn p('Kaminari MongoMapper support has been extracted to a separate gem, and will be removed in the next 1.0 release. Please bundle kaminari-mongo_mapper gem.')
+          ActiveSupport::Deprecation.warn 'Kaminari MongoMapper support has been extracted to a separate gem, and will be removed in the next 1.0 release. Please bundle kaminari-mongo_mapper gem.'
           require 'kaminari/models/mongo_mapper_extension'
           ::MongoMapper::Document.send :include, Kaminari::MongoMapperExtension::Document
           ::Plucky::Query.send :include, Kaminari::PluckyCriteriaMethods
