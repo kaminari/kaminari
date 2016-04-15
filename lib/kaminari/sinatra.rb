@@ -1,3 +1,4 @@
+require 'active_support/deprecation'
 require 'sinatra/base'
 require 'kaminari'
 require 'kaminari/helpers/sinatra_helpers'

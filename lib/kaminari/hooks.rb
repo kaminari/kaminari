@@ -1,3 +1,5 @@
+require 'active_support/deprecation'
+
 module Kaminari
   class Hooks
     def self.init
