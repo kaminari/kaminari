@@ -36,11 +36,11 @@ matrix:
   exclude:
     - rvm: 2.0.0
       gemfile: gemfiles/active_record_edge.gemfile
-    - rvm: 2.1.8
+    - rvm: 2.1.10
       gemfile: gemfiles/active_record_edge.gemfile
     - rvm: 2.2.4
       gemfile: gemfiles/active_record_32.gemfile
-    - rvm: 2.3.0
+    - rvm: 2.3.1
       gemfile: gemfiles/active_record_32.gemfile
     - rvm: ruby-head
       gemfile: gemfiles/active_record_32.gemfile
