@@ -179,7 +179,7 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails) do
 
       context 'having more than one page of entries' do
         before do
-          50.times {|i| User.create! :name => "user#{i}"}
+          60.times {|i| User.create! :name => "user#{i}"}
         end
 
         describe 'the first page' do
@@ -188,11 +188,11 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails) do
           end
 
           subject { helper.page_entries_info @users, :params => {:controller => 'users', :action => 'index'} }
-          it      { should == 'Displaying users <b>1&nbsp;-&nbsp;25</b> of <b>50</b> in total' }
+          it      { should == 'Displaying users <b>1&nbsp;-&nbsp;25</b> of <b>60</b> in total' }
 
           context 'setting the entry name option to "member"' do
             subject { helper.page_entries_info @users, :entry_name => 'member', :params => {:controller => 'users', :action => 'index'} }
-            it      { should == 'Displaying members <b>1&nbsp;-&nbsp;25</b> of <b>50</b> in total' }
+            it      { should == 'Displaying members <b>1&nbsp;-&nbsp;25</b> of <b>60</b> in total' }
           end
         end
 
@@ -202,11 +202,25 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails) do
           end
 
           subject { helper.page_entries_info @users, :params => {:controller => 'users', :action => 'index'} }
-          it      { should == 'Displaying users <b>26&nbsp;-&nbsp;50</b> of <b>50</b> in total' }
+          it      { should == 'Displaying users <b>26&nbsp;-&nbsp;50</b> of <b>60</b> in total' }
 
           context 'setting the entry name option to "member"' do
             subject { helper.page_entries_info @users, :entry_name => 'member', :params => {:controller => 'users', :action => 'index'} }
-            it      { should == 'Displaying members <b>26&nbsp;-&nbsp;50</b> of <b>50</b> in total' }
+            it      { should == 'Displaying members <b>26&nbsp;-&nbsp;50</b> of <b>60</b> in total' }
+          end
+        end
+
+        describe 'the last page' do
+          before do
+            @users = User.page(3).per(25)
+          end
+
+          subject { helper.page_entries_info @users, :params => {:controller => 'users', :action => 'index'} }
+          it      { should == 'Displaying users <b>51&nbsp;-&nbsp;60</b> of <b>60</b> in total' }
+
+          context 'setting the entry name option to "member"' do
+            subject { helper.page_entries_info @users, :entry_name => 'member', :params => {:controller => 'users', :action => 'index'} }
+            it      { should == 'Displaying members <b>51&nbsp;-&nbsp;60</b> of <b>60</b> in total' }
           end
         end
       end
@@ -253,7 +267,7 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails) do
 
       context 'having more than one page of entries' do
         before do
-          50.times {|i| User::Address.create!}
+          60.times {|i| User::Address.create!}
         end
 
         describe 'the first page' do
@@ -262,11 +276,11 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails) do
           end
 
           subject { helper.page_entries_info @addresses, :params => {:controller => 'addresses', :action => 'index'} }
-          it      { should == 'Displaying addresses <b>1&nbsp;-&nbsp;25</b> of <b>50</b> in total' }
+          it      { should == 'Displaying addresses <b>1&nbsp;-&nbsp;25</b> of <b>60</b> in total' }
 
           context 'setting the entry name option to "place"' do
             subject { helper.page_entries_info @addresses, :entry_name => 'place', :params => {:controller => 'addresses', :action => 'index'} }
-            it      { should == 'Displaying places <b>1&nbsp;-&nbsp;25</b> of <b>50</b> in total' }
+            it      { should == 'Displaying places <b>1&nbsp;-&nbsp;25</b> of <b>60</b> in total' }
           end
         end
 
@@ -276,11 +290,25 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(Rails) do
           end
 
           subject { helper.page_entries_info @addresses, :params => {:controller => 'addresses', :action => 'index'} }
-          it      { should == 'Displaying addresses <b>26&nbsp;-&nbsp;50</b> of <b>50</b> in total' }
+          it      { should == 'Displaying addresses <b>26&nbsp;-&nbsp;50</b> of <b>60</b> in total' }
 
           context 'setting the entry name option to "place"' do
             subject { helper.page_entries_info @addresses, :entry_name => 'place', :params => {:controller => 'addresses', :action => 'index'} }
-            it      { should == 'Displaying places <b>26&nbsp;-&nbsp;50</b> of <b>50</b> in total' }
+            it      { should == 'Displaying places <b>26&nbsp;-&nbsp;50</b> of <b>60</b> in total' }
+          end
+        end
+
+        describe 'the last page' do
+          before do
+            @addresses = User::Address.page(3).per(25)
+          end
+
+          subject { helper.page_entries_info @addresses, :params => {:controller => 'addresses', :action => 'index'} }
+          it      { should == 'Displaying addresses <b>51&nbsp;-&nbsp;60</b> of <b>60</b> in total' }
+
+          context 'setting the entry name option to "place"' do
+           subject { helper.page_entries_info @addresses, :entry_name => 'place', :params => {:controller => 'addresses', :action => 'index'} }
+          it      { should == 'Displaying places <b>51&nbsp;-&nbsp;60</b> of <b>60</b> in total' }
           end
         end
       end
