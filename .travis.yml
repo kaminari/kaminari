@@ -53,7 +53,8 @@ matrix:
       gemfile: gemfiles/active_record_edge.gemfile
   allow_failures:
     - rvm: ruby-head
-    - rvm: jruby
+    - rvm: jruby-1.7.25
+    - rvm: jruby-9.1.0.0
     - rvm: jruby-head
     - rvm: rbx-2
   fast_finish: true
