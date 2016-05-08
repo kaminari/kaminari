@@ -95,7 +95,7 @@ module Kaminari
         t('helpers.page_entries_info.one_page.display_entries', :entry_name => entry_name, :count => collection.total_count)
       else
         first = collection.offset_value + 1
-        last = collection.last_page? ? collection.total_count : collection.offset_value + collection.limit_value
+        last = (sum = collection.offset_value + collection.limit_value) > collection.total_count ? collection.total_count : sum
         t('helpers.page_entries_info.more_pages.display_entries', :entry_name => entry_name, :first => first, :last => last, :total => collection.total_count)
       end.html_safe
     end
