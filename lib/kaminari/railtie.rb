@@ -1,6 +1,6 @@
 module Kaminari
   class Railtie < ::Rails::Railtie #:nodoc:
-    initializer 'kaminari' do |_app|
+    initializer 'kaminari' do
       Kaminari::Hooks.init
     end
   end
