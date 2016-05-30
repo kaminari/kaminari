@@ -3,7 +3,7 @@ language: ruby
 rvm:
   - 2.0.0
   - 2.1.10
-  - 2.2.4
+  - 2.2.5
   - 2.3.1
   - ruby-head
   - jruby-1.7.25
@@ -39,7 +39,7 @@ matrix:
       gemfile: gemfiles/active_record_edge.gemfile
     - rvm: 2.1.10
       gemfile: gemfiles/active_record_edge.gemfile
-    - rvm: 2.2.4
+    - rvm: 2.2.5
       gemfile: gemfiles/active_record_32.gemfile
     - rvm: 2.3.1
       gemfile: gemfiles/active_record_32.gemfile
