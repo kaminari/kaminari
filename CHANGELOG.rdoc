@@ -4,6 +4,8 @@
 
 * Mongoid 5.0 support
 
+* Dropped Ruby 1.8 support
+
 * Dropped Mongoid 2.x support
 
 * Extracted Sinatra support to kaminari-sinatra gem
