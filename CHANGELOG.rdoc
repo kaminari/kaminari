@@ -1,3 +1,28 @@
+== 0.17.0
+
+* Rails 5 ready!
+
+* Mongoid 5.0 support
+
+* Dropped Mongoid 2.x support
+
+* Extracted Sinatra support to kaminari-sinatra gem
+
+* Extracted DataMapper support to kaminari-data_mapper gem
+
+* Extracted Mongoid support to kaminari-mongoid gem
+
+* Extracted MongoMapper support to kaminari-mongo_mapper gem
+
+* Deprecated Kaminari::PageScopeMethods#num_pages in favor of `total_pages`
+
+* Deprecated :num_pages option for `paginate` in favor of :total_pages
+
+* Fixed mangled params in pagination links on Rails 5 #766 [audionerd]
+
+* Fixed a bug where the range of the records displayed on the last page
+doesn't match #718 [danzanzini]
+
 == 0.16.3
 
 * Fixed a "stack level too deep" bug in mongoid #642 [bartes]
