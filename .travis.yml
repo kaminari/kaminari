@@ -5,7 +5,7 @@ rvm:
   - 1.9.3
   - 2.0.0
   - 2.1.10
-  - 2.2.4
+  - 2.2.5
   - 2.3.1
   - jruby-1.7.25
   - jruby-9.1.0.0
@@ -62,11 +62,11 @@ matrix:
       gemfile: gemfiles/active_record_edge.gemfile
     - rvm: 2.1.10
       gemfile: gemfiles/active_record_edge.gemfile
-    - rvm: 2.2.4
+    - rvm: 2.2.5
       gemfile: gemfiles/active_record_30.gemfile
-    - rvm: 2.2.4
+    - rvm: 2.2.5
       gemfile: gemfiles/active_record_31.gemfile
-    - rvm: 2.2.4
+    - rvm: 2.2.5
       gemfile: gemfiles/active_record_32.gemfile
     - rvm: 2.3.1
       gemfile: gemfiles/active_record_30.gemfile
