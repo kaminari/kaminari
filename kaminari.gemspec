@@ -28,7 +28,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rake', (RUBY_VERSION == '1.8.7' ? ['10.5.0'] : ['>= 0'])
   s.add_development_dependency 'tzinfo', ['>= 0']
   s.add_development_dependency 'rspec', ['>= 0']
-  s.add_development_dependency 'rr', ['>= 0']
+  s.add_development_dependency 'rr', (RUBY_VERSION < '2' ? ['< 1.2'] : '>= 0')
   s.add_development_dependency 'capybara', ['>= 1.0']
   s.add_development_dependency 'database_cleaner', ['~> 1.2.0']
   s.add_development_dependency 'rdoc', ['>= 0']
