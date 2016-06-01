@@ -25,7 +25,6 @@ namespace :spec do
     mongoid_31
     mongoid_30
     mongo_mapper
-    sinatra_14
   )
 
   mappers.each do |gemfile|
