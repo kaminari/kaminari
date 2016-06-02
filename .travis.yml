@@ -18,7 +18,6 @@ gemfile:
   - gemfiles/active_record_42.gemfile
   - gemfiles/active_record_edge.gemfile
   - gemfiles/data_mapper_12.gemfile
-  - gemfiles/mongo_mapper.gemfile
 
 sudo: false
 

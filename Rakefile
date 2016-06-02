@@ -20,7 +20,6 @@ namespace :spec do
     active_record_40
     active_record_32
     data_mapper_12
-    mongo_mapper
   )
 
   mappers.each do |gemfile|
