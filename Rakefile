@@ -19,7 +19,6 @@ namespace :spec do
     active_record_41
     active_record_40
     active_record_32
-    data_mapper_12
   )
 
   mappers.each do |gemfile|
