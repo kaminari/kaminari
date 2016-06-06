@@ -3,7 +3,7 @@ include Kaminari::Helpers
 
 describe 'Kaminari::Helpers' do
   describe 'Tag' do
-    describe '#page_url_for', :if => defined?(Rails) do
+    describe '#page_url_for', :if => defined?(::Rails::Railtie) do
       before do
         helper.params[:controller] = 'users'
         helper.params[:action]     = 'index'

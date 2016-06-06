@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-if defined?(Rails)
+if defined?(::Rails::Railtie)
   require 'rails/generators'
   require 'generators/kaminari/views_generator'
 
