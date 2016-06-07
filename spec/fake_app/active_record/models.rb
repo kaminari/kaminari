@@ -41,6 +41,9 @@ end
 class User::Address < ActiveRecord::Base
   belongs_to :user
 end
+# a model for I18n testing
+class Automobile < ActiveRecord::Base
+end
 
 # a class that uses abstract class
 class Product < ActiveRecord::Base
@@ -58,6 +61,7 @@ class CreateAllTables < ActiveRecord::Migration
     create_table(:readerships) {|t| t.integer :user_id; t.integer :book_id }
     create_table(:authorships) {|t| t.integer :user_id; t.integer :book_id }
     create_table(:user_addresses) {|t| t.string :street; t.integer :user_id }
+    create_table(:automobiles) {|t| t.string :model }
     create_table(:devices) {|t| t.string :name; t.integer :age}
   end
 end

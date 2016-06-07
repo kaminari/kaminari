@@ -1,7 +1,17 @@
 module Kaminari
   module ActiveRecordRelationMethods
     def entry_name
-      model_name.human.downcase
+      # If the model has a translated name, #human will use that. We pass
+      # a manually pluralized default by using #element, which returns a
+      # downcased and demodulized version of the class name, so
+      # eg. User::Address becomes 'address'.
+      # This keeps the functionality backwards compatible with older versions
+      # of Kaminari.
+
+      default = model_name.element
+      default = ActiveSupport::Inflector.pluralize(default) if total_count != 1
+
+      model_name.human(count: total_count, default: default)
     end
 
     def reset #:nodoc:

@@ -29,7 +29,7 @@ module Kaminari
     end
 
     def entry_name
-      "entry"
+      "entry".pluralize(total_count)
     end
 
     # items at the specified "page"

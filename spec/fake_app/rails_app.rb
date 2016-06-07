@@ -14,8 +14,12 @@ app.config.active_support.deprecation = :log
 app.config.eager_load = false
 # Rails.root
 app.config.root = File.dirname(__FILE__)
+app.config.i18n.default_locale = :en
 Rails.backtrace_cleaner.remove_silencers!
 app.initialize!
+
+I18n.load_path += Dir[Rails.root.join('locales', '*.yml')]
+I18n.reload!
 
 # routes
 app.routes.draw do
@@ -50,6 +54,15 @@ if defined? ActiveRecord
       render :inline => <<-ERB
   <%= @addresses.map(&:street).join("\n") %>
   <%= paginate @addresses %>
+  ERB
+    end
+  end
+  class AutomobilesController < ApplicationController
+    def index
+      @automobiles = Automobile.page params[:page]
+      render :inline => <<-ERB
+  <%= @automobiles.map(&:modle).join("\n") %>
+  <%= paginate @automobiles %>
   ERB
     end
   end

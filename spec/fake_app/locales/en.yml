@@ -1,0 +1,6 @@
+en:
+  activerecord:
+    models:
+      automobile:
+        one: "car"
+        other: "cars"
