@@ -13,9 +13,6 @@ module Kaminari
       include ::ActionView::Context
 
       def initialize(template, options) #:nodoc:
-        ActiveSupport::Deprecation.warn 'num_pages is deprecated and will be removed in Kaminari 1.0. Please use total_pages instead.' if options.has_key? :num_pages
-        options[:num_pages] ||= options[:total_pages]
-
         @window_options = {}.tap do |h|
           h[:window] = options.delete(:window) || options.delete(:inner_window) || Kaminari.config.window
           outer_window = options.delete(:outer_window) || Kaminari.config.outer_window
