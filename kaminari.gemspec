@@ -25,7 +25,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'bundler', '>= 1.0.0'
   s.add_development_dependency 'rake', '>= 0'
   s.add_development_dependency 'tzinfo', '>= 0'
-  s.add_development_dependency 'rspec', '>= 0'
+  s.add_development_dependency 'rspec', '~> 2.14.1'
   s.add_development_dependency 'rr', '>= 0'
   s.add_development_dependency 'capybara', '>= 1.0'
   s.add_development_dependency 'database_cleaner', '~> 1.4.1'
