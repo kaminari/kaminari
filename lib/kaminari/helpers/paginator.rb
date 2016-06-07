@@ -1,5 +1,4 @@
 require 'active_support/inflector'
-require 'active_support/deprecation'
 require 'action_view'
 require 'action_view/log_subscriber'
 require 'action_view/context'
