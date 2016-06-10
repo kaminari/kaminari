@@ -59,6 +59,8 @@ Then bundle:
   To fetch the 7th page of users (default +per_page+ is 25)
     User.page(7)
 
+  Note: pagination starts at page 1, not at page 0. (page(0) will return the same results as page(1).)
+
 * the +per+ scope
 
   To show a lot more users per each page (change the +per_page+ value)
