@@ -9,6 +9,7 @@ module Kaminari
       require 'kaminari/models/array_extension'
 
       ActiveSupport.on_load(:action_view) do
+        require 'kaminari/helpers/action_view_extension'
         ::ActionView::Base.send :include, Kaminari::ActionViewExtension
       end
     end
