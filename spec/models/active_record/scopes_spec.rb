@@ -80,11 +80,23 @@ if defined? ActiveRecord
             subject { model_class.page(1).per(5) }
             it { should have(5).users }
             its('first.name') { should == 'user001' }
+
+            context 'with max_per_page < 5' do
+              before { model_class.max_paginates_per 4 }
+              it { should have(4).users }
+              after { model_class.max_paginates_per nil }
+            end
           end
 
           context "page 1 per nil (using default)" do
             subject { model_class.page(1).per(nil) }
             it { should have(model_class.default_per_page).users }
+
+            context 'with max_per_page < default_per_page' do
+              before { model_class.max_paginates_per (model_class.default_per_page - 1) }
+              it { should have(model_class.max_per_page).users }
+              after { model_class.max_paginates_per nil }
+            end
           end
 
           context "page 1 per 0" do
