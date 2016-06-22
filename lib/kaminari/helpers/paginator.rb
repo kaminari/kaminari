@@ -1,16 +1,10 @@
 require 'active_support/inflector'
-require 'action_view'
-require 'action_view/log_subscriber'
-require 'action_view/context'
 require 'kaminari/helpers/tags'
 
 module Kaminari
   module Helpers
     # The main container tag
     class Paginator < Tag
-      # so that this instance can actually "render"
-      include ::ActionView::Context
-
       def initialize(template, options) #:nodoc:
         @window_options = {}.tap do |h|
           h[:window] = options.delete(:window) || options.delete(:inner_window) || Kaminari.config.window
@@ -74,33 +68,7 @@ module Kaminari
       end
 
       def to_s #:nodoc:
-        subscriber = ActionView::LogSubscriber.log_subscribers.detect {|ls| ls.is_a? ActionView::LogSubscriber}
-
-        # There is a logging subscriber
-        # and we don't want it to log render_partial
-        # It is threadsafe, but might not repress logging
-        # consistently in a high-load environment
-        if subscriber
-          unless defined? subscriber.render_partial_with_logging
-            class << subscriber
-              alias_method :render_partial_with_logging, :render_partial
-              attr_accessor :render_without_logging
-              # ugly hack to make a renderer where
-              # we can turn logging on or off
-              def render_partial(event)
-                render_partial_with_logging(event) unless render_without_logging
-              end
-            end
-          end
-
-          subscriber.render_without_logging = true
-          ret = super @window_options.merge :paginator => self
-          subscriber.render_without_logging = false
-
-          ret
-        else
-          super @window_options.merge :paginator => self
-        end
+        super @window_options.merge :paginator => self
       end
 
       # delegates view helper methods to @template
