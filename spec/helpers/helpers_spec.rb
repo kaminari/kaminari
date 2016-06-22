@@ -9,6 +9,7 @@ describe 'Kaminari::Helpers::Paginator' do
       options { {} }
       url_for {|h| "/foo?page=#{h[:page]}"}
       link_to { "<a href='#'>link</a>" }
+      output_buffer { defined?(ActionView) ? ::ActionView::OutputBuffer.new : ::ActiveSupport::SafeBuffer.new }
     end
     r
   end

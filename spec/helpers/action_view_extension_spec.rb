@@ -1,6 +1,9 @@
 require 'spec_helper'
 
 describe 'Kaminari::ActionViewExtension', :if => defined?(::Rails::Railtie) do
+  before do
+    helper.output_buffer = ::ActionView::OutputBuffer.new
+  end
   describe '#paginate' do
     before do
       50.times {|i| User.create! :name => "user#{i}"}
