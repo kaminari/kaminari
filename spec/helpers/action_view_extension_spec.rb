@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'Kaminari::ActionViewExtension', :if => defined?(::Rails::Railtie) do
+describe 'Kaminari::ActionViewExtension', :if => defined?(::Rails::Railtie) && defined?(::ActionView) do
   before do
     helper.output_buffer = ::ActionView::OutputBuffer.new
   end
