@@ -28,7 +28,7 @@ module Kaminari
 
         @last = nil
         # initialize the output_buffer for Context
-        @output_buffer = ActionView::OutputBuffer.new
+        @output_buffer = template.output_buffer.class.new
       end
 
       # render given block as a view template
