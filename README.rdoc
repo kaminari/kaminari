@@ -315,17 +315,8 @@ See: https://github.com/kaminari/kaminari-sinatra
 
 == Grape support
 
-If you're using Grape on Rack you have a chance to use kaminari without Sinatra or Rails. It is just enough to require Grape extension for kaminari
+See: https://github.com/kaminari/kaminari-grape
 
-To use kaminari with Grape:
-
-    require 'kaminari/grape'
-
-or edit gemfile:
-
-    gem 'kaminari', :require => 'kaminari/grape'
-
-This line just enables model-side features, such as <tt>Model#page</tt> and <tt>Model#per</tt>.
 
 == For more information
 
