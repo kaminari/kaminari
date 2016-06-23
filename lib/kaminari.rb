@@ -17,10 +17,10 @@ Rails:
     gem 'kaminari'
 
 Sinatra/Padrino:
-    gem 'kaminari', :require => 'kaminari/sinatra'
+    gem 'kaminari-sinatra'
 
 Grape:
-    gem 'kaminari', :require => 'kaminari/grape'
+    gem 'kaminari-grape'
 
 EOC
 
