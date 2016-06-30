@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.email       = ['ronnie@dio.jp']
   s.homepage    = 'https://github.com/amatsuda/kaminari'
   s.summary     = 'A pagination engine plugin for Rails 3+ and other modern frameworks'
-  s.description = 'Kaminari is a Scope & Engine based, clean, powerful, agnostic, customizable and sophisticated paginator for Rails 3+'
+  s.description = 'Kaminari is a Scope & Engine based, clean, powerful, agnostic, customizable and sophisticated paginator for Rails 4+'
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
@@ -19,7 +19,7 @@ Gem::Specification.new do |s|
 
   s.licenses = ['MIT']
 
-  s.add_dependency 'activesupport', '>= 3.0.0'
+  s.add_dependency 'activesupport', '>= 4.0.0'
   s.add_dependency 'kaminari-actionview'
   s.add_dependency 'kaminari-activerecord'
 
