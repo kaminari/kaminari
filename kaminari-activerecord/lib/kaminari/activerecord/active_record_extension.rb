@@ -1,4 +1,4 @@
-require 'kaminari/models/active_record_model_extension'
+require 'kaminari/activerecord/active_record_model_extension'
 
 module Kaminari
   module ActiveRecordExtension

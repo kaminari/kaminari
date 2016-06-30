@@ -1,4 +1,4 @@
-require 'kaminari/models/active_record_relation_methods'
+require 'kaminari/activerecord/active_record_relation_methods'
 
 module Kaminari
   module ActiveRecordModelExtension
