@@ -1,2 +1,6 @@
 require "kaminari/activerecord/version"
-require 'kaminari/activerecord/railtie'
+
+ActiveSupport.on_load :active_record do
+  require 'kaminari/activerecord/active_record_extension'
+  ::ActiveRecord::Base.send :include, Kaminari::ActiveRecordExtension
+end
