@@ -1,4 +1,5 @@
 require "kaminari/actionview/version"
+require 'kaminari/actionview/railtie'
 
 module Kaminari
   module Actionview
