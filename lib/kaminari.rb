@@ -32,6 +32,8 @@ require 'kaminari/models/page_scope_methods'
 require 'kaminari/models/configuration_methods'
 require 'kaminari/hooks'
 
+require 'kaminari/actionview'
+
 # if not using Railtie, call `Kaminari::Hooks.init` directly
 if defined? ::Rails::Railtie
   require 'kaminari/railtie'
