@@ -33,6 +33,7 @@ require 'kaminari/models/configuration_methods'
 require 'kaminari/hooks'
 
 require 'kaminari/actionview'
+require 'kaminari/activerecord'
 
 # if not using Railtie, call `Kaminari::Hooks.init` directly
 if defined? ::Rails::Railtie
