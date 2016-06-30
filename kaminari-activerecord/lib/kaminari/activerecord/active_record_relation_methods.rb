@@ -19,7 +19,7 @@ module Kaminari
 
         # Rails 4.1 removes the `options` argument from AR::Relation#count
         args = [column_name]
-        args << options if ActiveRecord::VERSION::STRING < '4.1.0'
+        args << options if ::ActiveRecord::VERSION::STRING < '4.1.0'
 
         # .group returns an OrderedHash that responds to #count
         c = c.count(*args)
