@@ -140,7 +140,7 @@ module Kaminari
         undef :to_s
         # Redefining to_s not to log each render_partial
         def to_s #:nodoc:
-          subscriber = ActionView::LogSubscriber.log_subscribers.detect {|ls| ls.is_a? ActionView::LogSubscriber}
+          subscriber = ::ActionView::LogSubscriber.log_subscribers.detect {|ls| ls.is_a? ::ActionView::LogSubscriber}
 
           # There is a logging subscriber
           # and we don't want it to log render_partial
