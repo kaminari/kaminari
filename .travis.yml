@@ -16,6 +16,7 @@ gemfile:
   - gemfiles/active_record_40.gemfile
   - gemfiles/active_record_41.gemfile
   - gemfiles/active_record_42.gemfile
+  - gemfiles/active_record_50.gemfile
   - gemfiles/active_record_edge.gemfile
 
 sudo: false
@@ -38,6 +39,14 @@ matrix:
       gemfile: gemfiles/active_record_32.gemfile
     - rvm: ruby-head
       gemfile: gemfiles/active_record_32.gemfile
+    - rvm: jruby-1.7.25
+      gemfile: gemfiles/active_record_50.gemfile
+    - rvm: jruby-9.1.0.0
+      gemfile: gemfiles/active_record_50.gemfile
+    - rvm: jruby-head
+      gemfile: gemfiles/active_record_50.gemfile
+    - rvm: rbx-2
+      gemfile: gemfiles/active_record_50.gemfile
     - rvm: jruby-1.7.25
       gemfile: gemfiles/active_record_edge.gemfile
     - rvm: jruby-9.1.0.0
