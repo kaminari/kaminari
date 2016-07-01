@@ -15,6 +15,7 @@ task :default => "spec:all"
 namespace :spec do
   mappers = %w(
     active_record_edge
+    active_record_50
     active_record_42
     active_record_41
     active_record_40
