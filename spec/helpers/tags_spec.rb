@@ -230,6 +230,32 @@ describe 'Kaminari::Helpers' do
           its(:was_truncated?) { should_not be_true }
         end
       end
+      describe '#need_page_tag?' do
+        context 'left_outer? is true' do
+          subject { Paginator::PageProxy.new({:left => 3}, 3, nil) }
+          its(:need_page_tag?) { should be_true }
+        end
+        context 'right_outer? is true' do
+          subject { Paginator::PageProxy.new({:total_pages => 10, :right => 3, :left => 3}, 8, nil) }
+          its(:need_page_tag?) { should be_true }
+        end
+        context 'inside_window? is true' do
+          subject do
+            Paginator::PageProxy.new(
+              {:current_page => 4, :window => 7, :left => 3, :right => 3, :total_pages => 10}, 10, nil
+            )
+          end
+          its(:need_page_tag?) { should be_true }
+        end
+        context 'left_outer? is false, right_outer is false and inside_window? is false' do
+          subject do
+            Paginator::PageProxy.new(
+              { :left => 3, :total_pages => 20, :right => 3,:current_page => 4, :window => 5}, 10, nil
+            )
+          end
+          its(:need_page_tag?) { should_not be_true }
+        end
+      end
       describe "#single_gap?" do
         let(:window_options) do
           {
