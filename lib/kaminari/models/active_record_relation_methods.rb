@@ -30,5 +30,9 @@ module Kaminari
         end
       end
     end
+
+    def total_count=(count)
+      @total_count = count
+    end
   end
 end
