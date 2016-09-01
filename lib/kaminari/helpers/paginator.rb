@@ -102,7 +102,7 @@ module Kaminari
 
         # the last page or not
         def last?
-          @page == @options[:total_pages]
+          @page >= @options[:total_pages]
         end
 
         # the previous page or not
