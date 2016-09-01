@@ -17,11 +17,13 @@ module Kaminari
         extend Kaminari::PageScopeMethods
       end
 
-      if @_total_count && (@_total_count <= original_array.count)
-        original_array = original_array.first(@_total_count)[@_offset_value, @_limit_value]
-      end
-
-      unless @_total_count
+      if @_total_count
+        if @_total_count > original_array.count # pre-paginated array, let's just make sure the limit is respected
+          original_array = original_array.first(@_limit_value)
+        else
+          original_array = original_array.first(@_total_count)[@_offset_value, @_limit_value]
+        end
+      else
         original_array = original_array[@_offset_value, @_limit_value]
       end
 
