@@ -3,6 +3,7 @@ module Kaminari
     # Specify the <tt>per_page</tt> value for the preceding <tt>page</tt> scope
     #   Model.page(3).per(10)
     def per(num)
+      @_per = num
       if (n = num.to_i) < 0 || !(/^\d/ =~ num.to_s)
         self
       elsif n.zero?
@@ -17,6 +18,10 @@ module Kaminari
     def padding(num)
       @_padding = num
       offset(offset_value + num.to_i)
+    end
+
+    def max_paginates_per(max_per)
+      limit(max_per > @_per ? @_per : max_per)
     end
 
     # Total number of pages
