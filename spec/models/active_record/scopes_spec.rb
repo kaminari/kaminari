@@ -260,6 +260,23 @@ if defined? ActiveRecord
           end
         end
 
+        describe '#repaginate_out_of_range' do
+          subject { model_class.page(1000).repaginate_out_of_range }
+          it_should_behave_like 'blank page'
+
+          context 'when when_out_of_range config is :first' do
+            before { model_class.when_page_is_out_of_range_set :first }
+            after { model_class.when_page_is_out_of_range_set nil }
+            it_should_behave_like 'the first page'
+          end
+
+          context 'when when_out_of_range config is :last' do
+            before { model_class.when_page_is_out_of_range_set :last }
+            after { model_class.when_page_is_out_of_range_set nil }
+            its(:offset_value) { should == 75 }
+          end
+        end
+
         describe '#count' do
           context 'page 1' do
             subject { model_class.page }

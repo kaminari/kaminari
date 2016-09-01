@@ -106,4 +106,20 @@ describe Kaminari::Configuration do
       its(:params_on_first_page) { should be_true }
     end
   end
+
+  describe 'when_out_of_range' do
+    context 'by default' do
+      its(:when_out_of_range) { should == :default }
+    end
+    context 'configure via config block' do
+      before do
+        Kaminari.configure {|c| c.when_out_of_range = :first}
+      end
+      its(:when_out_of_range) { should == :first }
+      after do
+        Kaminari.configure {|c| c.when_out_of_range = :default}
+      end
+    end
+  end
+
 end

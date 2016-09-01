@@ -43,6 +43,20 @@ module Kaminari
       def max_pages
         (defined?(@_max_pages) && @_max_pages) || Kaminari.config.max_pages
       end
+
+      # Overrides the default + when_out_of_range+ value per model
+      #   class Article < ActiveRecord::Base
+      #     when_page_is_out_of_range_set :first
+      #   end
+      def when_page_is_out_of_range_set(fallback)
+        @_when_out_of_range = fallback
+      end
+
+      # This model's +when_out_of_range+ value
+      # returns +when_out_of_range+ value unless explicitly overridden via <tt>when_page_is_out_of_range_set</tt>
+      def when_out_of_range
+        (defined?(@_when_out_of_range) && @_when_out_of_range) || Kaminari.config.when_out_of_range
+      end
     end
   end
 end

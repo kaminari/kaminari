@@ -122,4 +122,42 @@ describe "configuration methods" do
       model.max_pages_per nil
     end
   end
+
+  describe "#when_out_of_range" do
+    if defined? ActiveRecord
+      describe 'AR::Base' do
+        subject { ActiveRecord::Base }
+        it { should_not respond_to :when_page_is_out_of_range_set }
+      end
+    end
+
+    subject { model.page(11).per(10) }
+
+    context "by default" do
+      its(:when_out_of_range){ should == :default }
+    end
+
+    context "when configuring both on global and model-level" do
+      before do
+        Kaminari.configure {|c| c.when_out_of_range = :first }
+        model.when_page_is_out_of_range_set :first
+      end
+
+      its(:when_out_of_range){ should == :first }
+    end
+
+    context "when configuring multiple times" do
+      before do
+        Kaminari.configure {|c| c.when_out_of_range = :last }
+        Kaminari.configure {|c| c.when_out_of_range = :first }
+      end
+
+      its(:when_out_of_range){ should == :first }
+    end
+
+    after do
+      Kaminari.configure {|c| c.when_out_of_range = :default }
+      model.when_page_is_out_of_range_set nil
+    end
+  end
 end
