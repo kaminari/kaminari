@@ -91,7 +91,12 @@ module Kaminari
     #   #-> Displaying items 6 - 10 of 26 in total
     def page_entries_info(collection, options = {})
       entry_name = options[:entry_name] || collection.entry_name
-      entry_name = entry_name.pluralize unless collection.total_count == 1
+      if defined?(I18n)
+        pluralize_args = [I18n.locale]
+      else
+        pluralize_args = []
+      end
+      entry_name = entry_name.pluralize(*pluralize_args) unless collection.total_count == 1
 
       if collection.total_pages < 2
         t('helpers.page_entries_info.one_page.display_entries', :entry_name => entry_name, :count => collection.total_count)
