@@ -154,7 +154,7 @@ module Kaminari
         end
 
         def to_i
-          number
+          number.to_i
         end
 
         def to_s
