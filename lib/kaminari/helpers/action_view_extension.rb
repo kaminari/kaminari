@@ -17,6 +17,7 @@ module Kaminari
     # * <tt>:params</tt> - url_for parameters for the links (:controller, :action, etc.)
     # * <tt>:param_name</tt> - parameter name for page number in the links (:page by default)
     # * <tt>:remote</tt> - Ajax? (false by default)
+    # * <tt>:route_set</tt> - namespace of router (current engine's namespace by default) 
     # * <tt>:ANY_OTHER_VALUES</tt> - Any other hash key & values would be directly passed into each tag as :locals value.
     def paginate(scope, options = {})
       paginator = Kaminari::Helpers::Paginator.new(self, options.reverse_merge(:current_page => scope.current_page, :total_pages => scope.total_pages, :per_page => scope.limit_value, :remote => false))
