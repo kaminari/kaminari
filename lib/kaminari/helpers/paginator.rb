@@ -153,6 +153,10 @@ module Kaminari
           @last.is_a? Gap
         end
 
+        def need_page_tag?
+          left_outer? || right_outer? || inside_window?
+        end
+
         def to_i
           number
         end
