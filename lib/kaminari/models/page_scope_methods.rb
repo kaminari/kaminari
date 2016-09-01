@@ -19,6 +19,11 @@ module Kaminari
       offset(offset_value + num.to_i)
     end
 
+    def set_total_count(total_count)
+      @total_count = total_count.to_i
+      self
+    end
+
     # Total number of pages
     def total_pages
       count_without_padding = total_count
