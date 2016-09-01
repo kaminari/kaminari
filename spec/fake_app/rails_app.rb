@@ -32,8 +32,7 @@ require 'fake_app/mongoid/models' if defined? Mongoid
 require 'fake_app/mongo_mapper/models' if defined? MongoMapper
 
 # controllers
-class ApplicationController < ActionController::Base; end
-class UsersController < ApplicationController
+class UsersController < ActionController::Base
   def index
     @users = User.page params[:page]
     render :inline => <<-ERB
@@ -44,7 +43,7 @@ ERB
 end
 
 if defined? ActiveRecord
-  class AddressesController < ApplicationController
+  class AddressesController < ActionController::Base
     def index
       @addresses = User::Address.page params[:page]
       render :inline => <<-ERB
