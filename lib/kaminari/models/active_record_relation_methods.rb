@@ -41,7 +41,7 @@ module Kaminari
             sm = Arel::SelectManager.new c.engine
             select_value = "count(*) as count"
             counting_subquery = sm.project(select_value).from(c.arel.as("subquery_for_count"))
-            connection.select_one(counting_subquery)['count']
+            connection.select_one(counting_subquery, nil, c.bind_values)['count'].to_i
           else
             # With ActiveRecord 3 fall back to string interpolation
             c = self.connection.execute("select count(*) as subquery_count " +
