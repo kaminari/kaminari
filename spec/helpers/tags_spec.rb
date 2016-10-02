@@ -11,12 +11,12 @@ describe 'Kaminari::Helpers' do
 
       context "for first page" do
         subject { Tag.new(helper).page_url_for(1) }
-        it { should == "/users" }
+        it { should == "http://test.host/users" }
 
         context 'config.params_on_first_page == false' do
           before { Kaminari.config.params_on_first_page = true }
           after  { Kaminari.config.params_on_first_page = false }
-          it { should == "/users?page=1" }
+          it { should == "http://test.host/users?page=1" }
         end
       end
 
@@ -29,7 +29,7 @@ describe 'Kaminari::Helpers' do
 
         context "for first page" do
           subject { Tag.new(helper).page_url_for(1) }
-          it { should == "/addresses" }
+          it { should == "http://test.host/addresses" }
 
           context 'config.params_on_first_page == false' do
             before { Kaminari.config.params_on_first_page = true }
@@ -40,7 +40,7 @@ describe 'Kaminari::Helpers' do
 
         context "for other page" do
           subject { Tag.new(helper).page_url_for(5) }
-          it { should == "/addresses/page/5" }
+          it { should == "http://test.host/addresses/page/5" }
         end
       end
 

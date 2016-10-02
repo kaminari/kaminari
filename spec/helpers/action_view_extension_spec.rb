@@ -34,7 +34,7 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(::Rails::Railtie) && d
 
     context "total_pages: 3" do
       subject { helper.paginate @users, :total_pages => 3, :params => {:controller => 'users', :action => 'index'} }
-      it { should match(/<a href="\/users\?page=3">Last/) }
+      it { should match(/<a href="http:\/\/test.host\/users\?page=3">Last/) }
     end
 
     context "page: 20 (out of range)" do
