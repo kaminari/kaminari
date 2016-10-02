@@ -21,8 +21,9 @@ module Kaminari
         @window_options[:current_page] = @options[:current_page] = PageProxy.new(@window_options, @options[:current_page], nil)
 
         @last = nil
-        # initialize the output_buffer for Context
-        @output_buffer = template.instance_variable_get(:@output_buffer).class.new
+        #XXX Using parent template's buffer class for rendering each partial here. This might cause problems if the handler mismatches
+        buffer_class = defined?(::ActionView::OutputBuffer) ? ::ActionView::OutputBuffer : template.instance_variable_get(:@output_buffer).class
+        @output_buffer = buffer_class.new
       end
 
       # render given block as a view template
