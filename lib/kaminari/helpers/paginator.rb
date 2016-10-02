@@ -22,7 +22,7 @@ module Kaminari
 
         @last = nil
         # initialize the output_buffer for Context
-        @output_buffer = template.output_buffer.class.new
+        @output_buffer = template.instance_variable_get(:@output_buffer).class.new
       end
 
       # render given block as a view template
