@@ -43,6 +43,10 @@ matrix:
       gemfile: gemfiles/active_record_32.gemfile
     - rvm: ruby-head
       gemfile: gemfiles/active_record_32.gemfile
+    - rvm: ruby-head
+      gemfile: gemfiles/active_record_40.gemfile
+    - rvm: ruby-head
+      gemfile: gemfiles/active_record_41.gemfile
     - rvm: jruby-1.7.25
       gemfile: gemfiles/active_record_50.gemfile
     - rvm: jruby-9.1.0.0
