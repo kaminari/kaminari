@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
-gem 'railties', '>= 3.2.3'
+# Rails 5 + mongo_mapper requires activemodel-serializers-xml gem that depends on activerecord gem
+gem 'railties', '~> 4.2.0'
 gem 'bson', '~> 1.9.2'
 gem 'mongo_mapper', '>= 0.11.0'
 gem 'rspec-rails', '~> 2.14.1'
