@@ -49,17 +49,9 @@ matrix:
       gemfile: gemfiles/active_record_41.gemfile
     - rvm: jruby-1.7.26
       gemfile: gemfiles/active_record_50.gemfile
-    - rvm: jruby-9.1.5.0
-      gemfile: gemfiles/active_record_50.gemfile
-    - rvm: jruby-head
-      gemfile: gemfiles/active_record_50.gemfile
     - rvm: rbx-2
       gemfile: gemfiles/active_record_50.gemfile
     - rvm: jruby-1.7.26
-      gemfile: gemfiles/active_record_edge.gemfile
-    - rvm: jruby-9.1.5.0
-      gemfile: gemfiles/active_record_edge.gemfile
-    - rvm: jruby-head
       gemfile: gemfiles/active_record_edge.gemfile
     - rvm: rbx-2
       gemfile: gemfiles/active_record_edge.gemfile
