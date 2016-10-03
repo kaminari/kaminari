@@ -17,12 +17,23 @@ app.config.root = File.dirname(__FILE__)
 Rails.backtrace_cleaner.remove_silencers!
 app.initialize!
 
+module MyEngine
+  class Engine < ::Rails::Engine
+    isolate_namespace MyEngine
+    routes.draw do
+      resources :items
+    end
+  end
+end
+
 # routes
 app.routes.draw do
   resources :users
   resources :addresses do
     get 'page/:page', :action => :index, :on => :collection
   end
+
+  mount MyEngine::Engine, :at => '/mounted_engine'
 end
 
 #models
