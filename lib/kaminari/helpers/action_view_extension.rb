@@ -84,14 +84,28 @@ module Kaminari
     #
     # By default, the message will use the humanized class name of objects
     # in collection: for instance, "project types" for ProjectType models.
-    # The namespace will be cutted out and only the last name will be used.
-    # Override this with the <tt>:entry_name</tt> parameter:
+    # The humanized class name can be pluralized in the locale file:
+    #
+    #   de:
+    #     activerecord:
+    #       models:
+    #         book:
+    #           one: Buch
+    #           other: Bücher
+    #   # -> Displaying Bücher 6-10 of 26 in total
+    #
+    # Override this with the <tt>:entry_name</tt> parameter. In that case,
+    # the name will be pluralized with String#pluralize, and this only works
+    # for English.
     #
     #   <%= page_entries_info @posts, :entry_name => 'item' %>
     #   #-> Displaying items 6 - 10 of 26 in total
     def page_entries_info(collection, options = {})
-      entry_name = options[:entry_name] || collection.entry_name
-      entry_name = entry_name.pluralize unless collection.total_count == 1
+      entry_name = if options.has_key?(:entry_name)
+        options[:entry_name].pluralize(collection.total_count)
+      else
+        collection.entry_name
+      end
 
       if collection.total_pages < 2
         t('helpers.page_entries_info.one_page.display_entries', :entry_name => entry_name, :count => collection.total_count)
