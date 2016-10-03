@@ -9,7 +9,7 @@ rvm:
   - jruby-1.7.26
   - jruby-9.1.5.0
   - jruby-head
-  - rbx-2
+  - rbx-3
 
 gemfile:
   - gemfiles/active_record_32.gemfile
@@ -49,16 +49,16 @@ matrix:
       gemfile: gemfiles/active_record_41.gemfile
     - rvm: jruby-1.7.26
       gemfile: gemfiles/active_record_50.gemfile
-    - rvm: rbx-2
+    - rvm: rbx-3
       gemfile: gemfiles/active_record_50.gemfile
     - rvm: jruby-1.7.26
       gemfile: gemfiles/active_record_edge.gemfile
-    - rvm: rbx-2
+    - rvm: rbx-3
       gemfile: gemfiles/active_record_edge.gemfile
   allow_failures:
     - rvm: ruby-head
     - rvm: jruby-1.7.26
     - rvm: jruby-9.1.5.0
     - rvm: jruby-head
-    - rvm: rbx-2
+    - rvm: rbx-3
   fast_finish: true
