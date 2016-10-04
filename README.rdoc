@@ -29,7 +29,7 @@ The pagination helper outputs the HTML5 <nav> tag by default. Plus, the helper s
 
 * Ruby 2.0.0, 2.1.x, 2.2.x, 2.3.x, 2.4
 
-* Rails 4.0, 4.1, 4.2, 5.0, 5.1
+* Rails 4.1, 4.2, 5.0, 5.1
 
 * Sinatra 1.4
 
@@ -340,14 +340,14 @@ To run the test suite locally against all supported frameworks:
 
 To target the test suite against one framework:
 
-  % rake spec:active_record_40
+  % rake spec:active_record_41
 
 You can find a list of supported spec tasks by running <tt>rake -T</tt>. You may also find it useful to run a specific test
 for a specific framework. To do so, you'll have to first make sure you have bundled everything for that configuration,
 then you can run the specific test:
 
-  % BUNDLE_GEMFILE='gemfiles/active_record_40.gemfile' bundle install
-  % BUNDLE_GEMFILE='gemfiles/active_record_40.gemfile' bundle exec rspec ./spec/requests/users_spec.rb
+  % BUNDLE_GEMFILE='gemfiles/active_record_41.gemfile' bundle install
+  % BUNDLE_GEMFILE='gemfiles/active_record_41.gemfile' bundle exec rspec ./spec/requests/users_spec.rb
 
 
 == Copyright

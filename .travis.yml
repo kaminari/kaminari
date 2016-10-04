@@ -12,7 +12,6 @@ rvm:
   - rbx-3
 
 gemfile:
-  - gemfiles/active_record_40.gemfile
   - gemfiles/active_record_41.gemfile
   - gemfiles/active_record_42.gemfile
   - gemfiles/active_record_50.gemfile
@@ -36,8 +35,6 @@ matrix:
       gemfile: gemfiles/active_record_edge.gemfile
     - rvm: 2.1.10
       gemfile: gemfiles/active_record_edge.gemfile
-    - rvm: ruby-head
-      gemfile: gemfiles/active_record_40.gemfile
     - rvm: ruby-head
       gemfile: gemfiles/active_record_41.gemfile
     - rvm: jruby-1.7.26
