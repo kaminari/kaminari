@@ -91,6 +91,24 @@ if defined? ActiveRecord
             subject { model_class.page(1).per(0) }
             it { should have(0).users }
           end
+
+          context "page 1 per 5 override_max 2" do
+            subject { model_class.page(1).per(5, override_max: 2) }
+            it { should have(2).users }
+          end
+
+          context "with override_max > default_max and per is between" do
+            before do
+              model_class.max_paginates_per 50
+            end
+
+            subject { model_class.page(1).per(55, override_max: 60) }
+            it { should have(55).users }
+
+            after do
+              model_class.max_paginates_per nil
+            end
+          end
         end
 
         describe '#padding' do
