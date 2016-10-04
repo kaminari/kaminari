@@ -3,13 +3,12 @@ module Kaminari
     # Specify the <tt>per_page</tt> value for the preceding <tt>page</tt> scope
     #   Model.page(3).per(10)
     def per(num)
-      if (n = num.to_i) < 0 || !(/^\d/ =~ num.to_s)
-        self
-      elsif n.zero?
-        limit(n)
-      elsif max_per_page && max_per_page < n
-        limit(max_per_page).offset(offset_value / limit_value * max_per_page)
+      n = Integer(num || -1) rescue -1
+      if n == 0
+        limit(0)
       else
+        n = default_per_page if n < 0
+        n = max_per_page if max_per_page && n > max_per_page
         limit(n).offset(offset_value / limit_value * n)
       end
     end
