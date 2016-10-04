@@ -20,6 +20,7 @@ Gem::Specification.new do |s|
   s.licenses = ['MIT']
 
   s.add_dependency 'activesupport', '>= 4.1.0'
+  s.add_dependency 'kaminari-core'
   s.add_dependency 'kaminari-actionview'
   s.add_dependency 'kaminari-activerecord'
 
