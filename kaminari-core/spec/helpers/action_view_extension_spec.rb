@@ -20,14 +20,14 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(::Rails::Railtie) && d
     end
 
     context 'accepts :theme option' do
-      before { helper.controller.append_view_path "spec/fake_app/views" }
+      before { helper.controller.append_view_path File.join(Gem.loaded_specs['kaminari-core'].gem_dir, 'spec/fake_app/views') }
       subject { helper.paginate @users, :theme => "bootstrap", :params => {:controller => 'users', :action => 'index'} }
       it { should match(/bootstrap-paginator/) }
       it { should match(/bootstrap-page-link/) }
     end
 
     context 'accepts :view_prefix option' do
-      before { helper.controller.append_view_path "spec/fake_app/views" }
+      before { helper.controller.append_view_path File.join(Gem.loaded_specs['kaminari-core'].gem_dir, 'spec/fake_app/views') }
       subject { helper.paginate @users, :views_prefix => "alternative/", :params => {:controller => 'users', :action => 'index'} }
       it { should eq("  <b>1</b>\n") }
     end
