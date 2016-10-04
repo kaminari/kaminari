@@ -177,7 +177,7 @@ module Kaminari
         end
 
         def <=>(other)
-          to_i <=> other.to_i
+          other.respond_to?(:to_i) ? (to_i <=> other.to_i) : nil
         end
       end
     end
