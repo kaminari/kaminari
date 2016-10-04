@@ -22,7 +22,13 @@ module Kaminari
 
         @last = nil
         #XXX Using parent template's buffer class for rendering each partial here. This might cause problems if the handler mismatches
-        buffer_class = defined?(::ActionView::OutputBuffer) ? ::ActionView::OutputBuffer : template.instance_variable_get(:@output_buffer).class
+        buffer_class = if defined?(::ActionView::OutputBuffer)
+          ::ActionView::OutputBuffer
+        elsif template.instance_variable_get(:@output_buffer)
+          template.instance_variable_get(:@output_buffer).class
+        else
+          ActiveSupport::SafeBuffer
+        end
         @output_buffer = buffer_class.new
       end
 
