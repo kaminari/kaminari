@@ -8,7 +8,7 @@ rvm:
   - ruby-head
   - jruby-1.7.26
   - jruby-9.1.5.0
-  - rbx-3
+  - rbx
 
 gemfile:
   - gemfiles/active_record_41.gemfile
@@ -38,15 +38,15 @@ matrix:
       gemfile: gemfiles/active_record_41.gemfile
     - rvm: jruby-1.7.26
       gemfile: gemfiles/active_record_50.gemfile
-    - rvm: rbx-3
+    - rvm: rbx
       gemfile: gemfiles/active_record_50.gemfile
     - rvm: jruby-1.7.26
       gemfile: gemfiles/active_record_edge.gemfile
-    - rvm: rbx-3
+    - rvm: rbx
       gemfile: gemfiles/active_record_edge.gemfile
   allow_failures:
     - rvm: ruby-head
     - rvm: jruby-1.7.26
     - rvm: jruby-9.1.5.0
-    - rvm: rbx-3
+    - rvm: rbx
   fast_finish: true
