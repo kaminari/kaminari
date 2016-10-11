@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 module Kaminari
   module Generators
-
     class ViewsGenerator < Rails::Generators::NamedBase
       source_root File.expand_path('../../../../app/views/kaminari', __FILE__)
 
