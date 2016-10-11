@@ -26,10 +26,10 @@ BANNER
 
         if theme = self.class.themes.detect {|t| t.name == file_name}
           if download_templates(theme).empty?
-            say %Q[template_engine: #{template_engine} is not available for theme: #{file_name}]
+            say "template_engine: #{template_engine} is not available for theme: #{file_name}"
           end
         else
-          say %Q[no such theme: #{file_name}\n  available themes: #{self.class.themes.map(&:name).join ', '}]
+          say "no such theme: #{file_name}\n  available themes: #{self.class.themes.map(&:name).join ', '}"
         end
       end
 
