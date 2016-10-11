@@ -38,7 +38,7 @@ if defined? ActiveRecord
       end
     end
     after :all do
-      [User, GemDefinedModel, Device].each {|m| m.delete_all }
+      [User, GemDefinedModel, Device].each(&:delete_all)
     end
 
     [User, Admin, GemDefinedModel, Device].each do |model_class|
