@@ -4,12 +4,6 @@ gem 'railties', '~> 4.2.0'
 gem 'activerecord', '~> 4.2.0', :require => 'active_record'
 gem 'rspec-rails', '~> 2.14.1'
 
-if RUBY_VERSION > '1.9.3'
-  gem 'mime-types'
-else
-  gem 'mime-types', '2.99'
-end
-
 platforms :ruby do
   if RUBY_VERSION > "2.1.0"
     gem 'sqlite3'
