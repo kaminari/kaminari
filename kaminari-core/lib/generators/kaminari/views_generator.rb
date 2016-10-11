@@ -35,13 +35,11 @@ BANNER
 
       private
       def self.themes
-        begin
-          @themes ||= GitHubApiHelper.get_files_in_master.group_by {|fn, _| fn[0...(fn.index('/') || 0)]}.delete_if {|fn, _| fn.blank?}.map do |name, files|
-            Theme.new name, files
-          end
-        rescue SocketError
-          []
+        @themes ||= GitHubApiHelper.get_files_in_master.group_by {|fn, _| fn[0...(fn.index('/') || 0)]}.delete_if {|fn, _| fn.blank?}.map do |name, files|
+          Theme.new name, files
         end
+      rescue SocketError
+        []
       end
 
       def download_templates(theme)
