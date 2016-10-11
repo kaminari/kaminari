@@ -278,7 +278,7 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(::Rails::Railtie) && d
 
       context 'having more than 1 but less than a page of entries' do
         before do
-          10.times {|i| User::Address.create!}
+          10.times { User::Address.create! }
           @addresses = User::Address.page(1).per(25)
         end
 
@@ -293,7 +293,7 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(::Rails::Railtie) && d
 
       context 'having more than one page of entries' do
         before do
-          50.times {|i| User::Address.create!}
+          50.times { User::Address.create! }
         end
 
         describe 'the first page' do
