@@ -4,6 +4,8 @@ module Kaminari
   class PaginatableArray < Array
     include Kaminari::ConfigurationMethods::ClassMethods
 
+    ENTRY = 'entry'.freeze
+
     attr_internal_accessor :limit_value, :offset_value
 
     # ==== Options
@@ -28,8 +30,8 @@ module Kaminari
       super(original_array || [])
     end
 
-    def entry_name
-      "entry"
+    def entry_name(options = {})
+      I18n.t('helpers.page_entries_info.entry', options.reverse_merge(:default => ENTRY.pluralize(options[:count])))
     end
 
     # items at the specified "page"
