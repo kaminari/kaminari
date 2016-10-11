@@ -5,49 +5,22 @@ module Kaminari
   #   Kaminari.configure do |config|
   #     config.default_per_page = 10
   #   end
-  def self.configure(&block)
-    yield @config ||= Kaminari::Configuration.new
-  end
+  include ActiveSupport::Configurable
 
-  # Global settings for Kaminari
-  def self.config
-    @config
-  end
+  config_accessor(:default_per_page) { 25 }
+  config_accessor(:max_per_page)
+  config_accessor(:window) { 4 }
+  config_accessor(:outer_window) { 0 }
+  config_accessor(:left) { 0 }
+  config_accessor(:right) { 0 }
+  config_accessor(:page_method_name) { :page }
+  config_accessor(:param_name) { :page }
+  config_accessor(:max_pages)
+  config_accessor(:params_on_first_page) { false }
 
-  # need a Class for 3.0
-  class Configuration #:nodoc:
-    include ActiveSupport::Configurable
-    config_accessor :default_per_page
-    config_accessor :max_per_page
-    config_accessor :window
-    config_accessor :outer_window
-    config_accessor :left
-    config_accessor :right
-    config_accessor :page_method_name
-    config_accessor :max_pages
-    config_accessor :params_on_first_page
-
-    def param_name
-      config.param_name.respond_to?(:call) ? config.param_name.call : config.param_name
-    end
-
-    # define param_name writer (copied from AS::Configurable)
-    writer, line = 'def param_name=(value); config.param_name = value; end', __LINE__
-    singleton_class.class_eval writer, __FILE__, line
-    class_eval writer, __FILE__, line
-  end
-
-  # this is ugly. why can't we pass the default value to config_accessor...?
-  configure do |config|
-    config.default_per_page = 25
-    config.max_per_page = nil
-    config.window = 4
-    config.outer_window = 0
-    config.left = 0
-    config.right = 0
-    config.page_method_name = :page
-    config.param_name = :page
-    config.max_pages = nil
-    config.params_on_first_page = false
+  # If param_name was given as a callable object, call it when returning
+  config.undef_method :param_name
+  def config.param_name
+    self[:param_name].respond_to?(:call) ? self[:param_name].call : self[:param_name]
   end
 end
