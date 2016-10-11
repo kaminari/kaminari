@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 module Kaminari
   module Helpers
-    PARAM_KEY_BLACKLIST = :authenticity_token, :commit, :utf8, :_method, :script_name
+    PARAM_KEY_BLACKLIST = [:authenticity_token, :commit, :utf8, :_method, :script_name].freeze
 
     # A tag stands for an HTML tag inside the paginator.
     # Basically, a tag has its own partial template file, so every tag can be
