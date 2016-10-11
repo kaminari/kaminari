@@ -17,16 +17,12 @@ module Kaminari
         # Remove includes only if they are irrelevant
         c = c.except(:includes) unless references_eager_loaded_tables?
 
-        # Rails 4.1 removes the `options` argument from AR::Relation#count
-        args = [column_name]
-        args << options if ::ActiveRecord::VERSION::STRING < '4.1.0'
-
         # .group returns an OrderedHash that responds to #count
-        c = c.count(*args)
+        c = c.count(column_name)
         if c.is_a?(Hash) || c.is_a?(ActiveSupport::OrderedHash)
           c.count
         else
-          c.respond_to?(:count) ? c.count(*args) : c
+          c.respond_to?(:count) ? c.count(column_name) : c
         end
       end
     end
