@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 DatabaseCleaner[:active_record].strategy = :transaction if defined? ActiveRecord
 
 RSpec.configure do |config|

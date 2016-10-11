@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'active_support/core_ext/module'
 module Kaminari
   # Kind of Array that can paginate

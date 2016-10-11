@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'spec_helper'
 
 describe 'Kaminari::ActionViewExtension', :if => defined?(::Rails::Railtie) && defined?(::ActionView) do

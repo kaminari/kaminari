@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 RSpec::Matchers.define :contain_tag do |klass|
   match do |collection|
     if @num.blank?

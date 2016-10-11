@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Kaminari
   module PageScopeMethods
     # Specify the <tt>per_page</tt> value for the preceding <tt>page</tt> scope
