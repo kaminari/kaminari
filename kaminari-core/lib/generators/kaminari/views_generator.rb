@@ -71,7 +71,7 @@ BANNER
       end
 
       def engine #:nodoc:
-        File.extname(name).sub /^\./, ''
+        File.extname(name).sub(/^\./, '')
       end
     end
 
