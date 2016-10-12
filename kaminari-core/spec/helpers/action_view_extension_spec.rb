@@ -239,7 +239,7 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(::Rails::Railtie) && d
       before do
         50.times {|i| User.create! :name => "user#{i}"}
         @users = User.page(1).per(25)
-        I18n.backend.store_translations(:en, { User.i18n_scope => { models: { user: { one: "person", other: "people" } } } })
+        I18n.backend.store_translations(:en, User.i18n_scope => { :models => { :user => { :one => "person", :other => "people" } } })
       end
 
       after do
