@@ -17,8 +17,6 @@ gemfile:
 
 sudo: false
 
-services: mongodb
-
 script: "bundle exec rake spec"
 
 cache: bundler
