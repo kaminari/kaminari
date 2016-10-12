@@ -6,7 +6,7 @@ module Kaminari
     extend ActiveSupport::Concern
 
     included do
-      self.send(:include, Kaminari::ConfigurationMethods)
+      send(:include, Kaminari::ConfigurationMethods)
 
       # Fetch the values at the specified page number
       #   Model.page(5)

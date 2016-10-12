@@ -15,7 +15,7 @@ module Kaminari
 
     included do
       # Existing subclasses pick up the model extension as well
-      self.descendants.each do |kls|
+      descendants.each do |kls|
         kls.send(:include, Kaminari::ActiveRecordModelExtension) if kls.superclass == ::ActiveRecord::Base
       end
     end
