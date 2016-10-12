@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.authors     = ['Akira Matsuda', 'Yuki Nishijima', 'Zachary Scott', 'Hiroshi Shibata']
   s.email       = ['ronnie@dio.jp']
   s.homepage    = 'https://github.com/amatsuda/kaminari'
-  s.summary     = 'A pagination engine plugin for Rails 3+ and other modern frameworks'
+  s.summary     = 'A pagination engine plugin for Rails 4+ and other modern frameworks'
   s.description = 'Kaminari is a Scope & Engine based, clean, powerful, agnostic, customizable and sophisticated paginator for Rails 4+'
 
   s.files         = `git ls-files`.split("\n")
