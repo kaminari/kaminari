@@ -234,6 +234,23 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(::Rails::Railtie) && d
         end
       end
     end
+
+    context 'I18n' do
+      before do
+        50.times {|i| User.create! :name => "user#{i}"}
+        @users = User.page(1).per(25)
+        I18n.backend.store_translations(:en, { User.i18n_scope => { models: { user: { one: "person", other: "people" } } } })
+      end
+
+      after do
+        I18n.backend.reload!
+      end
+
+      context 'page_entries_info translates entry' do
+        subject { helper.page_entries_info @users, :params => {:controller => 'users', :action => 'index'} }
+        it      { should == 'Displaying people <b>1&nbsp;-&nbsp;25</b> of <b>50</b> in total' }
+      end
+    end
     context 'on a model with namespace' do
       before do
         @addresses = User::Address.page(1).per(25)
