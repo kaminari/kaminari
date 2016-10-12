@@ -16,7 +16,7 @@ describe 'Kaminari::ActionViewExtension', :if => defined?(::Rails::Railtie) && d
 
     context 'escaping the pagination for javascript' do
       it 'should escape for javascript' do
-        lambda { helper.escape_javascript(helper.paginate @users, :params => {:controller => 'users', :action => 'index'}) }.should_not raise_error
+        -> { helper.escape_javascript(helper.paginate @users, :params => {:controller => 'users', :action => 'index'}) }.should_not raise_error
       end
     end
 

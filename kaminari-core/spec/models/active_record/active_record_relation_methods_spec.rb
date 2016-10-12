@@ -36,7 +36,7 @@ if defined? ActiveRecord
 
       context 'when the Relation has custom select clause' do
         specify do
-          lambda { User.select('*, 1 as one').page(1).total_count }.should_not raise_exception
+          -> { User.select('*, 1 as one').page(1).total_count }.should_not raise_exception
         end
       end
 

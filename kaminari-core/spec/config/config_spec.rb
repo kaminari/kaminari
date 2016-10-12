@@ -65,7 +65,7 @@ describe Kaminari::Configuration do
 
     context 'configured via config block' do
       before do
-        Kaminari.configure {|c| c.param_name = lambda { :test } }
+        Kaminari.configure {|c| c.param_name = -> { :test } }
       end
 
       its(:param_name) { should == :test }
