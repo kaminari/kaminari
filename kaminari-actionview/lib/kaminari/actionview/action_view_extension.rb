@@ -41,11 +41,11 @@ module Kaminari
     #   <%= link_to_previous_page @users, 'Previous Page' do %>
     #     <span>At the Beginning</span>
     #   <% end %>
-    def link_to_previous_page(scope, name, options = {}, &block)
+    def link_to_previous_page(scope, name, options = {})
       prev_page = Kaminari::Helpers::PrevPage.new self, options.reverse_merge(:current_page => scope.current_page)
 
       link_to_if scope.prev_page.present?, name, prev_page.url, options.except(:params, :param_name).reverse_merge(:rel => 'prev') do
-        block.call if block
+        yield if block_given?
       end
     end
 
@@ -66,11 +66,11 @@ module Kaminari
     #   <%= link_to_next_page @users, 'Next Page' do %>
     #     <span>No More Pages</span>
     #   <% end %>
-    def link_to_next_page(scope, name, options = {}, &block)
+    def link_to_next_page(scope, name, options = {})
       next_page = Kaminari::Helpers::NextPage.new self, options.reverse_merge(:current_page => scope.current_page)
 
       link_to_if scope.next_page.present?, name, next_page.url, options.except(:params, :param_name).reverse_merge(:rel => 'next') do
-        block.call if block
+        yield if block_given?
       end
     end
 
