@@ -16,7 +16,7 @@ RSpec::Matchers.define :contain_tag do |klass|
   description do
     "contain #{@num || 'any'} instance(s) of #{klass.name}"
   end
-  failure_message_for_should do |collection|
+  failure_message_for_should do |_collection|
     "expected #{@num || 'any'} instance(s) of #{klass.name} but was #{@count}"
   end
 end
