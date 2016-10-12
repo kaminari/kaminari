@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require "kaminari/actionview/version"
 
 ActiveSupport.on_load :action_view do

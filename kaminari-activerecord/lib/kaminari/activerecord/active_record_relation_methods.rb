@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Kaminari
   module ActiveRecordRelationMethods
     def entry_name(options = {})

@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'action_view'
 require 'action_view/log_subscriber'
 require 'action_view/context'

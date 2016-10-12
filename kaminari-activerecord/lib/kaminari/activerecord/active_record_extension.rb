@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'kaminari/activerecord/active_record_model_extension'
 
 module Kaminari
