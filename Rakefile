@@ -37,6 +37,14 @@ namespace :spec do
   end
 end
 
+task :install_tasks_for_sub_gems do
+  Bundler::GemHelper.install_tasks dir: File.join(__dir__, 'kaminari-core'), name: 'kaminari-core'
+  Bundler::GemHelper.install_tasks dir: File.join(__dir__, 'kaminari-actionview'), name: 'kaminari-actionview'
+  Bundler::GemHelper.install_tasks dir: File.join(__dir__, 'kaminari-activerecord'), name: 'kaminari-activerecord'
+end
+
+Rake::Task[:build].enhance [:install_tasks_for_sub_gems]
+
 begin
   require 'rdoc/task'
 
