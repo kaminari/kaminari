@@ -13,6 +13,7 @@ module Kaminari
     # * <tt>:limit</tt> - limit
     # * <tt>:offset</tt> - offset
     # * <tt>:total_count</tt> - total_count
+    # * <tt>:padding</tt> - padding
     def initialize(original_array = [], options = {})
       @_original_array, @_limit_value, @_offset_value, @_total_count, @_padding = original_array, (options[:limit] || default_per_page).to_i, options[:offset].to_i, options[:total_count], options[:padding].to_i
 
@@ -63,6 +64,7 @@ module Kaminari
   # * <tt>:limit</tt> - limit
   # * <tt>:offset</tt> - offset
   # * <tt>:total_count</tt> - total_count
+  # * <tt>:padding</tt> - padding
   def self.paginate_array(array, options = {})
     PaginatableArray.new array, options
   end
