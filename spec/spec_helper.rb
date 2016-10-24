@@ -14,11 +14,9 @@ require 'database_cleaner'
 # Simulate a gem providing a subclass of ActiveRecord::Base before the Railtie is loaded.
 require 'fake_gem'
 
-if defined? ::Rails::Railtie
-  require 'fake_app/rails_app'
+require 'fake_app/rails_app'
 
-  require 'rspec/rails'
-end
+require 'rspec/rails'
 
 # Requires supporting files with custom matchers and macros, etc,
 # in ./support/ and its subdirectories.
