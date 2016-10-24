@@ -14,10 +14,10 @@ module Kaminari
     # * <tt>:offset</tt> - offset
     # * <tt>:total_count</tt> - total_count
     # * <tt>:padding</tt> - padding
-    def initialize(original_array = [], options = {})
-      @_original_array, @_limit_value, @_offset_value, @_total_count, @_padding = original_array, (options[:limit] || default_per_page).to_i, options[:offset].to_i, options[:total_count], options[:padding].to_i
+    def initialize(original_array = [], limit: nil, offset: nil, total_count: nil, padding: nil)
+      @_original_array, @_limit_value, @_offset_value, @_total_count, @_padding = original_array, (limit || default_per_page).to_i, offset.to_i, total_count, padding.to_i
 
-      if options[:limit] && options[:offset]
+      if limit && offset
         extend Kaminari::PageScopeMethods
       end
 
@@ -65,7 +65,7 @@ module Kaminari
   # * <tt>:offset</tt> - offset
   # * <tt>:total_count</tt> - total_count
   # * <tt>:padding</tt> - padding
-  def self.paginate_array(array, options = {})
-    PaginatableArray.new array, options
+  def self.paginate_array(array, limit: nil, offset: nil, total_count: nil, padding: nil)
+    PaginatableArray.new array, limit: limit, offset: offset, total_count: total_count, padding: padding
   end
 end
