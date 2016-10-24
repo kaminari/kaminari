@@ -4,7 +4,6 @@ require 'action_controller/railtie'
 require 'action_view/railtie'
 
 require 'fake_app/active_record/config' if defined? ActiveRecord
-require 'fake_app/mongo_mapper/config' if defined? MongoMapper
 # config
 app = Class.new(Rails::Application)
 app.config.secret_key_base = app.config.secret_token = '3b7cd727ee24e8444053437c36cc66c4'
@@ -26,7 +25,6 @@ end
 
 #models
 require 'fake_app/active_record/models' if defined? ActiveRecord
-require 'fake_app/mongo_mapper/models' if defined? MongoMapper
 
 # controllers
 class ApplicationController < ActionController::Base; end
