@@ -23,6 +23,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'kaminari-actionview'
   s.add_dependency 'kaminari-activerecord'
 
+  s.add_development_dependency 'rspec-rails'
   s.add_development_dependency 'bundler', '>= 1.0.0'
   s.add_development_dependency 'rake', '>= 0'
   s.add_development_dependency 'rspec', '~> 2.14.1'
