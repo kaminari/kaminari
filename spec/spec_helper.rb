@@ -12,7 +12,7 @@ require 'capybara/rspec'
 require 'database_cleaner'
 
 # Simulate a gem providing a subclass of ActiveRecord::Base before the Railtie is loaded.
-require 'fake_gem' if defined? ActiveRecord
+require 'fake_gem'
 
 if defined? ::Rails::Railtie
   require 'fake_app/rails_app'
