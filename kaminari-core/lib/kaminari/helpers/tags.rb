@@ -17,9 +17,8 @@ module Kaminari
     #   e.g.)  Paginator  ->  $GEM_HOME/kaminari-x.x.x/app/views/kaminari/_paginator.html.erb
     class Tag
       def initialize(template, params: {}, param_name: nil, theme: nil, views_prefix: nil, **options) #:nodoc:
-        @template, @options = template, options
+        @template, @theme, @views_prefix, @options = template, theme, views_prefix, options
         @param_name = param_name || Kaminari.config.param_name
-        @theme, @views_prefix = theme, views_prefix
         @params = template.params
         # @params in Rails 5 no longer inherits from Hash
         @params = @params.to_unsafe_h if @params.respond_to?(:to_unsafe_h)
