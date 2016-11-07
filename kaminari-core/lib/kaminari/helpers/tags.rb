@@ -17,7 +17,7 @@ module Kaminari
     #   e.g.)  Paginator  ->  $GEM_HOME/kaminari-x.x.x/app/views/kaminari/_paginator.html.erb
     class Tag
       def initialize(template, params: {}, param_name: nil, theme: nil, views_prefix: nil, **options) #:nodoc:
-        @template, @options = template, options.dup
+        @template, @options = template, options
         @param_name = param_name || Kaminari.config.param_name
         @theme, @views_prefix = theme, views_prefix
         @params = template.params
