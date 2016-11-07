@@ -68,11 +68,9 @@ module Kaminari
       end
 
       %w[first_page prev_page next_page last_page gap].each do |tag|
-        eval <<-DEF
-          def #{tag}_tag
-            @last = #{tag.classify}.new @template, @options
-          end
-        DEF
+        define_method "#{tag}_tag" do
+          @last = tag.classify.constantize.new @template, @options
+        end
       end
 
       def to_s #:nodoc:
