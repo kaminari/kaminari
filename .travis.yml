@@ -24,19 +24,19 @@ cache: bundler
 matrix:
   exclude:
     - rvm: 2.0.0
-      gemfile:
-        - gemfiles/active_record_50.gemfile
-        - gemfiles/active_record_edge.gemfile
+      gemfile: gemfiles/active_record_50.gemfile
     - rvm: 2.1.10
-      gemfile:
-        - gemfiles/active_record_50.gemfile
-        - gemfiles/active_record_edge.gemfile
+      gemfile: gemfiles/active_record_50.gemfile
+    - rvm: 2.0.0
+      gemfile: gemfiles/active_record_edge.gemfile
+    - rvm: 2.1.10
+      gemfile: gemfiles/active_record_edge.gemfile
     - rvm: ruby-head
       gemfile: gemfiles/active_record_41.gemfile
     - rvm: rbx
-      gemfile:
-        - gemfiles/active_record_50.gemfile
-        - gemfiles/active_record_edge.gemfile
+      gemfile: gemfiles/active_record_50.gemfile
+    - rvm: rbx
+      gemfile: gemfiles/active_record_edge.gemfile
   allow_failures:
     - rvm: ruby-head
     - rvm: jruby-9.1.5.0
