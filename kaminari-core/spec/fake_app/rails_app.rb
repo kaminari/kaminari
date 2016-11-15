@@ -17,7 +17,9 @@ app.initialize!
 
 # routes
 app.routes.draw do
-  resources :users
+  resources :users do
+    get 'index_text(.:format)', :action => :index_text, :on => :collection
+  end
   resources :addresses do
     get 'page/:page', :action => :index, :on => :collection
   end
@@ -35,6 +37,10 @@ class UsersController < ApplicationController
 <%= @users.map(&:name).join("\n") %>
 <%= paginate @users %>
 ERB
+  end
+
+  def index_text
+    @users = User.page params[:page]
   end
 end
 
