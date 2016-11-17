@@ -95,32 +95,28 @@ if defined? ActiveRecord
         end
 
         describe '#max_paginates_per' do
-          before do
-            model_class.max_paginates_per 10
+          around do |example|
+            begin
+              model_class.max_paginates_per(10)
+              example.run
+            ensure
+              model_class.max_paginates_per(nil)
+            end
           end
 
-          context 'max_paginates_per 20 per 15' do
+          context 'when #max_paginates_per is greater than #per' do
             subject { model_class.page(1).per(15).max_paginates_per(20) }
             it { should have(15).users }
           end
 
-          context 'max_paginates_per 20 per 30' do
+          context 'when #per is greater than #max_paginates_per' do
             subject { model_class.page(1).per(30).max_paginates_per(20) }
             it { should have(20).users }
           end
 
-          context 'max_paginates_per 20 per 5' do
-            subject { model_class.page(1).per(5).max_paginates_per(20) }
-            it { should have(5).users }
-          end
-
-          context 'max_paginates_per 20 per nil' do
+          context 'when nil is given to #per and #max_paginates_per is specified' do
             subject { model_class.page(1).per(nil).max_paginates_per(20) }
             it { should have(model_class.default_per_page).users }
-          end
-
-          after do
-            model_class.max_paginates_per nil
           end
         end
 

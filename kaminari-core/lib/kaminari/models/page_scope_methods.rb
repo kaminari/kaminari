@@ -3,13 +3,21 @@ module Kaminari
   module PageScopeMethods
     # Specify the <tt>per_page</tt> value for the preceding <tt>page</tt> scope
     #   Model.page(3).per(10)
-    def per(num)
+    def per(num, max_per_page: self.max_per_page)
       @_per = num
-      _per(num, max_per_page)
+      if (n = num.to_i) < 0 || !(/^\d/ =~ num.to_s)
+        self
+      elsif n.zero?
+        limit(n)
+      elsif max_per_page && max_per_page < n
+        limit(max_per_page).offset(offset_value / limit_value * max_per_page)
+      else
+        limit(n).offset(offset_value / limit_value * n)
+      end
     end
 
-    def max_paginates_per(max_per)
-      _per(@_per, max_per)
+    def max_paginates_per(new_max_per_page)
+      per(@_per, max_per_page: new_max_per_page)
     end
 
     def padding(num)
@@ -67,20 +75,6 @@ module Kaminari
     # Out of range of the collection?
     def out_of_range?
       current_page > total_pages
-    end
-
-    private
-
-    def _per(num, max_per)
-      if (n = num.to_i) < 0 || !(/^\d/ =~ num.to_s)
-        self
-      elsif n.zero?
-        limit(n)
-      elsif max_per && max_per < n
-        limit(max_per).offset(offset_value / limit_value * max_per)
-      else
-        limit(n).offset(offset_value / limit_value * n)
-      end
     end
   end
 end
