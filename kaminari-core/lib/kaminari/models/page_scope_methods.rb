@@ -32,11 +32,7 @@ module Kaminari
       count_without_padding = 0 if count_without_padding < 0
 
       total_pages_count = (count_without_padding.to_f / limit_value).ceil
-      if max_pages.present? && max_pages < total_pages_count
-        max_pages
-      else
-        total_pages_count
-      end
+      (max_pages && max_pages < total_pages_count) ? max_pages : total_pages_count
     rescue FloatDomainError
       raise ZeroPerPageOperation, "The number of total pages was incalculable. Perhaps you called .per(0)?"
     end
