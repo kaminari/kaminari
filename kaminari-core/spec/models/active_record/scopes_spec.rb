@@ -94,9 +94,16 @@ if defined? ActiveRecord
             it { should have(model_class.default_per_page).users }
 
             context 'with max_per_page < default_per_page' do
-              before { model_class.max_paginates_per (model_class.default_per_page - 1) }
-              it { should have(model_class.max_per_page).users }
-              after { model_class.max_paginates_per nil }
+              around do |example|
+                begin
+                  model_class.max_paginates_per(10)
+                  example.run
+                ensure
+                  model_class.max_paginates_per(nil)
+                end
+              end
+
+              it { should have(10).users }
             end
           end
 
@@ -128,7 +135,7 @@ if defined? ActiveRecord
 
           context 'when nil is given to #per and #max_paginates_per is specified' do
             subject { model_class.page(1).per(nil).max_paginates_per(20) }
-            it { should have(model_class.default_per_page).users }
+            it { should have(20).users }
           end
         end
 
