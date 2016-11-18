@@ -2,7 +2,6 @@
 require 'spec_helper'
 
 if defined? ActiveRecord
-
   describe Kaminari::ActiveRecordModelExtension do
     before do
       Kaminari.configure do |config|
