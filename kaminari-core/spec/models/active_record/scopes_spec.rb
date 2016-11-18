@@ -138,6 +138,23 @@ if defined? ActiveRecord
               it { should have(20).users }
             end
           end
+
+          context 'calling max_paginates_per() before per()' do
+            context 'when #max_paginates_per is greater than #per' do
+              subject { model_class.page(1).max_paginates_per(20).per(15) }
+              it { should have(15).users }
+            end
+
+            context 'when #per is greater than #max_paginates_per' do
+              subject { model_class.page(1).max_paginates_per(20).per(30) }
+              it { should have(20).users }
+            end
+
+            context 'when nil is given to #per and #max_paginates_per is specified' do
+              subject { model_class.page(1).max_paginates_per(20).per(nil) }
+              it { should have(20).users }
+            end
+          end
         end
 
         describe '#padding' do

@@ -3,7 +3,8 @@ module Kaminari
   module PageScopeMethods
     # Specify the <tt>per_page</tt> value for the preceding <tt>page</tt> scope
     #   Model.page(3).per(10)
-    def per(num, max_per_page: self.max_per_page)
+    def per(num, max_per_page: nil)
+      max_per_page ||= (@_max_per_page || self.max_per_page)
       @_per = num
       if num.nil? && max_per_page
         limit(max_per_page).offset(offset_value / limit_value * max_per_page)
@@ -19,6 +20,7 @@ module Kaminari
     end
 
     def max_paginates_per(new_max_per_page)
+      @_max_per_page = new_max_per_page
       per(@_per, max_per_page: new_max_per_page)
     end
 
