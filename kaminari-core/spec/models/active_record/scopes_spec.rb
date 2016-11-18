@@ -122,19 +122,21 @@ if defined? ActiveRecord
             end
           end
 
-          context 'when #max_paginates_per is greater than #per' do
-            subject { model_class.page(1).per(15).max_paginates_per(20) }
-            it { should have(15).users }
-          end
+          context 'calling max_paginates_per() after per()' do
+            context 'when #max_paginates_per is greater than #per' do
+              subject { model_class.page(1).per(15).max_paginates_per(20) }
+              it { should have(15).users }
+            end
 
-          context 'when #per is greater than #max_paginates_per' do
-            subject { model_class.page(1).per(30).max_paginates_per(20) }
-            it { should have(20).users }
-          end
+            context 'when #per is greater than #max_paginates_per' do
+              subject { model_class.page(1).per(30).max_paginates_per(20) }
+              it { should have(20).users }
+            end
 
-          context 'when nil is given to #per and #max_paginates_per is specified' do
-            subject { model_class.page(1).per(nil).max_paginates_per(20) }
-            it { should have(20).users }
+            context 'when nil is given to #per and #max_paginates_per is specified' do
+              subject { model_class.page(1).per(nil).max_paginates_per(20) }
+              it { should have(20).users }
+            end
           end
         end
 
