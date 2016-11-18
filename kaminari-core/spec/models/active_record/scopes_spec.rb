@@ -7,10 +7,9 @@ if defined? ActiveRecord
       Kaminari.configure do |config|
         config.page_method_name = :per_page_kaminari
       end
-      class Comment < ActiveRecord::Base; end
     end
 
-    subject { Comment }
+    subject { Class.new ActiveRecord::Base }
     it { should respond_to(:per_page_kaminari) }
     it { should_not respond_to(:page) }
 
