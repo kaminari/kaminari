@@ -185,6 +185,18 @@ if defined? ActiveRecord
               it { should have(20).users }
             end
           end
+
+          context 'calling max_paginates_per() without per()' do
+            context 'when #max_paginates_per is greater than the default per_page' do
+              subject { model_class.page(1).max_paginates_per(20) }
+              it { should have(20).users }
+            end
+
+            context 'when #max_paginates_per is less than the default per_page' do
+              subject { model_class.page(1).max_paginates_per(30) }
+              it { should have(25).users }
+            end
+          end
         end
 
         describe '#padding' do
