@@ -5,15 +5,15 @@ if defined?(::Rails::Railtie)
   require 'rails/generators'
   require 'generators/kaminari/views_generator'
 
-  describe Kaminari::Generators::GitHubApiHelper, :generator_spec => true do
+  describe Kaminari::Generators::GitHubApiHelper do
     describe '.get_files_in_master' do
       subject { Kaminari::Generators::GitHubApiHelper.get_files_in_master }
-      it { should include(["README", "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"]) }
+      it { should include %w(README.md 7f712676aac6bcd912981a9189c110303a1ee266) }
     end
 
     describe '.get_content_for' do
-      subject { Kaminari::Generators::GitHubApiHelper.get_content_for("README") }
-      it { should == "" }
+      subject { Kaminari::Generators::GitHubApiHelper.get_content_for('README.md') }
+      it { should start_with '# ' }
     end
   end
 end

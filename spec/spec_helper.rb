@@ -25,5 +25,4 @@ Dir["#{File.join(Gem.loaded_specs['kaminari-core'].gem_dir, 'spec')}/support/**/
 
 RSpec.configure do |config|
   config.mock_with :rr
-  config.filter_run_excluding :generator_spec => true if !ENV['GENERATOR_SPEC']
 end
