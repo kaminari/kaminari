@@ -3,16 +3,18 @@
 
 require "bundler/gem_tasks"
 
-require 'rspec/core'
-require 'rspec/core/rake_task'
+require 'rake/testtask'
 
-RSpec::Core::RakeTask.new(:spec) do |spec|
-  spec.pattern = [FileList['spec/**/*_spec.rb'], "#{File.join(Gem.loaded_specs['kaminari-core'].gem_dir, 'spec')}/**/*_spec.rb"]
+Rake::TestTask.new do |t|
+  t.libs << 'test'
+  t.pattern = "{test,#{File.join(Gem.loaded_specs['kaminari-core'].gem_dir, 'test')}}/**/*_test.rb"
+  t.warning = true
+  t.verbose = true
 end
 
-task :default => "spec:all"
+task :default => "test:all"
 
-namespace :spec do
+namespace :test do
   mappers = %w(
     active_record_edge
     active_record_50
@@ -24,7 +26,7 @@ namespace :spec do
     desc "Run Tests against #{gemfile}"
     task gemfile do
       sh "BUNDLE_GEMFILE='gemfiles/#{gemfile}.gemfile' bundle --quiet"
-      sh "BUNDLE_GEMFILE='gemfiles/#{gemfile}.gemfile' bundle exec rake -t spec"
+      sh "BUNDLE_GEMFILE='gemfiles/#{gemfile}.gemfile' bundle exec rake -t test"
     end
   end
 
@@ -32,7 +34,7 @@ namespace :spec do
   task :all do
     mappers.each do |gemfile|
       sh "BUNDLE_GEMFILE='gemfiles/#{gemfile}.gemfile' bundle --quiet"
-      sh "BUNDLE_GEMFILE='gemfiles/#{gemfile}.gemfile' bundle exec rake spec"
+      sh "BUNDLE_GEMFILE='gemfiles/#{gemfile}.gemfile' bundle exec rake test"
     end
   end
 end
