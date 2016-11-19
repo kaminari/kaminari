@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 require 'spec_helper'
-include Kaminari::Helpers
 
 describe 'Kaminari::Helpers' do
   describe 'Tag' do
@@ -11,7 +10,7 @@ describe 'Kaminari::Helpers' do
       end
 
       context "for first page" do
-        subject { Tag.new(helper).page_url_for(1) }
+        subject { Kaminari::Helpers::Tag.new(helper).page_url_for(1) }
         it { should == "/users" }
 
         context 'config.params_on_first_page == false' do
@@ -29,7 +28,7 @@ describe 'Kaminari::Helpers' do
         end
 
         context "for first page" do
-          subject { Tag.new(helper).page_url_for(1) }
+          subject { Kaminari::Helpers::Tag.new(helper).page_url_for(1) }
           it { should == "/addresses" }
 
           context 'config.params_on_first_page == false' do
@@ -40,7 +39,7 @@ describe 'Kaminari::Helpers' do
         end
 
         context "for other page" do
-          subject { Tag.new(helper).page_url_for(5) }
+          subject { Kaminari::Helpers::Tag.new(helper).page_url_for(5) }
           it { should == "/addresses/page/5" }
         end
       end
@@ -51,14 +50,14 @@ describe 'Kaminari::Helpers' do
         end
 
         context "for first page" do
-          subject { Tag.new(helper, :param_name => "user[page]").page_url_for(1) }
+          subject { Kaminari::Helpers::Tag.new(helper, :param_name => "user[page]").page_url_for(1) }
 
           it { should_not match(/user%5Bpage%5D=\d+/) } # not match user[page]=\d+
           it { should match(/user%5Bscope%5D=active/) } #     match user[scope]=active
         end
 
         context "for other page" do
-          subject { Tag.new(helper, :param_name => "user[page]").page_url_for(2) }
+          subject { Kaminari::Helpers::Tag.new(helper, :param_name => "user[page]").page_url_for(2) }
 
           it { should match(/user%5Bpage%5D=2/) }       # match user[page]=2
           it { should match(/user%5Bscope%5D=active/) } # match user[scope]=active
@@ -71,12 +70,12 @@ describe 'Kaminari::Helpers' do
         end
 
         context "for first page" do
-          subject { Tag.new(helper, :param_name => "foo.page").page_url_for(1) }
+          subject { Kaminari::Helpers::Tag.new(helper, :param_name => "foo.page").page_url_for(1) }
           it { should_not match(/foo\.page=\d+/) }
         end
 
         context "for other page" do
-          subject { Tag.new(helper, :param_name => "foo.page").page_url_for(2) }
+          subject { Kaminari::Helpers::Tag.new(helper, :param_name => "foo.page").page_url_for(2) }
           it { should match(/foo\.page=\d+/) }
         end
       end
@@ -87,100 +86,100 @@ describe 'Kaminari::Helpers' do
     describe 'Paginator::PageProxy' do
       describe '#current?' do
         context 'current_page == page' do
-          subject { Paginator::PageProxy.new({:current_page => 26}, 26, nil) }
+          subject { Kaminari::Helpers::Paginator::PageProxy.new({:current_page => 26}, 26, nil) }
           its(:current?) { should be_true }
         end
         context 'current_page != page' do
-          subject { Paginator::PageProxy.new({:current_page => 13}, 26, nil) }
+          subject { Kaminari::Helpers::Paginator::PageProxy.new({:current_page => 13}, 26, nil) }
           its(:current?) { should_not be_true }
         end
       end
 
       describe '#first?' do
         context 'page == 1' do
-          subject { Paginator::PageProxy.new({:current_page => 26}, 1, nil) }
+          subject { Kaminari::Helpers::Paginator::PageProxy.new({:current_page => 26}, 1, nil) }
           its(:first?) { should be_true }
         end
         context 'page != 1' do
-          subject { Paginator::PageProxy.new({:current_page => 13}, 2, nil) }
+          subject { Kaminari::Helpers::Paginator::PageProxy.new({:current_page => 13}, 2, nil) }
           its(:first?) { should_not be_true }
         end
       end
 
       describe '#last?' do
         context 'current_page == page' do
-          subject { Paginator::PageProxy.new({:total_pages => 39}, 39, nil) }
+          subject { Kaminari::Helpers::Paginator::PageProxy.new({:total_pages => 39}, 39, nil) }
           its(:last?) { should be_true }
         end
         context 'current_page != page' do
-          subject { Paginator::PageProxy.new({:total_pages => 39}, 38, nil) }
+          subject { Kaminari::Helpers::Paginator::PageProxy.new({:total_pages => 39}, 38, nil) }
           its(:last?) { should_not be_true }
         end
       end
 
       describe '#next?' do
         context 'page == current_page + 1' do
-          subject { Paginator::PageProxy.new({:current_page => 52}, 53, nil) }
+          subject { Kaminari::Helpers::Paginator::PageProxy.new({:current_page => 52}, 53, nil) }
           its(:next?) { should be_true }
         end
         context 'page != current_page + 1' do
-          subject { Paginator::PageProxy.new({:current_page => 52}, 77, nil) }
+          subject { Kaminari::Helpers::Paginator::PageProxy.new({:current_page => 52}, 77, nil) }
           its(:next?) { should_not be_true }
         end
       end
 
       describe '#prev?' do
         context 'page == current_page - 1' do
-          subject { Paginator::PageProxy.new({:current_page => 77}, 76, nil) }
+          subject { Kaminari::Helpers::Paginator::PageProxy.new({:current_page => 77}, 76, nil) }
           its(:prev?) { should be_true }
         end
         context 'page != current_page + 1' do
-          subject { Paginator::PageProxy.new({:current_page => 77}, 80, nil) }
+          subject { Kaminari::Helpers::Paginator::PageProxy.new({:current_page => 77}, 80, nil) }
           its(:prev?) { should_not be_true }
         end
       end
 
       describe '#rel' do
         context 'page == current_page - 1' do
-          subject { Paginator::PageProxy.new({:current_page => 77}, 76, nil) }
+          subject { Kaminari::Helpers::Paginator::PageProxy.new({:current_page => 77}, 76, nil) }
           its(:rel) { should eq 'prev' }
         end
         context 'page == current_page' do
-          subject { Paginator::PageProxy.new({:current_page => 78}, 78, nil) }
+          subject { Kaminari::Helpers::Paginator::PageProxy.new({:current_page => 78}, 78, nil) }
           its(:rel) { should be_nil }
         end
         context 'page == current_page + 1' do
-          subject { Paginator::PageProxy.new({:current_page => 52}, 53, nil) }
+          subject { Kaminari::Helpers::Paginator::PageProxy.new({:current_page => 52}, 53, nil) }
           its(:rel) { should eq 'next' }
         end
       end
 
       describe '#left_outer?' do
         context 'current_page == left' do
-          subject { Paginator::PageProxy.new({:left => 3}, 3, nil) }
+          subject { Kaminari::Helpers::Paginator::PageProxy.new({:left => 3}, 3, nil) }
           its(:left_outer?) { should be_true }
         end
         context 'current_page == left + 1' do
-          subject { Paginator::PageProxy.new({:left => 3}, 4, nil) }
+          subject { Kaminari::Helpers::Paginator::PageProxy.new({:left => 3}, 4, nil) }
           its(:left_outer?) { should_not be_true }
         end
         context 'current_page == left + 2' do
-          subject { Paginator::PageProxy.new({:left => 3}, 5, nil) }
+          subject { Kaminari::Helpers::Paginator::PageProxy.new({:left => 3}, 5, nil) }
           its(:left_outer?) { should_not be_true }
         end
       end
 
       describe '#right_outer?' do
         context 'total_pages - page > right' do
-          subject { Paginator::PageProxy.new({:total_pages => 10, :right => 3}, 6, nil) }
+          subject { Kaminari::Helpers::Paginator::PageProxy.new({:total_pages => 10, :right => 3}, 6, nil) }
           its(:right_outer?) { should_not be_true }
         end
         context 'total_pages - page == right' do
-          subject { Paginator::PageProxy.new({:total_pages => 10, :right => 3}, 7, nil) }
+          subject { Kaminari::Helpers::Paginator::PageProxy.new({:total_pages => 10, :right => 3}, 7, nil) }
           its(:right_outer?) { should_not be_true }
         end
         context 'total_pages - page < right' do
-          subject { Paginator::PageProxy.new({:total_pages => 10, :right => 3}, 8, nil) }
+          subject { Kaminari::Helpers::Paginator::PageProxy.new({:total_pages => 10, :right => 3}, 8, nil) }
           its(:right_outer?) { should be_true }
         end
       end
@@ -188,29 +187,29 @@ describe 'Kaminari::Helpers' do
       describe '#inside_window?' do
         context 'page > current_page' do
           context 'page - current_page > window' do
-            subject { Paginator::PageProxy.new({:current_page => 4, :window => 5}, 10, nil) }
+            subject { Kaminari::Helpers::Paginator::PageProxy.new({:current_page => 4, :window => 5}, 10, nil) }
             its(:inside_window?) { should_not be_true }
           end
           context 'page - current_page == window' do
-            subject { Paginator::PageProxy.new({:current_page => 4, :window => 6}, 10, nil) }
+            subject { Kaminari::Helpers::Paginator::PageProxy.new({:current_page => 4, :window => 6}, 10, nil) }
             its(:inside_window?) { should be_true }
           end
           context 'page - current_page < window' do
-            subject { Paginator::PageProxy.new({:current_page => 4, :window => 7}, 10, nil) }
+            subject { Kaminari::Helpers::Paginator::PageProxy.new({:current_page => 4, :window => 7}, 10, nil) }
             its(:inside_window?) { should be_true }
           end
         end
         context 'current_page > page' do
           context 'current_page - page > window' do
-            subject { Paginator::PageProxy.new({:current_page => 15, :window => 4}, 10, nil) }
+            subject { Kaminari::Helpers::Paginator::PageProxy.new({:current_page => 15, :window => 4}, 10, nil) }
             its(:inside_window?) { should_not be_true }
           end
           context 'current_page - page == window' do
-            subject { Paginator::PageProxy.new({:current_page => 15, :window => 5}, 10, nil) }
+            subject { Kaminari::Helpers::Paginator::PageProxy.new({:current_page => 15, :window => 5}, 10, nil) }
             its(:inside_window?) { should be_true }
           end
           context 'current_page - page < window' do
-            subject { Paginator::PageProxy.new({:current_page => 15, :window => 6}, 10, nil) }
+            subject { Kaminari::Helpers::Paginator::PageProxy.new({:current_page => 15, :window => 6}, 10, nil) }
             its(:inside_window?) { should be_true }
           end
         end
@@ -223,11 +222,11 @@ describe 'Kaminari::Helpers' do
           end
         end
         context 'last.is_a? Gap' do
-          subject { Paginator::PageProxy.new({}, 10, Gap.new(@template)) }
+          subject { Kaminari::Helpers::Paginator::PageProxy.new({}, 10, Kaminari::Helpers::Gap.new(@template)) }
           its(:was_truncated?) { should be_true }
         end
         context 'last.is not a Gap' do
-          subject { Paginator::PageProxy.new({}, 10, Page.new(@template)) }
+          subject { Kaminari::Helpers::Paginator::PageProxy.new({}, 10, Kaminari::Helpers::Page.new(@template)) }
           its(:was_truncated?) { should_not be_true }
         end
       end
@@ -242,7 +241,7 @@ describe 'Kaminari::Helpers' do
         end
 
         def gap_for(page)
-          Paginator::PageProxy.new(window_options, page, nil)
+          Kaminari::Helpers::Paginator::PageProxy.new(window_options, page, nil)
         end
 
         context "in case of '1 ... 4 5 6 ... 9'" do
@@ -283,17 +282,17 @@ describe 'Kaminari::Helpers' do
 
       describe "#out_of_range?" do
         context 'within range' do
-          subject { Paginator::PageProxy.new({:total_pages => 5}, 4, nil).out_of_range? }
+          subject { Kaminari::Helpers::Paginator::PageProxy.new({:total_pages => 5}, 4, nil).out_of_range? }
           it { should == false }
         end
 
         context 'on last page' do
-          subject { Paginator::PageProxy.new({:total_pages => 5}, 5, nil).out_of_range? }
+          subject { Kaminari::Helpers::Paginator::PageProxy.new({:total_pages => 5}, 5, nil).out_of_range? }
           it { should == false }
         end
 
         context 'out of range' do
-          subject { Paginator::PageProxy.new({:total_pages => 5}, 6, nil).out_of_range? }
+          subject { Kaminari::Helpers::Paginator::PageProxy.new({:total_pages => 5}, 6, nil).out_of_range? }
           it { should == true }
         end
       end

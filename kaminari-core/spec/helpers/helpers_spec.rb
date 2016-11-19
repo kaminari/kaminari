@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 require 'spec_helper'
-include Kaminari::Helpers
 
 describe 'Kaminari::Helpers::Paginator' do
   let :template do
@@ -17,7 +16,7 @@ describe 'Kaminari::Helpers::Paginator' do
 
   describe "view helper methods delegated to template" do
     before do
-      @paginator = Paginator.new(template, :params => {})
+      @paginator = Kaminari::Helpers::Paginator.new(template, :params => {})
     end
     subject { @paginator.link_to("link", "#") }
     it { should == "<a href='#'>link</a>" }
@@ -25,7 +24,7 @@ describe 'Kaminari::Helpers::Paginator' do
 
   describe '#params' do
     before do
-      @paginator = Paginator.new(template, :params => {:controller => 'foo', :action => 'bar'})
+      @paginator = Kaminari::Helpers::Paginator.new(template, :params => {:controller => 'foo', :action => 'bar'})
     end
     subject { @paginator.page_tag(template).instance_variable_get('@params') }
     it { should == {'controller' => 'foo', 'action' => 'bar'} }
@@ -48,7 +47,7 @@ describe 'Kaminari::Helpers::Paginator' do
 
   describe '#param_name' do
     before do
-      @paginator = Paginator.new(template, :param_name => :pagina)
+      @paginator = Kaminari::Helpers::Paginator.new(template, :param_name => :pagina)
     end
     subject { @paginator.page_tag(template).instance_variable_get('@param_name') }
     it { should == :pagina }
