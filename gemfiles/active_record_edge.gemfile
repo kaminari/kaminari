@@ -26,6 +26,4 @@ platforms :rbx do
   gem 'rubinius-developer_tools'
 end
 
-gem 'rspec-rails', '~> 2.14.1'
-
 gemspec :path => '../'

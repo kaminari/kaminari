@@ -1,8 +1,10 @@
 # frozen_string_literal: true
-require 'spec_helper'
+require 'test_helper'
 
-describe 'Kaminari::Helpers::Paginator' do
-  let :template do
+class PaginatorHelperTest < ActiveSupport::TestCase
+  include Kaminari::Helpers
+
+  def template
     stub(r = Object.new) do
       render.with_any_args
       params { {} }
@@ -14,43 +16,32 @@ describe 'Kaminari::Helpers::Paginator' do
     r
   end
 
-  describe "view helper methods delegated to template" do
-    before do
-      @paginator = Kaminari::Helpers::Paginator.new(template, :params => {})
-    end
-    subject { @paginator.link_to("link", "#") }
-    it { should == "<a href='#'>link</a>" }
+  test 'view helper methods delegated to template' do
+    paginator = Paginator.new(template, :params => {})
+    assert_equal "<a href='#'>link</a>", paginator.link_to('link', '#')
   end
 
-  describe '#params' do
-    before do
-      @paginator = Kaminari::Helpers::Paginator.new(template, :params => {:controller => 'foo', :action => 'bar'})
+  sub_test_case '#params' do
+    setup do
+      @paginator = Paginator.new(template, :params => {:controller => 'foo', :action => 'bar'})
     end
-    subject { @paginator.page_tag(template).instance_variable_get('@params') }
-    it { should == {'controller' => 'foo', 'action' => 'bar'} }
 
-    context "when params has form params" do
-      before do
-        stub(template).params do
-          {
-            :authenticity_token => "token",
-            :commit => "submit",
-            :utf8 => "true",
-            :_method => "patch"
-          }
-        end
+    test 'when params has no form params' do
+      assert_equal({'controller' => 'foo', 'action' => 'bar'}, @paginator.page_tag(template).instance_variable_get('@params'))
+    end
+
+    test 'when params has form params' do
+      stub(template).params do
+        {:authenticity_token => 'token', :commit => 'submit', :utf8 => 'true', :_method => 'patch'}
       end
 
-      it { should == {'controller' => 'foo', 'action' => 'bar'} }
+      assert_equal({'controller' => 'foo', 'action' => 'bar'}, @paginator.page_tag(template).instance_variable_get('@params'))
     end
   end
 
-  describe '#param_name' do
-    before do
-      @paginator = Kaminari::Helpers::Paginator.new(template, :param_name => :pagina)
-    end
-    subject { @paginator.page_tag(template).instance_variable_get('@param_name') }
-    it { should == :pagina }
+  test '#param_name' do
+    paginator = Paginator.new(template, :param_name => :pagina)
+    assert_equal :pagina, paginator.page_tag(template).instance_variable_get('@param_name')
   end
 
   #TODO test somehow...

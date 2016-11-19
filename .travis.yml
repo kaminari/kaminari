@@ -17,7 +17,7 @@ gemfile:
 
 sudo: false
 
-script: "bundle exec rake spec"
+script: 'bundle exec rake test'
 
 cache: bundler
 
