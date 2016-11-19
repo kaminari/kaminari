@@ -109,6 +109,37 @@ if defined? ActiveRecord
             subject { model_class.page(1).per(0) }
             it { should have(0).users }
           end
+
+          # I know it's a bit strange to have this here, but I couldn't find any better place for this case
+          context 'when max_per_page is given via model class, and `per` is not actually called' do
+            subject { model_class.page(1) }
+
+            context 'with max_per_page > default_per_page' do
+              around do |example|
+                begin
+                  model_class.max_paginates_per(200)
+                  example.run
+                ensure
+                  model_class.max_paginates_per(nil)
+                end
+              end
+
+              it { should have(25).users }
+            end
+
+            context 'with max_per_page < default_per_page' do
+              around do |example|
+                begin
+                  model_class.max_paginates_per(5)
+                  example.run
+                ensure
+                  model_class.max_paginates_per(nil)
+                end
+              end
+
+              it { should have(5).users }
+            end
+          end
         end
 
         describe '#max_paginates_per' do
