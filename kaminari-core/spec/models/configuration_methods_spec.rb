@@ -46,7 +46,7 @@ describe "configuration methods" do
     if defined? ActiveRecord
       describe 'AR::Base' do
         subject { ActiveRecord::Base }
-        it { should_not respond_to :max_pages_per }
+        it { should_not respond_to :max_paginates_per }
       end
     end
 
@@ -84,7 +84,7 @@ describe "configuration methods" do
     if defined? ActiveRecord
       describe 'AR::Base' do
         subject { ActiveRecord::Base }
-        it { should_not respond_to :max_paginates_per }
+        it { should_not respond_to :max_pages_per }
       end
     end
 
