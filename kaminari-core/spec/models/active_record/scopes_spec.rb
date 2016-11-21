@@ -20,16 +20,16 @@ if defined? ActiveRecord
     end
   end
 
-  shared_examples_for 'the first page' do
-    it { should have(25).users }
-    its('first.name') { should == 'user001' }
-  end
-
-  shared_examples_for 'blank page' do
-    it { should have(0).users }
-  end
-
   describe Kaminari::ActiveRecordExtension do
+    shared_examples_for 'the first page' do
+      it { should have(25).users }
+      its('first.name') { should == 'user001' }
+    end
+
+    shared_examples_for 'blank page' do
+      it { should have(0).users }
+    end
+
     before :all do
       [User, GemDefinedModel, Device].each do |m|
         1.upto(100) {|i| m.create! :name => "user#{'%03d' % i}", :age => (i / 10)}
