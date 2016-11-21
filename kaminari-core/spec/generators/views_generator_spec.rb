@@ -5,7 +5,7 @@ if defined?(::Rails::Railtie)
   require 'rails/generators'
   require 'generators/kaminari/views_generator'
 
-  describe Kaminari::Generators::GitHubApiHelper do
+  describe Kaminari::Generators::GitHubApiHelper, :generator_spec => true do
     describe '.get_files_in_master' do
       subject { Kaminari::Generators::GitHubApiHelper.get_files_in_master }
       it { should include %w(README.md 7f712676aac6bcd912981a9189c110303a1ee266) }
