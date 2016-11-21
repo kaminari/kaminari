@@ -21,7 +21,7 @@ module Kaminari
 
     def max_paginates_per(new_max_per_page)
       @_max_per_page = new_max_per_page
-      per((@_per || default_per_page), max_per_page: new_max_per_page)
+      per ((defined?(@_per) && @_per) || default_per_page), max_per_page: new_max_per_page
     end
 
     def padding(num)
