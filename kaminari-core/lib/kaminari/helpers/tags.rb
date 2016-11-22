@@ -26,7 +26,8 @@ module Kaminari
       end
 
       def to_s(locals = {}) #:nodoc:
-        @template.render :partial => partial_path, :locals => @options.merge(locals), :formats => @template.formats + [:html]
+        formats = (@template.respond_to?(:formats) ? @template.formats : Array(@template.params[:format])) + [:html]
+        @template.render :partial => partial_path, :locals => @options.merge(locals), :formats => formats
       end
 
       def page_url_for(page)
