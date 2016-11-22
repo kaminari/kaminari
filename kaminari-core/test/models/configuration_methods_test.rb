@@ -73,7 +73,7 @@ class ConfigurationMethodsTest < ActiveSupport::TestCase
 
     setup do
       100.times do |count|
-        User.create!(:name => "User#{count}")
+        User.create!(name: "User#{count}")
       end
     end
 

@@ -11,7 +11,7 @@ class PaginatableArrayTest < ActiveSupport::TestCase
   end
 
   test 'specifying limit and offset when initializing' do
-    assert_equal 3, Kaminari::PaginatableArray.new((1..100).to_a, :limit => 10, :offset => 20).current_page
+    assert_equal 3, Kaminari::PaginatableArray.new((1..100).to_a, limit: 10, offset: 20).current_page
   end
 
   sub_test_case '#page' do
@@ -143,7 +143,7 @@ class PaginatableArrayTest < ActiveSupport::TestCase
 
   sub_test_case 'when setting total count explicitly' do
     test 'array 1..10, page 5, per 10, total_count 9999' do
-      arr = Kaminari::PaginatableArray.new((1..10).to_a, :total_count => 9999).page(5).per(10)
+      arr = Kaminari::PaginatableArray.new((1..10).to_a, total_count: 9999).page(5).per(10)
 
       assert_equal 10, arr.count
       assert_equal 1, arr.first
@@ -152,7 +152,7 @@ class PaginatableArrayTest < ActiveSupport::TestCase
     end
 
     test 'array 1..15, page 1, per 10, total_count 15' do
-      arr = Kaminari::PaginatableArray.new((1..15).to_a, :total_count => 15).page(1).per(10)
+      arr = Kaminari::PaginatableArray.new((1..15).to_a, total_count: 15).page(1).per(10)
 
       assert_equal 10, arr.count
       assert_equal 1, arr.first
@@ -161,7 +161,7 @@ class PaginatableArrayTest < ActiveSupport::TestCase
     end
 
     test 'array 1..25, page 2, per 10, total_count 15' do
-      arr = Kaminari::PaginatableArray.new((1..25).to_a, :total_count => 15).page(2).per(10)
+      arr = Kaminari::PaginatableArray.new((1..25).to_a, total_count: 15).page(2).per(10)
 
       assert_equal 5, arr.count
       assert_equal 11, arr.first

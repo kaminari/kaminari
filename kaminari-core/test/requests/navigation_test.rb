@@ -6,7 +6,7 @@ class NavigationTest < Test::Unit::TestCase
   include Capybara::DSL
 
   setup do
-    1.upto(100) {|i| User.create! :name => "user#{'%03d' % i}" }
+    1.upto(100) {|i| User.create! name: "user#{'%03d' % i}" }
   end
 
   teardown do

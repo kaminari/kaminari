@@ -4,8 +4,8 @@ module Kaminari
     class ViewsGenerator < Rails::Generators::NamedBase
       source_root File.expand_path('../../../../app/views/kaminari', __FILE__)
 
-      class_option :template_engine, :type => :string, :aliases => '-e', :desc => 'Template engine for the views. Available options are "erb", "haml", and "slim".'
-      class_option :views_prefix, :type => :string, :desc => 'Prefix for path to put views in.'
+      class_option :template_engine, type: :string, aliases: '-e', desc: 'Template engine for the views. Available options are "erb", "haml", and "slim".'
+      class_option :views_prefix, type: :string, desc: 'Prefix for path to put views in.'
 
       def self.banner #:nodoc:
         <<-BANNER.chomp

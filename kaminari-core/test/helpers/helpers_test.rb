@@ -17,13 +17,13 @@ class PaginatorHelperTest < ActiveSupport::TestCase
   end
 
   test 'view helper methods delegated to template' do
-    paginator = Paginator.new(template, :params => {})
+    paginator = Paginator.new(template, params: {})
     assert_equal "<a href='#'>link</a>", paginator.link_to('link', '#')
   end
 
   sub_test_case '#params' do
     setup do
-      @paginator = Paginator.new(template, :params => {:controller => 'foo', :action => 'bar'})
+      @paginator = Paginator.new(template, params: {controller: 'foo', action: 'bar'})
     end
 
     test 'when params has no form params' do
@@ -32,7 +32,7 @@ class PaginatorHelperTest < ActiveSupport::TestCase
 
     test 'when params has form params' do
       stub(template).params do
-        {:authenticity_token => 'token', :commit => 'submit', :utf8 => 'true', :_method => 'patch'}
+        {authenticity_token: 'token', commit: 'submit', utf8: 'true', _method: 'patch'}
       end
 
       assert_equal({'controller' => 'foo', 'action' => 'bar'}, @paginator.page_tag(template).instance_variable_get('@params'))
@@ -40,7 +40,7 @@ class PaginatorHelperTest < ActiveSupport::TestCase
   end
 
   test '#param_name' do
-    paginator = Paginator.new(template, :param_name => :pagina)
+    paginator = Paginator.new(template, param_name: :pagina)
     assert_equal :pagina, paginator.page_tag(template).instance_variable_get('@param_name')
   end
 

@@ -64,7 +64,7 @@ module Kaminari
       private :relevant_pages
 
       def page_tag(page)
-        @last = Page.new @template, @options.merge(:page => page)
+        @last = Page.new @template, @options.merge(page: page)
       end
 
       %w[first_page prev_page next_page last_page gap].each do |tag|
@@ -76,7 +76,7 @@ module Kaminari
       end
 
       def to_s #:nodoc:
-        super @window_options.merge :paginator => self
+        super @window_options.merge paginator: self
       end
 
       # delegates view helper methods to @template

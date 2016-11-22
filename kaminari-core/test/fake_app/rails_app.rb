@@ -7,7 +7,7 @@ require 'fake_app/active_record/config' if defined? ActiveRecord
 # config
 app = Class.new(Rails::Application)
 app.config.secret_key_base = app.config.secret_token = '3b7cd727ee24e8444053437c36cc66c4'
-app.config.session_store :cookie_store, :key => '_myapp_session'
+app.config.session_store :cookie_store, key: '_myapp_session'
 app.config.active_support.deprecation = :log
 app.config.eager_load = false
 # Rails.root
@@ -18,10 +18,10 @@ app.initialize!
 # routes
 app.routes.draw do
   resources :users do
-    get 'index_text(.:format)', :action => :index_text, :on => :collection
+    get 'index_text(.:format)', action: :index_text, on: :collection
   end
   resources :addresses do
-    get 'page/:page', :action => :index, :on => :collection
+    get 'page/:page', action: :index, on: :collection
   end
 end
 
@@ -33,7 +33,7 @@ class ApplicationController < ActionController::Base; end
 class UsersController < ApplicationController
   def index
     @users = User.page params[:page]
-    render :inline => <<-ERB
+    render inline: <<-ERB
 <%= @users.map(&:name).join("\n") %>
 <%= paginate @users %>
 ERB
@@ -48,7 +48,7 @@ if defined? ActiveRecord
   class AddressesController < ApplicationController
     def index
       @addresses = User::Address.page params[:page]
-      render :inline => <<-ERB
+      render inline: <<-ERB
   <%= @addresses.map(&:street).join("\n") %>
   <%= paginate @addresses %>
   ERB

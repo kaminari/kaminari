@@ -6,7 +6,7 @@ class RenderingWithFormatOptionTest < Test::Unit::TestCase
   include Capybara::DSL
 
   setup do
-    User.create! :name => 'user1'
+    User.create! name: 'user1'
   end
 
   teardown do

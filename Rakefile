@@ -12,7 +12,7 @@ Rake::TestTask.new do |t|
   t.verbose = true
 end
 
-task :default => "test:all"
+task default: "test:all"
 
 namespace :test do
   mappers = %w(

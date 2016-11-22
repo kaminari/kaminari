@@ -24,7 +24,7 @@ module Kaminari
       options[:total_pages] ||= scope.total_pages
 
       paginator_class = options[:paginator_class] || Kaminari::Helpers::Paginator
-      paginator = paginator_class.new(self, options.reverse_merge(:current_page => scope.current_page, :per_page => scope.limit_value, :remote => false))
+      paginator = paginator_class.new(self, options.reverse_merge(current_page: scope.current_page, per_page: scope.limit_value, remote: false))
       paginator.to_s
     end
 
@@ -48,7 +48,7 @@ module Kaminari
     def link_to_previous_page(scope, name, options = {})
       prev_page = path_to_prev_page(scope, options)
 
-      link_to_if prev_page, name, prev_page, options.except(:params, :param_name).reverse_merge(:rel => 'prev') do
+      link_to_if prev_page, name, prev_page, options.except(:params, :param_name).reverse_merge(rel: 'prev') do
         yield if block_given?
       end
     end
@@ -73,7 +73,7 @@ module Kaminari
     def link_to_next_page(scope, name, options = {})
       next_page = path_to_next_page(scope, options)
 
-      link_to_if next_page, name, next_page, options.except(:params, :param_name).reverse_merge(:rel => 'next') do
+      link_to_if next_page, name, next_page, options.except(:params, :param_name).reverse_merge(rel: 'next') do
         yield if block_given?
       end
     end
@@ -98,15 +98,15 @@ module Kaminari
       entry_name = if options[:entry_name]
                      options[:entry_name].pluralize(collection.size)
                    else
-                     collection.entry_name(:count => collection.size).downcase
+                     collection.entry_name(count: collection.size).downcase
                    end
 
       if collection.total_pages < 2
-        t('helpers.page_entries_info.one_page.display_entries', :entry_name => entry_name, :count => collection.total_count)
+        t('helpers.page_entries_info.one_page.display_entries', entry_name: entry_name, count: collection.total_count)
       else
         first = collection.offset_value + 1
         last = (sum = collection.offset_value + collection.limit_value) > collection.total_count ? collection.total_count : sum
-        t('helpers.page_entries_info.more_pages.display_entries', :entry_name => entry_name, :first => first, :last => last, :total => collection.total_count)
+        t('helpers.page_entries_info.more_pages.display_entries', entry_name: entry_name, first: first, last: last, total: collection.total_count)
       end.html_safe
     end
 
@@ -133,8 +133,8 @@ module Kaminari
       prev_page = path_to_prev_page(scope, options)
 
       output = String.new
-      output << tag(:link, :rel => "next", :href => next_page) if next_page
-      output << tag(:link, :rel => "prev", :href => prev_page) if prev_page
+      output << tag(:link, rel: "next", href: next_page) if next_page
+      output << tag(:link, rel: "prev", href: prev_page) if prev_page
       output.html_safe
     end
 
@@ -149,7 +149,7 @@ module Kaminari
     # It will return `nil` if there is no next page.
     def path_to_next_page(scope, options = {})
       return if scope.next_page.blank?
-      Kaminari::Helpers::NextPage.new(self, options.reverse_merge(:current_page => scope.current_page)).url
+      Kaminari::Helpers::NextPage.new(self, options.reverse_merge(current_page: scope.current_page)).url
     end
 
     # A helper that calculates the path to the previous page.
@@ -163,7 +163,7 @@ module Kaminari
     # It will return `nil` if there is no previous page.
     def path_to_prev_page(scope, options = {})
       return if scope.prev_page.blank?
-      Kaminari::Helpers::PrevPage.new(self, options.reverse_merge(:current_page => scope.current_page)).url
+      Kaminari::Helpers::PrevPage.new(self, options.reverse_merge(current_page: scope.current_page)).url
     end
 
     module PaginatorExtension
@@ -196,12 +196,12 @@ module Kaminari
             end
 
             subscriber.render_without_logging = true
-            ret = super @window_options.merge :paginator => self
+            ret = super @window_options.merge paginator: self
             subscriber.render_without_logging = false
 
             ret
           else
-            super @window_options.merge :paginator => self
+            super @window_options.merge paginator: self
           end
         end
       end

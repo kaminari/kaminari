@@ -30,7 +30,7 @@ if defined? ActiveRecord
     class << self
       def startup
         [User, GemDefinedModel, Device].each do |m|
-          1.upto(100) {|i| m.create! :name => "user#{'%03d' % i}", :age => (i / 10)}
+          1.upto(100) {|i| m.create! name: "user#{'%03d' % i}", age: (i / 10)}
         end
         super
       end
