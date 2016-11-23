@@ -36,6 +36,7 @@ class UsersController < ApplicationController
     render inline: <<-ERB
 <%= @users.map(&:name).join("\n") %>
 <%= paginate @users %>
+<div class="info"><%= page_entries_info @users %></div>
 ERB
   end
 

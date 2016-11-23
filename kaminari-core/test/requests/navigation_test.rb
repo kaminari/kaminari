@@ -59,5 +59,9 @@ class NavigationTest < Test::Unit::TestCase
         assert page.has_content? '1'
       end
     end
+
+    within 'div.info' do
+      assert page.has_text? 'Displaying users 1'
+    end
   end
 end
