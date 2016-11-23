@@ -2,7 +2,8 @@
 module Kaminari
   module ActiveRecordRelationMethods
     def entry_name(options = {})
-      model_name.human(options.reverse_merge(default: model_name.human.pluralize(options[:count])))
+      default = options[:count] == 1 ? model_name.human : model_name.human.pluralize
+      model_name.human(options.reverse_merge(default: default))
     end
 
     def reset #:nodoc:
