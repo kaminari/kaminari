@@ -158,11 +158,11 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
 
         sub_test_case 'having no entries' do
           test 'with default entry name' do
-            assert_equal 'No users found', view.page_entries_info(@users, params: {controller: 'users', action: 'index'})
+            assert_equal 'No users found', view.page_entries_info(@users)
           end
 
           test 'setting the entry name option to "member"' do
-            assert_equal 'No members found', view.page_entries_info(@users, entry_name: 'member', params: {controller: 'users', action: 'index'})
+            assert_equal 'No members found', view.page_entries_info(@users, entry_name: 'member')
           end
         end
 
@@ -173,11 +173,11 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
           end
 
           test 'with default entry name' do
-            assert_equal 'Displaying <b>1</b> user', view.page_entries_info(@users, params: {controller: 'users', action: 'index'})
+            assert_equal 'Displaying <b>1</b> user', view.page_entries_info(@users)
           end
 
           test 'setting the entry name option to "member"' do
-            assert_equal 'Displaying <b>1</b> member', view.page_entries_info(@users, entry_name: 'member', params: {controller: 'users', action: 'index'})
+            assert_equal 'Displaying <b>1</b> member', view.page_entries_info(@users, entry_name: 'member')
           end
         end
 
@@ -188,11 +188,11 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
           end
 
           test 'with default entry name' do
-            assert_equal 'Displaying <b>all 10</b> users', view.page_entries_info(@users, params: {controller: 'users', action: 'index'})
+            assert_equal 'Displaying <b>all 10</b> users', view.page_entries_info(@users)
           end
 
           test 'setting the entry name option to "member"' do
-            assert_equal 'Displaying <b>all 10</b> members', view.page_entries_info(@users, entry_name: 'member', params: {controller: 'users', action: 'index'})
+            assert_equal 'Displaying <b>all 10</b> members', view.page_entries_info(@users, entry_name: 'member')
           end
         end
 
@@ -207,11 +207,11 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
             end
 
             test 'with default entry name' do
-              assert_equal 'Displaying users <b>1&nbsp;-&nbsp;25</b> of <b>50</b> in total', view.page_entries_info(@users, params: {controller: 'users', action: 'index'})
+              assert_equal 'Displaying users <b>1&nbsp;-&nbsp;25</b> of <b>50</b> in total', view.page_entries_info(@users)
             end
 
             test 'setting the entry name option to "member"' do
-              assert_equal 'Displaying members <b>1&nbsp;-&nbsp;25</b> of <b>50</b> in total', view.page_entries_info(@users, entry_name: 'member', params: {controller: 'users', action: 'index'})
+              assert_equal 'Displaying members <b>1&nbsp;-&nbsp;25</b> of <b>50</b> in total', view.page_entries_info(@users, entry_name: 'member')
             end
           end
 
@@ -221,11 +221,11 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
             end
 
             test 'with default entry name' do
-              assert_equal 'Displaying users <b>26&nbsp;-&nbsp;50</b> of <b>50</b> in total', view.page_entries_info(@users, params: {controller: 'users', action: 'index'})
+              assert_equal 'Displaying users <b>26&nbsp;-&nbsp;50</b> of <b>50</b> in total', view.page_entries_info(@users)
             end
 
             test 'setting the entry name option to "member"' do
-              assert_equal 'Displaying members <b>26&nbsp;-&nbsp;50</b> of <b>50</b> in total', view.page_entries_info(@users, entry_name: 'member', params: {controller: 'users', action: 'index'})
+              assert_equal 'Displaying members <b>26&nbsp;-&nbsp;50</b> of <b>50</b> in total', view.page_entries_info(@users, entry_name: 'member')
             end
           end
 
@@ -239,7 +239,7 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
             end
 
             test 'with default entry name' do
-              assert_equal 'Displaying users <b>31&nbsp;-&nbsp;40</b> of <b>50</b> in total', view.page_entries_info(@users, params: {controller: 'users', action: 'index'})
+              assert_equal 'Displaying users <b>31&nbsp;-&nbsp;40</b> of <b>50</b> in total', view.page_entries_info(@users)
             end
           end
         end
@@ -256,7 +256,7 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
         end
 
         test 'page_entries_info translates entry' do
-          assert_equal 'Displaying people <b>1&nbsp;-&nbsp;25</b> of <b>50</b> in total', view.page_entries_info(@users, params: {controller: 'users', action: 'index'})
+          assert_equal 'Displaying people <b>1&nbsp;-&nbsp;25</b> of <b>50</b> in total', view.page_entries_info(@users)
         end
       end
 
@@ -266,7 +266,7 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
         end
 
         test 'having no entries' do
-          assert_equal 'No addresses found', view.page_entries_info(@addresses, params: {controller: 'addresses', action: 'index'})
+          assert_equal 'No addresses found', view.page_entries_info(@addresses)
         end
 
         sub_test_case 'having 1 entry' do
@@ -276,11 +276,11 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
           end
 
           test 'with default entry name' do
-            assert_equal 'Displaying <b>1</b> address', view.page_entries_info(@addresses, params: {controller: 'addresses', action: 'index'})
+            assert_equal 'Displaying <b>1</b> address', view.page_entries_info(@addresses)
           end
 
           test 'setting the entry name option to "place"' do
-            assert_equal 'Displaying <b>1</b> place', view.page_entries_info(@addresses, entry_name: 'place', params: {controller: 'addresses', action: 'index'})
+            assert_equal 'Displaying <b>1</b> place', view.page_entries_info(@addresses, entry_name: 'place')
           end
         end
 
@@ -291,11 +291,11 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
           end
 
           test 'with default entry name' do
-            assert_equal 'Displaying <b>all 10</b> addresses', view.page_entries_info(@addresses, params: {controller: 'addresses', action: 'index'})
+            assert_equal 'Displaying <b>all 10</b> addresses', view.page_entries_info(@addresses)
           end
 
           test 'setting the entry name option to "place"' do
-            assert_equal 'Displaying <b>all 10</b> places', view.page_entries_info(@addresses, entry_name: 'place', params: {controller: 'addresses', action: 'index'})
+            assert_equal 'Displaying <b>all 10</b> places', view.page_entries_info(@addresses, entry_name: 'place')
           end
         end
 
@@ -310,11 +310,11 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
             end
 
             test 'with default entry name' do
-              assert_equal 'Displaying addresses <b>1&nbsp;-&nbsp;25</b> of <b>50</b> in total', view.page_entries_info(@addresses, params: {controller: 'addresses', action: 'index'})
+              assert_equal 'Displaying addresses <b>1&nbsp;-&nbsp;25</b> of <b>50</b> in total', view.page_entries_info(@addresses)
             end
 
             test 'setting the entry name option to "place"' do
-              assert_equal 'Displaying places <b>1&nbsp;-&nbsp;25</b> of <b>50</b> in total', view.page_entries_info(@addresses, entry_name: 'place', params: {controller: 'addresses', action: 'index'})
+              assert_equal 'Displaying places <b>1&nbsp;-&nbsp;25</b> of <b>50</b> in total', view.page_entries_info(@addresses, entry_name: 'place')
             end
           end
 
@@ -324,11 +324,11 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
             end
 
             test 'with default entry name' do
-              assert_equal 'Displaying addresses <b>26&nbsp;-&nbsp;50</b> of <b>50</b> in total', view.page_entries_info(@addresses, params: {controller: 'addresses', action: 'index'})
+              assert_equal 'Displaying addresses <b>26&nbsp;-&nbsp;50</b> of <b>50</b> in total', view.page_entries_info(@addresses)
             end
 
             test 'setting the entry name option to "place"' do
-              assert_equal 'Displaying places <b>26&nbsp;-&nbsp;50</b> of <b>50</b> in total', view.page_entries_info(@addresses, entry_name: 'place', params: {controller: 'addresses', action: 'index'})
+              assert_equal 'Displaying places <b>26&nbsp;-&nbsp;50</b> of <b>50</b> in total', view.page_entries_info(@addresses, entry_name: 'place')
             end
           end
         end
