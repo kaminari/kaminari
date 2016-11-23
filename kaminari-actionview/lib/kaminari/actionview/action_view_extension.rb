@@ -49,7 +49,7 @@ module Kaminari
       prev_page = path_to_prev_page(scope, options)
 
       options.except! :params, :param_name
-      options.reverse_merge! rel: 'prev'
+      options[:rel] ||= 'prev'
 
       link_to_if prev_page, name, prev_page, options do
         yield if block_given?
@@ -77,7 +77,7 @@ module Kaminari
       next_page = path_to_next_page(scope, options)
 
       options.except! :params, :param_name
-      options.reverse_merge! rel: 'next'
+      options[:rel] ||= 'next'
 
       link_to_if next_page, name, next_page, options do
         yield if block_given?
