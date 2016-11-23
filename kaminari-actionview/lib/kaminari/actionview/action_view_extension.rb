@@ -20,10 +20,9 @@ module Kaminari
     # * <tt>:remote</tt> - Ajax? (false by default)
     # * <tt>:paginator_class</tt> - Specify a custom Paginator (Kaminari::Helpers::Paginator by default)
     # * <tt>:ANY_OTHER_VALUES</tt> - Any other hash key & values would be directly passed into each tag as :locals value.
-    def paginate(scope, options = {})
+    def paginate(scope, paginator_class: Kaminari::Helpers::Paginator, **options)
       options[:total_pages] ||= scope.total_pages
 
-      paginator_class = options[:paginator_class] || Kaminari::Helpers::Paginator
       paginator = paginator_class.new(self, options.reverse_merge(current_page: scope.current_page, per_page: scope.limit_value, remote: false))
       paginator.to_s
     end
