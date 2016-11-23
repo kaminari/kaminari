@@ -147,7 +147,7 @@ module Kaminari
     #
     # It will return `nil` if there is no next page.
     def path_to_next_page(scope, options = {})
-      return if scope.next_page.blank?
+      return unless scope.next_page
       Kaminari::Helpers::NextPage.new(self, options.reverse_merge(current_page: scope.current_page)).url
     end
 
@@ -161,7 +161,7 @@ module Kaminari
     #
     # It will return `nil` if there is no previous page.
     def path_to_prev_page(scope, options = {})
-      return if scope.prev_page.blank?
+      return unless scope.prev_page
       Kaminari::Helpers::PrevPage.new(self, options.reverse_merge(current_page: scope.current_page)).url
     end
 
