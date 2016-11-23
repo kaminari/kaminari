@@ -6,13 +6,13 @@ module Kaminari
   module Helpers
     # The main container tag
     class Paginator < Tag
-      def initialize(template, options) #:nodoc:
+      def initialize(template, window: nil, outer_window: nil, left: nil, right: nil, inner_window: nil, **options) #:nodoc:
         @window_options = {}.tap do |h|
-          h[:window] = options.delete(:window) || options.delete(:inner_window) || Kaminari.config.window
-          outer_window = options.delete(:outer_window) || Kaminari.config.outer_window
-          h[:left] = options.delete(:left) || Kaminari.config.left
+          h[:window] = window || inner_window || Kaminari.config.window
+          outer_window = outer_window || Kaminari.config.outer_window
+          h[:left] = left || Kaminari.config.left
           h[:left] = outer_window if h[:left] == 0
-          h[:right] = options.delete(:right) || Kaminari.config.right
+          h[:right] = right || Kaminari.config.right
           h[:right] = outer_window if h[:right] == 0
         end
         @template, @options = template, options
