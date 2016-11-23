@@ -18,6 +18,9 @@ class NavigationTest < Test::Unit::TestCase
   test 'navigating by pagination links' do
     visit '/users'
 
+    assert page.has_no_content? 'previous page'
+    assert page.has_content? 'next page'
+
     within 'nav.pagination' do
       within 'span.page.current' do
         assert page.has_content? '1'
@@ -26,6 +29,9 @@ class NavigationTest < Test::Unit::TestCase
         click_link 'Next ›'
       end
     end
+
+    assert page.has_content? 'previous page'
+    assert page.has_content? 'next page'
 
     within 'nav.pagination' do
       within 'span.page.current' do
@@ -36,6 +42,9 @@ class NavigationTest < Test::Unit::TestCase
       end
     end
 
+    assert page.has_content? 'previous page'
+    assert page.has_no_content? 'next page'
+
     within 'nav.pagination' do
       within 'span.page.current' do
         assert page.has_content? '4'
@@ -44,6 +53,9 @@ class NavigationTest < Test::Unit::TestCase
         click_link '‹ Prev'
       end
     end
+
+    assert page.has_content? 'previous page'
+    assert page.has_content? 'next page'
 
     within 'nav.pagination' do
       within 'span.page.current' do
