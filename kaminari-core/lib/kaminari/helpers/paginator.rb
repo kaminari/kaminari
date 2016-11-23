@@ -7,14 +7,14 @@ module Kaminari
     # The main container tag
     class Paginator < Tag
       def initialize(template, window: nil, outer_window: nil, left: nil, right: nil, inner_window: nil, **options) #:nodoc:
-        @window_options = {}.tap do |h|
-          h[:window] = window || inner_window || Kaminari.config.window
-          outer_window = outer_window || Kaminari.config.outer_window
-          h[:left] = left || Kaminari.config.left
-          h[:left] = outer_window if h[:left] == 0
-          h[:right] = right || Kaminari.config.right
-          h[:right] = outer_window if h[:right] == 0
-        end
+        @window_options = {}
+        @window_options[:window] = window || inner_window || Kaminari.config.window
+        outer_window ||= Kaminari.config.outer_window
+        @window_options[:left] = left || Kaminari.config.left
+        @window_options[:left] = outer_window if @window_options[:left] == 0
+        @window_options[:right] = right || Kaminari.config.right
+        @window_options[:right] = outer_window if @window_options[:right] == 0
+
         @template, @options = template, options
         @theme = @options[:theme]
         @views_prefix = @options[:views_prefix]

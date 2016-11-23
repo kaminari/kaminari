@@ -22,7 +22,9 @@ module Kaminari
         @params = template.params
         # @params in Rails 5 no longer inherits from Hash
         @params = @params.to_unsafe_h if @params.respond_to?(:to_unsafe_h)
-        @params = @params.with_indifferent_access.except(*PARAM_KEY_BLACKLIST).merge(params)
+        @params = @params.with_indifferent_access
+        @params.except!(*PARAM_KEY_BLACKLIST)
+        @params.merge! params
       end
 
       def to_s(locals = {}) #:nodoc:
@@ -31,7 +33,9 @@ module Kaminari
       end
 
       def page_url_for(page)
-        @template.url_for params_for(page).merge(only_path: true)
+        params = params_for(page)
+        params[:only_path] = true
+        @template.url_for params
       end
 
       private
@@ -76,7 +80,8 @@ module Kaminari
         page_url_for page
       end
       def to_s(locals = {}) #:nodoc:
-        super locals.merge(url: url)
+        locals[:url] = url
+        super locals
       end
     end
 
@@ -88,7 +93,8 @@ module Kaminari
         @options[:page]
       end
       def to_s(locals = {}) #:nodoc:
-        super locals.merge(page: page)
+        locals[:page] = page
+        super locals
       end
     end
 

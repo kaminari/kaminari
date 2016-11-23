@@ -22,8 +22,9 @@ module Kaminari
     # * <tt>:ANY_OTHER_VALUES</tt> - Any other hash key & values would be directly passed into each tag as :locals value.
     def paginate(scope, paginator_class: Kaminari::Helpers::Paginator, **options)
       options[:total_pages] ||= scope.total_pages
+      options.reverse_merge! current_page: scope.current_page, per_page: scope.limit_value, remote: false
 
-      paginator = paginator_class.new(self, options.reverse_merge(current_page: scope.current_page, per_page: scope.limit_value, remote: false))
+      paginator = paginator_class.new self, options
       paginator.to_s
     end
 
@@ -44,10 +45,13 @@ module Kaminari
     #   <%= link_to_previous_page @users, 'Previous Page' do %>
     #     <span>At the Beginning</span>
     #   <% end %>
-    def link_to_previous_page(scope, name, options = {})
+    def link_to_previous_page(scope, name, **options)
       prev_page = path_to_prev_page(scope, options)
 
-      link_to_if prev_page, name, prev_page, options.except(:params, :param_name).reverse_merge(rel: 'prev') do
+      options.except! :params, :param_name
+      options.reverse_merge! rel: 'prev'
+
+      link_to_if prev_page, name, prev_page, options do
         yield if block_given?
       end
     end
@@ -69,10 +73,13 @@ module Kaminari
     #   <%= link_to_next_page @users, 'Next Page' do %>
     #     <span>No More Pages</span>
     #   <% end %>
-    def link_to_next_page(scope, name, options = {})
+    def link_to_next_page(scope, name, **options)
       next_page = path_to_next_page(scope, options)
 
-      link_to_if next_page, name, next_page, options.except(:params, :param_name).reverse_merge(rel: 'next') do
+      options.except! :params, :param_name
+      options.reverse_merge! rel: 'next'
+
+      link_to_if next_page, name, next_page, options do
         yield if block_given?
       end
     end
