@@ -12,7 +12,7 @@ class User < ActiveRecord::Base
   end
 
   scope :by_name, -> { order(:name) }
-  scope :by_read_count, lambda {
+  scope :by_read_count, -> {
     cols = if connection.adapter_name == "PostgreSQL"
       column_names.map { |column| %{"users"."#{column}"} }.join(", ")
     else
