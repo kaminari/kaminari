@@ -106,7 +106,7 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
       test 'out of range' do
         users = User.page(5)
 
-        assert_nil view.link_to_next_page(users, 'More', params: {controller: 'users', action: 'index'})
+        assert_nil view.link_to_previous_page(users, 'Previous', params: {controller: 'users', action: 'index'})
       end
     end
 
