@@ -84,6 +84,10 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
           html = view.link_to_previous_page @users, 'Previous', params: {controller: 'users', action: 'index'}
           assert_match(/page=2/, html)
           assert_match(/rel="prev"/, html)
+
+          html = view.link_to_previous_page @users, 'Previous', params: {controller: 'users', action: 'index'} do 'At the Beginning' end
+          assert_match(/page=2/, html)
+          assert_match(/rel="prev"/, html)
         end
 
         test 'overriding rel=' do
@@ -101,12 +105,14 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
         users = User.page(1)
 
         assert_nil view.link_to_previous_page(users, 'Previous', params: {controller: 'users', action: 'index'})
+        assert_equal 'At the Beginning', (view.link_to_previous_page(users, 'Previous', params: {controller: 'users', action: 'index'}) do 'At the Beginning' end)
       end
 
       test 'out of range' do
         users = User.page(5)
 
         assert_nil view.link_to_previous_page(users, 'Previous', params: {controller: 'users', action: 'index'})
+        assert_equal 'At the Beginning', (view.link_to_previous_page(users, 'Previous', params: {controller: 'users', action: 'index'}) do 'At the Beginning' end)
       end
     end
 
