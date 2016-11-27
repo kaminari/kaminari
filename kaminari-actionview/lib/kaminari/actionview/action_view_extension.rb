@@ -12,13 +12,10 @@ module Kaminari
         super unless Thread.current[:kaminari_rendering]
       end
     end
-
-    module PaginatorExtension
-      # so that this instance can actually "render"
-      include ::ActionView::Context
-    end
-    ::Kaminari::Helpers::Paginator.send :include, PaginatorExtension
   end
 end
+
+# so that this instance can actually "render"
+::Kaminari::Helpers::Paginator.send :include, ::ActionView::Context
 
 ActionView::LogSubscriber.send :prepend, Kaminari::ActionViewExtension::LogSubscriberSilencer
