@@ -76,7 +76,10 @@ module Kaminari
       end
 
       def to_s #:nodoc:
+        Thread.current[:kaminari_rendering] = true
         super @window_options.merge paginator: self
+      ensure
+        Thread.current[:kaminari_rendering] = false
       end
 
       # delegates view helper methods to @template
