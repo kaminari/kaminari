@@ -2,12 +2,12 @@ source 'https://rubygems.org'
 
 git 'git://github.com/rails/rails.git' do
   gem 'railties'
-  gem 'activerecord', :require => 'active_record'
-  gem 'actionview', :require => 'action_view'
+  gem 'activerecord', require: 'active_record'
+  gem 'actionview', require: 'action_view'
 end
 
-gem 'rack', :git => 'git://github.com/rack/rack.git'
-gem 'arel', :github => 'rails/arel'
+gem 'rack', git: 'git://github.com/rack/rack.git'
+gem 'arel', github: 'rails/arel'
 
 platforms :ruby do
   if RUBY_VERSION > "2.1.0"
@@ -26,4 +26,4 @@ platforms :rbx do
   gem 'rubinius-developer_tools'
 end
 
-gemspec :path => '../'
+gemspec path: '../'

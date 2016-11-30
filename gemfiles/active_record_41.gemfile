@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'railties', '~> 4.1.0'
-gem 'activerecord', '~> 4.1.0', :require => 'active_record'
+gem 'activerecord', '~> 4.1.0', require: 'active_record'
 
 platforms :ruby do
   if RUBY_VERSION > "2.1.0"
@@ -20,4 +20,4 @@ platforms :rbx do
   gem 'rubinius-developer_tools'
 end
 
-gemspec :path => '../'
+gemspec path: '../'

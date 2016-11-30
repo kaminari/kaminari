@@ -33,7 +33,7 @@ module Kaminari
       #
       # Ajax:
       #
-      #   <%= link_to_previous_page @items, 'Previous Page', :remote => true %>
+      #   <%= link_to_previous_page @items, 'Previous Page', remote: true %>
       #
       # By default, it renders nothing if there are no more results on the previous page.
       # You can customize this output by passing a block.
@@ -61,7 +61,7 @@ module Kaminari
       #
       # Ajax:
       #
-      #   <%= link_to_next_page @items, 'Next Page', :remote => true %>
+      #   <%= link_to_next_page @items, 'Next Page', remote: true %>
       #
       # By default, it renders nothing if there are no more results on the next page.
       # You can customize this output by passing a block.
@@ -94,7 +94,7 @@ module Kaminari
       # The namespace will be cutted out and only the last name will be used.
       # Override this with the <tt>:entry_name</tt> parameter:
       #
-      #   <%= page_entries_info @posts, :entry_name => 'item' %>
+      #   <%= page_entries_info @posts, entry_name: 'item' %>
       #   #-> Displaying items 6 - 10 of 26 in total
       def page_entries_info(collection, entry_name: nil)
         entry_name = if entry_name

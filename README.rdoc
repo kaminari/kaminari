@@ -147,37 +147,37 @@ Run the following generator command, then edit the generated file.
 
 * specifying the "inner window" size (4 by default)
 
-    <%= paginate @users, :window => 2 %>
+    <%= paginate @users, window: 2 %>
   This would output something like <tt>... 5 6 7 8 9 ...</tt> when 7 is the current page.
 
 * specifying the "outer window" size (0 by default)
 
-    <%= paginate @users, :outer_window => 3 %>
+    <%= paginate @users, outer_window: 3 %>
   This would output something like <tt>1 2 3 4 ...(snip)... 17 18 19 20</tt> while having 20 pages in total.
 
 * outer window can be separately specified by +left+, +right+ (0 by default)
 
-    <%= paginate @users, :left => 1, :right => 3 %>
+    <%= paginate @users, left: 1, right: 3 %>
   This would output something like <tt>1 ...(snip)... 18 19 20</tt> while having 20 pages in total.
 
 * changing the parameter name (:+param_name+) for the links
 
-    <%= paginate @users, :param_name => :pagina %>
+    <%= paginate @users, param_name: :pagina %>
   This would modify the query parameter name on each links.
 
 * extra parameters (:+params+) for the links
 
-    <%= paginate @users, :params => {:controller => 'foo', :action => 'bar'} %>
+    <%= paginate @users, params: {controller: 'foo', action: 'bar'} %>
   This would modify each link's +url_option+. :+controller+ and :+action+ might be the keys in common.
 
 * Ajax links (crazy simple, but works perfectly!)
 
-    <%= paginate @users, :remote => true %>
+    <%= paginate @users, remote: true %>
   This would add <tt>data-remote="true"</tt> to all the links inside.
 
 * specifying an alternative views directory (default is <tt>kaminari/</tt>)
 
-    <%= paginate @users, :views_prefix => 'templates' %>
+    <%= paginate @users, views_prefix: 'templates' %>
   This would search for partials in <tt>app/views/templates/kaminari</tt>. This option makes it easier to do things like A/B testing pagination templates/themes, using new/old templates at the same time as well as better integration with other gems such as {cells}[https://github.com/apotonick/cells].
 
 * the +link_to_next_page+ and +link_to_previous_page+ helper method
@@ -195,7 +195,7 @@ Run the following generator command, then edit the generated file.
   The namespace will be cut out and only the last name will be used.
   Override this with the <tt>:entry_name</tt> parameter:
     
-    <%= page_entries_info @posts, :entry_name => 'item' %>
+    <%= page_entries_info @posts, entry_name: 'item' %>
     #-> Displaying items 6 - 10 of 26 in total
 
 * the +rel_next_prev_link_tags+ helper method
@@ -281,7 +281,7 @@ Kaminari includes a handy template generator.
 
   Next, reference that directory when calling the +paginate+ method:
 
-    <%= paginate @users, :theme => 'my_custom_theme' %>
+    <%= paginate @users, theme: 'my_custom_theme' %>
 
   Customize away!
 
@@ -304,22 +304,22 @@ You can specify the +total_count+ value through options Hash. This would be help
 Because of the +page+ parameter and Rails 3 routing, you can easily generate SEO and user-friendly URLs. For any resource you'd like to paginate, just add the following to your +routes.rb+:
 
     resources :my_resources do
-      get 'page/:page', :action => :index, :on => :collection
+      get 'page/:page', action: :index, on: :collection
     end
 
 If you are using Rails 4 or later, you can simplify route definitions by using `concern`:
 
     concern :paginatable do
-      get '(page/:page)', :action => :index, :on => :collection, :as => ''
+      get '(page/:page)', action: :index, on: :collection, as: ''
     end
 
-    resources :my_resources, :concerns => :paginatable
+    resources :my_resources, concerns: :paginatable
 
 This will create URLs like <tt>/my_resources/page/33</tt> instead of <tt>/my_resources?page=33</tt>. This is now a friendly URL, but it also has other added benefits...
 
 Because the +page+ parameter is now a URL segment, we can leverage on Rails page caching[http://guides.rubyonrails.org/caching_with_rails.html#page-caching]!
 
-NOTE: In this example, I've pointed the route to my <tt>:index</tt> action. You may have defined a custom pagination action in your controller - you should point <tt>:action => :your_custom_action</tt> instead.
+NOTE: In this example, I've pointed the route to my <tt>:index</tt> action. You may have defined a custom pagination action in your controller - you should point <tt>action: :your_custom_action</tt> instead.
 
 
 == Sinatra/Padrino support
