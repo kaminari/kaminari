@@ -248,11 +248,9 @@ Kaminari includes a handy template generator.
 
   then edit the partials in your app's <tt>app/views/kaminari/</tt> directory.
 
-* for Haml users
+* for Haml/Slim users
 
-  Haml templates generator is also available by adding the <tt>-e haml</tt> option (this is automatically invoked when the default template_engine is set to Haml).
-
-    % rails g kaminari:views default -e haml
+  You can use the [html2haml gem](https://github.com/haml/html2haml) or the [html2slim gem](https://github.com/slim-template/html2slim) to convert erb templates. The kaminari gem will automatically pick up haml/slim templates if you place them in `app/views/kaminari/`.
 
 * multiple templates
 
