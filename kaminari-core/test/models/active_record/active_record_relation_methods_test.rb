@@ -47,6 +47,22 @@ if defined? ActiveRecord
           @author.readers.by_read_count.page(1).total_count(:name, distinct: true)
         end
       end
+
+      test "it counts the number of rows, not the number of keys, with an alias field" do
+        @books.each {|book| book.readers << @readers[0..1] }
+
+        assert_equal 8, Readership.select('user_id, count(user_id) as read_count, book_id').group(:user_id, :book_id).page(1).total_count
+      end
+
+      test "it counts the number of rows, not the number of keys without an alias field" do
+        @books.each {|book| book.readers << @readers[0..1] }
+
+        assert_equal 8, Readership.select('user_id, count(user_id), book_id').group(:user_id, :book_id).page(1).total_count
+      end
+
+      test "throw an exception when calculating total_count when the query includes column aliases used by a group-by clause" do
+        assert_equal 3, Book.joins(authorships: :user).select("users.name as author_name").group('users.name').page(1).total_count
+      end
     end
   end
 end
