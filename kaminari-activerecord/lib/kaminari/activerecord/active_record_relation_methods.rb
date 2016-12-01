@@ -19,8 +19,15 @@ module Kaminari
         # Remove includes only if they are irrelevant
         c = c.except(:includes) unless references_eager_loaded_tables?
 
-        # .group returns an OrderedHash that responds to #count
-        c = c.count(column_name)
+        # it covers the common case
+        if column_name == :all &&  c.group_values.any?
+          # count with group is just a distinct count by group value
+          c = c.except(:group, :select).select(c.group_values).distinct.count
+        else
+          # .group returns an OrderedHash that responds to #count
+          c = c.count(column_name)
+        end
+
         if c.is_a?(Hash) || c.is_a?(ActiveSupport::OrderedHash)
           c.count
         else
