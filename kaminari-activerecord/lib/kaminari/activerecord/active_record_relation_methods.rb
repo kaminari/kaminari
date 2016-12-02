@@ -15,10 +15,8 @@ module Kaminari
       @total_count ||= begin
         # #count overrides the #select which could include generated columns referenced in #order, so skip #order here, where it's irrelevant to the result anyway
         c = except(:offset, :limit, :order)
-
         # Remove includes only if they are irrelevant
         c = c.except(:includes) unless references_eager_loaded_tables?
-
         # .group returns an OrderedHash that responds to #count
         c = c.count(column_name)
         if c.is_a?(Hash) || c.is_a?(ActiveSupport::OrderedHash)
