@@ -14,6 +14,12 @@ module Kaminari
     def total_count(column_name = :all, _options = nil) #:nodoc:
       return @total_count if @total_count
 
+      # There are some cases that total count can be deduced from loaded records
+      if loaded?
+        # Total count has to be 0 if loaded records are 0
+        return @total_count = 0 if (current_page == 1) && @records.empty?
+      end
+
       # #count overrides the #select which could include generated columns referenced in #order, so skip #order here, where it's irrelevant to the result anyway
       c = except(:offset, :limit, :order)
       # Remove includes only if they are irrelevant
