@@ -12,7 +12,7 @@ module Kaminari
     end
 
     def total_count(column_name = :all, _options = nil) #:nodoc:
-      return @total_count if @total_count
+      return @total_count if defined?(@total_count) && @total_count
 
       # There are some cases that total count can be deduced from loaded records
       if loaded?
