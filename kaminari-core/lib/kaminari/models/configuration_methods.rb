@@ -31,18 +31,26 @@ module Kaminari
         (defined?(@_max_per_page) && @_max_per_page) || Kaminari.config.max_per_page
       end
 
-      # Overrides the max_pages value per model
+      # Overrides the max_pages value per model when a value is given
       #   class Article < ActiveRecord::Base
-      #     max_pages_per 100
+      #     max_pages 100
       #   end
-      def max_pages_per(val)
-        @_max_pages = val
+      #
+      # Also returns this model's max_pages value (globally configured
+      # +max_pages+ value unless explicitly overridden) when no value is given
+      def max_pages(val = :none)
+        if val == :none
+          # getter
+          (defined?(@_max_pages) && @_max_pages) || Kaminari.config.max_pages
+        else
+          # setter
+          @_max_pages = val
+        end
       end
 
-      # This model's max_pages value
-      # returns max_pages value unless explicitly overridden via <tt>max_pages_per</tt>
-      def max_pages
-        (defined?(@_max_pages) && @_max_pages) || Kaminari.config.max_pages
+      def max_pages_per(val)
+        ActiveSupport::Deprecation.warn 'max_pages_per is deprecated. Use max_pages instead.', caller_locations(2)
+        max_pages val
       end
     end
   end

@@ -67,7 +67,7 @@ class ConfigurationMethodsTest < ActiveSupport::TestCase
   sub_test_case '#max_pages' do
     if defined? ActiveRecord
       test 'AR::Base should be not polluted by configuration methods' do
-        assert_not_respond_to ActiveRecord::Base, :max_pages_per
+        assert_not_respond_to ActiveRecord::Base, :max_pages
       end
     end
 
@@ -79,7 +79,7 @@ class ConfigurationMethodsTest < ActiveSupport::TestCase
 
     teardown do
       Kaminari.configure {|c| c.max_pages = nil }
-      User.max_pages_per nil
+      User.max_pages nil
       User.delete_all
     end
 
@@ -89,7 +89,7 @@ class ConfigurationMethodsTest < ActiveSupport::TestCase
 
     test 'when configuring both on global and model-level' do
       Kaminari.configure {|c| c.max_pages = 10 }
-      User.max_pages_per 15
+      User.max_pages 15
 
       assert_equal 15, User.page(1).per(5).total_pages
     end

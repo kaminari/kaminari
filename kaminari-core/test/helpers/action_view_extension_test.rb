@@ -237,11 +237,11 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
 
           sub_test_case 'the last page' do
             setup do
-              User.max_pages_per 4
+              User.max_pages 4
               @users = User.page(4).per(10)
             end
             teardown do
-              User.max_pages_per nil
+              User.max_pages nil
             end
 
             test 'with default entry name' do

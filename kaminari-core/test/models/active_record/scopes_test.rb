@@ -227,26 +227,26 @@ if defined? ActiveRecord
 
           test 'with max_pages < total pages count from database' do
             begin
-              model_class.max_pages_per 3
+              model_class.max_pages 3
 
               assert_equal 3, model_class.page.total_pages
             ensure
-              model_class.max_pages_per nil
+              model_class.max_pages nil
             end
           end
 
           test 'with max_pages > total pages count from database' do
             begin
-              model_class.max_pages_per 11
+              model_class.max_pages 11
 
               assert_equal 4, model_class.page.total_pages
             ensure
-              model_class.max_pages_per nil
+              model_class.max_pages nil
             end
           end
 
           test 'with max_pages is nil (default)' do
-            model_class.max_pages_per nil
+            model_class.max_pages nil
 
             assert_equal 4, model_class.page.total_pages
           end
