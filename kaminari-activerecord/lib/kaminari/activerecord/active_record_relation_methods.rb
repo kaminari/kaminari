@@ -34,5 +34,37 @@ module Kaminari
         c.respond_to?(:count) ? c.count(column_name) : c
       end
     end
+
+    def without_count
+      extend ::Kaminari::PaginatableWithoutCount
+    end
+  end
+
+  module PaginatableWithoutCount
+    def load
+      if loaded? || limit_value.nil?
+        super
+      else
+        @values[:limit] = limit_value + 1
+        super
+        @values[:limit] = limit_value - 1
+
+        if @records.any?
+          @records = @records.dup if (frozen = @records.frozen?)
+          @_has_next = !!@records.delete_at(limit_value)
+          @records.freeze if frozen
+        end
+
+        self
+      end
+    end
+
+    def last_page?
+      !out_of_range? && !@_has_next
+    end
+
+    def out_of_range?
+      @records.empty?
+    end
   end
 end
