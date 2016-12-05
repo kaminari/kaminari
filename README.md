@@ -47,7 +47,7 @@ The pagination helper outputs the HTML5 `<nav>` tag by default. Plus, the helper
 
 ## Installation
 
-Put this line in your Gemfile:
+To install kaminari on the default Rails stack, just put this line in your Gemfile:
 
 ```ruby
 gem 'kaminari'
@@ -59,6 +59,7 @@ Then bundle:
 % bundle
 ```
 
+If you're building non-Rails of non-ActiveRecord app and want the pagination feature on it, please take a look at [Other Framework/Library Support](#other-frameworklibrary-support) section.
 
 ## Query Basics
 
@@ -429,13 +430,52 @@ Because the `page` parameter is now a URL segment, we can leverage on Rails page
 
 NOTE: In this example, I've pointed the route to my `:index` action. You may have defined a custom pagination action in your controller - you should point `action: :your_custom_action` instead.
 
-## Sinatra/Padrino Support
+## Other Framework/Library Support
 
-See: https://github.com/kaminari/kaminari-sinatra
+### The kaminari gem
 
-## Grape Support
+Technically, the kaminari gem consists of 3 individual components:
 
-See: https://github.com/kaminari/kaminari-grape
+    kaminari-core: the core pagination logic
+    kaminari-activerecord: Active Record adapter
+    kaminari-actionview: Action View adapter
+
+So, bundling `gem 'kaminari'` is equivalent to the following 2 lines (kaminari-core is referenced from the adapters):
+
+```ruby
+gem 'kaminari-activerecord'
+gem 'kaminari-actionview'
+```
+
+### For Other ORM Users
+
+If you want to use other supported ORMs instead of ActiveRecord, for example Mongoid, bundle its adapter instead of kaminari-activerecord.
+
+```ruby
+gem 'kaminari-mongoid'
+gem 'kaminari-actionview'
+```
+
+Kaminari currently provides adapters for the following ORMs:
+
+Mongoid: https://github.com/kaminari/kaminari-mongoid
+MongoMapper: https://github.com/kaminari/kaminari-mongo_mapper
+DataMapper: https://github.com/kaminari/kaminari-data_mapper  (would not work on kaminari 1.0.x)
+
+### For Other Web Framework Users
+
+If you want to use other web frameworks instead of Rails + Action View, for example Sinatra, bundle its adapter instead of kaminari-actionview.
+
+```ruby
+gem 'kaminari-activerecord'
+gem 'kaminari-sinatra'
+```
+
+Kaminari currently provides adapters for the following web frameworks:
+
+Sinatra: https://github.com/kaminari/kaminari-sinatra
+Grape: https://github.com/kaminari/kaminari-grape
+
 
 ## For More Information
 
