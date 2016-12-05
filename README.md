@@ -13,7 +13,7 @@ No configuration required.
 Don't have to define anything in your models or helpers.
 
 ### Simple Scope-based API
-Everything is method chainable with less "Hasheritis". You know, that's the Rails 3 way.
+Everything is method chainable with less "Hasheritis". You know, that's the modern Rails way.
 No special collection class or anything for the paginated values, instead using a general `AR::Relation` instance.
 So, of course you can chain any other conditions before or after the paginator scope.
 
@@ -25,7 +25,7 @@ So, you can easily modify their behaviour, style or whatever by overriding parti
 Kaminari supports multiple ORMs (ActiveRecord, DataMapper, Mongoid, MongoMapper) multiple web frameworks (Rails, Sinatra, Grape), and multiple template engines (ERB, Haml, Slim).
 
 ### Modern
-The pagination helper outputs the HTML5 `<nav>` tag by default. Plus, the helper supports Rails 3 unobtrusive Ajax.
+The pagination helper outputs the HTML5 `<nav>` tag by default. Plus, the helper supports Rails unobtrusive Ajax.
 
 
 ## Supported Versions
@@ -337,7 +337,7 @@ You can specify the `total_count` value through options Hash. This would be help
 
 ## Creating Friendly URLs and Caching
 
-Because of the `page` parameter and Rails 3 routing, you can easily generate SEO and user-friendly URLs. For any resource you'd like to paginate, just add the following to your `routes.rb`:
+Because of the `page` parameter and Rails routing, you can easily generate SEO and user-friendly URLs. For any resource you'd like to paginate, just add the following to your `routes.rb`:
 
     resources :my_resources do
       get 'page/:page', action: :index, on: :collection
