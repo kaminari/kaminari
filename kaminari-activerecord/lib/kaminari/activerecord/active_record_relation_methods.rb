@@ -64,7 +64,8 @@ module Kaminari
     end
 
     def out_of_range?
-      to_a.empty?
+      load unless loaded?
+      @records.empty?
     end
   end
 end
