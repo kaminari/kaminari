@@ -380,16 +380,16 @@ Fork, fix, then send a pull request.
 To run the test suite locally against all supported frameworks:
 
     % bundle install
-    % rake spec:all
+    % rake test:all
 
 To target the test suite against one framework:
 
-    % rake spec:active_record_41
+    % rake test:active_record_50
 
-You can find a list of supported spec tasks by running `rake -T`. You may also find it useful to run a specific test for a specific framework. To do so, you'll have to first make sure you have bundled everything for that configuration, then you can run the specific test:
+You can find a list of supported test tasks by running `rake -T`. You may also find it useful to run a specific test for a specific framework. To do so, you'll have to first make sure you have bundled everything for that configuration, then you can run the specific test:
 
-    % BUNDLE_GEMFILE='gemfiles/active_record_41.gemfile' bundle install
-    % BUNDLE_GEMFILE='gemfiles/active_record_41.gemfile' bundle exec rspec ./spec/requests/users_spec.rb
+    % BUNDLE_GEMFILE='gemfiles/active_record_50.gemfile' bundle install
+    % BUNDLE_GEMFILE='gemfiles/active_record_50.gemfile' TEST=kaminari-core/test/requests/navigation_test.rb bundle exec rake test
 
 ## Copyright
 
