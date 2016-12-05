@@ -46,9 +46,19 @@ The pagination helper outputs the HTML5 <nav> tag by default. Plus, the helper s
 Put this line in your Gemfile:
   gem 'kaminari'
 
+In case you have an older version of rails you can add the version number 
+
+  gem 'kaminari', "~> VERSION NUMBER"
+if your bundle install is not working than preferably install uning the latest version
+
+
+
 Then bundle:
   % bundle
 
+  gem install kaminari -v version number
+
+this can also be used in case you are using an older version of rails in that case try installing and older version of gem 
 
 == Usage
 
