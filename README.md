@@ -268,7 +268,7 @@ You can switch the label value per I18n.locale for your internationalized applic
           more_pages:
             display_entries: "Displaying %{entry_name} <b>%{first}&nbsp;-&nbsp;%{last}</b> of <b>%{total}</b> in total"
 
-If you use non-English localization see [i18n rules](https://github.com/svenfuchs/i18n/blob/f19893d84262261d9c8abe303f465ea28ba057e4/test/test_data/locales/plurals.rb) for changing
+If you use non-English localization see [i18n rules](https://github.com/svenfuchs/i18n/blob/master/test/test_data/locales/plurals.rb) for changing
 `one_page:display_entries` block.
 
 ## Customizing the Pagination Helper
