@@ -458,9 +458,10 @@ gem 'kaminari-actionview'
 
 Kaminari currently provides adapters for the following ORMs:
 
-Mongoid: https://github.com/kaminari/kaminari-mongoid
-MongoMapper: https://github.com/kaminari/kaminari-mongo_mapper
-DataMapper: https://github.com/kaminari/kaminari-data_mapper  (would not work on kaminari 1.0.x)
+* Active Record: https://github.com/amatsuda/kaminari/tree/master/kaminari-activerecord  (included in this repo)
+* Mongoid: https://github.com/kaminari/kaminari-mongoid
+* MongoMapper: https://github.com/kaminari/kaminari-mongo_mapper
+* DataMapper: https://github.com/kaminari/kaminari-data_mapper  (would not work on kaminari 1.0.x)
 
 ### For Other Web Framework Users
 
@@ -473,8 +474,9 @@ gem 'kaminari-sinatra'
 
 Kaminari currently provides adapters for the following web frameworks:
 
-Sinatra: https://github.com/kaminari/kaminari-sinatra
-Grape: https://github.com/kaminari/kaminari-grape
+* Action View: https://github.com/amatsuda/kaminari/tree/master/kaminari-actionview  (included in this repo)
+* Sinatra: https://github.com/kaminari/kaminari-sinatra
+* Grape: https://github.com/kaminari/kaminari-grape
 
 
 ## For More Information
