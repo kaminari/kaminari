@@ -393,6 +393,26 @@ Customize away!
 Note: if the theme isn't present or none is specified, kaminari will default back to the views included within the gem.
 
 
+## Paginating Without Issuing SELECT COUNT Query
+
+Generally the paginator needs to know the total number of records to display the links, but sometimes we don't need the total number of records and just need the "previous page" and "next page" links.
+For such use case, Kaminari provides `without_count` mode that creates a paginatable collection without counting the number of all records.
+This may be helpful when you're dealing with a very large dataset because counting on a big table tends to become slow on RDBMS.
+
+Just add `.without_count` to your paginated object:
+
+```ruby
+User.page(3).without_count
+```
+
+In your view file, you can only use simple helpers like the following instead of the full-featured `paginate` helper:
+
+```erb
+<%= link_to_next_page @users, 'Previous Page' %>
+<%= link_to_next_page @users, 'Next Page' %>
+```
+
+
 ## Paginating a Generic Array object
 
 Kaminari provides an Array wrapper class that adapts a generic Array object to the `paginate` view helper. However, the `paginate` helper doesn't automatically handle your Array object (this is intentional and by design).
