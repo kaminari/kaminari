@@ -17,6 +17,7 @@ if defined? ActiveRecord
       teardown do
         Book.delete_all
         User.delete_all
+        Readership.delete_all
       end
 
       test 'it should reset total_count memoization when the scope is cloned' do
