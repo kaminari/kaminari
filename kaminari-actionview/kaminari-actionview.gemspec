@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["ronnie@dio.jp"]
 
   spec.summary       = 'Kaminari Action View adapter'
-  spec.description   = 'Kaminari Action View adapter'
+  spec.description   = 'kaminari-actionview provides pagination helpers for your Action View templates'
   spec.homepage      = 'https://github.com/amatsuda/kaminari'
   spec.license       = "MIT"
 

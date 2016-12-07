@@ -10,8 +10,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Akira Matsuda"]
   spec.email         = ["ronnie@dio.jp"]
 
-  spec.summary       = 'Kaminari core'
-  spec.description   = 'Kaminari core'
+  spec.summary       = "Kaminari's core pagination library"
+  spec.description   = 'kaminari-core includes pagination logic independent from ORMs and view libraries'
   spec.homepage      = 'https://github.com/amatsuda/kaminari'
   spec.license       = "MIT"
 

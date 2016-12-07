@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["ronnie@dio.jp"]
 
   spec.summary       = 'Kaminari Active Record adapter'
-  spec.description   = 'Kaminari Active Record adapter'
+  spec.description   = 'kaminari-activerecord lets your Active Record models be paginatable'
   spec.homepage      = 'https://github.com/amatsuda/kaminari'
   spec.license       = "MIT"
 
