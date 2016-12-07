@@ -61,6 +61,7 @@ Then bundle:
 
 If you're building non-Rails of non-ActiveRecord app and want the pagination feature on it, please take a look at [Other Framework/Library Support](#other-frameworklibrary-support) section.
 
+
 ## Query Basics
 
 ### The `page` Scope
@@ -104,7 +105,10 @@ User.page(7).per(50).padding(3)
 
 Note that the `padding` scope also is not directly defined on the models.
 
-## General Configuration Options
+
+## Configuring Kaminari
+
+### General Configuration Options
 
 You can configure the following default values by overriding these values using `Kaminari.configure` method.
 
@@ -130,9 +134,8 @@ Run the following generator command, then edit the generated file.
 
 You can change the method name `page` to `bonzo` or `plant` or whatever you like, in order to play nice with existing `page` method or association or scope or any other plugin that defines `page` method on your models.
 
-## Configuring Default per_page Value for Each Model
 
-### `paginates_per`
+### Configuring Default per_page Value for Each Model by `paginates_per`
 
 You can specify default `per_page` value per each model using the following declarative DSL.
 
@@ -142,9 +145,7 @@ class User < ActiveRecord::Base
 end
 ```
 
-## Configuring Max per_page Value for Each Model
-
-### `max_paginates_per`
+### Configuring Max per_page Value for Each Model by `max_paginates_per`
 
 You can specify max `per_page` value per each model using the following declarative DSL.
 If the variable that specified via `per` scope is more than this variable, `max_paginates_per` is used instead of it.
@@ -155,6 +156,7 @@ class User < ActiveRecord::Base
   max_paginates_per 100
 end
 ```
+
 
 ## Controllers
 
@@ -296,6 +298,7 @@ This returns the server relative path to the next page.
 
 This returns the server relative path to the previous page.
 
+
 ## I18n and Labels
 
 The default labels for 'first', 'last', 'previous', '...' and 'next' are stored in the I18n yaml inside the engine, and rendered through I18n API.
@@ -323,6 +326,7 @@ en:
 
 If you use non-English localization see [i18n rules](https://github.com/svenfuchs/i18n/blob/master/test/test_data/locales/plurals.rb) for changing
 `one_page:display_entries` block.
+
 
 ## Customizing the Pagination Helper
 
@@ -404,6 +408,7 @@ You can specify the `total_count` value through options Hash. This would be help
 @paginatable_array = Kaminari.paginate_array([], total_count: 145).page(params[:page]).per(10)
 ```
 
+
 ## Creating Friendly URLs and Caching
 
 Because of the `page` parameter and Rails routing, you can easily generate SEO and user-friendly URLs. For any resource you'd like to paginate, just add the following to your `routes.rb`:
@@ -429,6 +434,7 @@ This will create URLs like `/my_resources/page/33` instead of `/my_resources?pag
 Because the `page` parameter is now a URL segment, we can leverage on Rails page [caching](http://guides.rubyonrails.org/caching_with_rails.html#page-caching)!
 
 NOTE: In this example, I've pointed the route to my `:index` action. You may have defined a custom pagination action in your controller - you should point `action: :your_custom_action` instead.
+
 
 ## Other Framework/Library Support
 
@@ -483,9 +489,11 @@ Kaminari currently provides adapters for the following web frameworks:
 
 Check out Kaminari recipes on the GitHub Wiki for more advanced tips and techniques. https://github.com/amatsuda/kaminari/wiki/Kaminari-recipes
 
+
 ## Questions, Feedback
 
 Feel free to message me on Github (amatsuda) or Twitter ([@a_matsuda](https://twitter.com/a_matsuda))  ☇☇☇  :)
+
 
 ## Contributing to Kaminari
 
@@ -511,6 +519,7 @@ You can find a list of supported test tasks by running `rake -T`. You may also f
 % BUNDLE_GEMFILE='gemfiles/active_record_50.gemfile' TEST=kaminari-core/test/requests/navigation_test.rb bundle exec rake test
 ```
 
+
 ## Copyright
 
-Copyright (c) 2011 Akira Matsuda. See MIT-LICENSE for further details.
+Copyright (c) 2011- Akira Matsuda. See MIT-LICENSE for further details.
