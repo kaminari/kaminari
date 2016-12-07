@@ -14,7 +14,6 @@ Gem::Specification.new do |s|
   s.license       = "MIT"
 
   s.files         = `git ls-files | egrep -v 'kaminari-(core|actionview|activerecord)' | grep -v '^spec'`.split("\n")
-  s.extra_rdoc_files = ['README.rdoc']
   s.require_paths = ['lib']
 
   s.add_dependency 'activesupport', '>= 4.1.0'

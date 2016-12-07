@@ -55,7 +55,6 @@ begin
 
     rdoc.rdoc_dir = 'rdoc'
     rdoc.title = "kaminari #{Kaminari::VERSION}"
-    rdoc.rdoc_files.include('README*')
     rdoc.rdoc_files.include('lib/**/*.rb')
   end
 rescue LoadError
