@@ -51,6 +51,7 @@ module Kaminari
           yield if block_given?
         end
       end
+      alias link_to_prev_page link_to_previous_page
 
       # A simple "Twitter like" pagination link that creates a link to the next page.
       #
