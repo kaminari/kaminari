@@ -250,7 +250,7 @@ This would add `data-remote="true"` to all the links inside.
 This would search for partials in `app/views/templates/kaminari`.
 This option makes it easier to do things like A/B testing pagination templates/themes, using new/old templates at the same time as well as better integration with other gems such as [cells](https://github.com/apotonick/cells).
 
-### The `link_to_next_page` and `link_to_previous_page (aliased to link_to_prev_page)` Helper Methods
+### The `link_to_next_page` and `link_to_previous_page` (aliased to `link_to_prev_page`) Helper Methods
 
 ```erb
 <%= link_to_next_page @items, 'Next Page' %>
