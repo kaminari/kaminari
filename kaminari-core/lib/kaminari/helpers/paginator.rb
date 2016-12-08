@@ -7,30 +7,24 @@ module Kaminari
     # The main container tag
     class Paginator < Tag
       def initialize(template, window: nil, outer_window: nil, left: nil, right: nil, inner_window: nil, **options) #:nodoc:
-        @window_options = {}
-        @window_options[:window] = window || inner_window || Kaminari.config.window
         outer_window ||= Kaminari.config.outer_window
-        @window_options[:left] = left || Kaminari.config.left
-        @window_options[:left] = outer_window if @window_options[:left] == 0
-        @window_options[:right] = right || Kaminari.config.right
-        @window_options[:right] = outer_window if @window_options[:right] == 0
+        left ||= Kaminari.config.left
+        right ||= Kaminari.config.right
+        @window_options = {window: window || inner_window || Kaminari.config.window, left: left.zero? ? outer_window : left, right: right.zero? ? outer_window : right}
 
-        @template, @options = template, options
-        @theme = @options[:theme]
-        @views_prefix = @options[:views_prefix]
+        @template, @options, @theme, @views_prefix = template, options, options[:theme], options[:views_prefix]
         @window_options.merge! @options
         @window_options[:current_page] = @options[:current_page] = PageProxy.new(@window_options, @options[:current_page], nil)
 
         @last = nil
         #XXX Using parent template's buffer class for rendering each partial here. This might cause problems if the handler mismatches
-        buffer_class = if defined?(::ActionView::OutputBuffer)
-          ::ActionView::OutputBuffer
+        @output_buffer = if defined?(::ActionView::OutputBuffer)
+          ::ActionView::OutputBuffer.new
         elsif template.instance_variable_get(:@output_buffer)
-          template.instance_variable_get(:@output_buffer).class
+          template.instance_variable_get(:@output_buffer).class.new
         else
-          ActiveSupport::SafeBuffer
+          ActiveSupport::SafeBuffer.new
         end
-        @output_buffer = buffer_class.new
       end
 
       # render given block as a view template
