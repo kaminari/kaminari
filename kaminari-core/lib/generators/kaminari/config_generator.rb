@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 module Kaminari
   module Generators
-    class ConfigGenerator < Rails::Generators::Base
+    # rails g kaminari:config
+    class ConfigGenerator < Rails::Generators::Base # :nodoc:
       source_root File.expand_path(File.join(File.dirname(__FILE__), 'templates'))
 
       desc <<DESC

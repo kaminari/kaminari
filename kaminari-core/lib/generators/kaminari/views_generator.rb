@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 module Kaminari
   module Generators
-    class ViewsGenerator < Rails::Generators::NamedBase
+    # rails g kaminari:views THEME
+    class ViewsGenerator < Rails::Generators::NamedBase # :nodoc:
       source_root File.expand_path('../../../../app/views/kaminari', __FILE__)
 
       class_option :template_engine, type: :string, aliases: '-e', desc: 'Template engine for the views. Available options are "erb", "haml", and "slim".'
