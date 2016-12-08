@@ -49,9 +49,9 @@ module Kaminari
       alias each_page each_relevant_page
 
       def relevant_pages(options)
-        left_window_plus_one = 1.upto(options[:left] + 1).to_a
-        right_window_plus_one = (options[:total_pages] - options[:right]).upto(options[:total_pages]).to_a
-        inside_window_plus_each_sides = (options[:current_page] - options[:window] - 1).upto(options[:current_page] + options[:window] + 1).to_a
+        left_window_plus_one = [*1..options[:left] + 1]
+        right_window_plus_one = [*options[:total_pages] - options[:right]..options[:total_pages]]
+        inside_window_plus_each_sides = [*options[:current_page] - options[:window] - 1..options[:current_page] + options[:window] + 1]
 
         (left_window_plus_one | inside_window_plus_each_sides | right_window_plus_one).sort.reject {|x| (x < 1) || (x > options[:total_pages])}
       end
