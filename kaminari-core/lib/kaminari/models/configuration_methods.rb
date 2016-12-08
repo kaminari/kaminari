@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 module Kaminari
-  module ConfigurationMethods
+  module ConfigurationMethods #:nodoc:
     extend ActiveSupport::Concern
-    module ClassMethods
+    module ClassMethods #:nodoc:
       # Overrides the default +per_page+ value per model
       #   class Article < ActiveRecord::Base
       #     paginates_per 10

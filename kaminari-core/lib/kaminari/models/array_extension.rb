@@ -32,6 +32,7 @@ module Kaminari
       super(original_array || [])
     end
 
+    # Used for page_entry_info
     def entry_name(options = {})
       I18n.t('helpers.page_entries_info.entry', options.reverse_merge(default: ENTRY.pluralize(options[:count])))
     end

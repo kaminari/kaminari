@@ -144,11 +144,13 @@ module Kaminari
           (@options[:current_page] - @page).abs <= @options[:window]
         end
 
+        # Current page is an isolated gap or not
         def single_gap?
           ((@page == @options[:current_page] - @options[:window] - 1) && (@page == @options[:left] + 1)) ||
             ((@page == @options[:current_page] + @options[:window] + 1) && (@page == @options[:total_pages] - @options[:right]))
         end
 
+        # The page number exceeds the range of pages or not
         def out_of_range?
           @page > @options[:total_pages]
         end
@@ -158,23 +160,23 @@ module Kaminari
           @last.is_a? Gap
         end
 
-        def to_i
+        def to_i #:nodoc:
           number
         end
 
-        def to_s
+        def to_s #:nodoc:
           number.to_s
         end
 
-        def +(other)
+        def +(other) #:nodoc:
           to_i + other.to_i
         end
 
-        def -(other)
+        def -(other) #:nodoc:
           to_i - other.to_i
         end
 
-        def <=>(other)
+        def <=>(other) #:nodoc:
           to_i <=> other.to_i
         end
       end
