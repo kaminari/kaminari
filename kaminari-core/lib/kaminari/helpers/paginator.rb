@@ -12,11 +12,10 @@ module Kaminari
         right ||= Kaminari.config.right
         @window_options = {window: window || inner_window || Kaminari.config.window, left: left.zero? ? outer_window : left, right: right.zero? ? outer_window : right}
 
-        @template, @options, @theme, @views_prefix = template, options, options[:theme], options[:views_prefix]
+        @template, @options, @theme, @views_prefix, @last = template, options, options[:theme], options[:views_prefix], nil
         @window_options.merge! @options
         @window_options[:current_page] = @options[:current_page] = PageProxy.new(@window_options, @options[:current_page], nil)
 
-        @last = nil
         #XXX Using parent template's buffer class for rendering each partial here. This might cause problems if the handler mismatches
         @output_buffer = if defined?(::ActionView::OutputBuffer)
           ::ActionView::OutputBuffer.new
