@@ -56,8 +56,6 @@
 
 * Fixed a bug where `paginate` changes request.format #540 [jasonkim]
 
-* Fixed a bug where `paginate` changes request.format #540 [jasonkim]
-
 * Fixed a bug where `per(nil)` didn't respect `max_per_page` configuration #800 [jonathanhefner]
 
 * Fixed a bug that model class' `max_paginates_per` was ignored when it's smaller than the default `per_page`
