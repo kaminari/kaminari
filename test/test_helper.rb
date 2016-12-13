@@ -9,8 +9,6 @@ require 'active_record'
 require 'bundler/setup'
 Bundler.require
 
-require 'database_cleaner'
-
 # Simulate a gem providing a subclass of ActiveRecord::Base before the Railtie is loaded.
 require 'fake_gem'
 
