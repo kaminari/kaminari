@@ -42,12 +42,12 @@ module Kaminari
     #   Pro: paginates without casting an extra SELECT COUNT query
     #   Con: unable to know the total number of records/pages
     def without_count
-      extend ::Kaminari::PaginableWithoutCount
+      extend ::Kaminari::PaginatableWithoutCount
     end
   end
 
   # A module that makes AR::Relation paginatable without having to cast another SELECT COUNT query
-  module PaginableWithoutCount
+  module PaginatableWithoutCount
     # Overwrite AR::Relation#load to actually load one more record to judge if the page has next page
     # then store the result in @_has_next ivar
     def load
