@@ -18,6 +18,10 @@ And bundle.
 
 This gem is basically an internal gem that will be automatically bundled from kaminari gem.
 
+Or if you're using web frameworks other than Rails + Action View, you might need to explicitly bundle this gem.
+
+See [Kaminari README (Other Framework/Library Support)](https://github.com/amatsuda/kaminari/blob/master/README.md#other-frameworklibrary-support) for details.
+
 
 ## Contributing
 

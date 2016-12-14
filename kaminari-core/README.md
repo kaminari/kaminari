@@ -16,7 +16,9 @@ And bundle.
 
 ## Usage
 
-This gem is basically an internal gem that will be automatically bundled from kaminari gem.
+This gem is basically an internal gem that will be automatically bundled from kaminari gem or kaminari adapter gems.
+
+See [Kaminari README](https://github.com/amatsuda/kaminari/blob/master/README.md) for the documentation.
 
 
 ## Contributing
