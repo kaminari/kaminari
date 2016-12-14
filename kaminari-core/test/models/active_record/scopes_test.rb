@@ -190,6 +190,13 @@ if defined? ActiveRecord
             assert_equal 'user002', relation.first.name
           end
 
+          test 'page 1 per 5 padding "1" (as string)' do
+            relation = model_class.page(1).per(5).padding('1')
+
+            assert_equal 5, relation.count
+            assert_equal 'user002', relation.first.name
+          end
+
           test 'page 19 per 5 padding 5' do
             relation = model_class.page(19).per(5).padding(5)
 
