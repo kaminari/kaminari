@@ -25,8 +25,8 @@ module Kaminari
     end
 
     def padding(num)
-      @_padding = num
-      offset(offset_value + num.to_i)
+      @_padding = num.to_i
+      offset(offset_value + @_padding)
     end
 
     # Total number of pages
