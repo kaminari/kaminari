@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 require 'test_helper'
 
-if defined? ActionView
+if defined? ::Kaminari::ActionView
   class PaginatorTagsTest < ActionView::TestCase
     # A test paginator that can detect instantiated tags inside
     class TagSpy < Kaminari::Helpers::Paginator
