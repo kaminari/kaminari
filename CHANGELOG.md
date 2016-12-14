@@ -31,17 +31,17 @@
 
 ### Enhancements:
 
-* Exposed `path_to_prev_page`, `path_to_next_page` helpers as public API #683 [neilang]
+* Exposed `path_to_prev_page`, `path_to_next_page` helpers as public API #683 [@neilang]
 
-* Added `--views_prefix` option for the views generator #668 [antstorm]
+* Added `--views_prefix` option for the views generator #668 [@antstorm]
 
-* Added `max_paginates_per` scope method to overwrite model `max_paginates_per` config #754 [rubyonme]
+* Added `max_paginates_per` scope method to overwrite model `max_paginates_per` config #754 [@rubyonme]
 
-* Added `:paginator_class` option to specify a custom Paginator for `paginate` #740 [watsonbox]
+* Added `:paginator_class` option to specify a custom Paginator for `paginate` #740 [@watsonbox]
 
-* Use I18n to pluralize entries in `page_entries_info` #694 [Linuus]
+* Use I18n to pluralize entries in `page_entries_info` #694 [@Linuus]
 
-* Added `without_count` #681 [bryanrite]
+* Added `without_count` #681 [@bryanrite]
 
 * Omit select count query for `total_count` if it's calculable in Ruby level from loaded records
 
@@ -54,19 +54,19 @@
   after:  ‹ 1 2 3 4 5 [6] 7 8 … 15 16 ›
   ```
 
-* Fixed a bug where `paginate` changes request.format #540 [jasonkim]
+* Fixed a bug where `paginate` changes request.format #540 [@jasonkim]
 
-* Fixed a bug where `per(nil)` didn't respect `max_per_page` configuration #800 [jonathanhefner]
+* Fixed a bug where `per(nil)` didn't respect `max_per_page` configuration #800 [@jonathanhefner]
 
 * Fixed a bug that model class' `max_paginates_per` was ignored when it's smaller than the default `per_page`
 
-* Preserve source location of the pagination method #812 [ka8725]
+* Preserve source location of the pagination method #812 [@ka8725]
 
 * Preserve source location of the tag helpers
 
-* Hide Next & Last buttons if page is out of range #712 [igorkasyanchuk]
+* Hide Next & Last buttons if page is out of range #712 [@igorkasyanchuk]
 
-* Always buffer with `ActionView::OutputBuffer` if Action View is loaded #804 [onemanstartup]
+* Always buffer with `ActionView::OutputBuffer` if Action View is loaded #804 [@onemanstartup]
 
 
 ## 0.17.0
