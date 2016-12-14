@@ -17,9 +17,9 @@ Gem::Specification.new do |s|
   s.require_paths = ['lib']
 
   s.add_dependency 'activesupport', '>= 4.1.0'
-  s.add_dependency 'kaminari-core'
-  s.add_dependency 'kaminari-actionview'
-  s.add_dependency 'kaminari-activerecord'
+  s.add_dependency 'kaminari-core', Kaminari::VERSION
+  s.add_dependency 'kaminari-actionview', Kaminari::VERSION
+  s.add_dependency 'kaminari-activerecord', Kaminari::VERSION
 
   s.add_development_dependency 'test-unit-rails'
   s.add_development_dependency 'bundler', '>= 1.0.0'
