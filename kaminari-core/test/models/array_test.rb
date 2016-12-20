@@ -63,6 +63,33 @@ class PaginatableArrayTest < ActiveSupport::TestCase
     end
   end
 
+  sub_test_case '#padding' do
+    test 'page 1 per 5 padding 1' do
+      arr = @array.page(1).per(5).padding(1)
+
+      assert_equal 5, arr.count
+      assert_equal 2, arr.first
+    end
+
+    test 'page 1 per 5 padding "1" (as string)' do
+      arr = @array.page(1).per(5).padding('1')
+
+      assert_equal 5, arr.count
+      assert_equal 2, arr.first
+    end
+
+    test 'page 19 per 5 padding 5' do
+      arr = @array.page(19).per(5).padding(5)
+
+      assert_equal 19, arr.current_page
+      assert_equal 19, arr.total_pages
+    end
+
+    test 'per 25, padding 25' do
+      assert_equal 3, @array.page(1).padding(25).total_pages
+    end
+  end
+
   sub_test_case '#total_pages' do
     test 'per 25 (default)' do
       assert_equal 4, @array.page.total_pages
@@ -86,10 +113,6 @@ class PaginatableArrayTest < ActiveSupport::TestCase
 
     test 'per "String value that can not be converted into Number" (using default)' do
       assert_equal 4, @array.page(5).per('aho').total_pages
-    end
-
-    test 'per 25, padding 25' do
-      assert_equal 3, @array.page(1).padding(25).total_pages
     end
   end
 
