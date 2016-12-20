@@ -36,6 +36,6 @@ matrix:
   allow_failures:
     - rvm: ruby-head
     - rvm: jruby-9.1.6.0
-    - rvm: rbx
+    - rvm: rbx-3
     - gemfile: gemfiles/active_record_edge.gemfile
   fast_finish: true
