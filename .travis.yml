@@ -6,7 +6,7 @@ rvm:
   - 2.2.6
   - 2.3.3
   - ruby-head
-  - jruby-9.1.5.0
+  - jruby-9.1.6.0
   - rbx
 
 gemfile:
@@ -39,7 +39,7 @@ matrix:
       gemfile: gemfiles/active_record_edge.gemfile
   allow_failures:
     - rvm: ruby-head
-    - rvm: jruby-9.1.5.0
+    - rvm: jruby-9.1.6.0
     - rvm: rbx
     - gemfile: gemfiles/active_record_edge.gemfile
   fast_finish: true
