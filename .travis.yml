@@ -6,6 +6,7 @@ rvm:
   - 2.1.10
   - 2.2.6
   - 2.3.3
+  - 2.4.0
   - ruby-head
   - jruby-9.1.6.0
   - rbx-3
@@ -32,6 +33,10 @@ matrix:
       gemfile: gemfiles/active_record_edge.gemfile
     - rvm: 2.1.10
       gemfile: gemfiles/active_record_edge.gemfile
+    - rvm: 2.4.0
+      gemfile: gemfiles/active_record_41.gemfile
+    - rvm: 2.4.0
+      gemfile: gemfiles/active_record_42.gemfile
     - rvm: ruby-head
       gemfile: gemfiles/active_record_41.gemfile
   allow_failures:
