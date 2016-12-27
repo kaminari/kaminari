@@ -2,19 +2,19 @@ language: ruby
 dist: trusty
 
 rvm:
-  - 2.0.0
-  - 2.1.10
-  - 2.2.6
-  - 2.3.3
   - 2.4.0
+  - 2.3.3
+  - 2.2.6
+  - 2.1.10
+  - 2.0.0
   - ruby-head
   - jruby-9.1.6.0
   - rbx-3
 
 gemfile:
-  - gemfiles/active_record_41.gemfile
-  - gemfiles/active_record_42.gemfile
   - gemfiles/active_record_50.gemfile
+  - gemfiles/active_record_42.gemfile
+  - gemfiles/active_record_41.gemfile
   - gemfiles/active_record_edge.gemfile
 
 sudo: false
