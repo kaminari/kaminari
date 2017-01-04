@@ -20,6 +20,20 @@ if defined? ActiveRecord
         Readership.delete_all
       end
 
+      test 'total_count on not yet loaded Relation' do
+        assert_equal 0, User.where('1 = 0').page(1).per(10).total_count
+        assert_equal 7, User.page(1).per(10).total_count
+        assert_equal 7, User.page(2).per(10).total_count
+        assert_equal 7, User.page(2).per(2).total_count
+      end
+
+      test 'total_count on loded Relation' do
+        assert_equal 0, User.where('1 = 0').page(1).per(10).load.total_count
+        assert_equal 7, User.page(1).per(10).load.total_count
+        assert_equal 7, User.page(2).per(10).load.total_count
+        assert_equal 7, User.page(2).per(2).load.total_count
+      end
+
       test 'it should reset total_count memoization when the scope is cloned' do
         assert_equal 1, User.page.tap(&:total_count).where(name: 'author').total_count
       end
