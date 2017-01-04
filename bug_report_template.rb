@@ -11,15 +11,16 @@ gemfile(true) do
   gem "railties", "5.0.1"
   gem "activerecord", "5.0.1"
   gem "sqlite3"
-  gem "kaminari"
+  gem "kaminari-core", "1.0.0.rc1"
+  gem "kaminari-activerecord", "1.0.0.rc1"
 end
 
 require "active_record"
 require "minitest/autorun"
 require "logger"
 
-require "kaminari/hooks"
-Kaminari::Hooks.init
+require "kaminari/core"
+require "kaminari/activerecord"
 
 # Ensure backward compatibility with Minitest 4
 Minitest::Test = MiniTest::Unit::TestCase unless defined?(Minitest::Test)
