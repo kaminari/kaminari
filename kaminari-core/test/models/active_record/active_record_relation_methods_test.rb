@@ -21,15 +21,21 @@ if defined? ActiveRecord
       end
 
       test 'total_count on not yet loaded Relation' do
+        assert_equal 0, User.where('1 = 0').page(1).total_count
         assert_equal 0, User.where('1 = 0').page(1).per(10).total_count
+        assert_equal 7, User.page(1).total_count
         assert_equal 7, User.page(1).per(10).total_count
+        assert_equal 7, User.page(2).total_count
         assert_equal 7, User.page(2).per(10).total_count
         assert_equal 7, User.page(2).per(2).total_count
       end
 
       test 'total_count on loded Relation' do
+        assert_equal 0, User.where('1 = 0').page(1).load.total_count
         assert_equal 0, User.where('1 = 0').page(1).per(10).load.total_count
+        assert_equal 7, User.page(1).load.total_count
         assert_equal 7, User.page(1).per(10).load.total_count
+        assert_equal 7, User.page(2).load.total_count
         assert_equal 7, User.page(2).per(10).load.total_count
         assert_equal 7, User.page(2).per(2).load.total_count
       end

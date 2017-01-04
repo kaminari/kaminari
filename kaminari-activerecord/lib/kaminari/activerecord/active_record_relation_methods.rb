@@ -21,7 +21,8 @@ module Kaminari
         # Total count has to be 0 if loaded records are 0
         return @total_count = 0 if (current_page == 1) && @records.empty?
         # Total count is calculatable at the last page
-        return @total_count = (current_page - 1) * @_per + @records.length if @records.any? && defined?(@_per) && (@records.length < @_per)
+        per_page = (defined?(@_per) && @_per) || default_per_page
+        return @total_count = (current_page - 1) * per_page + @records.length if @records.any? && (@records.length < per_page)
       end
 
       # #count overrides the #select which could include generated columns referenced in #order, so skip #order here, where it's irrelevant to the result anyway
