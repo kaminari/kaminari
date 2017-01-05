@@ -25,7 +25,9 @@ module Kaminari
     end
 
     def padding(num)
-      @_padding = num.to_i
+      num = num.to_i
+      raise ArgumentError, "padding must not be negative" if num < 0
+      @_padding = num
       offset(offset_value + @_padding)
     end
 

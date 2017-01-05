@@ -203,6 +203,10 @@ if defined? ActiveRecord
             assert_equal 19, relation.current_page
             assert_equal 19, relation.total_pages
           end
+
+          test 'Negative padding' do
+            assert_raise(ArgumentError) { model_class.page(1).per(5).padding(-1) }
+          end
         end
 
         sub_test_case '#total_pages' do

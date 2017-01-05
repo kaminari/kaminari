@@ -88,6 +88,10 @@ class PaginatableArrayTest < ActiveSupport::TestCase
     test 'per 25, padding 25' do
       assert_equal 3, @array.page(1).padding(25).total_pages
     end
+
+    test 'Negative padding' do
+      assert_raise(ArgumentError) { @array.page(1).per(5).padding(-1) }
+    end
   end
 
   sub_test_case '#total_pages' do
