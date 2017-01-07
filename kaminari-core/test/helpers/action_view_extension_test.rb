@@ -12,24 +12,26 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
     sub_test_case '#paginate' do
       setup do
         50.times {|i| User.create! name: "user#{i}"}
-        @users = User.page(1)
       end
 
       test 'returns a String' do
-        assert_kind_of String, view.paginate(@users, params: {controller: 'users', action: 'index'})
+        users = User.page(1)
+        assert_kind_of String, view.paginate(users, params: {controller: 'users', action: 'index'})
       end
 
       test 'escaping the pagination for javascript' do
+        users = User.page(1)
         assert_nothing_raised do
-          escape_javascript(view.paginate @users, params: {controller: 'users', action: 'index'})
+          escape_javascript(view.paginate users, params: {controller: 'users', action: 'index'})
         end
       end
 
       test 'accepts :theme option' do
+        users = User.page(1)
         begin
           controller.append_view_path File.join(Gem.loaded_specs['kaminari-core'].gem_dir, 'test/fake_app/views')
 
-          html = view.paginate @users, theme: 'bootstrap', params: {controller: 'users', action: 'index'}
+          html = view.paginate users, theme: 'bootstrap', params: {controller: 'users', action: 'index'}
           assert_match(/bootstrap-paginator/, html)
           assert_match(/bootstrap-page-link/, html)
         ensure
@@ -38,27 +40,30 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
       end
 
       test 'accepts :views_prefix option' do
+        users = User.page(1)
         begin
           controller.append_view_path File.join(Gem.loaded_specs['kaminari-core'].gem_dir, 'test/fake_app/views')
 
-          assert_equal "  <b>1</b>\n", view.paginate(@users, views_prefix: 'alternative/', params: {controller: 'users', action: 'index'})
+          assert_equal "  <b>1</b>\n", view.paginate(users, views_prefix: 'alternative/', params: {controller: 'users', action: 'index'})
         ensure
           controller.view_paths.pop
         end
       end
 
       test 'accepts :paginator_class option' do
+        users = User.page(1)
         custom_paginator = Class.new(Kaminari::Helpers::Paginator) do
           def to_s
             "CUSTOM PAGINATION"
           end
         end
 
-        assert_equal 'CUSTOM PAGINATION', view.paginate(@users, paginator_class: custom_paginator, params: {controller: 'users', action: 'index'})
+        assert_equal 'CUSTOM PAGINATION', view.paginate(users, paginator_class: custom_paginator, params: {controller: 'users', action: 'index'})
       end
 
       test 'total_pages: 3' do
-        assert_match(/<a href="\/users\?page=3">Last/, view.paginate(@users, total_pages: 3, params: {controller: 'users', action: 'index'}))
+        users = User.page(1)
+        assert_match(/<a href="\/users\?page=3">Last/, view.paginate(users, total_pages: 3, params: {controller: 'users', action: 'index'}))
       end
 
       test "page: 20 (out of range)" do
@@ -76,28 +81,27 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
       end
 
       sub_test_case 'having previous pages' do
-        setup do
-          @users = User.page(3)
-        end
-
         test 'the default behaviour' do
-          html = view.link_to_previous_page @users, 'Previous', params: {controller: 'users', action: 'index'}
+          users = User.page(3)
+          html = view.link_to_previous_page users, 'Previous', params: {controller: 'users', action: 'index'}
           assert_match(/page=2/, html)
           assert_match(/rel="prev"/, html)
 
-          html = view.link_to_previous_page @users, 'Previous', params: {controller: 'users', action: 'index'} do 'At the Beginning' end
+          html = view.link_to_previous_page users, 'Previous', params: {controller: 'users', action: 'index'} do 'At the Beginning' end
           assert_match(/page=2/, html)
           assert_match(/rel="prev"/, html)
         end
 
         test 'overriding rel=' do
-          assert_match(/rel="external"/, view.link_to_previous_page(@users, 'Previous', rel: 'external', params: {controller: 'users', action: 'index'}))
+          users = User.page(3)
+          assert_match(/rel="external"/, view.link_to_previous_page(users, 'Previous', rel: 'external', params: {controller: 'users', action: 'index'}))
         end
 
         test 'with params' do
+          users = User.page(3)
           params[:status] = 'active'
 
-          assert_match(/status=active/, view.link_to_previous_page(@users, 'Previous', params: {controller: 'users', action: 'index'}))
+          assert_match(/status=active/, view.link_to_previous_page(users, 'Previous', params: {controller: 'users', action: 'index'}))
         end
       end
 
@@ -122,24 +126,25 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
       end
 
       sub_test_case 'having more page' do
-        setup do
-          @users = User.page(1)
-        end
-
         test 'the default behaviour' do
-          html = view.link_to_next_page @users, 'More', params: {controller: 'users', action: 'index'}
+          users = User.page(1)
+          html = view.link_to_next_page users, 'More', params: {controller: 'users', action: 'index'}
+
           assert_match(/page=2/, html)
           assert_match(/rel="next"/, html)
         end
 
         test 'overriding rel=' do
-          assert_match(/rel="external"/, view.link_to_next_page(@users, 'More', rel: 'external', params: {controller: 'users', action: 'index'}))
+          users = User.page(1)
+
+          assert_match(/rel="external"/, view.link_to_next_page(users, 'More', rel: 'external', params: {controller: 'users', action: 'index'}))
         end
 
         test 'with params' do
+          users = User.page(1)
           params[:status] = 'active'
 
-          assert_match(/status=active/, view.link_to_next_page(@users, 'More', params: {controller: 'users', action: 'index'}))
+          assert_match(/status=active/, view.link_to_next_page(users, 'More', params: {controller: 'users', action: 'index'}))
         end
       end
 
@@ -158,47 +163,47 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
 
     sub_test_case '#page_entries_info' do
       sub_test_case 'on a model without namespace' do
-        setup do
-          @users = User.page(1).per(25)
-        end
-
         sub_test_case 'having no entries' do
           test 'with default entry name' do
-            assert_equal 'No users found', view.page_entries_info(@users)
+            users = User.page(1).per(25)
+            assert_equal 'No users found', view.page_entries_info(users)
           end
 
           test 'setting the entry name option to "member"' do
-            assert_equal 'No members found', view.page_entries_info(@users, entry_name: 'member')
+            users = User.page(1).per(25)
+            assert_equal 'No members found', view.page_entries_info(users, entry_name: 'member')
           end
         end
 
         sub_test_case 'having 1 entry' do
           setup do
             User.create! name: 'user1'
-            @users = User.page(1).per(25)
           end
 
           test 'with default entry name' do
-            assert_equal 'Displaying <b>1</b> user', view.page_entries_info(@users)
+            users = User.page(1).per(25)
+            assert_equal 'Displaying <b>1</b> user', view.page_entries_info(users)
           end
 
           test 'setting the entry name option to "member"' do
-            assert_equal 'Displaying <b>1</b> member', view.page_entries_info(@users, entry_name: 'member')
+            users = User.page(1).per(25)
+            assert_equal 'Displaying <b>1</b> member', view.page_entries_info(users, entry_name: 'member')
           end
         end
 
         sub_test_case 'having more than 1 but less than a page of entries' do
           setup do
             10.times {|i| User.create! name: "user#{i}"}
-            @users = User.page(1).per(25)
           end
 
           test 'with default entry name' do
-            assert_equal 'Displaying <b>all 10</b> users', view.page_entries_info(@users)
+            users = User.page(1).per(25)
+            assert_equal 'Displaying <b>all 10</b> users', view.page_entries_info(users)
           end
 
           test 'setting the entry name option to "member"' do
-            assert_equal 'Displaying <b>all 10</b> members', view.page_entries_info(@users, entry_name: 'member')
+            users = User.page(1).per(25)
+            assert_equal 'Displaying <b>all 10</b> members', view.page_entries_info(users, entry_name: 'member')
           end
         end
 
@@ -208,44 +213,39 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
           end
 
           sub_test_case 'the first page' do
-            setup do
-              @users = User.page(1).per(25)
-            end
-
             test 'with default entry name' do
-              assert_equal 'Displaying users <b>1&nbsp;-&nbsp;25</b> of <b>50</b> in total', view.page_entries_info(@users)
+              users = User.page(1).per(25)
+              assert_equal 'Displaying users <b>1&nbsp;-&nbsp;25</b> of <b>50</b> in total', view.page_entries_info(users)
             end
 
             test 'setting the entry name option to "member"' do
-              assert_equal 'Displaying members <b>1&nbsp;-&nbsp;25</b> of <b>50</b> in total', view.page_entries_info(@users, entry_name: 'member')
+              users = User.page(1).per(25)
+              assert_equal 'Displaying members <b>1&nbsp;-&nbsp;25</b> of <b>50</b> in total', view.page_entries_info(users, entry_name: 'member')
             end
           end
 
           sub_test_case 'the next page' do
-            setup do
-              @users = User.page(2).per(25)
-            end
-
             test 'with default entry name' do
-              assert_equal 'Displaying users <b>26&nbsp;-&nbsp;50</b> of <b>50</b> in total', view.page_entries_info(@users)
+              users = User.page(2).per(25)
+              assert_equal 'Displaying users <b>26&nbsp;-&nbsp;50</b> of <b>50</b> in total', view.page_entries_info(users)
             end
 
             test 'setting the entry name option to "member"' do
-              assert_equal 'Displaying members <b>26&nbsp;-&nbsp;50</b> of <b>50</b> in total', view.page_entries_info(@users, entry_name: 'member')
+              users = User.page(2).per(25)
+              assert_equal 'Displaying members <b>26&nbsp;-&nbsp;50</b> of <b>50</b> in total', view.page_entries_info(users, entry_name: 'member')
             end
           end
 
           sub_test_case 'the last page' do
-            setup do
-              User.max_pages 4
-              @users = User.page(4).per(10)
-            end
-            teardown do
-              User.max_pages nil
-            end
-
             test 'with default entry name' do
-              assert_equal 'Displaying users <b>31&nbsp;-&nbsp;40</b> of <b>50</b> in total', view.page_entries_info(@users)
+              begin
+                User.max_pages 4
+                users = User.page(4).per(10)
+
+                assert_equal 'Displaying users <b>31&nbsp;-&nbsp;40</b> of <b>50</b> in total', view.page_entries_info(users)
+              ensure
+                User.max_pages nil
+              end
             end
           end
         end
@@ -254,54 +254,55 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
       sub_test_case 'I18n' do
         setup do
           50.times {|i| User.create! name: "user#{i}"}
-          @users = User.page(1).per(25)
-          I18n.backend.store_translations(:en, User.i18n_scope => { models: { user: { one: "person", other: "people" } } })
-        end
-        teardown do
-          I18n.backend.reload!
         end
 
         test 'page_entries_info translates entry' do
-          assert_equal 'Displaying people <b>1&nbsp;-&nbsp;25</b> of <b>50</b> in total', view.page_entries_info(@users)
+          users = User.page(1).per(25)
+          begin
+            I18n.backend.store_translations(:en, User.i18n_scope => { models: { user: { one: "person", other: "people" } } })
+
+            assert_equal 'Displaying people <b>1&nbsp;-&nbsp;25</b> of <b>50</b> in total', view.page_entries_info(users)
+          ensure
+            I18n.backend.reload!
+          end
         end
       end
 
       sub_test_case 'on a model with namespace' do
-        setup do
-          @addresses = User::Address.page(1).per(25)
-        end
-
         test 'having no entries' do
-          assert_equal 'No addresses found', view.page_entries_info(@addresses)
+          addresses = User::Address.page(1).per(25)
+          assert_equal 'No addresses found', view.page_entries_info(addresses)
         end
 
         sub_test_case 'having 1 entry' do
           setup do
             User::Address.create!
-            @addresses = User::Address.page(1).per(25)
           end
 
           test 'with default entry name' do
-            assert_equal 'Displaying <b>1</b> address', view.page_entries_info(@addresses)
+            addresses = User::Address.page(1).per(25)
+            assert_equal 'Displaying <b>1</b> address', view.page_entries_info(addresses)
           end
 
           test 'setting the entry name option to "place"' do
-            assert_equal 'Displaying <b>1</b> place', view.page_entries_info(@addresses, entry_name: 'place')
+            addresses = User::Address.page(1).per(25)
+            assert_equal 'Displaying <b>1</b> place', view.page_entries_info(addresses, entry_name: 'place')
           end
         end
 
         sub_test_case 'having more than 1 but less than a page of entries' do
           setup do
             10.times { User::Address.create! }
-            @addresses = User::Address.page(1).per(25)
           end
 
           test 'with default entry name' do
-            assert_equal 'Displaying <b>all 10</b> addresses', view.page_entries_info(@addresses)
+            addresses = User::Address.page(1).per(25)
+            assert_equal 'Displaying <b>all 10</b> addresses', view.page_entries_info(addresses)
           end
 
           test 'setting the entry name option to "place"' do
-            assert_equal 'Displaying <b>all 10</b> places', view.page_entries_info(@addresses, entry_name: 'place')
+            addresses = User::Address.page(1).per(25)
+            assert_equal 'Displaying <b>all 10</b> places', view.page_entries_info(addresses, entry_name: 'place')
           end
         end
 
@@ -311,30 +312,26 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
           end
 
           sub_test_case 'the first page' do
-            setup do
-              @addresses = User::Address.page(1).per(25)
-            end
-
             test 'with default entry name' do
-              assert_equal 'Displaying addresses <b>1&nbsp;-&nbsp;25</b> of <b>50</b> in total', view.page_entries_info(@addresses)
+              addresses = User::Address.page(1).per(25)
+              assert_equal 'Displaying addresses <b>1&nbsp;-&nbsp;25</b> of <b>50</b> in total', view.page_entries_info(addresses)
             end
 
             test 'setting the entry name option to "place"' do
-              assert_equal 'Displaying places <b>1&nbsp;-&nbsp;25</b> of <b>50</b> in total', view.page_entries_info(@addresses, entry_name: 'place')
+              addresses = User::Address.page(1).per(25)
+              assert_equal 'Displaying places <b>1&nbsp;-&nbsp;25</b> of <b>50</b> in total', view.page_entries_info(addresses, entry_name: 'place')
             end
           end
 
           sub_test_case 'the next page' do
-            setup do
-              @addresses = User::Address.page(2).per(25)
-            end
-
             test 'with default entry name' do
-              assert_equal 'Displaying addresses <b>26&nbsp;-&nbsp;50</b> of <b>50</b> in total', view.page_entries_info(@addresses)
+              addresses = User::Address.page(2).per(25)
+              assert_equal 'Displaying addresses <b>26&nbsp;-&nbsp;50</b> of <b>50</b> in total', view.page_entries_info(addresses)
             end
 
             test 'setting the entry name option to "place"' do
-              assert_equal 'Displaying places <b>26&nbsp;-&nbsp;50</b> of <b>50</b> in total', view.page_entries_info(@addresses, entry_name: 'place')
+              addresses = User::Address.page(2).per(25)
+              assert_equal 'Displaying places <b>26&nbsp;-&nbsp;50</b> of <b>50</b> in total', view.page_entries_info(addresses, entry_name: 'place')
             end
           end
         end
