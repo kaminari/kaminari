@@ -34,7 +34,7 @@ if defined? ActiveRecord
     end
 
     test 'when on the first page' do
-      @users = User.page(1).without_count.load
+      @users = User.page(1).without_count
 
       assert_equal 25, @users.size
       assert_equal 25, @users.each.size
@@ -43,7 +43,7 @@ if defined? ActiveRecord
     end
 
     test 'when on the first page showing 26 elements' do
-      @users = User.page(1).per(26).without_count.load
+      @users = User.page(1).per(26).without_count
 
       assert_equal 26, @users.size
       assert_equal 26, @users.each.size
@@ -52,7 +52,7 @@ if defined? ActiveRecord
     end
 
     test 'when on the last page' do
-      @users = User.page(2).without_count.load
+      @users = User.page(2).without_count
 
       assert_equal 1, @users.size
       assert_equal 1, @users.each.size
@@ -61,7 +61,7 @@ if defined? ActiveRecord
     end
 
     test 'when out of range' do
-      @users = User.page(3).without_count.load
+      @users = User.page(3).without_count
 
       assert_equal 0, @users.size
       assert_equal 0, @users.each.size
