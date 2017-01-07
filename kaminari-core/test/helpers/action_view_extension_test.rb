@@ -269,6 +269,10 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
       end
 
       sub_test_case 'on a model with namespace' do
+        teardown do
+          User::Address.delete_all
+        end
+
         test 'having no entries' do
           addresses = User::Address.page(1).per(25)
           assert_equal 'No addresses found', view.page_entries_info(addresses)
