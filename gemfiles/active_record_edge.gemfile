@@ -1,12 +1,17 @@
 source 'https://rubygems.org'
 
-git 'git://github.com/rails/rails.git' do
+git_source(:github) do |repo_name|
+  repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
+  "https://github.com/#{repo_name}.git"
+end
+
+github 'rails/rails' do
   gem 'railties'
   gem 'activerecord', require: 'active_record'
   gem 'actionview', require: 'action_view'
 end
 
-gem 'rack', git: 'git://github.com/rack/rack.git'
+gem 'rack', github: 'rack/rack'
 gem 'arel', github: 'rails/arel'
 
 platforms :ruby do
