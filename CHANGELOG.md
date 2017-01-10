@@ -68,6 +68,12 @@
 
 * Always buffer with `ActionView::OutputBuffer` if Action View is loaded #804 [@onemanstartup]
 
+* Fixed `padding()` not to accept negative value #839 [@yo-gen]
+
+* Fixed a bug where `total_count` used to return a wrong value with larger page value than total pages in `without_count` mode #845 [@denislins]
+
+* Coerce `padding()` argument to Integer #840 [@pablocrivella]
+
 
 ## 0.17.0
 
