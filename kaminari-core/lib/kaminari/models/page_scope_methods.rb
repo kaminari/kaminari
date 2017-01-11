@@ -5,14 +5,12 @@ module Kaminari
     #   Model.page(3).per(10)
     def per(num, max_per_page: nil)
       max_per_page ||= ((defined?(@_max_per_page) && @_max_per_page) || self.max_per_page)
-      @_per = num
-      if num.nil? && max_per_page
-        limit(max_per_page).offset(offset_value / limit_value * max_per_page)
-      elsif (n = num.to_i) < 0 || !(/^\d/ =~ num.to_s)
+      @_per = num || default_per_page
+      if (n = num.to_i) < 0 || !(/^\d/ =~ num.to_s)
         self
       elsif n.zero?
         limit(n)
-      elsif max_per_page && max_per_page < n
+      elsif max_per_page && (max_per_page < n)
         limit(max_per_page).offset(offset_value / limit_value * max_per_page)
       else
         limit(n).offset(offset_value / limit_value * n)

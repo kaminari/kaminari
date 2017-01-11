@@ -97,6 +97,16 @@ if defined? ActiveRecord
             assert_equal model_class.default_per_page, model_class.page(1).per(nil).count
           end
 
+          test 'page 1 per nil with max_per_page > default_per_page' do
+            begin
+              model_class.max_paginates_per(30)
+
+              assert_equal 25, model_class.page(1).per(nil).count
+            ensure
+              model_class.max_paginates_per(nil)
+            end
+          end
+
           test 'page 1 per nil with max_per_page < default_per_page' do
             begin
               model_class.max_paginates_per(10)
