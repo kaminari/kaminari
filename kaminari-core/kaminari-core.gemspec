@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
 
   spec.summary       = "Kaminari's core pagination library"
   spec.description   = 'kaminari-core includes pagination logic independent from ORMs and view libraries'
-  spec.homepage      = 'https://github.com/amatsuda/kaminari'
+  spec.homepage      = 'https://github.com/kaminari/kaminari'
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }

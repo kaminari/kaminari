@@ -18,12 +18,12 @@ And bundle.
 
 This gem is basically an internal gem that will be automatically bundled from kaminari gem or kaminari adapter gems.
 
-See [Kaminari README](https://github.com/amatsuda/kaminari/blob/master/README.md) for the documentation.
+See [Kaminari README](https://github.com/kaminari/kaminari/blob/master/README.md) for the documentation.
 
 
 ## Contributing
 
-Pull requests are welcome on GitHub at https://github.com/amatsuda/kaminari.
+Pull requests are welcome on GitHub at https://github.com/kaminari/kaminari.
 
 
 ## License

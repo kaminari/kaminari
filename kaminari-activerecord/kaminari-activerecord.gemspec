@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
 
   spec.summary       = 'Kaminari Active Record adapter'
   spec.description   = 'kaminari-activerecord lets your Active Record models be paginatable'
-  spec.homepage      = 'https://github.com/amatsuda/kaminari'
+  spec.homepage      = 'https://github.com/kaminari/kaminari'
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
