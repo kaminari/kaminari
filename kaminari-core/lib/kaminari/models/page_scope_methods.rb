@@ -5,7 +5,7 @@ module Kaminari
     #   Model.page(3).per(10)
     def per(num, max_per_page: nil)
       max_per_page ||= ((defined?(@_max_per_page) && @_max_per_page) || self.max_per_page)
-      @_per = num || default_per_page
+      @_per = (num || default_per_page).to_i
       if (n = num.to_i) < 0 || !(/^\d/ =~ num.to_s)
         self
       elsif n.zero?

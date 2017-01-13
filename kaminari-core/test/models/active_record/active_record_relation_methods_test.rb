@@ -84,6 +84,10 @@ if defined? ActiveRecord
       test "throw an exception when calculating total_count when the query includes column aliases used by a group-by clause" do
         assert_equal 3, Book.joins(authorships: :user).select("users.name as author_name").group('users.name').page(1).total_count
       end
+
+      test 'total_count is calculable with page 1 per "5" (the string)' do
+        assert_equal 7, User.page(1).per('5').load.total_count
+      end
     end
   end
 end
