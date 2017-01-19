@@ -1,3 +1,16 @@
+## 1.0.1
+
+### Bug Fixes:
+
+* Added `required_ruby_version` to the gemspec #847 [@timoschilling]
+
+* Fixed a regression where `per(nil)` uses `max_per_page` instead of `default_per_page` #813 [@merqlove]
+
+* Fixed a regression where passing a String to `per()` aborts with ArgumentError #849 [@rafaelgonzalez]
+
+* Fixed a bug where calling deprecated `max_pages_per` caused an Error on Rails 4 #852 [@tsuwatch]
+
+
 ## 1.0.0
 
 ### Breaking Changes:
