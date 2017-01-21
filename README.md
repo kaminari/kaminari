@@ -327,16 +327,7 @@ en:
 If you use non-English localization see [i18n rules](https://github.com/svenfuchs/i18n/blob/master/test/test_data/locales/plurals.rb) for changing
 `one_page:display_entries` block.
 
-If you were translating models names you can turn on case sensivite by:
-```
-de:
-  activerecord:
-    models:
-      document:
-        one: "Buch"
-        other: "Bücher"
-        kaminari_case_sensitive: true
-```
+
 ## Customizing the Pagination Helper
 
 Kaminari includes a handy template generator.

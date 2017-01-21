@@ -266,17 +266,6 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
             I18n.backend.reload!
           end
         end
-
-        test 'page_entries_info translates entry with case sensitive' do
-          users = User.page(1).per(25)
-          begin
-            I18n.backend.store_translations(:en, User.i18n_scope => { models: { user: { one: "person", other: "PeoPle", kaminari_case_sensitive: true } } })
-
-            assert_equal 'Displaying PeoPle <b>1&nbsp;-&nbsp;25</b> of <b>50</b> in total', view.page_entries_info(users)
-          ensure
-            I18n.backend.reload!
-          end
-        end
       end
 
       sub_test_case 'on a model with namespace' do
