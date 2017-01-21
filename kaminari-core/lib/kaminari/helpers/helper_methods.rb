@@ -101,9 +101,7 @@ module Kaminari
         entry_name = if entry_name
                        entry_name.pluralize(collection.size)
                      else
-                       case_sensitive = I18n.t("activerecord.models.#{collection.first.class.name.downcase}.kaminari_case_sensitive")
-                       entry_name = collection.entry_name(count: collection.size)
-                       case_sensitive == true ? entry_name : entry_name.downcase
+                       collection.entry_name(count: collection.size).downcase
                      end
 
         if collection.total_pages < 2
