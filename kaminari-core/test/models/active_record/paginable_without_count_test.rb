@@ -13,7 +13,7 @@ if defined? ActiveRecord
       super
     end
 
-    test 'it does not make count queires after calling #each' do
+    test 'it does not make count queries after calling #each' do
       @scope = User.page(1).without_count
       @scope.each
 
@@ -25,7 +25,7 @@ if defined? ActiveRecord
       end
     end
 
-    test 'it does not make count queires after calling #last_page? or #out_of_range?' do
+    test 'it does not make count queries after calling #last_page? or #out_of_range?' do
       @scope = User.page(1).without_count
 
       assert_not @scope.last_page?
