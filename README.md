@@ -326,7 +326,7 @@ en:
 
 If you use non-English localization see [i18n rules](https://github.com/svenfuchs/i18n/blob/master/test/test_data/locales/plurals.rb) for changing
 `one_page:display_entries` block.
-If you were translating models names you can turn on case sensitive by add to initializer:
+If you were translating models names you can turn on case sensitive for specific countries by add to initializer:
 ```
 self.case_sensitive_languages = [:eg, :ger]
 ```
