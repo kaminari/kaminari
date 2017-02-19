@@ -101,9 +101,9 @@ module Kaminari
         entry_name = if entry_name
                        entry_name.pluralize(collection.size)
                      else
-                       case_sensitive = I18n.t("activerecord.models.#{collection.first.class.name.downcase}.kaminari_case_sensitive")
-                       entry_name = collection.entry_name(count: collection.size)
-                       case_sensitive == true ? entry_name : entry_name.downcase
+                       downcase_if_language_is_case_insensitive(
+                        collection.entry_name(count: collection.size)
+                       )
                      end
 
         if collection.total_pages < 2
@@ -165,6 +165,13 @@ module Kaminari
       # It will return `nil` if there is no previous page.
       def path_to_prev_page(scope, options = {})
         Kaminari::Helpers::PrevPage.new(self, options.reverse_merge(current_page: scope.current_page)).url if scope.prev_page
+      end
+
+      # A helper that downcases strings if present language isn't case sensitive.
+      def downcase_if_language_is_case_insensitive(resource)
+        case_sensitive_languages = Kaminari.config.case_sensitive_languages
+        resource = resource.downcase unless case_sensitive_languages.include?(I18n.locale)
+        resource
       end
     end
   end

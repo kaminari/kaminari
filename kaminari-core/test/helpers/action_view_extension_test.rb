@@ -269,12 +269,14 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
 
         test 'page_entries_info translates entry with case sensitive' do
           users = User.page(1).per(25)
+          Kaminari.config.case_sensitive_languages = [:en]
           begin
-            I18n.backend.store_translations(:en, User.i18n_scope => { models: { user: { one: "person", other: "PeoPle", kaminari_case_sensitive: true } } })
+            I18n.backend.store_translations(:en, User.i18n_scope => { models: { user: { one: "person", other: "PeoPle" } } })
 
             assert_equal 'Displaying PeoPle <b>1&nbsp;-&nbsp;25</b> of <b>50</b> in total', view.page_entries_info(users)
           ensure
             I18n.backend.reload!
+            Kaminari.config.case_sensitive_languages = []
           end
         end
       end
