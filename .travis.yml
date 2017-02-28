@@ -12,6 +12,7 @@ rvm:
   - rbx-3
 
 gemfile:
+  - gemfiles/active_record_51.gemfile
   - gemfiles/active_record_50.gemfile
   - gemfiles/active_record_42.gemfile
   - gemfiles/active_record_41.gemfile
