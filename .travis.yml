@@ -12,6 +12,7 @@ rvm:
   - rbx-3
 
 gemfile:
+  - gemfiles/active_record_51.gemfile
   - gemfiles/active_record_50.gemfile
   - gemfiles/active_record_42.gemfile
   - gemfiles/active_record_41.gemfile
@@ -31,13 +32,15 @@ matrix:
     - rvm: 2.1.10
       gemfile: gemfiles/active_record_50.gemfile
     - rvm: 2.0.0
+      gemfile: gemfiles/active_record_51.gemfile
+    - rvm: 2.1.10
+      gemfile: gemfiles/active_record_51.gemfile
+    - rvm: 2.0.0
       gemfile: gemfiles/active_record_edge.gemfile
     - rvm: 2.1.10
       gemfile: gemfiles/active_record_edge.gemfile
     - rvm: 2.4.0
       gemfile: gemfiles/active_record_41.gemfile
-    - rvm: 2.4.0
-      gemfile: gemfiles/active_record_42.gemfile
     - rvm: ruby-head
       gemfile: gemfiles/active_record_41.gemfile
   allow_failures:
