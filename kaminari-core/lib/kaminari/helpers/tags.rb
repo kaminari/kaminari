@@ -35,7 +35,11 @@ module Kaminari
       def page_url_for(page)
         params = params_for(page)
         params[:only_path] = true
-        @template.url_for params
+        path = @template.url_for params
+        if @options[:route] && @options[:route].present?
+          path.sub!(/^\/\w+/, @options[:route])
+        end
+        path
       end
 
       private
@@ -43,7 +47,6 @@ module Kaminari
       def params_for(page)
         page_params = Rack::Utils.parse_nested_query("#{@param_name}=#{page}")
         page_params = @params.deep_merge(page_params)
-
         if !Kaminari.config.params_on_first_page && (page <= 1)
           # This converts a hash:
           #   from: {other: "params", page: 1}
@@ -55,7 +58,6 @@ module Kaminari
           #   (when @param_name == "user[page]")
           @param_name.to_s.scan(/[\w\.]+/)[0..-2].inject(page_params){|h, k| h[k] }[$&] = nil
         end
-
         page_params
       end
 
