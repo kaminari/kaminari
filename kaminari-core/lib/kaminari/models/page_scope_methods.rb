@@ -69,7 +69,7 @@ module Kaminari
 
     # Last page of the collection?
     def last_page?
-      current_page == total_pages
+      current_page >= total_pages
     end
 
     # Out of range of the collection?
