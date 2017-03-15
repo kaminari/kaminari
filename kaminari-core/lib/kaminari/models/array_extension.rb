@@ -58,6 +58,12 @@ module Kaminari
     def offset(num)
       self.class.new @_original_array, limit: @_limit_value, offset: num, total_count: @_total_count, padding: @_padding
     end
+
+    # sets the total_count
+    def with_total_count(num)
+      @_total_count = [0, num.to_i].max
+      self
+    end
   end
 
   # Wrap an Array object to make it paginatable

@@ -45,6 +45,18 @@ module Kaminari
     def without_count
       extend ::Kaminari::PaginatableWithoutCount
     end
+
+    # Specify the value for total_count.
+    # Useful if you have a way to get an approximate number of records in the
+    # result set. (Ex. In a MySQL query without a where clause, get an estimate
+    # from the "Rows" column from running "SHOW TABLE STATUS LIKE table_name".)
+    #   Pro: paginates without casting an extra SELECT COUNT query
+    #   Pro: Can still use the "paginate" view helper method
+    #   Con: The total number of pages won't be exactly correct
+    def with_total_count(num)
+      @total_count = [0, num.to_i].max
+      self
+    end
   end
 
   # A module that makes AR::Relation paginatable without having to cast another SELECT COUNT query
