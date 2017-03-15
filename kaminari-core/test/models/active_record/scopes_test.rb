@@ -337,7 +337,7 @@ if defined? ActiveRecord
           end
 
           test 'out of range' do
-            assert_false model_class.page(11).per(10).last_page?
+            assert_true model_class.page(11).per(10).last_page?
           end
         end
 
