@@ -1,0 +1,17 @@
+es:
+  views:
+    pagination:
+      first: "&laquo; Inicio"
+      last: "Ultimo &raquo;"
+      previous: "&lsaquo; Volver"
+      next: "Siguiente &rsaquo;"
+      truncate: "&hellip;"
+  helpers:
+    page_entries_info:
+      one_page:
+        display_entries:
+          zero: "0 %{entry_name} encontrados"
+          one: "Mostrando <b>1</b> %{entry_name}"
+          other: "Mostrando <b>todos %{count}</b> %{entry_name}"
+      more_pages:
+        display_entries: "Mostrando %{entry_name} <b>%{first}&nbsp;-&nbsp;%{last}</b> of <b>%{total}</b> en total"
