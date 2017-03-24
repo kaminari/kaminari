@@ -2,7 +2,7 @@ language: ruby
 dist: trusty
 
 rvm:
-  - 2.4.0
+  - 2.4.1
   - 2.3.3
   - 2.2.6
   - 2.1.10
@@ -34,9 +34,9 @@ matrix:
       gemfile: gemfiles/active_record_edge.gemfile
     - rvm: 2.1.10
       gemfile: gemfiles/active_record_edge.gemfile
-    - rvm: 2.4.0
+    - rvm: 2.4.1
       gemfile: gemfiles/active_record_41.gemfile
-    - rvm: 2.4.0
+    - rvm: 2.4.1
       gemfile: gemfiles/active_record_42.gemfile
     - rvm: ruby-head
       gemfile: gemfiles/active_record_41.gemfile
