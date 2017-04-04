@@ -19,6 +19,7 @@ module Kaminari
     self.param_name = :page
     self.max_pages = nil
     self.params_on_first_page = false
+    self.mandatory_ordering = false
 
     # If param_name was given as a callable object, call it when returning
     def param_name
