@@ -173,7 +173,7 @@ end
 
 ### Mandatory ordering
 
-When `mandatory_ordering` option is set to truthy value, calling `page` methon on un-ordered collection will raise `Kaminari::CollectionNotOrderedError` error.
+When `mandatory_ordering` option is set to truthy value, calling `page` method on un-ordered collection will raise `Kaminari::CollectionNotOrderedError` error.
 If no order is set, databases can choose to return records in arbitrary sequence, preventing you from reliably iterating through them.
 
 ## Controllers
