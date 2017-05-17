@@ -293,6 +293,20 @@ if defined? ActiveRecord
           end
         end
 
+        sub_test_case '#current_per_page' do
+          test 'per 0' do
+            assert_equal 0, model_class.page.per(0).current_per_page
+          end
+
+          test 'no per specified' do
+            assert_equal model_class.default_per_page, model_class.page.current_per_page
+          end
+
+          test 'per specified as 42' do
+            assert_equal 42, model_class.page.per(42).current_per_page
+          end
+        end
+
         sub_test_case '#next_page' do
           test 'page 1' do
             assert_equal 2, model_class.page.next_page

@@ -19,7 +19,7 @@ module Kaminari
 
     def max_paginates_per(new_max_per_page)
       @_max_per_page = new_max_per_page
-      per ((defined?(@_per) && @_per) || default_per_page), max_per_page: new_max_per_page
+      per current_per_page, max_per_page: new_max_per_page
     end
 
     def padding(num)
@@ -50,6 +50,11 @@ module Kaminari
       (offset_without_padding / limit_value) + 1
     rescue ZeroDivisionError
       raise ZeroPerPageOperation, "Current page was incalculable. Perhaps you called .per(0)?"
+    end
+
+    # Current per-page number
+    def current_per_page
+      (defined?(@_per) && @_per) || default_per_page
     end
 
     # Next page number in the collection
