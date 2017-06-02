@@ -11,5 +11,12 @@ postgresql: &postgresql
   password:
   database: kaminari_test
 
+mysql: &mysql
+  adapter: mysql2
+  host: localhost
+  username: root
+  password:
+  database: kaminari_test
+
 test:
   <<: *<%= ENV['DB'] %>
