@@ -30,9 +30,9 @@ cache: bundler
 matrix:
   exclude:
     - rvm: 2.4.1
-      gemfile: gemfiles/active_record_41.gemfile
-    - rvm: 2.4.1
       gemfile: gemfiles/active_record_42.gemfile
+    - rvm: 2.4.1
+      gemfile: gemfiles/active_record_41.gemfile
     - rvm: ruby-head
       gemfile: gemfiles/active_record_41.gemfile
   include:
