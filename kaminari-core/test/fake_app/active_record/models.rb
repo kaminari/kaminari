@@ -16,7 +16,7 @@ class User < ActiveRecord::Base
     cols = if connection.adapter_name == "PostgreSQL"
       column_names.map { |column| %{"users"."#{column}"} }
     else
-      ['"users"."id"']
+      ['users.id']
     end
     group(*cols).select("count(readerships.id) AS read_count, #{cols.join(', ')}").order('read_count DESC')
   }
