@@ -4,5 +4,12 @@ sqlite3: &sqlite3
   pool: 5
   timeout: 5000
 
+postgresql: &postgresql
+  adapter: postgresql
+  host: localhost
+  username: postgres
+  password:
+  database: kaminari_test
+
 test:
   <<: *<%= ENV['DB'] %>
