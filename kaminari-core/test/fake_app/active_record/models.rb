@@ -14,11 +14,11 @@ class User < ActiveRecord::Base
   scope :by_name, -> { order(:name) }
   scope :by_read_count, -> {
     cols = if connection.adapter_name == "PostgreSQL"
-      column_names.map { |column| %{"users"."#{column}"} }.join(", ")
+      column_names.map { |column| %{"users"."#{column}"} }
     else
-      '"users"."id"'
+      ['"users"."id"']
     end
-    group(cols).select("count(readerships.id) AS read_count, #{cols}").order('read_count DESC')
+    group(*cols).select("count(readerships.id) AS read_count, #{cols.join(', ')}").order('read_count DESC')
   }
 end
 class Authorship < ActiveRecord::Base
