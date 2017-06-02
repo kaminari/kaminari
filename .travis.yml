@@ -1,5 +1,4 @@
 language: ruby
-dist: trusty
 
 services:
   - mysql
