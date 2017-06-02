@@ -21,7 +21,9 @@ env:
 
 sudo: false
 
-before_install: gem update bundler --no-document
+before_install:
+  - gem update --system
+  - gem update bundler --no-document
 script: 'bundle exec rake test'
 
 cache: bundler
