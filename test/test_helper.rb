@@ -4,6 +4,7 @@ $LOAD_PATH.unshift(File.join(Gem.loaded_specs['kaminari-core'].gem_dir, 'test'))
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 
 ENV['RAILS_ENV'] ||= 'test'
+ENV['DB'] ||= 'sqlite3'
 
 require 'rails'
 require 'active_record'

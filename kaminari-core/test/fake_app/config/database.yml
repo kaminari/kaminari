@@ -1,5 +1,8 @@
-test:
+sqlite3: &sqlite3
   adapter: sqlite3
   database: kaminari_test.sqlite3
   pool: 5
   timeout: 5000
+
+test:
+  <<: *<%= ENV['DB'] %>
