@@ -20,6 +20,8 @@ gemfile:
 
 env:
   - DB=sqlite3
+  - DB=postgresql
+  - DB=mysql
 
 sudo: false
 
