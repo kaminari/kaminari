@@ -2,8 +2,8 @@
 # require 'rails/all'
 require 'action_controller/railtie'
 require 'action_view/railtie'
+require 'active_record/railtie' if defined? ActiveRecord
 
-require 'fake_app/active_record/config' if defined? ActiveRecord
 # config
 app = Class.new(Rails::Application)
 app.config.secret_key_base = app.config.secret_token = '3b7cd727ee24e8444053437c36cc66c4'
