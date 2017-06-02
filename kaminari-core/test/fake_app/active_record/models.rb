@@ -50,7 +50,11 @@ end
 class Device < Product
 end
 
-#migrations
+# migrations
+ActiveRecord::Migration.verbose = false
+ActiveRecord::Tasks::DatabaseTasks.drop_current 'test'
+ActiveRecord::Tasks::DatabaseTasks.create_current 'test'
+
 class CreateAllTables < ActiveRecord::VERSION::MAJOR >= 5 ? ActiveRecord::Migration[5.0] : ActiveRecord::Migration
   def self.up
     create_table(:gem_defined_models) { |t| t.string :name; t.integer :age }
@@ -62,5 +66,4 @@ class CreateAllTables < ActiveRecord::VERSION::MAJOR >= 5 ? ActiveRecord::Migrat
     create_table(:devices) {|t| t.string :name; t.integer :age}
   end
 end
-ActiveRecord::Migration.verbose = false
 CreateAllTables.up
