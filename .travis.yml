@@ -6,7 +6,6 @@ rvm:
   - 2.3.4
   - 2.2.7
   - 2.1.10
-  - 2.0.0
   - ruby-head
   - jruby-9.1.10.0
   # - rbx-3
@@ -32,16 +31,10 @@ cache: bundler
 
 matrix:
   exclude:
-    - rvm: 2.0.0
-      gemfile: gemfiles/active_record_51.gemfile
     - rvm: 2.1.10
       gemfile: gemfiles/active_record_51.gemfile
-    - rvm: 2.0.0
-      gemfile: gemfiles/active_record_50.gemfile
     - rvm: 2.1.10
       gemfile: gemfiles/active_record_50.gemfile
-    - rvm: 2.0.0
-      gemfile: gemfiles/active_record_edge.gemfile
     - rvm: 2.1.10
       gemfile: gemfiles/active_record_edge.gemfile
     - rvm: 2.4.1
@@ -50,6 +43,10 @@ matrix:
       gemfile: gemfiles/active_record_42.gemfile
     - rvm: ruby-head
       gemfile: gemfiles/active_record_41.gemfile
+  include:
+    - rvm: 2.0.0
+      gemfile: gemfiles/active_record_42.gemfile
+      env: DB=sqlite3
   allow_failures:
     - rvm: ruby-head
     - rvm: jruby-9.1.10.0
