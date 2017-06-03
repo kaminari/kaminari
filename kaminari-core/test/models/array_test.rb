@@ -196,4 +196,21 @@ class PaginatableArrayTest < ActiveSupport::TestCase
       assert_equal 15, arr.total_count
     end
   end
+
+  sub_test_case '#with_total_count' do
+    test 'calling with_total_count returns array' do
+      arr = Kaminari::PaginatableArray.new((1..12).to_a)
+      assert_equal arr.class, arr.with_total_count(10).class
+    end
+
+    test 'total_count is set to the number specified' do
+      arr = Kaminari::PaginatableArray.new((1..12).to_a)
+      assert_equal 10, arr.with_total_count(10).total_count
+    end
+
+    test 'total_count is 0 when with_total_count passed a negative number' do
+      arr = Kaminari::PaginatableArray.new((1..12).to_a)
+      assert_equal 0, arr.with_total_count(-2).total_count
+    end
+  end
 end

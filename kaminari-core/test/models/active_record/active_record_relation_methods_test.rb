@@ -89,5 +89,36 @@ if defined? ActiveRecord
         assert_equal 7, User.page(1).per('5').load.total_count
       end
     end
+
+    sub_test_case '#with_total_count' do
+      setup do
+        12.times { User.create! }
+      end
+      teardown do
+        User.delete_all
+      end
+
+      test 'calling total_count doesn\'t create a database query' do
+        users = User.page(2).per(2).with_total_count(10).load
+        assert_no_queries { users.total_count }
+      end
+
+      test 'total_count is set to the number specified' do
+        assert_equal 10, User.page.with_total_count(10).total_count
+      end
+
+      test 'total_count is 0 when with_total_count passed a negative number' do
+        assert_equal 0, User.page.with_total_count(-2).total_count
+      end
+
+      def assert_no_queries
+        subscriber = ActiveSupport::Notifications.subscribe 'sql.active_record' do
+          raise 'A SQL query is being made to the db:'
+        end
+        yield
+      ensure
+        ActiveSupport::Notifications.unsubscribe subscriber
+      end
+    end
   end
 end
