@@ -135,6 +135,7 @@ You can configure the following default values by overriding these values using 
     page_method_name      # :page by default
     param_name            # :page by default
     params_on_first_page  # false by default
+    mandatory_ordering    # false by default
 
 There's a handy generator that generates the default configuration file into config/initializers directory.
 Run the following generator command, then edit the generated file.
@@ -170,6 +171,10 @@ class User < ActiveRecord::Base
 end
 ```
 
+### Mandatory ordering
+
+When `mandatory_ordering` option is set to truthy value, calling `page` method on un-ordered collection will raise `Kaminari::CollectionNotOrderedError` error.
+If no order is set, databases can choose to return records in arbitrary sequence, preventing you from reliably iterating through them.
 
 ## Controllers
 
