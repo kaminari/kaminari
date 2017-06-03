@@ -29,7 +29,10 @@ module Kaminari
       # render given block as a view template
       def render(&block)
         instance_eval(&block) if @options[:total_pages] > 1
-        @output_buffer
+        if @options[:route] && @options[:route].present?
+          @output_buffer.gsub!(/[^<]\/\w+/, "\"/#{@options[:route]}")
+        end
+        @output_buffer.html_safe
       end
 
       # enumerate each page providing PageProxy object as the block parameter
