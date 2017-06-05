@@ -8,6 +8,9 @@ en:
       previous: "&lsaquo; Prev"
       next: "Next &rsaquo;"
       truncate: "&hellip;"
+      page:
+        current: "Current"
+        goto: "Go To"
   helpers:
     page_entries_info:
       entry:
