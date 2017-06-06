@@ -16,3 +16,4 @@ exclude_paths:
 - test/
 - "*/test/"
 - "**/*.gemspec"
+- "**/*.md"
