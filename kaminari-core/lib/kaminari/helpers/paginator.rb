@@ -6,11 +6,8 @@ module Kaminari
   module Helpers
     # The main container tag
     class Paginator < Tag
-      def initialize(template, window: nil, outer_window: nil, left: nil, right: nil, inner_window: nil, **options) #:nodoc:
-        outer_window ||= Kaminari.config.outer_window
-        left ||= Kaminari.config.left
-        right ||= Kaminari.config.right
-        @window_options = {window: window || inner_window || Kaminari.config.window, left: left.zero? ? outer_window : left, right: right.zero? ? outer_window : right}
+      def initialize(template, window: nil, outer_window: Kaminari.config.outer_window, left: Kaminari.config.left, right: Kaminari.config.right, inner_window: Kaminari.config.window, **options) #:nodoc:
+        @window_options = {window: window || inner_window, left: left.zero? ? outer_window : left, right: right.zero? ? outer_window : right}
 
         @template, @options, @theme, @views_prefix, @last = template, options, options[:theme], options[:views_prefix], nil
         @window_options.merge! @options
