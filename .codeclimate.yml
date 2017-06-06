@@ -5,21 +5,12 @@ engines:
     config:
       languages:
       - ruby
-      - javascript
-      - python
-      - php
   fixme:
     enabled: true
   rubocop:
     enabled: true
 ratings:
   paths:
-  - "**.inc"
-  - "**.js"
-  - "**.jsx"
-  - "**.module"
-  - "**.php"
-  - "**.py"
   - "**.rb"
 exclude_paths:
 - test/
