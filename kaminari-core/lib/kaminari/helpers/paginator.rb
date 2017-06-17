@@ -21,12 +21,24 @@ module Kaminari
         else
           ActiveSupport::SafeBuffer.new
         end
+
+        @template.instance_variable_set :@paginator, self
+        @template.instance_eval do
+          def method_missing(name, *args, &block)
+            @paginator.instance_variable_set :@output_buffer, @output_buffer
+            @paginator.respond_to?(name) ? @paginator.send(name, *args, &block) : super
+          end
+        end
       end
 
       # render given block as a view template
       def render(&block)
-        instance_eval(&block) if @options[:total_pages] > 1
-        @output_buffer
+        old_buffer = @template.instance_variable_get(:@output_buffer)
+        @template.output_buffer = @output_buffer
+        @template.instance_eval(&block) if @options[:total_pages] > 1
+        @template.instance_variable_get(:@output_buffer)
+      ensure
+        @template.instance_variable_set(:@output_buffer, old_buffer)
       end
 
       # enumerate each page providing PageProxy object as the block parameter
@@ -71,12 +83,6 @@ module Kaminari
       ensure
         Thread.current[:kaminari_rendering] = false
       end
-
-      # delegates view helper methods to @template
-      def method_missing(name, *args, &block)
-        @template.respond_to?(name) ? @template.send(name, *args, &block) : super
-      end
-      private :method_missing
 
       # Wraps a "page number" and provides some utility methods
       class PageProxy

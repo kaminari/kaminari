@@ -1,0 +1,13 @@
+<%= paginator.render do %>
+  <%= form_tag '#' do %>
+    <%= number_field_tag :per_page %>
+    <%= first_page_tag %>
+    <% each_page do |page| %>
+      <%= page_tag(page) %>
+      <p>hello</p>
+    <% end %>
+  <% end %>
+  <% each_page do |page| %>
+    <%= page_tag(page) %>
+  <% end %>
+<% end %>

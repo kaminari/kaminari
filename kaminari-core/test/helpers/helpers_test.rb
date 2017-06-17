@@ -13,12 +13,8 @@ class PaginatorHelperTest < ActiveSupport::TestCase
       link_to { "<a href='#'>link</a>" }
       output_buffer { defined?(ActionView) ? ::ActionView::OutputBuffer.new : ::ActiveSupport::SafeBuffer.new }
     end
+    r.params
     r
-  end
-
-  test 'view helper methods delegated to template' do
-    paginator = Paginator.new(template, params: {})
-    assert_equal "<a href='#'>link</a>", paginator.link_to('link', '#')
   end
 
   sub_test_case '#params' do
