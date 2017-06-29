@@ -52,6 +52,7 @@ end
 
 # migrations
 ActiveRecord::Migration.verbose = false
+ActiveRecord::Tasks::DatabaseTasks.root = Dir.pwd
 ActiveRecord::Tasks::DatabaseTasks.drop_current 'test'
 ActiveRecord::Tasks::DatabaseTasks.create_current 'test'
 
