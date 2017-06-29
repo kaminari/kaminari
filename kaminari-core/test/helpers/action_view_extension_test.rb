@@ -73,6 +73,50 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
         assert_not_match(/Last/, html)
         assert_not_match(/Next/, html)
       end
+
+      test 'renders with output_buffer properly' do
+        users = User.page(1)
+        begin
+          controller.append_view_path File.join(Gem.loaded_specs['kaminari-core'].gem_dir, 'test/fake_app/views')
+
+          html = view.paginate users, theme: 'output_buffer', params: { controller: 'users', action: 'index' }
+
+          expected_html = if ::ActionView::VERSION::STRING < '4.2'
+            <<-HTML
+              <form accept-charset="UTF-8" action="#" method="post">
+                <div style="display:none">
+                  <input name="utf8" type="hidden" value="&#x2713;" />
+                </div>
+                <input id="per_page" name="per_page" type="number" />
+                <b>1</b>
+                <li><a href="/users">1</a></li>
+                <p>hello</p>
+                <li><a href="/users?page=2">2</a></li>
+                <p>hello</p>
+              </form>
+              <li><a href="/users">1</a></li>
+              <li><a href="/users?page=2">2</a></li>
+            HTML
+          else
+            <<-HTML
+              <form action="#" accept-charset="UTF-8" method="post">
+                <input name="utf8" type="hidden" value="&#x2713;" />
+                <input type="number" name="per_page" id="per_page" />
+                <b>1</b>
+                <li><a href="/users">1</a></li>
+                <p>hello</p>
+                <li><a href="/users?page=2">2</a></li>
+                <p>hello</p>
+              </form>
+              <li><a href="/users">1</a></li>
+              <li><a href="/users?page=2">2</a></li>
+            HTML
+          end
+          assert_equal expected_html.strip.gsub(/\s/, ''), html.strip.gsub(/\s/, '')
+        ensure
+          controller.view_paths.pop
+        end
+      end
     end
 
     sub_test_case '#link_to_previous_page' do
