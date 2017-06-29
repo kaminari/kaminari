@@ -1,6 +1,6 @@
 sqlite3: &sqlite3
   adapter: sqlite3
-  database: kaminari_test.sqlite3
+  database: <%= File.expand_path '../test/fake_app/kaminari_test.sqlite3', __FILE__ %>
   pool: 5
   timeout: 5000
 
