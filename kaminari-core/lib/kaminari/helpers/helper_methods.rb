@@ -99,7 +99,7 @@ module Kaminari
       #   #-> Displaying items 6 - 10 of 26 in total
       def page_entries_info(collection, entry_name: nil)
         entry_name = if entry_name
-                       entry_name.pluralize(collection.size)
+                       entry_name.pluralize(collection.size, I18n.locale)
                      else
                        collection.entry_name(count: collection.size).downcase
                      end
