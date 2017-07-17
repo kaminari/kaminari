@@ -270,49 +270,39 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
         end
 
         sub_test_case 'with any other locale' do
+          teardown do
+            I18n.backend.reload!
+          end
+
           sub_test_case ':de' do
             setup do
               I18n.locale = :de
+              I18n.backend.store_translations(:de,
+                helpers: {
+                  page_entries_info: {
+                    one_page: {
+                      display_entries: {
+                        one: "Displaying <b>1</b> %{entry_name}",
+                        other: "Displaying <b>all %{count}</b> %{entry_name}"
+                      }
+                    },
+                    more_pages: {
+                      display_entries: "Displaying %{entry_name} <b>%{first}&nbsp;-&nbsp;%{last}</b> of <b>%{total}</b> in total"
+                    }
+                  }
+                }
+              )
             end
 
             test 'with default entry name' do
               users = User.page(1).per(50)
-              begin
-                I18n.backend.store_translations(:de,
-                  helpers: {
-                    page_entries_info: {
-                      one_page: {
-                        display_entries: {
-                          one: "Displaying <b>1</b> %{entry_name}",
-                          other: "Displaying <b>all %{count}</b> %{entry_name}"
-                        }
-                      }
-                    }
-                  }
-                )
-                assert_equal 'Displaying <b>all 50</b> Benutzer', view.page_entries_info(users,  entry_name: 'Benutzer')
-              ensure
-                I18n.backend.reload!
-              end
+              assert_equal 'Displaying <b>all 50</b> Benutzer', view.page_entries_info(users,  entry_name: 'Benutzer')
             end
 
             test 'the last page with default entry name' do
               User.max_pages 4
               users = User.page(4).per(10)
-              begin
-                I18n.backend.store_translations(:de,
-                  helpers: {
-                    page_entries_info: {
-                      more_pages: {
-                        display_entries: "Displaying %{entry_name} <b>%{first}&nbsp;-&nbsp;%{last}</b> of <b>%{total}</b> in total"
-                      }
-                    }
-                  }
-                )
-                assert_equal 'Displaying Benutzer <b>31&nbsp;-&nbsp;40</b> of <b>50</b> in total', view.page_entries_info(users,  entry_name: 'Benutzer')
-              ensure
-                I18n.backend.reload!
-              end
+              assert_equal 'Displaying Benutzer <b>31&nbsp;-&nbsp;40</b> of <b>50</b> in total', view.page_entries_info(users,  entry_name: 'Benutzer')
             end
           end
         end
@@ -324,6 +314,21 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
               inflect.plural(/$/, 's')
               inflect.singular(/s$/, '')
             end
+            I18n.backend.store_translations(:fr,
+              helpers: {
+                page_entries_info: {
+                  one_page: {
+                    display_entries: {
+                      one: "Displaying <b>1</b> %{entry_name}",
+                      other: "Displaying <b>all %{count}</b> %{entry_name}"
+                    }
+                  },
+                  more_pages: {
+                    display_entries: "Displaying %{entry_name} <b>%{first}&nbsp;-&nbsp;%{last}</b> of <b>%{total}</b> in total"
+                  }
+                }
+              }
+            )
           end
 
           sub_test_case 'having 1 entry' do
@@ -334,64 +339,19 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
 
             test 'with default entry name' do
               users = User.page(1).per(25)
-              begin
-                I18n.backend.store_translations(:fr,
-                  helpers: {
-                    page_entries_info: {
-                      one_page: {
-                        display_entries: {
-                          one: "Displaying <b>1</b> %{entry_name}",
-                          other: "Displaying <b>all %{count}</b> %{entry_name}"
-                        }
-                      }
-                    }
-                  }
-                  )
-                assert_equal 'Displaying <b>1</b> utilisateur', view.page_entries_info(users,  entry_name: 'utilisateur')
-              ensure
-                I18n.backend.reload!
-              end
+              assert_equal 'Displaying <b>1</b> utilisateur', view.page_entries_info(users,  entry_name: 'utilisateur')
             end
           end
 
           test 'having multiple entries with default entry name' do
             users = User.page(1).per(50)
-            begin
-              I18n.backend.store_translations(:fr,
-                helpers: {
-                  page_entries_info: {
-                    one_page: {
-                      display_entries: {
-                        one: "Displaying <b>1</b> %{entry_name}",
-                        other: "Displaying <b>all %{count}</b> %{entry_name}"
-                      }
-                    }
-                  }
-                }
-                )
-              assert_equal 'Displaying <b>all 50</b> utilisateurs', view.page_entries_info(users,  entry_name: 'utilisateur')
-            ensure
-              I18n.backend.reload!
-            end
+            assert_equal 'Displaying <b>all 50</b> utilisateurs', view.page_entries_info(users,  entry_name: 'utilisateur')
           end
 
           test 'the last page with default entry name' do
             User.max_pages 4
             users = User.page(4).per(10)
-            begin
-              I18n.backend.store_translations(:fr,
-                helpers: {
-                  page_entries_info: {
-                    more_pages: {
-                      display_entries: "Displaying %{entry_name} <b>%{first}&nbsp;-&nbsp;%{last}</b> of <b>%{total}</b> in total"
-                    }
-                  }
-                }
-              )
-              assert_equal 'Displaying utilisateurs <b>31&nbsp;-&nbsp;40</b> of <b>50</b> in total', view.page_entries_info(users,  entry_name: 'utilisateur')
-            ensure
-              I18n.backend.reload!
-            end
+            assert_equal 'Displaying utilisateurs <b>31&nbsp;-&nbsp;40</b> of <b>50</b> in total', view.page_entries_info(users,  entry_name: 'utilisateur')
           end
         end
       end
