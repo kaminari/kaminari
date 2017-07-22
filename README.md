@@ -22,7 +22,7 @@ As the whole pagination helper is basically just a collection of links and non-l
 So, you can easily modify their behaviour, style or whatever by overriding partial templates.
 
 ### ORM & Template Engine Agnostic
-Kaminari supports multiple ORMs (ActiveRecord, DataMapper, Mongoid, MongoMapper) multiple web frameworks (Rails, Sinatra, Grape), and multiple template engines (ERB, Haml, Slim).
+Kaminari supports multiple ORMs (ActiveRecord, DataMapper, Mongoid, MongoMapper, Sequel) multiple web frameworks (Rails, Sinatra, Grape), and multiple template engines (ERB, Haml, Slim).
 
 ### Modern
 The pagination helper outputs the HTML5 `<nav>` tag by default. Plus, the helper supports Rails unobtrusive Ajax.
@@ -501,6 +501,7 @@ Kaminari currently provides adapters for the following ORMs:
 * Mongoid: https://github.com/kaminari/kaminari-mongoid
 * MongoMapper: https://github.com/kaminari/kaminari-mongo_mapper
 * DataMapper: https://github.com/kaminari/kaminari-data_mapper  (would not work on kaminari 1.0.x)
+* Sequel: https://github.com/sekrett/kaminari-sequel
 
 ### For Other Web Framework Users
 
