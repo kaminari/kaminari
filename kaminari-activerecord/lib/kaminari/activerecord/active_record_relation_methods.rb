@@ -13,7 +13,12 @@ module Kaminari
       super
     end
 
-    def total_count(column_name = :all, _options = nil) #:nodoc:
+    def total_count=(count)
+      @total_count = count
+    end
+
+    def total_count(column_name = :all, options = nil) #:nodoc:
+      @total_count = options[:total_count] if options[:total_count]
       return @total_count if defined?(@total_count) && @total_count
 
       # There are some cases that total count can be deduced from loaded records
