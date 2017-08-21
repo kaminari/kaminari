@@ -27,6 +27,7 @@ module Kaminari
         # params in Rails 5 may not be a Hash either,
         # so it must be converted to a Hash to be merged into @params
         unless params.empty?
+          ActiveSupport::Deprecation.warn 'Explicitly passing params to helpers could be removed in the future.'
           params = params.to_unsafe_h if params.respond_to?(:to_unsafe_h)
           params = params.with_indifferent_access
           @params.merge! params
