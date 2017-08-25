@@ -110,6 +110,8 @@ BANNER
     end
 
     module GitHubApiHelper
+      require 'open-uri'
+
       def get_files_in_master
         master_tree_sha = open('https://api.github.com/repos/amatsuda/kaminari_themes/git/refs/heads/master') do |json|
           ActiveSupport::JSON.decode(json.read)['object']['sha']
