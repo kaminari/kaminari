@@ -1,8 +1,8 @@
 language: ruby
 
 rvm:
-  - 2.4.1
-  - 2.3.4
+  - 2.4.2
+  - 2.3.5
   - ruby-head
   - jruby-9.1.10.0
   # - rbx-3
@@ -30,9 +30,9 @@ cache: bundler
 
 matrix:
   exclude:
-    - rvm: 2.4.1
+    - rvm: 2.4.2
       gemfile: gemfiles/active_record_42.gemfile
-    - rvm: 2.4.1
+    - rvm: 2.4.2
       gemfile: gemfiles/active_record_41.gemfile
     - rvm: ruby-head
       gemfile: gemfiles/active_record_42.gemfile
