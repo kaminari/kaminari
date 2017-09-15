@@ -39,7 +39,7 @@ matrix:
     - rvm: ruby-head
       gemfile: gemfiles/active_record_41.gemfile
   include:
-    - rvm: 2.2.7
+    - rvm: 2.2.8
       gemfile: gemfiles/active_record_51.gemfile
       env: DB=sqlite3
     - rvm: 2.1.10
