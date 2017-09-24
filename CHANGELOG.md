@@ -1,3 +1,16 @@
+## 1.1.0
+
+### Enhancements:
+
+* Now the `page_entries_info` method respects the `I18n.locale` value when pluralizing the `entry_name` option #899 [@hundred]
+* `require 'kaminari/core'` is no longer necessary when using `require 'kaminari/activerecord'` #896 [@yhara]
+* Added the `#current_per_page ` method to inspect current value of `per_page` #875 [#bfad]
+* Better accesibility support #848 [@frrrances]
+
+### Bug Fixes:
+
+* Fixed an issue where the command `rails g kaminari:views ...` stopped working due to a missing require #912 [@jvsoares]
+
 ## 1.0.1
 
 ### Bug Fixes:
