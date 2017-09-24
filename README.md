@@ -220,7 +220,7 @@ page.
 <%= paginate @users, outer_window: 3 %>
 ```
 
-This would output something like `1 2 3 4 ...(snip)... 17 18 19 20` while having 20 pages in total.
+This would output something like `1 2 3 ...(snip)... 18 19 20` while having 20 pages in total.
 
 ### Outer Window Can Be Separately Specified by left, right (0 by default)
 
