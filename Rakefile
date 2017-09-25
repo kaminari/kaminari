@@ -18,6 +18,7 @@ task default: "test:all"
 namespace :test do
   mappers = %w(
     active_record_edge
+    active_record_51
     active_record_50
     active_record_42
     active_record_41
