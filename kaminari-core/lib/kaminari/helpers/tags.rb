@@ -24,14 +24,7 @@ module Kaminari
         @params = @params.to_unsafe_h if @params.respond_to?(:to_unsafe_h)
         @params = @params.with_indifferent_access
         @params.except!(*PARAM_KEY_BLACKLIST)
-        # params in Rails 5 may not be a Hash either,
-        # so it must be converted to a Hash to be merged into @params
-        unless params.empty?
-          ActiveSupport::Deprecation.warn 'Explicitly passing params to helpers could be removed in the future.'
-          params = params.to_unsafe_h if params.respond_to?(:to_unsafe_h)
-          params = params.with_indifferent_access
-          @params.merge! params
-        end
+        @params.reverse_merge! params
       end
 
       def to_s(locals = {}) #:nodoc:
@@ -124,6 +117,19 @@ module Kaminari
     # The "previous" page of the current page
     class PrevPage < Tag
       include Link
+
+      # TODO: Remove this initializer before 1.3.0.
+      def initialize(template, params: {}, param_name: nil, theme: nil, views_prefix: nil, **options) #:nodoc:
+        # params in Rails 5 may not be a Hash either,
+        # so it must be converted to a Hash to be merged into @params
+        if params && params.respond_to?(:to_unsafe_h)
+          ActiveSupport::Deprecation.warn 'Explicitly passing params to helpers could be omitted.'
+          params = params.to_unsafe_h
+        end
+
+        super(template, params: params, param_name: param_name, theme: theme, views_prefix: views_prefix, **options)
+      end
+
       def page #:nodoc:
         @options[:current_page] - 1
       end
@@ -132,6 +138,19 @@ module Kaminari
     # The "next" page of the current page
     class NextPage < Tag
       include Link
+
+      # TODO: Remove this initializer before 1.3.0.
+      def initialize(template, params: {}, param_name: nil, theme: nil, views_prefix: nil, **options) #:nodoc:
+        # params in Rails 5 may not be a Hash either,
+        # so it must be converted to a Hash to be merged into @params
+        if params && params.respond_to?(:to_unsafe_h)
+          ActiveSupport::Deprecation.warn 'Explicitly passing params to helpers could be omitted.'
+          params = params.to_unsafe_h
+        end
+
+        super(template, params: params, param_name: param_name, theme: theme, views_prefix: views_prefix, **options)
+      end
+
       def page #:nodoc:
         @options[:current_page] + 1
       end

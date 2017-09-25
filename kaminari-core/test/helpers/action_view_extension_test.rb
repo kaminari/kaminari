@@ -120,6 +120,17 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
         assert_nil view.link_to_previous_page(users, 'Previous', params: {controller: 'users', action: 'index'})
         assert_equal 'At the Beginning', (view.link_to_previous_page(users, 'Previous', params: {controller: 'users', action: 'index'}) do 'At the Beginning' end)
       end
+
+      test '#link_to_previous_page accepts ActionController::Parameters' do
+        users = User.page(3)
+        params = ActionController::Parameters.new(controller: 'users', action: 'index', status: 'active')
+
+        html = view.link_to_previous_page users, 'Previous', params: params
+
+        assert_match(/page=2/, html)
+        assert_match(/rel="prev"/, html)
+        assert_match(/status=active/, html)
+      end
     end
 
     sub_test_case '#link_to_next_page' do
@@ -160,6 +171,17 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
         users = User.page(5)
 
         assert_nil view.link_to_next_page(users, 'More', params: {controller: 'users', action: 'index'})
+      end
+
+      test '#link_to_next_page accepts ActionController::Parameters' do
+        users = User.page(1)
+        params = ActionController::Parameters.new(controller: 'users', action: 'index', status: 'active')
+
+        html = view.link_to_next_page users, 'More', params: params
+
+        assert_match(/page=2/, html)
+        assert_match(/rel="next"/, html)
+        assert_match(/status=active/, html)
       end
     end
 

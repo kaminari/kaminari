@@ -67,20 +67,6 @@ if defined?(::Rails::Railtie) && defined?(ActionView)
         end
       end
 
-      sub_test_case "when passing nested params" do
-        setup do
-          self.params[:filter] = ActionController::Parameters.new({status: 'active'})
-        end
-
-        test 'for first page' do
-          assert_match(/users\?filter%5Bstatus%5D=active/, Kaminari::Helpers::Tag.new(self, params: self.params).page_url_for(1))
-        end
-
-        test 'for other page' do
-          assert_match(/users\?filter%5Bstatus%5D=active&page=2/, Kaminari::Helpers::Tag.new(self, params: self.params).page_url_for(2))
-        end
-      end
-
       sub_test_case "with param_name = 'foo.page' option" do
         setup do
           self.params['foo.page'] = 2
