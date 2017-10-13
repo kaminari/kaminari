@@ -5,18 +5,19 @@ require 'action_view/railtie'
 require 'active_record/railtie' if defined? ActiveRecord
 
 # config
-app = Class.new(Rails::Application)
-app.config.secret_key_base = app.config.secret_token = '3b7cd727ee24e8444053437c36cc66c4'
-app.config.session_store :cookie_store, key: '_myapp_session'
-app.config.active_support.deprecation = :log
-app.config.eager_load = false
-# Rails.root
-app.config.root = File.dirname(__FILE__)
+class KaminariTestApp < Rails::Application
+  config.secret_key_base = config.secret_token = '3b7cd727ee24e8444053437c36cc66c4'
+  config.session_store :cookie_store, key: '_myapp_session'
+  config.active_support.deprecation = :log
+  config.eager_load = false
+  # Rails.root
+  config.root = File.dirname(__FILE__)
+end
 Rails.backtrace_cleaner.remove_silencers!
-app.initialize!
+Rails.application.initialize!
 
 # routes
-app.routes.draw do
+Rails.application.routes.draw do
   resources :users do
     get 'index_text(.:format)', action: :index_text, on: :collection
   end
