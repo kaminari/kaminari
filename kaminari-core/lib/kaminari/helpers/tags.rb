@@ -24,7 +24,7 @@ module Kaminari
         @params = @params.to_unsafe_h if @params.respond_to?(:to_unsafe_h)
         @params = @params.with_indifferent_access
         @params.except!(*PARAM_KEY_BLACKLIST)
-        @params.reverse_merge! params
+        @params.merge! params
       end
 
       def to_s(locals = {}) #:nodoc:

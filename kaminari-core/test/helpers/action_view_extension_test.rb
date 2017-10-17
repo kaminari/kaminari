@@ -28,6 +28,13 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
         end
       end
 
+      test 'allows for overriding params with the :params option' do
+        view.params[:controller], view.params[:action] = 'addresses', 'new'
+        users = User.page(1)
+
+        assert_match '/users?page=2', view.paginate(users, params: { controller: 'users', action: 'index' })
+      end
+
       test 'accepts :theme option' do
         users = User.page(1)
         begin
