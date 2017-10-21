@@ -1,3 +1,9 @@
+## 1.1.1
+
+### Bug Fixes:
+
+* Fixed a bug where `paginate ..., params: { controller: ..., action: ... }` didn't override the `params[:controller]` and `params[:action]` #919 [@chao-mu]
+
 ## 1.1.0
 
 ### Enhancements:
