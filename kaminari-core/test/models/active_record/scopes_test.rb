@@ -331,6 +331,30 @@ if defined? ActiveRecord
           end
         end
 
+        sub_test_case '#has_next_page?' do
+          test 'page 1' do
+            assert model_class.page.has_next_page?
+          end
+
+          test 'page 5' do
+            assert_not model_class.page(5).has_next_page?
+          end
+        end
+
+        sub_test_case '#has_prev_page?' do
+          test 'page 1' do
+            assert_not model_class.page.has_prev_page?
+          end
+
+          test 'page 3' do
+            assert model_class.page(3).has_prev_page?
+          end
+
+          test 'page 5' do
+            assert_not model_class.page(5).has_prev_page?
+          end
+        end
+
         sub_test_case '#first_page?' do
           test 'on first page' do
             assert_true model_class.page(1).per(10).first_page?

@@ -67,6 +67,14 @@ module Kaminari
       current_page - 1 unless first_page? || out_of_range?
     end
 
+    def has_next_page?
+      next_page.present?
+    end
+
+    def has_prev_page?
+      prev_page.present?
+    end
+
     # First page of the collection?
     def first_page?
       current_page == 1
