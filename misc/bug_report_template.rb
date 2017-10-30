@@ -11,8 +11,8 @@ gemfile(true) do
   gem "railties", "5.0.1"
   gem "activerecord", "5.0.1"
   gem "sqlite3"
-  gem "kaminari-core", "1.0.1"
-  gem "kaminari-activerecord", "1.0.1"
+  gem "kaminari-core"
+  gem "kaminari-activerecord"
 end
 
 require "active_record"
