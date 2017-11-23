@@ -425,6 +425,13 @@ In your view file, you can only use simple helpers like the following instead of
 <%= link_to_next_page @users, 'Next Page' %>
 ```
 
+Or use a `without_count` and `paginate` methods:
+
+```erb
+<%= @users = User.page(3).without_count %>
+<%= paginate @users %>
+```
+
 
 ## Paginating a Generic Array object
 

@@ -20,6 +20,7 @@ Rails.application.initialize!
 Rails.application.routes.draw do
   resources :users do
     get 'index_text(.:format)', action: :index_text, on: :collection
+    get 'index_without_count', action: :index_without_count, on: :collection
   end
   resources :addresses do
     get 'page/:page', action: :index, on: :collection
@@ -45,6 +46,14 @@ ERB
 
   def index_text
     @users = User.page params[:page]
+  end
+
+  def index_without_count
+    @users = User.page(params[:page]).per(5).without_count
+    render inline: <<-ERB
+<%= @users.map(&:name).join("\n") %>
+<%= paginate @users %>
+ERB
   end
 end
 
