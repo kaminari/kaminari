@@ -11,6 +11,12 @@ __*We only accept bug reports and pull requests in GitHub*__. Join the team!
 * Feature requests should be accompanied by a patch, that includes tests.
 * We won't accept any feature requests that come without a patch.
 
+In addition, we generally don't accept requests that fall within one or more of the following categories:
+
+ * Requests without any legitimate use cases
+ * Requests for which the primary goal is to make a certain piece of code consistent
+ * [Cosmetic changes](https://github.com/rails/rails/pull/13771#issuecomment-32746700)
+
 Thanks! :heart: :heart: :heart:
 
 Kaminari Team
