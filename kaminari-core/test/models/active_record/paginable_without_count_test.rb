@@ -33,7 +33,7 @@ if defined? ActiveRecord
       assert_no_queries { @scope.each }
     end
 
-    test 'when on the first page' do
+    test '#last_page? returns false when total count == 26 and page size == 25' do
       @users = User.page(1).without_count
 
       assert_equal 25, @users.size
@@ -42,7 +42,7 @@ if defined? ActiveRecord
       assert_not @users.out_of_range?
     end
 
-    test 'when on the first page showing 26 elements' do
+    test '#last_page? returns true when total count == page size' do
       @users = User.page(1).per(26).without_count
 
       assert_equal 26, @users.size
@@ -51,7 +51,7 @@ if defined? ActiveRecord
       assert_not @users.out_of_range?
     end
 
-    test 'when on the last page' do
+    test '#last_page? returns true when total count == 26, page size == 25, and page == 2' do
       @users = User.page(2).without_count
 
       assert_equal 1, @users.size
@@ -60,7 +60,7 @@ if defined? ActiveRecord
       assert_not @users.out_of_range?
     end
 
-    test 'when out of range' do
+    test '#out_of_range? returns true when total count == 26, page size == 25, and page == 3' do
       @users = User.page(3).without_count
 
       assert_equal 0, @users.size
