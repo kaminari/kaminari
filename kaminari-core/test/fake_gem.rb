@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 module Kaminari
   module FakeGem
-    def self.included(base)
-      def base.inherited(kls)
+    extend ActiveSupport::Concern
+
+    module ClassMethods
+      def inherited(kls)
         super
         def kls.fake_gem_defined_method; end
       end

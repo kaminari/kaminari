@@ -1,10 +1,7 @@
 # frozen_string_literal: true
 module Kaminari
   module ConfigurationMethods #:nodoc:
-    def self.included(base)
-      base.extend ClassMethods
-    end
-
+    extend ActiveSupport::Concern
     module ClassMethods #:nodoc:
       # Overrides the default +per_page+ value per model
       #   class Article < ActiveRecord::Base
