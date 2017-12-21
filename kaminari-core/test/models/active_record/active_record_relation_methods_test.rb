@@ -30,7 +30,7 @@ if defined? ActiveRecord
         assert_equal 7, User.page(2).per(2).total_count
       end
 
-      test 'total_count on loded Relation' do
+      test 'total_count on loaded Relation' do
         assert_equal 0, User.where('1 = 0').page(1).load.total_count
         assert_equal 0, User.where('1 = 0').page(1).per(10).load.total_count
         assert_equal 7, User.page(1).load.total_count
@@ -38,6 +38,12 @@ if defined? ActiveRecord
         assert_equal 7, User.page(2).load.total_count
         assert_equal 7, User.page(2).per(10).load.total_count
         assert_equal 7, User.page(2).per(2).load.total_count
+
+        old_max_per_page = User.max_per_page
+        User.max_paginates_per(5)
+        assert_equal 7, User.page(1).per(100).load.total_count
+        assert_equal 7, User.page(2).per(100).load.total_count
+        User.max_paginates_per(old_max_per_page)
       end
 
       test 'it should reset total_count memoization when the scope is cloned' do
