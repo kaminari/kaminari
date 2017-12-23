@@ -26,7 +26,11 @@ module Kaminari
       # render given block as a view template
       def render(&block)
         instance_eval(&block) if @options[:total_pages] > 1
-        @output_buffer
+
+        # This allows for showing fall-back HTML when there's only one page:
+        #
+        #   <%= paginate(@search_results) || "Showing all search results" %>
+        @output_buffer.presence
       end
 
       # enumerate each page providing PageProxy object as the block parameter
