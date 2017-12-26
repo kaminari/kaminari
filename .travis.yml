@@ -1,6 +1,7 @@
 language: ruby
 
 rvm:
+  - 2.5.0
   - 2.4.2
   - 2.3.5
   - ruby-head
@@ -30,6 +31,10 @@ cache: bundler
 
 matrix:
   exclude:
+    - rvm: 2.5.0
+      gemfile: gemfiles/active_record_42.gemfile
+    - rvm: 2.5.0
+      gemfile: gemfiles/active_record_41.gemfile
     - rvm: 2.4.2
       gemfile: gemfiles/active_record_42.gemfile
     - rvm: 2.4.2
