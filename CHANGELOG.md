@@ -1,3 +1,11 @@
+
+## 1.1.2 (Unreleased)
+
+### Bug Fixes:
+
+* Fixed a bug where the `kaminari-mongoid` gem was not loaded properly: kaminari/kaminari-mongoid#9 [@DenniJensen]
+* Fixed a bug where the `#total_count` method incorrectly calculates the total count: #932 [@tumayun]
+
 ## 1.1.1
 
 ### Bug Fixes:
