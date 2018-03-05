@@ -6,7 +6,7 @@ gem 'actionview', '~> 5.0.0', require: 'action_view'
 
 platforms :ruby do
   gem 'sqlite3', require: false
-  gem 'pg', require: false
+  gem 'pg', '< 1.0.0', require: false
   gem 'mysql2', require: false
 end
 platforms :jruby do
