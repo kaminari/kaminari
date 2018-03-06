@@ -27,11 +27,6 @@ module Kaminari
         @params.merge! params
       end
 
-      def to_s(locals = {}) #:nodoc:
-        formats = (@template.respond_to?(:formats) ? @template.formats : Array(@template.params[:format])) + [:html]
-        @template.render partial: partial_path, locals: @options.merge(locals), formats: formats
-      end
-
       def page_url_for(page)
         params = params_for(page)
         params[:only_path] = true
@@ -58,59 +53,13 @@ module Kaminari
 
         page_params
       end
-
-      def partial_path
-        [
-         @views_prefix,
-         "kaminari",
-         @theme,
-         self.class.name.demodulize.underscore
-        ].compact.join("/")
-      end
     end
 
     # Tag that contains a link
     module Link
-      # target page number
-      def page
-        raise 'Override page with the actual page value to be a Page.'
-      end
       # the link's href
       def url
         page_url_for page
-      end
-      def to_s(locals = {}) #:nodoc:
-        locals[:url] = url
-        super locals
-      end
-    end
-
-    # A page
-    class Page < Tag
-      include Link
-      # target page number
-      def page
-        @options[:page]
-      end
-      def to_s(locals = {}) #:nodoc:
-        locals[:page] = page
-        super locals
-      end
-    end
-
-    # Link with page number that appears at the leftmost
-    class FirstPage < Tag
-      include Link
-      def page #:nodoc:
-        1
-      end
-    end
-
-    # Link with page number that appears at the rightmost
-    class LastPage < Tag
-      include Link
-      def page #:nodoc:
-        @options[:total_pages]
       end
     end
 

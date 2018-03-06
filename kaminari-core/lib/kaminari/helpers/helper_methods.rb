@@ -22,8 +22,7 @@ module Kaminari
         options[:total_pages] ||= scope.total_pages
         options.reverse_merge! current_page: scope.current_page, per_page: scope.limit_value, remote: false
 
-        paginator = paginator_class.new (template || self), options
-        paginator.to_s
+        render paginator_class.new(router: Kaminari::Helpers::Tag.new((template || self), options), **options)
       end
 
       # A simple "Twitter like" pagination link that creates a link to the previous page.

@@ -10,6 +10,8 @@ class KaminariTestApp < Rails::Application
   config.session_store :cookie_store, key: '_myapp_session'
   config.active_support.deprecation = :log
   config.eager_load = false
+  config.consider_all_requests_local = true
+  config.action_dispatch.show_exceptions = false
   # Rails.root
   config.root = File.dirname(__FILE__)
 end

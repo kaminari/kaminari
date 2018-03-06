@@ -5,32 +5,21 @@ require 'kaminari/helpers/tags'
 module Kaminari
   module Helpers
     # The main container tag
-    class Paginator < Tag
-      def initialize(template, window: nil, outer_window: Kaminari.config.outer_window, left: Kaminari.config.left, right: Kaminari.config.right, inner_window: Kaminari.config.window, **options) #:nodoc:
+    class Paginator
+      def initialize(router: , window: nil, outer_window: Kaminari.config.outer_window, left: Kaminari.config.left, right: Kaminari.config.right, inner_window: Kaminari.config.window, **options) #:nodoc:
         @window_options = {window: window || inner_window, left: left.zero? ? outer_window : left, right: right.zero? ? outer_window : right}
 
-        @template, @options, @theme, @views_prefix, @last = template, options, options[:theme], options[:views_prefix], nil
+        @router, @options, @theme, @views_prefix, @last = router, options, options[:theme], options[:views_prefix], nil
         @window_options.merge! @options
-        @window_options[:current_page] = @options[:current_page] = PageProxy.new(@window_options, @options[:current_page], nil)
-
-        #XXX Using parent template's buffer class for rendering each partial here. This might cause problems if the handler mismatches
-        @output_buffer = if defined?(::ActionView::OutputBuffer)
-          ::ActionView::OutputBuffer.new
-        elsif template.instance_variable_get(:@output_buffer)
-          template.instance_variable_get(:@output_buffer).class.new
-        else
-          ActiveSupport::SafeBuffer.new
-        end
+        @window_options[:current_page] = @options[:current_page]
       end
 
-      # render given block as a view template
-      def render(&block)
-        instance_eval(&block) if @options[:total_pages] > 1
+      def page_url_for(page_tag)
+        @router.page_url_for(page_tag.page)
+      end
 
-        # This allows for showing fall-back HTML when there's only one page:
-        #
-        #   <%= paginate(@search_results) || "Showing all search results" %>
-        @output_buffer.presence
+      def to_partial_path
+        [ @views_prefix, "kaminari", @theme, self.class.name.demodulize.underscore ].compact.join("/")
       end
 
       # enumerate each page providing PageProxy object as the block parameter
@@ -42,147 +31,72 @@ module Kaminari
       def each_relevant_page
         return to_enum(:each_relevant_page) unless block_given?
 
-        relevant_pages(@window_options).each do |page|
-          yield PageProxy.new(@window_options, page, @last)
-        end
+        current_page, total_pages =  @options[:current_page], @options[:total_pages]
+
+        [
+          FirstPage.new(page: 1,               current: current_page, theme: @theme, views_prefix: @views_prefix),
+          PrevPage.new(page: current_page - 1, current: current_page, theme: @theme, views_prefix: @views_prefix),
+          relevant_pages.map { |page| Page.new(page: page, current: current_page, theme: @theme, views_prefix: @views_prefix) },
+          NextPage.new(page: current_page + 1, current: current_page, theme: @theme, views_prefix: @views_prefix),
+          LastPage.new(page: total_pages,      current: current_page, theme: @theme, views_prefix: @views_prefix),
+        ].flatten.each {|page| yield page }
       end
       alias each_page each_relevant_page
 
-      def relevant_pages(options)
+      def relevant_pages(options = @window_options)
         left_window_plus_one = [*1..options[:left] + 1]
         right_window_plus_one = [*options[:total_pages] - options[:right]..options[:total_pages]]
         inside_window_plus_each_sides = [*options[:current_page] - options[:window] - 1..options[:current_page] + options[:window] + 1]
 
         (left_window_plus_one | inside_window_plus_each_sides | right_window_plus_one).sort.reject {|x| (x < 1) || (x > options[:total_pages])}
       end
-      private :relevant_pages
 
-      def page_tag(page)
-        @last = Page.new @template, @options.merge(page: page)
-      end
+      class Page
+        attr_reader :page, :current, :rel
 
-      %w[first_page prev_page next_page last_page gap].each do |tag|
-        eval <<-DEF, nil, __FILE__, __LINE__ + 1
-          def #{tag}_tag
-            @last = #{tag.classify}.new @template, @options
-          end
-        DEF
-      end
-
-      def to_s #:nodoc:
-        Thread.current[:kaminari_rendering] = true
-        super @window_options.merge paginator: self
-      ensure
-        Thread.current[:kaminari_rendering] = false
-      end
-
-      # delegates view helper methods to @template
-      def method_missing(name, *args, &block)
-        @template.respond_to?(name) ? @template.send(name, *args, &block) : super
-      end
-      private :method_missing
-
-      # Wraps a "page number" and provides some utility methods
-      class PageProxy
-        include Comparable
-
-        def initialize(options, page, last) #:nodoc:
-          @options, @page, @last = options, page, last
+        def initialize(page: , current: false, theme: nil, views_prefix: nil)
+          @page = page
+          @current = current
+          @theme = theme
+          @views_prefix = views_prefix
         end
 
-        # the page number
-        def number
-          @page
-        end
-
-        # current page or not
         def current?
-          @page == @options[:current_page]
+          page == current
         end
 
-        # the first page or not
+        def current_page
+          PageProxy.new(page, current_page: current)
+        end
+
+        def to_partial_path
+          [ @views_prefix, "kaminari", @theme, self.class.name.demodulize.underscore ].compact.join("/")
+        end
+
+        def to_s
+          page.to_s
+        end
+      end
+
+      class FirstPage < Page; end
+      class PrevPage < Page; end
+      class NextPage < Page; end
+      class LastPage < Page; end
+
+      class PageProxy < SimpleDelegator
+        attr_reader :current_page
+
+        def initialize(page, current_page: )
+          super(page.to_i)
+          @current_page = current_page
+        end
+
         def first?
-          @page == 1
+          1 == current_page
         end
 
-        # the last page or not
         def last?
-          @page == @options[:total_pages]
-        end
-
-        # the previous page or not
-        def prev?
-          @page == @options[:current_page] - 1
-        end
-
-        # the next page or not
-        def next?
-          @page == @options[:current_page] + 1
-        end
-
-        # relationship with the current page
-        def rel
-          if next?
-            'next'
-          elsif prev?
-            'prev'
-          end
-        end
-
-        # within the left outer window or not
-        def left_outer?
-          @page <= @options[:left]
-        end
-
-        # within the right outer window or not
-        def right_outer?
-          @options[:total_pages] - @page < @options[:right]
-        end
-
-        # inside the inner window or not
-        def inside_window?
-          (@options[:current_page] - @page).abs <= @options[:window]
-        end
-
-        # Current page is an isolated gap or not
-        def single_gap?
-          ((@page == @options[:current_page] - @options[:window] - 1) && (@page == @options[:left] + 1)) ||
-            ((@page == @options[:current_page] + @options[:window] + 1) && (@page == @options[:total_pages] - @options[:right]))
-        end
-
-        # The page number exceeds the range of pages or not
-        def out_of_range?
-          @page > @options[:total_pages]
-        end
-
-        # The last rendered tag was "truncated" or not
-        def was_truncated?
-          @last.is_a? Gap
-        end
-
-        #Should we display the link tag?
-        def display_tag?
-          left_outer? || right_outer? || inside_window? || single_gap?
-        end
-
-        def to_i #:nodoc:
-          number
-        end
-
-        def to_s #:nodoc:
-          number.to_s
-        end
-
-        def +(other) #:nodoc:
-          to_i + other.to_i
-        end
-
-        def -(other) #:nodoc:
-          to_i - other.to_i
-        end
-
-        def <=>(other) #:nodoc:
-          to_i <=> other.to_i
+          __getobj__ == current_page
         end
       end
     end
