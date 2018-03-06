@@ -49,7 +49,9 @@ module Kaminari
         options.except! :params, :param_name
         options[:rel] ||= 'prev'
 
-        link_to_if prev_page, name, prev_page, options do
+        if prev_page
+          link_to name, prev_page, options
+        else
           yield if block_given?
         end
       end
@@ -78,7 +80,9 @@ module Kaminari
         options.except! :params, :param_name
         options[:rel] ||= 'next'
 
-        link_to_if next_page, name, next_page, options do
+        if next_page
+          link_to name, next_page, options
+        else
           yield if block_given?
         end
       end
@@ -136,8 +140,8 @@ module Kaminari
         prev_page = path_to_prev_page(scope, options)
 
         output = String.new
-        output << tag(:link, rel: "next", href: next_page) if next_page
-        output << tag(:link, rel: "prev", href: prev_page) if prev_page
+        output << "<link rel='next' href='#{next_page}'></link>" if next_page
+        output << "<link rel='prev' href='#{prev_page}'></link>" if prev_page
         output.html_safe
       end
 
