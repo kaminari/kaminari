@@ -2,7 +2,66 @@
 
 module Kaminari
   module Helpers
+
+    # The Kaminari::Helpers::UrlHelper module provides useful methods for
+    # generating a path or url to a particlar page. A class must implement the
+    # following methods:
+    #
+    #   * <tt>url_for</tt>: A method that generates an actual path
+    #   * <tt>params</tt>: A method that returns query string parameters
+    #
+    # A normal Rails controller implements both of the methods, which makes it
+    # trivial to use this module:
+    #
+    # ==== Examples
+    #
+    #   class UsersController < ApplicationController
+    #     include Kaminari::Helpers::UrlHelper
+    #
+    #     def index
+    #      @users = User.page(1)
+    #
+    #      path_to_next_page(@items)
+    #      # => /items?page=2
+    #     end
+    #   end
+    #
+    module UrlHelper
+
+      # A helper that calculates the path to the next page.
+      #
+      # ==== Examples
+      # Basic usage:
+      #
+      #   <%= path_to_next_page @items %>
+      #   #-> /items?page=2
+      #
+      # It will return `nil` if there is no next page.
+      def next_page_path(scope, options = {})
+        Kaminari::Helpers::NextPage.new(self, options.reverse_merge(current_page: scope.current_page)).url if scope.next_page
+      end
+      alias path_to_next_page next_page_path
+
+      # A helper that calculates the path to the previous page.
+      #
+      # ==== Examples
+      # Basic usage:
+      #
+      #   <%= path_to_prev_page @items %>
+      #   #-> /items
+      #
+      # It will return `nil` if there is no previous page.
+      def prev_page_path(scope, options = {})
+        Kaminari::Helpers::PrevPage.new(self, options.reverse_merge(current_page: scope.current_page)).url if scope.prev_page
+      end
+      alias previous_page_path     prev_page_path
+      alias path_to_previous_page  prev_page_path
+      alias path_to_prev_page      prev_page_path
+    end
+
     module HelperMethods
+      include UrlHelper
+
       # A helper that renders the pagination links.
       #
       #   <%= paginate @articles %>
@@ -143,32 +202,6 @@ module Kaminari
         output << %Q|<link rel="next" href="#{next_page}"></link>| if next_page
         output << %Q|<link rel="prev" href="#{prev_page}"></link>| if prev_page
         output.html_safe
-      end
-
-      # A helper that calculates the path to the next page.
-      #
-      # ==== Examples
-      # Basic usage:
-      #
-      #   <%= path_to_next_page @items %>
-      #   #-> /items?page=2
-      #
-      # It will return `nil` if there is no next page.
-      def path_to_next_page(scope, options = {})
-        Kaminari::Helpers::NextPage.new(self, options.reverse_merge(current_page: scope.current_page)).url if scope.next_page
-      end
-
-      # A helper that calculates the path to the previous page.
-      #
-      # ==== Examples
-      # Basic usage:
-      #
-      #   <%= path_to_prev_page @items %>
-      #   #-> /items
-      #
-      # It will return `nil` if there is no previous page.
-      def path_to_prev_page(scope, options = {})
-        Kaminari::Helpers::PrevPage.new(self, options.reverse_merge(current_page: scope.current_page)).url if scope.prev_page
       end
     end
   end
