@@ -536,5 +536,42 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
         assert_equal'/users?page=2', view.path_to_prev_page(users, params: {controller: 'users', action: 'index'})
       end
     end
+
+    sub_test_case '#next_page_url' do
+      setup do
+        2.times {|i| User.create! name: "user#{i}"}
+      end
+
+      test 'the first page' do
+        users = User.page(1).per(1)
+        assert_equal 'http://test.host/users?page=2', view.next_page_url(users, params: {controller: 'users', action: 'index'})
+      end
+
+      test 'the last page' do
+        users = User.page(2).per(1)
+        assert_nil view.next_page_url(users, params: {controller: 'users', action: 'index'})
+      end
+    end
+
+    sub_test_case '#prev_page_url' do
+      setup do
+        3.times {|i| User.create! name: "user#{i}"}
+      end
+
+      test 'the first page' do
+        users = User.page(1).per(1)
+        assert_nil view.prev_page_url(users, params: {controller: 'users', action: 'index'})
+      end
+
+      test 'the second page' do
+        users = User.page(2).per(1)
+        assert_equal 'http://test.host/users', view.prev_page_url(users, params: {controller: 'users', action: 'index'})
+      end
+
+      test 'the last page' do
+        users = User.page(3).per(1)
+        assert_equal'http://test.host/users?page=2', view.prev_page_url(users, params: {controller: 'users', action: 'index'})
+      end
+    end
   end
 end

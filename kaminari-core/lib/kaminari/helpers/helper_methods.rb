@@ -9,8 +9,9 @@ module Kaminari
     #
     #   * <tt>url_for</tt>: A method that generates an actual path
     #   * <tt>params</tt>: A method that returns query string parameters
+    #   * <tt>request</tt>: A method that returns a Rack::Request object
     #
-    # A normal Rails controller implements both of the methods, which makes it
+    # A normal Rails controller implements all the methods, which makes it
     # trivial to use this module:
     #
     # ==== Examples
@@ -27,6 +28,36 @@ module Kaminari
     #   end
     #
     module UrlHelper
+
+      # A helper that calculates the url to the next page.
+      #
+      # ==== Examples
+      # Basic usage:
+      #
+      #   <%= next_page_url @items %>
+      #   #-> http://www.example.org/items?page=2
+      #
+      # It will return `nil` if there is no next page.
+      def next_page_url(scope, options = {})
+        "#{request.base_url}#{next_page_path(scope, options)}" if scope.next_page
+      end
+      alias path_to_next_url next_page_url
+
+      # A helper that calculates the url to the previous page.
+      #
+      # ==== Examples
+      # Basic usage:
+      #
+      #   <%= prev_page_url @items %>
+      #   #-> http://www.example.org/items
+      #
+      # It will return `nil` if there is no previous page.
+      def prev_page_url(scope, options = {})
+        "#{request.base_url}#{prev_page_path(scope, options)}" if scope.prev_page
+      end
+      alias previous_page_url     prev_page_url
+      alias url_to_prev_page      prev_page_url
+      alias url_to_previous_page  prev_page_url
 
       # A helper that calculates the path to the next page.
       #
