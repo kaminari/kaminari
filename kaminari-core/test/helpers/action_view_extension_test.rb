@@ -279,6 +279,20 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
               end
             end
           end
+
+          test 'it accepts a decorated object' do
+            page_info_presenter = Class.new(SimpleDelegator) do
+              include ActionView::Helpers::NumberHelper
+
+              def total_count
+                number_with_delimiter(1_000)
+              end
+            end
+
+            users = page_info_presenter.new(User.page(1).per(25))
+
+            assert_equal 'Displaying users <b>1&nbsp;-&nbsp;25</b> of <b>1,000</b> in total', view.page_entries_info(users)
+          end
         end
       end
 

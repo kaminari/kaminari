@@ -203,7 +203,10 @@ module Kaminari
         if collection.total_pages < 2
           t('helpers.page_entries_info.one_page.display_entries', entry_name: entry_name, count: collection.total_count)
         else
-          t('helpers.page_entries_info.more_pages.display_entries', entry_name: entry_name, first: collection.offset_value + 1, last: [collection.offset_value + collection.limit_value, collection.total_count].min, total: collection.total_count)
+          from = collection.offset_value + 1
+          to   = collection.offset_value + collection.size
+
+          t('helpers.page_entries_info.more_pages.display_entries', entry_name: entry_name, first: from, last: to, total: collection.total_count)
         end.html_safe
       end
 
