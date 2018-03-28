@@ -58,6 +58,11 @@ module Kaminari
     def offset(num)
       self.class.new @_original_array, limit: @_limit_value, offset: num, total_count: @_total_count, padding: @_padding
     end
+
+    # return chunk of the original array item numbers
+    def per_page
+      limit_value
+    end
   end
 
   # Wrap an Array object to make it paginatable
