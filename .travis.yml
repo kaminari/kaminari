@@ -1,9 +1,9 @@
 language: ruby
 
 rvm:
-  - 2.5.0
-  - 2.4.2
-  - 2.3.5
+  - 2.5.1
+  - 2.4.4
+  - 2.3.7
   - ruby-head
   - jruby-9.1.13.0
   # - rbx-3
@@ -24,27 +24,27 @@ sudo: false
 
 before_install:
   - gem update --system
-  - gem pristine bundler
+  - gem install bundler
 script: 'bundle exec rake test'
 
 cache: bundler
 
 matrix:
   exclude:
-    - rvm: 2.5.0
+    - rvm: 2.5.1
       gemfile: gemfiles/active_record_42.gemfile
-    - rvm: 2.5.0
+    - rvm: 2.5.1
       gemfile: gemfiles/active_record_41.gemfile
-    - rvm: 2.4.2
+    - rvm: 2.4.4
       gemfile: gemfiles/active_record_42.gemfile
-    - rvm: 2.4.2
+    - rvm: 2.4.4
       gemfile: gemfiles/active_record_41.gemfile
     - rvm: ruby-head
       gemfile: gemfiles/active_record_42.gemfile
     - rvm: ruby-head
       gemfile: gemfiles/active_record_41.gemfile
   include:
-    - rvm: 2.2.8
+    - rvm: 2.2.10
       gemfile: gemfiles/active_record_51.gemfile
       env: DB=sqlite3
     - rvm: 2.1.10
