@@ -25,9 +25,12 @@ module Kaminari
         @params = @params.with_indifferent_access
         @params.except!(*PARAM_KEY_BLACKLIST)
         @params.merge! params
+        @render_without_count = false
       end
 
       def to_s(locals = {}) #:nodoc:
+        return '' if @options[:without_count] && !@render_without_count
+
         formats = (@template.respond_to?(:formats) ? @template.formats : Array(@template.params[:format])) + [:html]
         @template.render partial: partial_path, locals: @options.merge(locals), formats: formats
       end
@@ -128,6 +131,8 @@ module Kaminari
         end
 
         super(template, params: params, param_name: param_name, theme: theme, views_prefix: views_prefix, **options)
+
+        @render_without_count = true
       end
 
       def page #:nodoc:
@@ -149,6 +154,8 @@ module Kaminari
         end
 
         super(template, params: params, param_name: param_name, theme: theme, views_prefix: views_prefix, **options)
+
+        @render_without_count = true
       end
 
       def page #:nodoc:

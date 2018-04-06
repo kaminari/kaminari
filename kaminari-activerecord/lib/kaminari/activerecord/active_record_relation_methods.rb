@@ -46,6 +46,10 @@ module Kaminari
     def without_count
       extend ::Kaminari::PaginatableWithoutCount
     end
+
+    def without_count?
+      false
+    end
   end
 
   # A module that makes AR::Relation paginatable without having to cast another SELECT COUNT query
@@ -87,8 +91,11 @@ module Kaminari
 
     # Force to raise an exception if #total_count is called explicitly.
     def total_count
-      raise "This scope is marked as a non-count paginable scope and can't be used in combination " \
-            "with `#paginate' or `#page_entries_info'. Use #link_to_next_page or #link_to_previous_page instead."
+      raise 'This scope is marked as a non-count paginable scope.'
+    end
+
+    def without_count?
+      true
     end
   end
 end

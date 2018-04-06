@@ -109,7 +109,13 @@ module Kaminari
       # * <tt>:template</tt> - Specify a custom template renderer for rendering the Paginator (receiver by default)
       # * <tt>:ANY_OTHER_VALUES</tt> - Any other hash key & values would be directly passed into each tag as :locals value.
       def paginate(scope, paginator_class: Kaminari::Helpers::Paginator, template: nil, **options)
-        options[:total_pages] ||= scope.total_pages
+        if scope.without_count?
+          options[:without_count] = true
+          options[:total_pages] = scope.last_page? ? scope.current_page : scope.current_page + 1
+        else
+          options[:total_pages] ||= scope.total_pages
+        end
+
         options.reverse_merge! current_page: scope.current_page, per_page: scope.limit_value, remote: false
 
         paginator = paginator_class.new (template || self), options
@@ -200,13 +206,17 @@ module Kaminari
                        collection.entry_name(count: collection.size).downcase
                      end
 
-        if collection.total_pages < 2
-          t('helpers.page_entries_info.one_page.display_entries', entry_name: entry_name, count: collection.total_count)
+        if collection.first_page? && !collection.next_page
+          t('helpers.page_entries_info.one_page.display_entries', entry_name: entry_name, count: collection.size)
         else
           from = collection.offset_value + 1
           to   = collection.offset_value + collection.size
 
-          t('helpers.page_entries_info.more_pages.display_entries', entry_name: entry_name, first: from, last: to, total: collection.total_count)
+          if collection.without_count?
+            t('helpers.page_entries_info.without_count.display_entries', entry_name: entry_name, first: from, last: to)
+          else
+            t('helpers.page_entries_info.more_pages.display_entries', entry_name: entry_name, first: from, last: to, total: collection.total_count)
+          end
         end.html_safe
       end
 

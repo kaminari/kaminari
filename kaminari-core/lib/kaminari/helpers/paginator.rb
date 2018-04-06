@@ -21,11 +21,13 @@ module Kaminari
         else
           ActiveSupport::SafeBuffer.new
         end
+
+        @render_without_count = true
       end
 
       # render given block as a view template
       def render(&block)
-        instance_eval(&block) if @options[:total_pages] > 1
+        instance_eval(&block) if @options[:total_pages] > 1 || @options[:without_count]
 
         # This allows for showing fall-back HTML when there's only one page:
         #
@@ -49,6 +51,8 @@ module Kaminari
       alias each_page each_relevant_page
 
       def relevant_pages(options)
+        return [] if @options[:without_count]
+
         left_window_plus_one = [*1..options[:left] + 1]
         right_window_plus_one = [*options[:total_pages] - options[:right]..options[:total_pages]]
         inside_window_plus_each_sides = [*options[:current_page] - options[:window] - 1..options[:current_page] + options[:window] + 1]
