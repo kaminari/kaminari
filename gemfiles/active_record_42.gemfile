@@ -11,7 +11,7 @@ platforms :ruby do
     gem 'nokogiri', '~> 1.6.8'
   end
   gem 'pg', '< 1.0.0', require: false
-  gem 'mysql2', require: false
+  gem 'mysql2', '< 0.4', require: false
 end
 platforms :jruby do
   gem 'activerecord-jdbcsqlite3-adapter', require: false
