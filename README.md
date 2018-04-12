@@ -118,6 +118,14 @@ User.page(7).per(50).padding(3)
 
 Note that the `padding` scope also is not directly defined on the models.
 
+### Unscoping
+
+If for some reason you need to unscope `page` and `per` methods you can call `except(:limit, :offset)`
+
+```ruby
+users = User.page(7).per(50)
+unpaged_users = users.except(:limit, :offset) # unpaged_users will not use the kaminari scopes
+```
 
 ## Configuring Kaminari
 
