@@ -1,8 +1,8 @@
 source 'https://rubygems.org'
 
-gem 'railties', '~> 5.1.0'
-gem 'activerecord', '~> 5.1.0', require: 'active_record'
-gem 'actionview', '~> 5.1.0', require: 'action_view'
+gem 'railties', '~> 5.2.0'
+gem 'activerecord', '~> 5.2.0', require: 'active_record'
+gem 'actionview', '~> 5.2.0', require: 'action_view'
 
 platforms :ruby do
   gem 'sqlite3', require: false
