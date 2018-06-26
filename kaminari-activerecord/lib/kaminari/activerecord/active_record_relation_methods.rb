@@ -32,10 +32,10 @@ module Kaminari
       c = c.count(column_name)
       @total_count = if c.is_a?(Hash) || c.is_a?(ActiveSupport::OrderedHash)
         c.count
-     elsif c.respond_to? :count
-       c.count(column_name)
-     else
-       c
+      elsif c.respond_to? :count
+        c.count(column_name)
+      else
+        c
       end
     end
 
