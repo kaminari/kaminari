@@ -2,6 +2,8 @@
 require 'test_helper'
 
 if defined? ActiveRecord
+  require 'activerecord-import'
+
   class ActiveRecordModelExtensionTest < ActiveSupport::TestCase
     test 'Changing page_method_name' do
       begin
@@ -30,14 +32,21 @@ if defined? ActiveRecord
     class << self
       def startup
         [User, GemDefinedModel, Device].each do |m|
-          1.upto(100) {|i| m.create! name: "user#{'%03d' % i}", age: (i / 10)}
+          collection = 1.upto(100).map {|i| m.new(name: "user#{'%03d' % i}", age: (i / 10)) }
+
+          insert(collection)
         end
+
         super
       end
 
       def shutdown
         [User, GemDefinedModel, Device].each(&:delete_all)
         super
+      end
+
+      def insert(collection)
+        collection.first.class.import collection
       end
     end
 

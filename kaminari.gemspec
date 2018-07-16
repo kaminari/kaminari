@@ -27,4 +27,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rake', '>= 0'
   spec.add_development_dependency 'rr', '>= 0'
   spec.add_development_dependency 'capybara', '>= 1.0'
+  spec.add_development_dependency 'activerecord-import'
 end
