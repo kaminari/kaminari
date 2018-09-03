@@ -6,6 +6,7 @@ class NavigationTest < Test::Unit::TestCase
 
   setup do
     1.upto(100) {|i| User.create! name: "user#{'%03d' % i}" }
+    Capybara.current_driver = :rack_test
   end
 
   teardown do
