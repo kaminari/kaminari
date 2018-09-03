@@ -19,7 +19,8 @@ module Kaminari
 
     def max_paginates_per(new_max_per_page)
       @_max_per_page = new_max_per_page
-      per current_per_page, max_per_page: new_max_per_page
+
+      per (defined?(@_per) && @_per) || default_per_page, max_per_page: new_max_per_page
     end
 
     def padding(num)
@@ -54,7 +55,11 @@ module Kaminari
 
     # Current per-page number
     def current_per_page
-      (defined?(@_per) && @_per) || default_per_page
+      ActiveSupport::Deprecation.warn '#current_per_page is deprecated and will be removed in the next major ' \
+                                      'version. Please use #limit_value instead.'
+
+      limit_value
+      # (defined?(@_per) && @_per) || default_per_page
     end
 
     # Next page number in the collection
