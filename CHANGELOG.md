@@ -76,6 +76,8 @@
 
 * Renamed the model class method for configuring `max_pages` from `max_pages_per` to `max_pages`
 
+* Raise ZeroPerPageOperation when The number of pages was incalculable of `total_pages`, `current_page` methods
+
 ### Enhancements:
 
 * Exposed `path_to_prev_page`, `path_to_next_page` helpers as public API #683 [@neilang]
