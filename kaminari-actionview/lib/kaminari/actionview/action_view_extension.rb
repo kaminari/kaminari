@@ -3,6 +3,8 @@ require 'action_view'
 require 'action_view/log_subscriber'
 require 'action_view/context'
 
+require 'kaminari/helpers/paginator'
+
 module Kaminari
   # = Helpers
   module ActionViewExtension
