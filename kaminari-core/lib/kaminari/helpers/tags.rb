@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Kaminari
   module Helpers
     PARAM_KEY_BLACKLIST = [:authenticity_token, :commit, :utf8, :_method, :script_name].freeze

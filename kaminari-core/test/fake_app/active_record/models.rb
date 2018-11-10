@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # models
 class User < ActiveRecord::Base
   has_many :authorships

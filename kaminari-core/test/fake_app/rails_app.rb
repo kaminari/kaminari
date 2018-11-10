@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # require 'rails/all'
 require 'action_controller/railtie'
 require 'action_view/railtie'

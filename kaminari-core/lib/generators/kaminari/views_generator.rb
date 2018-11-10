@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Kaminari
   module Generators
     # rails g kaminari:views THEME
