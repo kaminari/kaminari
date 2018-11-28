@@ -15,7 +15,7 @@ if defined?(::Rails::Railtie) && defined?(ActionView)
           assert_equal '/users', Kaminari::Helpers::Tag.new(self).page_url_for(1)
         end
 
-        test 'config.params_on_first_page == false' do
+        test 'config.params_on_first_page == true' do
           begin
             Kaminari.config.params_on_first_page = true
             assert_equal '/users?page=1', Kaminari::Helpers::Tag.new(self).page_url_for(1)
@@ -37,7 +37,7 @@ if defined?(::Rails::Railtie) && defined?(ActionView)
             assert_equal('/addresses', Kaminari::Helpers::Tag.new(self).page_url_for(1))
           end
 
-          test 'config.params_on_first_page == false' do
+          test 'config.params_on_first_page == true' do
             begin
               Kaminari.config.params_on_first_page = true
               assert_equal('/addresses/page/1', Kaminari::Helpers::Tag.new(self).page_url_for(1))
