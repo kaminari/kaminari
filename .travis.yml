@@ -25,7 +25,7 @@ env:
 sudo: false
 
 before_install:
-  - gem update --system
+  - gem i rubygems-update -v '<3' && update_rubygems
   - gem install bundler
 script: 'bundle exec rake test'
 
