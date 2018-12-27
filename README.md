@@ -30,11 +30,11 @@ The pagination helper outputs the HTML5 `<nav>` tag by default. Plus, the helper
 
 ## Supported Versions
 
-* Ruby 2.0.0, 2.1.x, 2.2.x, 2.3.x, 2.4.x, 2.5.x, 2.6
+* Ruby 2.0.0, 2.1.x, 2.2.x, 2.3.x, 2.4.x, 2.5.x, 2.6.x, 2.7
 
-* Rails 4.1, 4.2, 5.0, 5.1, 5.2
+* Rails 4.1, 4.2, 5.0, 5.1, 5.2, 6.0
 
-* Sinatra 1.4
+* Sinatra 1.4, 2.0
 
 * Haml 3+
 
