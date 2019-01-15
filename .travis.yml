@@ -26,7 +26,7 @@ sudo: false
 
 before_install:
   - gem i rubygems-update -v '<3' && update_rubygems
-  - gem install bundler
+  - gem i bundler -v '<2'
 script: 'bundle exec rake test'
 
 cache: bundler
