@@ -95,6 +95,10 @@ if defined? ActiveRecord
       test 'total_count is calculable with page 1 per "5" (the string)' do
         assert_equal 7, User.page(1).per('5').load.total_count
       end
+
+      test 'calculating total_count with GROUP BY ... HAVING clause' do
+        assert_equal 2, Authorship.group(:user_id).having("COUNT(book_id) >= 3").page(1).total_count
+      end
     end
   end
 end
