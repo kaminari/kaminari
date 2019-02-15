@@ -563,4 +563,4 @@ You can find a list of supported test tasks by running `rake -T`. You may also f
 
 ## Copyright
 
-Copyright (c) 2011- Akira Matsuda. See MIT-LICENSE for further details.
+Copyright (c) 2011-2019 - Akira Matsuda. See MIT-LICENSE for further details.
