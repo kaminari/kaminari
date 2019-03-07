@@ -7,6 +7,27 @@ module Kaminari
     extend ActiveSupport::Concern
     module ClassMethods #:nodoc:
 
+      # Overrides the default +cursor_backend + value per model can be ['sequence', 'uuid']
+      #   class Article < ActiveRecord::Base
+      #     cursor_paginates_back_end 'uuid'
+      #   end
+      def cursor_paginates_back_end(val)
+        @_cursor_backend = val
+      end
+
+      def cursor_backend
+        (defined?(@_cursor_backend) && @_cursor_backend) || Kaminari.config.cursor_back_end
+      end
+
+      def uuid_cursor?
+        cursor_backend == 'uuid'
+      end
+
+      def sequence_cursor?
+        cursor_backend == 'sequence'
+      end
+
+
       # Overrides the default +cursor_limit+ value per model
       #   class Article < ActiveRecord::Base
       #     cursor_paginates_limit 10

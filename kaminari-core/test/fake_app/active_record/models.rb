@@ -48,7 +48,18 @@ end
 class Product < ActiveRecord::Base
   self.abstract_class = true
 end
+
 class Device < Product
+end
+
+class Post < ActiveRecord::Base
+  cursor_paginates_back_end 'uuid'
+
+  before_create :set_uuid # for test with uuid
+
+  def set_uuid
+    self.id = SecureRandom.uuid
+  end
 end
 
 # migrations
@@ -66,6 +77,13 @@ class CreateAllTables < ActiveRecord::VERSION::MAJOR >= 5 ? ActiveRecord::Migrat
     create_table(:authorships) {|t| t.integer :user_id; t.integer :book_id }
     create_table(:user_addresses) {|t| t.string :street; t.integer :user_id }
     create_table(:devices) {|t| t.string :name; t.integer :age}
+
+    create_table(:posts, id: false) do |t|
+      t.string :id, limit: 36, primary_key: true, null: false
+      t.string :name
+      t.integer :age
+      t.timestamps
+    end
   end
 end
 CreateAllTables.up
