@@ -17,6 +17,7 @@ module Kaminari
 
   class Config
     attr_accessor :default_per_page, :max_per_page, :window, :outer_window, :left, :right, :page_method_name, :max_pages, :params_on_first_page
+    attr_accessor :default_cursor_limit, :cursor_max_limit, :before_method_name, :after_method_name
     attr_writer :param_name
 
     def initialize
@@ -30,6 +31,10 @@ module Kaminari
       @param_name = :page
       @max_pages = nil
       @params_on_first_page = false
+      @default_cursor_limit = @default_per_page
+      @cursor_max_limit = @max_per_page
+      @before_method_name = 'before'
+      @after_method_name = 'after'
     end
 
     # If param_name was given as a callable object, call it when returning

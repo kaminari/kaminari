@@ -37,6 +37,10 @@ module Kaminari
       end
     end
 
+    def has_more? # cursor_paginates
+      last.present? && send(cursor_paginate_direction, last[primary_key]).exists?
+    end
+
     # Turn this Relation to a "without count mode" Relation.
     # Note that the "without count mode" is supposed to be performant but has a feature limitation.
     #   Pro: paginates without casting an extra SELECT COUNT query

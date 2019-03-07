@@ -6,6 +6,35 @@ module Kaminari
   module ConfigurationMethods #:nodoc:
     extend ActiveSupport::Concern
     module ClassMethods #:nodoc:
+
+      # Overrides the default +cursor_limit+ value per model
+      #   class Article < ActiveRecord::Base
+      #     cursor_paginates_limit 10
+      #   end
+      def cursor_paginates_limit(val)
+        @_default_cursor_limit = val
+      end
+
+      # This model's default +cursor_limit+ value
+      # returns +default_cursor_limit+ value unless explicitly overridden via <tt>cursor_paginates_limit</tt>
+      def default_cursor_limit
+        (defined?(@_default_cursor_limit) && @_default_cursor_limit) || Kaminari.config.default_cursor_limit
+      end
+
+      # Overrides the max +per_page+ value per model
+      #   class Article < ActiveRecord::Base
+      #     max_paginates_per 100
+      #   end
+      def max_cursor_limit(val)
+        @_cursor_max_limit = val
+      end
+
+      # This model's max +cursor_max_limit+ value
+      # returns +cursor_max_limit+ value unless explicitly overridden via <tt>max_cursor_limit</tt>
+      def cursor_max_limit
+        (defined?(@_cursor_max_limit) && @_cursor_max_limit) || Kaminari.config.cursor_max_limit
+      end
+
       # Overrides the default +per_page+ value per model
       #   class Article < ActiveRecord::Base
       #     paginates_per 10

@@ -4,6 +4,39 @@ require 'test_helper'
 
 if defined? ActiveRecord
   class ActiveRecordRelationMethodsTest < ActiveSupport::TestCase
+    sub_test_case '#has_more?' do
+      setup do
+        1.upto(100) {|i| User.create! name: "user#{'%03d' % i}", age: (i / 10)}
+      end
+
+      teardown do
+        User.delete_all
+      end
+
+      test 'has_more true with before' do
+        record = User.find_by name: 'user030'
+        assert_equal true, User.before(record.id).has_more?
+
+      end
+
+      test 'has_more true with after' do
+        record = User.find_by name: 'user030'
+        assert_equal true, User.after(record.id).has_more?
+      end
+
+      test 'has_more false with before' do
+        record = User.find_by name: 'user005'
+        assert_equal false, User.before(record.id).has_more?
+      end
+
+      test 'has_more false with after' do
+        record = User.find_by name: 'user095'
+        assert_equal false, User.after(record.id).has_more?
+      end
+
+
+    end
+
     sub_test_case '#total_count' do
       setup do
         @author = User.create! name: 'author'
@@ -15,6 +48,7 @@ if defined? ActiveRecord
         @readers = 4.times.map { User.create! name: 'reader' }
         @books.each {|book| book.readers << @readers }
       end
+
       teardown do
         Book.delete_all
         User.delete_all
