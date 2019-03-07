@@ -9,7 +9,7 @@ if defined? ActiveRecord
     end
 
     test 'An AR model responds to Kaminari defined methods before' do
-      assert_respond_to Class.new(ActiveRecord::Base), :cursor_page
+      assert_respond_to Class.new(ActiveRecord::Base), :before
     end
 
     test 'An AR model responds to Kaminari defined methods after' do
