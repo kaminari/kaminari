@@ -5,7 +5,7 @@ gem 'activerecord', '~> 4.2.0', require: 'active_record'
 
 platforms :ruby do
   if RUBY_VERSION > "2.1.0"
-    gem 'sqlite3', require: false
+    gem 'sqlite3', '~> 1.3.13', require: false
   else
     gem 'sqlite3', '1.3.8', require: false
     gem 'nokogiri', '~> 1.6.8'
