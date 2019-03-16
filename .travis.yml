@@ -1,12 +1,12 @@
 language: ruby
 
 rvm:
-  - 2.6.0
-  - 2.5.3
+  - 2.6.2
+  - 2.5.5
   - 2.4.5
   - 2.3.8
   - ruby-head
-  - jruby-9.2.0.0
+  - jruby-9.2.6.0
   # - rbx-3
 
 gemfile:
@@ -33,13 +33,13 @@ cache: bundler
 
 matrix:
   exclude:
-    - rvm: 2.6.0
+    - rvm: 2.6.2
       gemfile: gemfiles/active_record_42.gemfile
-    - rvm: 2.6.0
+    - rvm: 2.6.2
       gemfile: gemfiles/active_record_41.gemfile
-    - rvm: 2.5.3
+    - rvm: 2.5.5
       gemfile: gemfiles/active_record_42.gemfile
-    - rvm: 2.5.3
+    - rvm: 2.5.5
       gemfile: gemfiles/active_record_41.gemfile
     - rvm: 2.4.5
       gemfile: gemfiles/active_record_edge.gemfile
@@ -65,7 +65,7 @@ matrix:
       env: DB=sqlite3
   allow_failures:
     - rvm: ruby-head
-    - rvm: jruby-9.2.0.0
+    - rvm: jruby-9.2.6.0
     # - rvm: rbx-3
     - gemfile: gemfiles/active_record_edge.gemfile
   fast_finish: true
