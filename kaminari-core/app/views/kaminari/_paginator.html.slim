@@ -3,8 +3,10 @@
     current_page : a page object for the currently displayed page
     total_pages  : total number of pages
     per_page     : number of items to fetch per page
+    entries_info : display page entries info
     remote       : data-remote
     paginator    : the paginator that renders the pagination tags inside
+    scope        : a scope object for the paginator
 
 == paginator.render do
   nav.pagination
@@ -17,3 +19,6 @@
         == gap_tag
     == next_page_tag unless current_page.last?
     == last_page_tag unless current_page.last?
+    - if entries_info
+      span.entries-info
+        == page_entries_info(scope)

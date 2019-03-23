@@ -83,6 +83,22 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
         assert_not_match(/Last/, html)
         assert_not_match(/Next/, html)
       end
+
+      test 'entries_info: true' do
+        users = User.page(1)
+
+        html = view.paginate users, entries_info: true, params: {controller: 'users', action: 'index'}
+        assert_match(/<span class="entries-info">/, html)
+        assert_match(/#{view.page_entries_info(users)}/, html)
+      end
+
+      test 'entries_info: false (by default)' do
+        users = User.page(1)
+
+        html = view.paginate users, params: {controller: 'users', action: 'index'}
+        assert_not_match(/<span class="entries-info">/, html)
+        assert_not_match(/#{view.page_entries_info(users)}/, html)
+      end
     end
 
     sub_test_case '#link_to_previous_page' do
