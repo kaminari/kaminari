@@ -45,6 +45,10 @@ module Kaminari
 
     # Current page number
     def current_page
+      ActiveSupport::Deprecation.warn "The #current_page method has been deprecated and will be made private in the " \
+                                      "next major version. This method will eventually be removed entirely once the " \
+                                      "internal code is refactored."
+
       offset_without_padding = offset_value
       offset_without_padding -= @_padding if defined?(@_padding) && @_padding
       offset_without_padding = 0 if offset_without_padding < 0

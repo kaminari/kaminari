@@ -26,6 +26,7 @@ module Kaminari
         @params = @params.with_indifferent_access
         @params.except!(*PARAM_KEY_BLACKLIST)
         @params.merge! params
+        @options[:current_page] ||= (@params[@param_name] || 1).to_i
       end
 
       def to_s(locals = {}) #:nodoc:

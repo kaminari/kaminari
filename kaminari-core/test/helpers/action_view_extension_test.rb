@@ -77,6 +77,7 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
       end
 
       test "page: 20 (out of range)" do
+        view.params[:page] = 20
         users = User.page(20)
 
         html = view.paginate users, params: {controller: 'users', action: 'index'}
@@ -92,6 +93,7 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
 
       sub_test_case 'having previous pages' do
         test 'the default behaviour' do
+          view.params[:page] = 3
           users = User.page(3)
           html = view.link_to_previous_page users, 'Previous', params: {controller: 'users', action: 'index'}
           assert_match(/page=2/, html)
@@ -130,6 +132,7 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
       end
 
       test '#link_to_previous_page accepts ActionController::Parameters' do
+        view.params[:page] = 3
         users = User.page(3)
         params = ActionController::Parameters.new(controller: 'users', action: 'index', status: 'active')
 
@@ -494,6 +497,7 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
       end
 
       test 'the second page' do
+        view.params[:page] = 2
         users = User.page(2).per(10)
         html = view.rel_next_prev_link_tags users, params: {controller: 'users', action: 'index'}
 
@@ -504,6 +508,7 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
       end
 
       test 'the last page' do
+        view.params[:page] = 4
         users = User.page(4).per(10)
         html = view.rel_next_prev_link_tags users, params: {controller: 'users', action: 'index'}
 
@@ -524,6 +529,7 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
       end
 
       test 'the last page' do
+        view.params[:page] = 2
         users = User.page(2).per(1)
         assert_nil view.path_to_next_page(users, params: {controller: 'users', action: 'index'})
       end
@@ -540,11 +546,13 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
       end
 
       test 'the second page' do
+        view.params[:page] = 2
         users = User.page(2).per(1)
         assert_equal '/users', view.path_to_prev_page(users, params: {controller: 'users', action: 'index'})
       end
 
       test 'the last page' do
+        view.params[:page] = 3
         users = User.page(3).per(1)
         assert_equal'/users?page=2', view.path_to_prev_page(users, params: {controller: 'users', action: 'index'})
       end
@@ -561,6 +569,7 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
       end
 
       test 'the last page' do
+        view.params[:page] = 2
         users = User.page(2).per(1)
         assert_nil view.next_page_url(users, params: {controller: 'users', action: 'index'})
       end
@@ -577,11 +586,13 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
       end
 
       test 'the second page' do
+        view.params[:page] = 2
         users = User.page(2).per(1)
         assert_equal 'http://test.host/users', view.prev_page_url(users, params: {controller: 'users', action: 'index'})
       end
 
       test 'the last page' do
+        view.params[:page] = 3
         users = User.page(3).per(1)
         assert_equal'http://test.host/users?page=2', view.prev_page_url(users, params: {controller: 'users', action: 'index'})
       end
