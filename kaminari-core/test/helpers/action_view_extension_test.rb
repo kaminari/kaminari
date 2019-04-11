@@ -274,7 +274,7 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
                 User.max_pages 4
                 users = User.page(4).per(10)
 
-                assert_equal 'Displaying users <b>31&nbsp;-&nbsp;40</b> of <b>50</b> in total', view.page_entries_info(users)
+                assert_equal 'Displaying users <b>31&nbsp;-&nbsp;40</b> of <b>40</b> in total', view.page_entries_info(users)
               ensure
                 User.max_pages nil
               end
@@ -344,9 +344,8 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
             end
 
             test 'the last page with default entry name' do
-              User.max_pages 4
-              users = User.page(4).per(10)
-              assert_equal 'Displaying Benutzer <b>31&nbsp;-&nbsp;40</b> of <b>50</b> in total', view.page_entries_info(users,  entry_name: 'Benutzer')
+              users = User.page(5).per(10)
+              assert_equal 'Displaying Benutzer <b>41&nbsp;-&nbsp;50</b> of <b>50</b> in total', view.page_entries_info(users,  entry_name: 'Benutzer')
             end
           end
         end
@@ -393,9 +392,8 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
           end
 
           test 'the last page with default entry name' do
-            User.max_pages 4
-            users = User.page(4).per(10)
-            assert_equal 'Displaying utilisateurs <b>31&nbsp;-&nbsp;40</b> of <b>50</b> in total', view.page_entries_info(users,  entry_name: 'utilisateur')
+            users = User.page(5).per(10)
+            assert_equal 'Displaying utilisateurs <b>41&nbsp;-&nbsp;50</b> of <b>50</b> in total', view.page_entries_info(users,  entry_name: 'utilisateur')
           end
         end
       end

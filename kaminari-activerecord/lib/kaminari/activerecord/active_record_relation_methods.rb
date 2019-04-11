@@ -29,6 +29,9 @@ module Kaminari
       c = except(:offset, :limit, :order)
       # Remove includes only if they are irrelevant
       c = c.except(:includes) unless references_eager_loaded_tables?
+
+      c = c.limit(max_pages * limit_value) if max_pages && max_pages.respond_to?(:*)
+
       # Handle grouping with a subquery
       @total_count = if c.group_values.any?
         c.model.from(c.except(:select).select("1")).count

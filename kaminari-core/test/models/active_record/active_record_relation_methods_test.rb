@@ -99,6 +99,33 @@ if defined? ActiveRecord
       test 'calculating total_count with GROUP BY ... HAVING clause' do
         assert_equal 2, Authorship.group(:user_id).having("COUNT(book_id) >= 3").page(1).total_count
       end
+
+      test 'total_count with max_pages does not add LIMIT' do
+        begin
+          subscriber = ActiveSupport::Notifications.subscribe 'sql.active_record' do |_, __, ___, ____, payload|
+            assert_not_match /LIMIT/, payload[:sql]
+          end
+
+          assert_equal 7, User.page.total_count
+        ensure
+          ActiveSupport::Notifications.unsubscribe subscriber
+        end
+      end
+
+      test 'total_count with max_pages adds "LIMIT (max_pages * per_page)" to the count query' do
+        begin
+          subscriber = ActiveSupport::Notifications.subscribe 'sql.active_record' do |_, __, ___, ____, payload|
+            assert_match /LIMIT/, payload[:sql]
+          end
+
+          User.max_pages 10
+
+          assert_equal 7, User.page.total_count
+        ensure
+          User.max_pages nil
+          ActiveSupport::Notifications.unsubscribe subscriber
+        end
+      end
     end
   end
 end
