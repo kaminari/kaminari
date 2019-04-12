@@ -75,7 +75,7 @@ module Kaminari
 
     # First page of the collection?
     def first_page?
-      current_page == 1
+      !out_of_range? && (current_page == 1)
     end
 
     # Last page of the collection?
