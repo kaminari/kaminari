@@ -103,7 +103,7 @@ if defined? ActiveRecord
       test 'total_count with max_pages does not add LIMIT' do
         begin
           subscriber = ActiveSupport::Notifications.subscribe 'sql.active_record' do |_, __, ___, ____, payload|
-            assert_not_match /LIMIT/, payload[:sql]
+            assert_not_match(/LIMIT/, payload[:sql])
           end
 
           assert_equal 7, User.page.total_count
@@ -115,7 +115,7 @@ if defined? ActiveRecord
       test 'total_count with max_pages adds "LIMIT (max_pages * per_page)" to the count query' do
         begin
           subscriber = ActiveSupport::Notifications.subscribe 'sql.active_record' do |_, __, ___, ____, payload|
-            assert_match /LIMIT/, payload[:sql]
+            assert_match(/LIMIT/, payload[:sql])
           end
 
           User.max_pages 10
