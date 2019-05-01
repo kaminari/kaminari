@@ -11,6 +11,7 @@ github 'rails/rails' do
   gem 'actionview', require: 'action_view'
 end
 
+gem 'selenium-webdriver'
 
 platforms :ruby do
   gem 'sqlite3', require: false
