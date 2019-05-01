@@ -11,7 +11,6 @@ github 'rails/rails' do
   gem 'actionview', require: 'action_view'
 end
 
-gem 'rack', github: 'rack/rack'
 
 platforms :ruby do
   if RUBY_VERSION > "2.1.0"
