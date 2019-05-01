@@ -12,7 +12,6 @@ github 'rails/rails' do
 end
 
 gem 'rack', github: 'rack/rack'
-gem 'arel', github: 'rails/arel'
 
 platforms :ruby do
   if RUBY_VERSION > "2.1.0"
