@@ -2,7 +2,7 @@
 
 module Kaminari
   module Helpers
-    PARAM_KEY_BLACKLIST = [:authenticity_token, :commit, :utf8, :_method, :script_name].freeze
+    PARAM_KEY_EXCEPT_LIST = [:authenticity_token, :commit, :utf8, :_method, :script_name].freeze
 
     # A tag stands for an HTML tag inside the paginator.
     # Basically, a tag has its own partial template file, so every tag can be
@@ -24,7 +24,7 @@ module Kaminari
         # @params in Rails 5 no longer inherits from Hash
         @params = @params.to_unsafe_h if @params.respond_to?(:to_unsafe_h)
         @params = @params.with_indifferent_access
-        @params.except!(*PARAM_KEY_BLACKLIST)
+        @params.except!(*PARAM_KEY_EXCEPT_LIST)
         @params.merge! params
       end
 
