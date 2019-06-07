@@ -141,8 +141,8 @@ module Kaminari
 
         if prev_page
           link_to name, prev_page, options
-        else
-          yield if block_given?
+        elsif block_given?
+          yield
         end
       end
       alias link_to_prev_page link_to_previous_page
@@ -172,8 +172,8 @@ module Kaminari
 
         if next_page
           link_to name, next_page, options
-        else
-          yield if block_given?
+        elsif block_given?
+          yield
         end
       end
 
