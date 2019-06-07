@@ -483,7 +483,6 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
         31.times {|i| User.create! name: "user#{i}"}
       end
 
-
       test 'the first page' do
         users = User.page(1).per(10)
         html = view.rel_next_prev_link_tags users, params: {controller: 'users', action: 'index'}
@@ -546,7 +545,7 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
 
       test 'the last page' do
         users = User.page(3).per(1)
-        assert_equal'/users?page=2', view.path_to_prev_page(users, params: {controller: 'users', action: 'index'})
+        assert_equal '/users?page=2', view.path_to_prev_page(users, params: {controller: 'users', action: 'index'})
       end
     end
 
@@ -583,7 +582,7 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
 
       test 'the last page' do
         users = User.page(3).per(1)
-        assert_equal'http://test.host/users?page=2', view.prev_page_url(users, params: {controller: 'users', action: 'index'})
+        assert_equal 'http://test.host/users?page=2', view.prev_page_url(users, params: {controller: 'users', action: 'index'})
       end
     end
   end

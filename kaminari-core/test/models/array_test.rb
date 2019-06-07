@@ -53,7 +53,7 @@ class PaginatableArrayTest < ActiveSupport::TestCase
 
   sub_test_case '#per' do
     test 'page 1 per 5' do
-      arr =  @array.page(1).per(5)
+      arr = @array.page(1).per(5)
 
       assert_equal 5, arr.count
       assert_equal 1, arr.first
