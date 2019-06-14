@@ -204,7 +204,7 @@ module Kaminari
           t('helpers.page_entries_info.one_page.display_entries', entry_name: entry_name, count: collection.total_count)
         else
           from = collection.offset_value + 1
-          to   = collection.offset_value + collection.to_a.size
+          to   = collection.offset_value + (collection.respond_to?(:records) ? collection.records : collection.to_a).size
 
           t('helpers.page_entries_info.more_pages.display_entries', entry_name: entry_name, first: from, last: to, total: collection.total_count)
         end.html_safe
