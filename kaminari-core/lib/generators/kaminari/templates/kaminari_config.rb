@@ -3,6 +3,7 @@
 Kaminari.configure do |config|
   # config.default_per_page = 25
   # config.max_per_page = nil
+  # config.max_pages = nil
   # config.window = 4
   # config.outer_window = 0
   # config.left = 0
