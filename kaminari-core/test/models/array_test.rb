@@ -61,6 +61,8 @@ class PaginatableArrayTest < ActiveSupport::TestCase
 
     test 'page 1 per 0' do
       assert_equal 0, @array.page(1).per(0).count
+      assert_equal 1, @array.page(1).per(0).current_page
+      assert_equal 1, @array.page(1).per(0).total_pages
     end
   end
 

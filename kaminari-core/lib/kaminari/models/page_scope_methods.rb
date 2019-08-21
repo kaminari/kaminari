@@ -37,7 +37,12 @@ module Kaminari
       count_without_padding -= @_padding if defined?(@_padding) && @_padding
       count_without_padding = 0 if count_without_padding < 0
 
-      total_pages_count = (count_without_padding.to_f / limit_value).ceil
+      total_pages_count = if limit_value > 0
+                            (count_without_padding.to_f / limit_value).ceil
+                          else
+                            (count_without_padding.to_f).ceil
+                          end
+
       max_pages && (max_pages < total_pages_count) ? max_pages : total_pages_count
     rescue FloatDomainError
       raise ZeroPerPageOperation, "The number of total pages was incalculable. Perhaps you called .per(0)?"
@@ -49,7 +54,11 @@ module Kaminari
       offset_without_padding -= @_padding if defined?(@_padding) && @_padding
       offset_without_padding = 0 if offset_without_padding < 0
 
-      (offset_without_padding / limit_value) + 1
+      if limit_value > 0
+        (offset_without_padding / limit_value) + 1
+      else
+        offset_without_padding + 1
+      end
     rescue ZeroDivisionError
       raise ZeroPerPageOperation, "Current page was incalculable. Perhaps you called .per(0)?"
     end
