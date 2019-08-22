@@ -57,7 +57,7 @@ if defined? ::Kaminari::ActionView
         20.times {|i| User.create! name: "user#{i}"}
 
         assert_equal [1, 2, :gap, 10, :next_page, :last_page], tags_for(User.page(1).per(2))
-        assert_equal [:first_page, :prev_page, 1, 2, 3, :gap, 10, :next_page, :last_page], tags_for(User.page(2).per(2))
+        assert_equal [:prev_page, 1, 2, 3, :gap, 10, :next_page, :last_page], tags_for(User.page(2).per(2))
         assert_equal [:first_page, :prev_page, 1, 2, 3, 4, :gap, 10, :next_page, :last_page], tags_for(User.page(3).per(2))
         # the 3rd page doesn't become a gap because it's a single gap
         assert_equal [:first_page, :prev_page, 1, 2, 3, 4, 5, :gap, 10, :next_page, :last_page], tags_for(User.page(4).per(2))
@@ -66,7 +66,7 @@ if defined? ::Kaminari::ActionView
         # the 9th page doesn't become a gap because it's a single gap
         assert_equal [:first_page, :prev_page, 1, :gap, 6, 7, 8, 9, 10, :next_page, :last_page], tags_for(User.page(7).per(2))
         assert_equal [:first_page, :prev_page, 1, :gap, 7, 8, 9, 10, :next_page, :last_page], tags_for(User.page(8).per(2))
-        assert_equal [:first_page, :prev_page, 1, :gap, 8, 9, 10, :next_page, :last_page], tags_for(User.page(9).per(2))
+        assert_equal [:first_page, :prev_page, 1, :gap, 8, 9, 10, :next_page], tags_for(User.page(9).per(2))
         assert_equal [:first_page, :prev_page, 1, :gap, 9, 10], tags_for(User.page(10).per(2))
       end
     end
