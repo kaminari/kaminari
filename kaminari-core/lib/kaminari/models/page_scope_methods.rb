@@ -26,7 +26,8 @@ module Kaminari
 
     def padding(num)
       num = num.to_i
-      raise ArgumentError, "padding must not be negative" if num < 0
+      #raise ArgumentError, "padding must not be negative" if num < 0
+      $stderr.puts "warning: negative padding used in pagination"
       @_padding = num
       offset(offset_value + @_padding)
     end
