@@ -59,11 +59,11 @@ module Kaminari
       else
         @values[:limit] = limit_value + 1
         # FIXME: this could be removed when we're dropping AR 4 support
-        @arel.limit = @values[:limit] if @arel && (Integer === @arel.limit)
+        @arel.limit = adjusted_limit(@values[:limit]) if @arel && adjustable?(@arel.limit.class)
         super
         @values[:limit] = limit_value - 1
         # FIXME: this could be removed when we're dropping AR 4 support
-        @arel.limit = @values[:limit] if @arel && (Integer === @arel.limit)
+        @arel.limit = adjusted_limit(@values[:limit]) if @arel && adjustable?(@arel.limit.class)
 
         if @records.any?
           @records = @records.dup if (frozen = @records.frozen?)
@@ -72,6 +72,18 @@ module Kaminari
         end
 
         self
+      end
+    end
+
+    def adjustable?(type)
+      [Integer, Arel::Nodes::BindParam].include?(type)
+    end
+
+    def adjusted_limit(limit)
+      if Integer === @arel.limit
+        limit
+      elsif Arel::Nodes::BindParam === @arel.limit
+        Arel::Nodes::BindParam.new(@arel.limit.value.with_cast_value(limit))
       end
     end
 
