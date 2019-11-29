@@ -77,7 +77,7 @@ module Kaminari
 
     def adjustable?(obj)
       return true if obj === Integer
-      return true obj === Arel::Nodes::BindParam && obj.respond_to?(:value)
+      return true if obj === Arel::Nodes::BindParam && obj.respond_to?(:value)
       false
     end
 
