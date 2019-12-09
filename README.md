@@ -449,6 +449,13 @@ You can specify the `total_count` value through options Hash. This would be help
 @paginatable_array = Kaminari.paginate_array([], total_count: 145).page(params[:page]).per(10)
 ```
 
+or, in the case of using an external API to source the page of data:
+```ruby
+page_size = 10
+one_page = get_page_of_data params[:page], page_size
+@paginatable_array = Kaminari.paginate_array(one_page.data, total_count: one_page.total_count).page(params[:page]).per(page_size)
+```
+
 
 ## Creating Friendly URLs and Caching
 
