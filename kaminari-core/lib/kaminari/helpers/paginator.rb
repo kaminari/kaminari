@@ -9,10 +9,11 @@ module Kaminari
     class Paginator < Tag
       def initialize(template, window: nil, outer_window: Kaminari.config.outer_window, left: Kaminari.config.left, right: Kaminari.config.right, inner_window: Kaminari.config.window, **options) #:nodoc:
         @window_options = {window: window || inner_window, left: left.zero? ? outer_window : left, right: right.zero? ? outer_window : right}
+        @param_name = options[:param_name] || Kaminari.config.param_name
 
         @template, @options, @theme, @views_prefix, @last = template, options, options[:theme], options[:views_prefix], nil
         @window_options.merge! @options
-        @window_options[:current_page] = @options[:current_page] = PageProxy.new(@window_options, @options[:current_page], nil)
+        @window_options[:current_page] = @options[:current_page] = PageProxy.new(@window_options, (@options[:current_page] || @template.params[@param_name] || 1).to_i, nil)
 
         #XXX Using parent template's buffer class for rendering each partial here. This might cause problems if the handler mismatches
         @output_buffer = if defined?(::ActionView::OutputBuffer)

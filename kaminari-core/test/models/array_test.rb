@@ -18,7 +18,6 @@ class PaginatableArrayTest < ActiveSupport::TestCase
   sub_test_case '#page' do
     def assert_first_page_of_array(arr)
       assert_equal 25, arr.count
-      assert_equal 1, arr.current_page
       assert_equal 1, arr.first
     end
 
@@ -34,7 +33,6 @@ class PaginatableArrayTest < ActiveSupport::TestCase
       arr = @array.page 2
 
       assert_equal 25, arr.count
-      assert_equal 2, arr.current_page
       assert_equal 26, arr.first
     end
 
@@ -82,7 +80,6 @@ class PaginatableArrayTest < ActiveSupport::TestCase
     test 'page 19 per 5 padding 5' do
       arr = @array.page(19).per(5).padding(5)
 
-      assert_equal 19, arr.current_page
       assert_equal 19, arr.total_pages
     end
 
@@ -118,20 +115,6 @@ class PaginatableArrayTest < ActiveSupport::TestCase
 
     test 'per "String value that can not be converted into Number" (using default)' do
       assert_equal 4, @array.page(5).per('aho').total_pages
-    end
-  end
-
-  sub_test_case '#current_page' do
-    test 'any page, per 0' do
-      assert_raise(Kaminari::ZeroPerPageOperation) { @array.page.per(0).current_page }
-    end
-
-    test 'page 1' do
-      assert_equal 1, @array.page(1).current_page
-    end
-
-    test 'page 2' do
-      assert_equal 2, @array.page(2).per(3).current_page
     end
   end
 
@@ -175,7 +158,6 @@ class PaginatableArrayTest < ActiveSupport::TestCase
 
       assert_equal 10, arr.count
       assert_equal 1, arr.first
-      assert_equal 5, arr.current_page
       assert_equal 9999, arr.total_count
     end
 
@@ -184,7 +166,6 @@ class PaginatableArrayTest < ActiveSupport::TestCase
 
       assert_equal 10, arr.count
       assert_equal 1, arr.first
-      assert_equal 1, arr.current_page
       assert_equal 15, arr.total_count
     end
 
@@ -193,7 +174,6 @@ class PaginatableArrayTest < ActiveSupport::TestCase
 
       assert_equal 5, arr.count
       assert_equal 11, arr.first
-      assert_equal 2, arr.current_page
       assert_equal 15, arr.total_count
     end
   end

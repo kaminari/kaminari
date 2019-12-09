@@ -211,7 +211,6 @@ if defined? ActiveRecord
           test 'page 19 per 5 padding 5' do
             relation = model_class.page(19).per(5).padding(5)
 
-            assert_equal 19, relation.current_page
             assert_equal 19, relation.total_pages
           end
 

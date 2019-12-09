@@ -69,7 +69,7 @@ module Kaminari
       #
       # It will return `nil` if there is no next page.
       def next_page_path(scope, options = {})
-        Kaminari::Helpers::NextPage.new(self, options.reverse_merge(current_page: scope.current_page)).url if scope.next_page
+        Kaminari::Helpers::NextPage.new(self, options).url if scope.next_page
       end
       alias path_to_next_page next_page_path
 
@@ -83,7 +83,7 @@ module Kaminari
       #
       # It will return `nil` if there is no previous page.
       def prev_page_path(scope, options = {})
-        Kaminari::Helpers::PrevPage.new(self, options.reverse_merge(current_page: scope.current_page)).url if scope.prev_page
+        Kaminari::Helpers::PrevPage.new(self, options).url if scope.prev_page
       end
       alias previous_page_path     prev_page_path
       alias path_to_previous_page  prev_page_path
@@ -110,7 +110,7 @@ module Kaminari
       # * <tt>:ANY_OTHER_VALUES</tt> - Any other hash key & values would be directly passed into each tag as :locals value.
       def paginate(scope, paginator_class: Kaminari::Helpers::Paginator, template: nil, **options)
         options[:total_pages] ||= scope.total_pages
-        options.reverse_merge! current_page: scope.current_page, per_page: scope.limit_value, remote: false
+        options.reverse_merge! per_page: scope.limit_value, remote: false
 
         paginator = paginator_class.new (template || self), options
         paginator.to_s
