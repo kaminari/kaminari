@@ -76,14 +76,14 @@ module Kaminari
     end
 
     def adjustable?(obj)
-      return true if obj.class == Integer
+      return true if obj.class == Integer || obj.class == Fixnum
       return true if obj.class == Arel::Nodes::BindParam && obj.respond_to?(:value)
       false
     end
 
     def adjusted_limit(limit)
       case @arel.limit.class
-      when Integer
+      when Integer, Fixnum
         limit
       when Arel::Nodes::BindParam
         Arel::Nodes::BindParam.new(@arel.limit.value.with_cast_value(limit))
