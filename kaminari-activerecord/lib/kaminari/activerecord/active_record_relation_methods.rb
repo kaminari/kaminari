@@ -63,7 +63,7 @@ module Kaminari
         super
         @values[:limit] = limit_value - 1
         # FIXME: this could be removed when we're dropping AR 4 support
-        @arel.limit = adjusted_limit(@values[:limit]) if @arel && adjustable?(@arel.limit)
+        @arel.limit = adjusted_limit(@values[:limit]) if @arel && adjustable?(@arel.limit.class)
 
         if @records.any?
           @records = @records.dup if (frozen = @records.frozen?)
