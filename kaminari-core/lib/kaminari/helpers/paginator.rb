@@ -59,13 +59,13 @@ module Kaminari
       private :relevant_pages
 
       def page_tag(page)
-        @last = Page.new @template, @options.merge(page: page)
+        @last = Page.new @template, **@options.merge(page: page)
       end
 
       %w[first_page prev_page next_page last_page gap].each do |tag|
         eval <<-DEF, nil, __FILE__, __LINE__ + 1
           def #{tag}_tag
-            @last = #{tag.classify}.new @template, @options
+            @last = #{tag.classify}.new @template, **@options
           end
         DEF
       end

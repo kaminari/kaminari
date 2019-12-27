@@ -35,7 +35,7 @@ module Kaminari
 
     # Used for page_entry_info
     def entry_name(options = {})
-      I18n.t('helpers.page_entries_info.entry', options.reverse_merge(default: ENTRY.pluralize(options[:count])))
+      I18n.t('helpers.page_entries_info.entry', **options.reverse_merge(default: ENTRY.pluralize(options[:count])))
     end
 
     # items at the specified "page"
