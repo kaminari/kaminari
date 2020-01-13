@@ -12,7 +12,6 @@ rvm:
   - 2.5.5
   - 2.4.5
   - 2.3.8
-  - ruby-head
   - jruby-9.2.6.0
   # - rbx-3
 
@@ -79,6 +78,9 @@ matrix:
     - rvm: jruby-9.2.6.0
       gemfile: gemfiles/active_record_41.gemfile
   include:
+    - rvm: ruby-head
+      gemfile: gemfiles/active_record_edge.gemfile
+      env: DB=sqlite3
     - rvm: 2.2.10
       gemfile: gemfiles/active_record_51.gemfile
       env: DB=sqlite3
