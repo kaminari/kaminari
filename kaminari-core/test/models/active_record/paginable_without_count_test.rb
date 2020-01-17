@@ -70,6 +70,22 @@ if defined? ActiveRecord
       assert @users.out_of_range?
     end
 
+    test 'regression: call arel first' do
+      @user = User.page(1).without_count
+      @user.arel
+
+      assert_equal false, @user.last_page?
+    end
+
+    test 'regression: call last page first' do
+      @user = User.page(1).without_count
+
+      @user.last_page?
+      @user.arel
+
+      assert_equal false, @user.last_page?
+    end
+
     def assert_no_queries
       subscriber = ActiveSupport::Notifications.subscribe 'sql.active_record' do
         raise 'A SQL query is being made to the db:'
