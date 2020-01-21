@@ -80,7 +80,7 @@ module Kaminari
     end
 
     def __adjusted_limit__(limit)
-      case @arel.limit.class
+      case @arel.limit
       when Integer
         limit
       when Arel::Nodes::BindParam
