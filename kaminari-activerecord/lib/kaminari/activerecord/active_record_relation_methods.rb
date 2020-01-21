@@ -77,7 +77,6 @@ module Kaminari
     def set_limit_value(new_limit)
       @values[:limit] = new_limit
 
-      # FIXME: this could be removed when we're dropping AR 4 and 5.2 support
       if @arel
         case @arel.limit
         when Integer
