@@ -77,21 +77,15 @@ module Kaminari
 
     # FIXME: this could be removed when we're dropping AR 4 and 5.2 support
     def adjust_limit
-      @arel.limit = adjusted_limit(@values[:limit]) if @arel && adjustable?(@arel.limit)
-    end
-
-    def adjustable?(obj)
-      (Integer === obj) || ((Arel::Nodes::BindParam === obj) && obj.respond_to?(:value))
-    end
-
-    def adjusted_limit(limit)
-      case @arel.limit
-      when Integer
-        limit
-      when Arel::Nodes::BindParam
-        Arel::Nodes::BindParam.new(@arel.limit.value.with_cast_value(limit))
-      else
-        raise "Unexpected value! #{limit.inspect} is given. The limit value has to be an Integer or an Arel::Nodes::BindParam"
+      if @arel
+        case @arel.limit
+        when Integer
+          @arel.limit = @values[:limit]
+        when Arel::Nodes::BindParam
+          if @arel.limit.respond_to?(:value)
+            @arel.limit = Arel::Nodes::BindParam.new(@arel.limit.value.with_cast_value(@values[:limit]))
+          end
+        end
       end
     end
 
