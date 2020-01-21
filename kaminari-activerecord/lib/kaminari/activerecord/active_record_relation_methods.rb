@@ -58,11 +58,11 @@ module Kaminari
         super
       else
         @values[:limit] = limit_value + 1
-        # FIXME: this could be removed when we're dropping AR 4 support
+        # FIXME: this could be removed when we're dropping AR 4 and 5.2 support
         @arel.limit = __adjusted_limit__(@values[:limit]) if @arel && __adjustable__?(@arel.limit)
         super
         @values[:limit] = limit_value - 1
-        # FIXME: this could be removed when we're dropping AR 4 support
+        # FIXME: this could be removed when we're dropping AR 4 and 5.2 support
         @arel.limit = __adjusted_limit__(@values[:limit]) if @arel && __adjustable__?(@arel.limit)
 
         if @records.any?
