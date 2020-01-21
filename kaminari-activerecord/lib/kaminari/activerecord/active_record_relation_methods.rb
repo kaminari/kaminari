@@ -51,6 +51,30 @@ module Kaminari
 
   # A module that makes AR::Relation paginatable without having to cast another SELECT COUNT query
   module PaginatableWithoutCount
+    module LimitValueSetter
+      # refine PaginatableWithoutCount do  # NOTE: this doesn't work in Ruby < 2.4
+      refine ::ActiveRecord::Relation do
+        private
+
+        # Update multiple instance variables that holds `limit` to a given value
+        def set_limit_value(new_limit)
+          @values[:limit] = new_limit
+
+          if @arel
+            case @arel.limit
+            when Integer
+              @arel.limit = new_limit
+            when Arel::Nodes::BindParam
+              if @arel.limit.respond_to?(:value)
+                @arel.limit = Arel::Nodes::BindParam.new(@arel.limit.value.with_cast_value(new_limit))
+              end
+            end
+          end
+        end
+      end
+    end
+    using LimitValueSetter
+
     # Overwrite AR::Relation#load to actually load one more record to judge if the page has next page
     # then store the result in @_has_next ivar
     def load
@@ -70,26 +94,6 @@ module Kaminari
         self
       end
     end
-
-    private
-
-    # Update multiple instance variables that holds `limit` to a given value
-    def set_limit_value(new_limit)
-      @values[:limit] = new_limit
-
-      if @arel
-        case @arel.limit
-        when Integer
-          @arel.limit = new_limit
-        when Arel::Nodes::BindParam
-          if @arel.limit.respond_to?(:value)
-            @arel.limit = Arel::Nodes::BindParam.new(@arel.limit.value.with_cast_value(new_limit))
-          end
-        end
-      end
-    end
-
-    public
 
     # The page wouldn't be the last page if there's "limit + 1" record
     def last_page?
