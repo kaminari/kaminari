@@ -75,6 +75,8 @@ module Kaminari
       end
     end
 
+    private
+
     def adjustable?(obj)
       (Integer === obj) || ((Arel::Nodes::BindParam === obj) && obj.respond_to?(:value))
     end
@@ -89,6 +91,8 @@ module Kaminari
         raise "Unexpected value! #{limit.inspect} is given. The limit value has to be an Integer or an Arel::Nodes::BindParam"
       end
     end
+
+    public
 
     # The page wouldn't be the last page if there's "limit + 1" record
     def last_page?
