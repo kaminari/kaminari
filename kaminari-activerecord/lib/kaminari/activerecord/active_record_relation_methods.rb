@@ -85,6 +85,8 @@ module Kaminari
         limit
       when Arel::Nodes::BindParam
         Arel::Nodes::BindParam.new(@arel.limit.value.with_cast_value(limit))
+      else
+        raise "Unexpected value! #{limit.inspect} is given. The limit value has to be an Integer or an Arel::Nodes::BindParam"
       end
     end
 
