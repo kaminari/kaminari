@@ -76,7 +76,7 @@ module Kaminari
     end
 
     def __adjustable__?(obj)
-      obj.class == Integer || (obj.class == Arel::Nodes::BindParam && obj.respond_to?(:value))
+      (Integer === obj) || ((Arel::Nodes::BindParam === obj) && obj.respond_to?(:value))
     end
 
     def __adjusted_limit__(limit)
