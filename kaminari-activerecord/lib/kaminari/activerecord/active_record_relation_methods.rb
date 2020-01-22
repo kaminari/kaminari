@@ -73,8 +73,13 @@ module Kaminari
         end
       end
     end
-    using LimitValueSetter
+  end
+end
+# NOTE: ending all modules and reopening again because using has to be called from the toplevel in Ruby 2.0
+using Kaminari::PaginatableWithoutCount::LimitValueSetter
 
+module Kaminari
+  module PaginatableWithoutCount
     # Overwrite AR::Relation#load to actually load one more record to judge if the page has next page
     # then store the result in @_has_next ivar
     def load
