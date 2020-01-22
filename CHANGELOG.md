@@ -5,6 +5,7 @@
 
 * Add `#url_to_next_page` and `#url_to_prev_page` helper methods: [38e95a2](https://github.com/kaminari/kaminari/commit/38e95a262a210548c4f892aaa69d09ca8ecdce7f)
 * Extract url helper methods and pack them in `Kaminari::Helpers::UrlHelper`: [ff38bee](https://github.com/kaminari/kaminari/commit/ff38bee54b5be1a948f1118c0bfd829a72a1a502)
+* Stop displaying first page link on second page pagination and last page link on penultimate page pagination: [@tiagotex]
 
 ### Bug Fixes:
 

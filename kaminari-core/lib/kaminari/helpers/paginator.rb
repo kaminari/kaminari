@@ -106,9 +106,19 @@ module Kaminari
           @page == 1
         end
 
+        # the second page or not
+        def second?
+          @page == 2
+        end
+
         # the last page or not
         def last?
           @page == @options[:total_pages]
+        end
+
+        # the page before the last or not
+        def penultimate?
+          @page + 1 == @options[:total_pages]
         end
 
         # the previous page or not

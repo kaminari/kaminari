@@ -8,7 +8,7 @@
 -%>
 <%= paginator.render do -%>
   <nav class="pagination" role="navigation" aria-label="pager">
-    <%= first_page_tag unless current_page.first? %>
+    <%= first_page_tag unless current_page.first? || current_page.second? %>
     <%= prev_page_tag unless current_page.first? %>
     <% each_page do |page| -%>
       <% if page.display_tag? -%>
@@ -19,7 +19,7 @@
     <% end -%>
     <% unless current_page.out_of_range? %>
       <%= next_page_tag unless current_page.last? %>
-      <%= last_page_tag unless current_page.last? %>
+      <%= last_page_tag unless current_page.last? || current_page.penultimate? %>
     <% end %>
   </nav>
 <% end -%>
