@@ -1,21 +1,30 @@
+## 1.1.2
 
-## Master (Unreleased)
+### Deprecations:
 
-### Enhancements
+* Deprecated `current_per_page` in favor of `limit_value`
 
-* Add `#url_to_next_page` and `#url_to_prev_page` helper methods: [38e95a2](https://github.com/kaminari/kaminari/commit/38e95a262a210548c4f892aaa69d09ca8ecdce7f)
-* Extract url helper methods and pack them in `Kaminari::Helpers::UrlHelper`: [ff38bee](https://github.com/kaminari/kaminari/commit/ff38bee54b5be1a948f1118c0bfd829a72a1a502)
+### Enhancements:
+
+* Added `#url_to_next_page` and `#url_to_prev_page` helper methods: [38e95a2](https://github.com/kaminari/kaminari/commit/38e95a262a210548c4f892aaa69d09ca8ecdce7f)
+* Extracted url helper methods and packed them in `Kaminari::Helpers::UrlHelper`: [ff38bee](https://github.com/kaminari/kaminari/commit/ff38bee54b5be1a948f1118c0bfd829a72a1a502)
+* Improved performance of `total_count` for grouped queries by explicitly giving SQL `select` clause #979 [@MmKolodziej]
+* Added `LIMIT` to `total_count` query when `max_pages` presents #981 [@rymai]
 
 ### Bug Fixes:
 
 * Fixed a bug where the `kaminari-mongoid` gem was not loaded properly: kaminari/kaminari-mongoid#9 [@DenniJensen]
 * Fixed a bug where the `#total_count` method incorrectly calculates the total count: #932 [@tumayun]
+* Fixed a bug where `empty?` breaks subsequent `last_page?` in without_count mode #1009 [@montdidier]
+* Fixed kwargs warnings on Ruby 2.7 #1010 [@connorshea]
+
 
 ## 1.1.1
 
 ### Bug Fixes:
 
 * Fixed a bug where `paginate ..., params: { controller: ..., action: ... }` didn't override the `params[:controller]` and `params[:action]` #919 [@chao-mu]
+
 
 ## 1.1.0
 
