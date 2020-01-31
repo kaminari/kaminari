@@ -100,6 +100,10 @@ if defined? ActiveRecord
         assert_equal 2, Authorship.group(:user_id).having("COUNT(book_id) >= 3").page(1).total_count
       end
 
+      test 'calculating total_count with GROUP BY ... HAVING clause with model that has default scope' do
+        assert_equal 2, CurrentAuthorship.group(:user_id).having("COUNT(book_id) >= 3").page(1).total_count
+      end
+
       test 'total_count with max_pages does not add LIMIT' do
         begin
           subscriber = ActiveSupport::Notifications.subscribe 'sql.active_record' do |_, __, ___, ____, payload|

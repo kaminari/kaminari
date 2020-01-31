@@ -34,7 +34,7 @@ module Kaminari
 
       # Handle grouping with a subquery
       @total_count = if c.group_values.any?
-        c.model.from(c.except(:select).select("1")).count
+        c.model.unscoped.from(c.except(:select).select("1")).count
       else
         c.count(column_name)
       end
