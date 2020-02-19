@@ -186,7 +186,7 @@ end
 Typically, your controller code will look like this:
 
 ```ruby
-@users = User.order(:name).page params[:page]
+@users = User.order(:name).page(params[:page])
 ```
 
 
