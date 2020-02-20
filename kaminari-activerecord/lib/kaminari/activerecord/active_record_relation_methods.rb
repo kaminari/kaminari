@@ -34,7 +34,8 @@ module Kaminari
 
       # Handle grouping with a subquery
       @total_count = if c.group_values.any?
-        c.model.from(c.except(:select).select("1")).count
+        # STI can place a 'hard scope' on the model which doesn't work on the outer query here
+        c.model.unscope(where: :type).from(c.except(:select).select("1")).count
       else
         c.count(column_name)
       end

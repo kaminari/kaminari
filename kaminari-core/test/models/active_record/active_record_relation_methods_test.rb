@@ -14,6 +14,11 @@ if defined? ActiveRecord
         @books3 = 4.times.map {|i| @author3.books_authored.create!(title: "subject%03d" % i) }
         @readers = 4.times.map { User.create! name: 'reader' }
         @books.each {|book| book.readers << @readers }
+        [
+          ['Fenton', Dog], ['Bob', Dog],
+          ['Garfield', Cat], ['Bob', Cat],
+          ['Caine', Grasshopper]
+        ].each { |name, type| type.create! name: name }
       end
       teardown do
         Book.delete_all
@@ -98,6 +103,11 @@ if defined? ActiveRecord
 
       test 'calculating total_count with GROUP BY ... HAVING clause' do
         assert_equal 2, Authorship.group(:user_id).having("COUNT(book_id) >= 3").page(1).total_count
+      end
+
+      test 'calculating STI total_count with GROUP BY clause' do
+        # A type-based restriction places a scope on the model
+        assert_equal 3, Mammal.group(:name).page(1).total_count
       end
 
       test 'total_count with max_pages does not add LIMIT' do
