@@ -26,6 +26,12 @@ class Authorship < ActiveRecord::Base
   belongs_to :user
   belongs_to :book
 end
+class CurrentAuthorship < ActiveRecord::Base
+  self.table_name = 'authorships'
+  belongs_to :user
+  belongs_to :book
+  default_scope -> { where(deleted_at: nil) }
+end
 class Readership < ActiveRecord::Base
   belongs_to :user
   belongs_to :book
@@ -43,6 +49,11 @@ end
 class User::Address < ActiveRecord::Base
   belongs_to :user
 end
+class Animal < ActiveRecord::Base; end
+class Mammal < Animal; end
+class Dog < Mammal; end
+class Cat < Mammal; end
+class Insect < Animal; end
 
 # a class that uses abstract class
 class Product < ActiveRecord::Base
@@ -63,9 +74,10 @@ class CreateAllTables < ActiveRecord::VERSION::MAJOR >= 5 ? ActiveRecord::Migrat
     create_table(:users) {|t| t.string :name; t.integer :age}
     create_table(:books) {|t| t.string :title}
     create_table(:readerships) {|t| t.integer :user_id; t.integer :book_id }
-    create_table(:authorships) {|t| t.integer :user_id; t.integer :book_id }
+    create_table(:authorships) {|t| t.integer :user_id; t.integer :book_id; t.datetime :deleted_at }
     create_table(:user_addresses) {|t| t.string :street; t.integer :user_id }
     create_table(:devices) {|t| t.string :name; t.integer :age}
+    create_table(:animals) {|t| t.string :type; t.string :name}
   end
 end
 CreateAllTables.up
