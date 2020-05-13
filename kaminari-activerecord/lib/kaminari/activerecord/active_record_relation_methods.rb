@@ -32,15 +32,14 @@ module Kaminari
 
       c = c.limit(max_pages * limit_value) if max_pages && max_pages.respond_to?(:*)
 
-      # .group returns an OrderedHash that responds to #count
-      c = c.count(column_name)
-      @total_count = if c.is_a?(Hash) || c.is_a?(ActiveSupport::OrderedHash)
-                       c.count
-                     elsif c.respond_to? :count
-                       c.count(column_name)
-                     else
-                       c
-                     end
+      # Handle grouping with a subquery
+      @total_count = if c.group_values.any?
+        c.model.connection.select_value <<~SQL
+          SELECT count(*) FROM (#{c.except(:select).select("1").to_sql}) subquery
+        SQL
+      else
+        c.count(column_name)
+      end
     end
 
     # Turn this Relation to a "without count mode" Relation.
