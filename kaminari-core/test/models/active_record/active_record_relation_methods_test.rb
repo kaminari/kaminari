@@ -105,13 +105,13 @@ if defined? ActiveRecord
       end
 
       test 'calculating STI total_count with GROUP BY clause' do
-        {
-          'Fenton'   => Dog,
-          'Bob'      => Dog,
-          'Garfield' => Cat,
-          'Bob'      => Cat,
-          'Caine'    => Insect
-        }.each { |name, type| type.create!(name: name) }
+        [
+          ['Fenton',   Dog],
+          ['Bob',      Dog],
+          ['Garfield', Cat],
+          ['Bob',      Cat],
+          ['Caine', Insect]
+        ].each { |name, type| type.create!(name: name) }
 
         assert_equal 3, Mammal.group(:name).page(1).total_count
       end
