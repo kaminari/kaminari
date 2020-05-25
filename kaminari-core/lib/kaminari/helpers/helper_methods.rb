@@ -41,7 +41,7 @@ module Kaminari
       def next_page_url(scope, options = {})
         "#{request.base_url}#{next_page_path(scope, options)}" if scope.next_page
       end
-      alias path_to_next_url next_page_url
+      alias url_to_next_page next_page_url
 
       # A helper that calculates the url to the previous page.
       #
