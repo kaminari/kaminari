@@ -1,3 +1,15 @@
+## 1.2.1
+
+### Security Fixes:
+
+* Added `original_script_name` parameter to the ignore list: #1020 [@viseztrance]
+  See CVE-2020-11082 for full details.
+
+### Bug Fixes:
+
+* Fixed a couple of grouped `total_count` regressions by reverting #979
+
+
 ## 1.2.0
 
 ### Deprecations:
