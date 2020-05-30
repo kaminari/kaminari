@@ -96,4 +96,19 @@ class ConfigurationTest < ::Test::Unit::TestCase
       end
     end
   end
+
+  sub_test_case 'page_entries_info_number_formatter' do
+    test 'by default' do
+      assert_equal Kaminari::IDENTITY_FN, Kaminari.config.page_entries_info_number_formatter
+    end
+    test 'configure via config block' do
+      begin
+        always_42 = ->(number) { 42 }
+        Kaminari.configure {|c| c.page_entries_info_number_formatter = always_42 }
+        assert_equal always_42, Kaminari.config.page_entries_info_number_formatter
+      ensure
+        Kaminari.configure {|c| c.page_entries_info_number_formatter = Kaminari::IDENTITY_FN }
+      end
+    end
+  end
 end

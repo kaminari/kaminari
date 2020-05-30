@@ -199,19 +199,21 @@ module Kaminari
       #   <%= page_entries_info @posts, entry_name: 'item' %>
       #   #-> Displaying items 6 - 10 of 26 in total
       def page_entries_info(collection, entry_name: nil)
-        entry_name = if entry_name
-                       entry_name.pluralize(collection.size, I18n.locale)
-                     else
-                       collection.entry_name(count: collection.size).downcase
-                     end
+        formatter   = Kaminari.config.page_entries_info_number_formatter
+        total_count = formatter.(collection.total_count)
+        entry_name  = if entry_name
+                        entry_name.pluralize(collection.size, I18n.locale)
+                      else
+                        collection.entry_name(count: collection.size).downcase
+                      end
 
         if collection.total_pages < 2
-          t('helpers.page_entries_info.one_page.display_entries', entry_name: entry_name, count: collection.total_count)
+          t('helpers.page_entries_info.one_page.display_entries', entry_name: entry_name, count: total_count)
         else
-          from = collection.offset_value + 1
-          to   = collection.offset_value + (collection.respond_to?(:records) ? collection.records : collection.to_a).size
+          from = formatter.(collection.offset_value + 1)
+          to   = formatter.(collection.offset_value + (collection.respond_to?(:records) ? collection.records : collection.to_a).size)
 
-          t('helpers.page_entries_info.more_pages.display_entries', entry_name: entry_name, first: from, last: to, total: collection.total_count)
+          t('helpers.page_entries_info.more_pages.display_entries', entry_name: entry_name, first: from, last: to, total: total_count)
         end.html_safe
       end
 

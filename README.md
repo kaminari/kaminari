@@ -133,16 +133,17 @@ unpaged_users = users.except(:limit, :offset) # unpaged_users will not use the k
 
 You can configure the following default values by overriding these values using `Kaminari.configure` method.
 
-    default_per_page      # 25 by default
-    max_per_page          # nil by default
-    max_pages             # nil by default
-    window                # 4 by default
-    outer_window          # 0 by default
-    left                  # 0 by default
-    right                 # 0 by default
-    page_method_name      # :page by default
-    param_name            # :page by default
-    params_on_first_page  # false by default
+    default_per_page                    # 25 by default
+    max_per_page                        # nil by default
+    max_pages                           # nil by default
+    window                              # 4 by default
+    outer_window                        # 0 by default
+    left                                # 0 by default
+    right                               # 0 by default
+    page_method_name                    # :page by default
+    param_name                          # :page by default
+    params_on_first_page                # false by default
+    page_entries_info_number_formatter  # ->(n) { n } by default
 
 There's a handy generator that generates the default configuration file into config/initializers directory.
 Run the following generator command, then edit the generated file.
@@ -175,6 +176,21 @@ Default value is nil, which means you are not imposing any max `per_page` value.
 ```ruby
 class User < ActiveRecord::Base
   max_paginates_per 100
+end
+```
+
+### Configuring the page_entries_info_number_formatter
+
+You can change the `page_entries_info_number_formatter` to a proc which will be called each time a number is rendered in the `page_entries_info` helper, this can be useful for adding thousands separators when you have a large number of entries.
+Default value is an identity function, which just returns the yielded number as-is.
+
+```ruby
+class NumberHelper
+  include ActionView::Helpers::NumberHelper
+end
+
+Kaminari.configure do |config|
+  config.page_entries_info_number_formatter = NumberHelper.new.method(:number_with_delimiter)
 end
 ```
 

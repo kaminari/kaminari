@@ -281,6 +281,28 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
             end
           end
 
+          sub_test_case 'with a custom page entries info number formatter' do
+            setup do
+              Kaminari.config.page_entries_info_number_formatter = ->(n) { "+#{n}+" }
+            end
+
+            teardown do
+              Kaminari.config.page_entries_info_number_formatter = Kaminari::IDENTITY_FN
+            end
+
+            test 'it uses the custom page entries info number formatter' do
+              users = User.page(1).per(25)
+              assert_equal 'Displaying users <b>+1+&nbsp;-&nbsp;+25+</b> of <b>+50+</b> in total', view.page_entries_info(users)
+            end
+          end
+
+          sub_test_case 'without a custom page entries info number formatter' do
+            test 'it uses the default number formatter' do
+              users = User.page(1).per(25)
+              assert_equal 'Displaying users <b>1&nbsp;-&nbsp;25</b> of <b>50</b> in total', view.page_entries_info(users)
+            end
+          end
+
           test 'it accepts a decorated object' do
             page_info_presenter = Class.new(SimpleDelegator) do
               include ActionView::Helpers::NumberHelper
@@ -302,14 +324,35 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
           50.times {|i| User.create! name: "user#{i}"}
         end
 
-        test 'page_entries_info translates entry' do
-          users = User.page(1).per(25)
-          begin
+        sub_test_case 'with custom translations' do
+          setup do
             I18n.backend.store_translations(:en, User.i18n_scope => { models: { user: { one: "person", other: "people" } } })
+          end
 
-            assert_equal 'Displaying people <b>1&nbsp;-&nbsp;25</b> of <b>50</b> in total', view.page_entries_info(users)
-          ensure
+          teardown do
             I18n.backend.reload!
+          end
+
+          sub_test_case 'with a custom page entries info number formatter' do
+            setup do
+              Kaminari.config.page_entries_info_number_formatter = ->(n) { "+#{n}+" }
+            end
+
+            teardown do
+              Kaminari.config.page_entries_info_number_formatter = Kaminari::IDENTITY_FN
+            end
+
+            test 'page_entries_info translates entry using the custom page entries info number formatter' do
+              users = User.page(1).per(25)
+              assert_equal 'Displaying people <b>+1+&nbsp;-&nbsp;+25+</b> of <b>+50+</b> in total', view.page_entries_info(users)
+            end
+          end
+
+          sub_test_case 'without a custom page entries info number formatter' do
+            test 'page_entries_info translates entry using the default number formatter' do
+              users = User.page(1).per(25)
+              assert_equal 'Displaying people <b>1&nbsp;-&nbsp;25</b> of <b>50</b> in total', view.page_entries_info(users)
+            end
           end
         end
 
@@ -468,13 +511,53 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
               assert_equal 'Displaying places <b>26&nbsp;-&nbsp;50</b> of <b>50</b> in total', view.page_entries_info(addresses, entry_name: 'place')
             end
           end
+
+          sub_test_case 'with a custom page entries info number formatter' do
+            setup do
+              Kaminari.config.page_entries_info_number_formatter = ->(n) { "+#{n}+" }
+            end
+
+            teardown do
+              Kaminari.config.page_entries_info_number_formatter = Kaminari::IDENTITY_FN
+            end
+
+            test 'it uses the custom page entries info number formatter' do
+              addresses = User::Address.page(2).per(25)
+              assert_equal 'Displaying addresses <b>+26+&nbsp;-&nbsp;+50+</b> of <b>+50+</b> in total', view.page_entries_info(addresses)
+            end
+          end
+
+          sub_test_case 'without a custom page entries info number formatter' do
+            test 'it uses the default number formatter' do
+              addresses = User::Address.page(2).per(25)
+              assert_equal 'Displaying addresses <b>26&nbsp;-&nbsp;50</b> of <b>50</b> in total', view.page_entries_info(addresses)
+            end
+          end
         end
       end
 
-      test 'on a PaginatableArray' do
-        numbers = Kaminari.paginate_array(%w{one two three}).page(1)
+      sub_test_case 'on a PaginatableArray' do
+        sub_test_case 'with a custom page entries info number formatter' do
+          setup do
+            Kaminari.config.page_entries_info_number_formatter = ->(n) { "+#{n}+" }
+          end
 
-        assert_equal 'Displaying <b>all 3</b> entries', view.page_entries_info(numbers)
+          teardown do
+            Kaminari.config.page_entries_info_number_formatter = Kaminari::IDENTITY_FN
+          end
+
+          test 'it uses the custom page entries info number formatter' do
+            numbers = Kaminari.paginate_array(%w{one two three}).page(1)
+            assert_equal 'Displaying <b>all +3+</b> entries', view.page_entries_info(numbers)
+          end
+        end
+
+        sub_test_case 'without a custom page entries info number formatter' do
+          test 'it uses the default number formatter' do
+            numbers = Kaminari.paginate_array(%w{one two three}).page(1)
+            assert_equal 'Displaying <b>all 3</b> entries', view.page_entries_info(numbers)
+          end
+        end
       end
     end
 

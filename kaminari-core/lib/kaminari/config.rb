@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module Kaminari
+  IDENTITY_FN = ->(value) { value }
+
   # Configures global settings for Kaminari
   #   Kaminari.configure do |config|
   #     config.default_per_page = 10
@@ -16,7 +18,7 @@ module Kaminari
   end
 
   class Config
-    attr_accessor :default_per_page, :max_per_page, :window, :outer_window, :left, :right, :page_method_name, :max_pages, :params_on_first_page
+    attr_accessor :default_per_page, :max_per_page, :window, :outer_window, :left, :right, :page_method_name, :max_pages, :params_on_first_page, :page_entries_info_number_formatter
     attr_writer :param_name
 
     def initialize
@@ -30,6 +32,7 @@ module Kaminari
       @param_name = :page
       @max_pages = nil
       @params_on_first_page = false
+      @page_entries_info_number_formatter = IDENTITY_FN
     end
 
     # If param_name was given as a callable object, call it when returning
