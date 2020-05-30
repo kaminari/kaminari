@@ -41,7 +41,12 @@ module Kaminari
       def next_page_url(scope, options = {})
         "#{request.base_url}#{next_page_path(scope, options)}" if scope.next_page
       end
-      alias path_to_next_url next_page_url
+      alias url_to_next_page next_page_url
+
+      def path_to_next_url(scope, options = {})
+        ActiveSupport::Deprecation.warn 'path_to_next_url is deprecated. Use next_page_url or url_to_next_page instead.'
+        next_page_url(scope, options)
+      end
 
       # A helper that calculates the url to the previous page.
       #
