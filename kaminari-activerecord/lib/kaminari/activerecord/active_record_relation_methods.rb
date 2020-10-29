@@ -34,6 +34,9 @@ module Kaminari
 
       # Handle grouping with a subquery
       @total_count = if c.group_values.any?
+        # Only count non-null values of column_name if supplied
+        c = c.where.not column_name => nil unless column_name.nil? || column_name == :all
+
         sq = c.except(:select).select(1).arel.as("subquery")
         c.connection.select_value Arel::SelectManager.new.from(sq).project(Arel.star.count)
       else
