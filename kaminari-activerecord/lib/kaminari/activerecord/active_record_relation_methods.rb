@@ -37,7 +37,7 @@ module Kaminari
         # Only count non-null values of column_name if supplied
         c = c.where.not column_name => nil unless column_name.nil? || column_name == :all
 
-        c.connection.select_value <<-SQL.strip!
+        c.connection.select_value(<<-SQL.strip).to_i
           SELECT count(*) FROM (#{c.except(:select).select(1).to_sql}) subquery
         SQL
       else
