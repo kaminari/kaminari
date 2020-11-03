@@ -37,8 +37,14 @@ module Kaminari
         # Only count non-null values of column_name if supplied
         c = c.where.not column_name => nil unless column_name.nil? || column_name == :all
 
-        sq = c.except(:select).select(1).arel.as("subquery")
-        c.connection.select_value Arel::SelectManager.new.from(sq).project(Arel.star.count)
+        subquery = c.except(:select).select('1')
+        if ActiveRecord::VERSION::MAJOR >= 5
+          subquery = subquery.arel.as('subquery')
+          c.connection.select_value Arel::SelectManager.new.from(subquery).project(Arel.star.count)
+        else
+          # Arel::SelectManager.new without args is unsupported in ActiveRecord < 5
+          c.connection.select_value("SELECT count(*) FROM (#{subquery.to_sql}) subquery").to_i
+        end
       else
         c.count(column_name)
       end
