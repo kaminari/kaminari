@@ -178,6 +178,9 @@ class User < ActiveRecord::Base
 end
 ```
 
+### Configuring params_on_first_page when using ransack_memory
+
+If you are using the ransack_memory gem and experience problems navigating back to previous or first pages, set the `params_on_first_page` setting to true.
 
 ## Controllers
 
