@@ -231,15 +231,15 @@ module Kaminari
       #     <%= rel_next_prev_link_tags @items %>
       #   <% end %>
       #
-      #   #-> <link rel="next" href="/items/page/3" /><link rel="prev" href="/items/page/1" />
+      #   #-> <link rel="next" href="/items/page/3"><link rel="prev" href="/items/page/1">
       #
       def rel_next_prev_link_tags(scope, options = {})
         next_page = path_to_next_page(scope, options)
         prev_page = path_to_prev_page(scope, options)
 
         output = String.new
-        output << %Q|<link rel="next" href="#{next_page}"></link>| if next_page
-        output << %Q|<link rel="prev" href="#{prev_page}"></link>| if prev_page
+        output << %Q|<link rel="next" href="#{next_page}">| if next_page
+        output << %Q|<link rel="prev" href="#{prev_page}">| if prev_page
         output.html_safe
       end
     end
