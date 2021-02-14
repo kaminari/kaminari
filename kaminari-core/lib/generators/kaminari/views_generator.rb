@@ -114,10 +114,10 @@ BANNER
       require 'open-uri'
 
       def get_files_in_master
-        master_tree_sha = open('https://api.github.com/repos/amatsuda/kaminari_themes/git/refs/heads/master') do |json|
+        master_tree_sha = URI.open('https://api.github.com/repos/amatsuda/kaminari_themes/git/refs/heads/master') do |json|
           ActiveSupport::JSON.decode(json.read)['object']['sha']
         end
-        open('https://api.github.com/repos/amatsuda/kaminari_themes/git/trees/' + master_tree_sha + '?recursive=1') do |json|
+        URI.open('https://api.github.com/repos/amatsuda/kaminari_themes/git/trees/' + master_tree_sha + '?recursive=1') do |json|
           blobs = ActiveSupport::JSON.decode(json.read)['tree'].find_all {|i| i['type'] == 'blob' }
           blobs.map do |blob|
             [blob['path'], blob['sha']]
@@ -127,7 +127,7 @@ BANNER
       module_function :get_files_in_master
 
       def get_content_for(path)
-        open('https://api.github.com/repos/amatsuda/kaminari_themes/contents/' + path) do |json|
+        URI.open('https://api.github.com/repos/amatsuda/kaminari_themes/contents/' + path) do |json|
           Base64.decode64(ActiveSupport::JSON.decode(json.read)['content'])
         end
       end
