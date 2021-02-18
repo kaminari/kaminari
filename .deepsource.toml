@@ -1,0 +1,9 @@
+version = 1
+
+test_patterns = ["**/*_test.rb"]
+
+exclude_patterns = ["gemfiles/**"]
+
+[[analyzers]]
+name = "ruby"
+enabled = true
