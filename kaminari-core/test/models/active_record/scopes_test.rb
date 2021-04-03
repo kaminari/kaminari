@@ -16,6 +16,23 @@ if defined? ActiveRecord
         Kaminari.configure {|config| config.page_method_name = :page }
       end
     end
+    
+    test 'Show warning when using scope without ordering' do
+      expected_err = "WARNING: It seems you're using pagination without an ORDER BY clause.\nThis might result in unexpected or random records on paginated results.\n"
+      log, err = capture_output do
+        User.page(1)
+      end
+
+      assert_equal(err, expected_err)
+    end
+
+    test "Don't whow warning when scope is used with order" do
+      log, err = capture_output do
+        User.order(User.primary_key).page(1)
+      end
+      
+      assert_equal(err,'')
+    end
   end
 
   class ActiveRecordExtensionTest < ActiveSupport::TestCase
