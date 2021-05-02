@@ -1,0 +1,22 @@
+sqlite3: &sqlite3
+  adapter: sqlite3
+  database: <%= File.expand_path '../test/fake_app/kaminari_test.sqlite3', __FILE__ %>
+  pool: 5
+  timeout: 5000
+
+postgresql: &postgresql
+  adapter: postgresql
+  host: localhost
+  username: postgres
+  password: postgres
+  database: kaminari_test
+
+mysql: &mysql
+  adapter: mysql2
+  host: localhost
+  username: root
+  password: root
+  database: kaminari_test
+
+test:
+  <<: *<%= ENV['DB'] %>
