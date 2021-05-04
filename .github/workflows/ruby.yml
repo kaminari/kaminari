@@ -26,7 +26,6 @@ jobs:
           - gemfiles/active_record_52.gemfile
           - gemfiles/active_record_51.gemfile
           - gemfiles/active_record_50.gemfile
-          - gemfiles/active_record_42.gemfile
           - gemfiles/active_record_edge.gemfile
         db:
           - sqlite3
@@ -39,18 +38,10 @@ jobs:
             gemfile: gemfiles/active_record_51.gemfile
           - ruby_version: '2.7'
             gemfile: gemfiles/active_record_50.gemfile
-          - ruby_version: '2.7'
-            gemfile: gemfiles/active_record_42.gemfile
           - ruby_version: '2.6'
             gemfile: gemfiles/active_record_edge.gemfile
-          - ruby_version: '2.6'
-            gemfile: gemfiles/active_record_42.gemfile
           - ruby_version: '2.5'
             gemfile: gemfiles/active_record_edge.gemfile
-          - ruby_version: '2.5'
-            gemfile: gemfiles/active_record_42.gemfile
-          - ruby_version: 'jruby-9.2.17.0'
-            gemfile: gemfiles/active_record_42.gemfile
           - ruby_version: 'jruby-9.2.17.0'
             gemfile: gemfiles/active_record_edge.gemfile
         include:

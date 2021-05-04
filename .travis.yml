@@ -18,7 +18,6 @@ gemfile:
   - gemfiles/active_record_52.gemfile
   - gemfiles/active_record_51.gemfile
   - gemfiles/active_record_50.gemfile
-  - gemfiles/active_record_42.gemfile
   - gemfiles/active_record_edge.gemfile
 
 env:
@@ -42,16 +41,6 @@ matrix:
       gemfile: gemfiles/active_record_51.gemfile
     - rvm: 2.7.3
       gemfile: gemfiles/active_record_50.gemfile
-    - rvm: 2.7.3
-      gemfile: gemfiles/active_record_42.gemfile
-    - rvm: 2.6.7
-      gemfile: gemfiles/active_record_42.gemfile
-    - rvm: 2.5.9
-      gemfile: gemfiles/active_record_42.gemfile
-    - rvm: ruby-head
-      gemfile: gemfiles/active_record_42.gemfile
-    - rvm: jruby-9.2.17.0
-      gemfile: gemfiles/active_record_42.gemfile
   include:
     - rvm: ruby-head
       gemfile: gemfiles/active_record_edge.gemfile
