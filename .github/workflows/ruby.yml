@@ -55,6 +55,9 @@ jobs:
             gemfile: gemfiles/active_record_52.gemfile
             db: sqlite3
           - ruby_version: '2.3'
+            gemfile: gemfiles/active_record_42.gemfile
+            db: sqlite3
+          - ruby_version: '2.3'
             gemfile: gemfiles/active_record_41.gemfile
             db: sqlite3
           - ruby_version: '2.2'

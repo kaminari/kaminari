@@ -52,6 +52,9 @@ matrix:
       gemfile: gemfiles/active_record_52.gemfile
       env: DB=sqlite3
     - rvm: 2.3.8
+      gemfile: gemfiles/active_record_42.gemfile
+      env: DB=sqlite3
+    - rvm: 2.3.8
       gemfile: gemfiles/active_record_41.gemfile
       env: DB=sqlite3
     - rvm: 2.2.10
