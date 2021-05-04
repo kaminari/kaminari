@@ -20,7 +20,6 @@ jobs:
           - '2.7'
           - '2.6'
           - '2.5'
-          - '2.4'
           - 'jruby-9.2.17.0'
         gemfile:
           - gemfiles/active_record_60.gemfile
@@ -57,14 +56,6 @@ jobs:
             gemfile: gemfiles/active_record_42.gemfile
           - ruby_version: '2.5'
             gemfile: gemfiles/active_record_41.gemfile
-          - ruby_version: '2.4'
-            gemfile: gemfiles/active_record_edge.gemfile
-          - ruby_version: '2.4'
-            gemfile: gemfiles/active_record_60.gemfile
-          - ruby_version: '2.4'
-            gemfile: gemfiles/active_record_42.gemfile
-          - ruby_version: '2.4'
-            gemfile: gemfiles/active_record_41.gemfile
           - ruby_version: 'jruby-9.2.17.0'
             gemfile: gemfiles/active_record_42.gemfile
           - ruby_version: 'jruby-9.2.17.0'
@@ -74,6 +65,9 @@ jobs:
         include:
           - ruby_version: 'ruby-head'
             gemfile: gemfiles/active_record_edge.gemfile
+            db: sqlite3
+          - ruby_version: '2.4'
+            gemfile: gemfiles/active_record_52.gemfile
             db: sqlite3
           - ruby_version: '2.3'
             gemfile: gemfiles/active_record_52.gemfile

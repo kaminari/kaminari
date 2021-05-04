@@ -10,7 +10,6 @@ rvm:
   - 2.7.3
   - 2.6.7
   - 2.5.9
-  - 2.4.10
   - jruby-9.2.17.0
   # - rbx-3
 
@@ -56,14 +55,6 @@ matrix:
       gemfile: gemfiles/active_record_42.gemfile
     - rvm: 2.5.9
       gemfile: gemfiles/active_record_41.gemfile
-    - rvm: 2.4.10
-      gemfile: gemfiles/active_record_edge.gemfile
-    - rvm: 2.4.10
-      gemfile: gemfiles/active_record_60.gemfile
-    - rvm: 2.4.10
-      gemfile: gemfiles/active_record_42.gemfile
-    - rvm: 2.4.10
-      gemfile: gemfiles/active_record_41.gemfile
     - rvm: ruby-head
       gemfile: gemfiles/active_record_42.gemfile
     - rvm: ruby-head
@@ -75,6 +66,9 @@ matrix:
   include:
     - rvm: ruby-head
       gemfile: gemfiles/active_record_edge.gemfile
+      env: DB=sqlite3
+    - rvm: 2.4.10
+      gemfile: gemfiles/active_record_52.gemfile
       env: DB=sqlite3
     - rvm: 2.3.8
       gemfile: gemfiles/active_record_52.gemfile
