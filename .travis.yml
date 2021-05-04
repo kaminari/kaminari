@@ -7,12 +7,12 @@ services:
   - mysql
 
 rvm:
-  - 2.7.0
-  - 2.6.3
-  - 2.5.5
-  - 2.4.5
+  - 2.7.3
+  - 2.6.7
+  - 2.5.9
+  - 2.4.10
   - 2.3.8
-  - jruby-9.2.9.0
+  - jruby-9.2.17.0
   # - rbx-3
 
 gemfile:
@@ -39,31 +39,31 @@ cache: bundler
 
 matrix:
   exclude:
-    - rvm: 2.7.0
+    - rvm: 2.7.3
       gemfile: gemfiles/active_record_52.gemfile
-    - rvm: 2.7.0
+    - rvm: 2.7.3
       gemfile: gemfiles/active_record_51.gemfile
-    - rvm: 2.7.0
+    - rvm: 2.7.3
       gemfile: gemfiles/active_record_50.gemfile
-    - rvm: 2.7.0
+    - rvm: 2.7.3
       gemfile: gemfiles/active_record_42.gemfile
-    - rvm: 2.7.0
+    - rvm: 2.7.3
       gemfile: gemfiles/active_record_41.gemfile
-    - rvm: 2.6.3
+    - rvm: 2.6.7
       gemfile: gemfiles/active_record_42.gemfile
-    - rvm: 2.6.3
+    - rvm: 2.6.7
       gemfile: gemfiles/active_record_41.gemfile
-    - rvm: 2.5.5
+    - rvm: 2.5.9
       gemfile: gemfiles/active_record_42.gemfile
-    - rvm: 2.5.5
+    - rvm: 2.5.9
       gemfile: gemfiles/active_record_41.gemfile
-    - rvm: 2.4.5
+    - rvm: 2.4.10
       gemfile: gemfiles/active_record_edge.gemfile
-    - rvm: 2.4.5
+    - rvm: 2.4.10
       gemfile: gemfiles/active_record_60.gemfile
-    - rvm: 2.4.5
+    - rvm: 2.4.10
       gemfile: gemfiles/active_record_42.gemfile
-    - rvm: 2.4.5
+    - rvm: 2.4.10
       gemfile: gemfiles/active_record_41.gemfile
     - rvm: 2.3.8
       gemfile: gemfiles/active_record_edge.gemfile
@@ -73,9 +73,9 @@ matrix:
       gemfile: gemfiles/active_record_42.gemfile
     - rvm: ruby-head
       gemfile: gemfiles/active_record_41.gemfile
-    - rvm: jruby-9.2.9.0
+    - rvm: jruby-9.2.17.0
       gemfile: gemfiles/active_record_42.gemfile
-    - rvm: jruby-9.2.9.0
+    - rvm: jruby-9.2.17.0
       gemfile: gemfiles/active_record_41.gemfile
   include:
     - rvm: ruby-head
@@ -92,7 +92,7 @@ matrix:
       env: DB=sqlite3
   allow_failures:
     - rvm: ruby-head
-    - rvm: jruby-9.2.9.0
+    - rvm: jruby-9.2.17.0
     # - rvm: rbx-3
     - gemfile: gemfiles/active_record_edge.gemfile
   fast_finish: true
