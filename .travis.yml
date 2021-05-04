@@ -44,7 +44,6 @@ matrix:
   include:
     - rvm: ruby-head
       gemfile: gemfiles/active_record_edge.gemfile
-      env: DB=sqlite3
     - rvm: 2.4.10
       gemfile: gemfiles/active_record_52.gemfile
       env: DB=sqlite3
