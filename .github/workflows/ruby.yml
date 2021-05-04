@@ -48,6 +48,12 @@ jobs:
           - ruby_version: 'ruby-head'
             gemfile: gemfiles/active_record_edge.gemfile
             db: sqlite3
+          - ruby_version: 'ruby-head'
+            gemfile: gemfiles/active_record_edge.gemfile
+            db: postgresql
+          - ruby_version: 'ruby-head'
+            gemfile: gemfiles/active_record_edge.gemfile
+            db: mysql
           - ruby_version: '2.4'
             gemfile: gemfiles/active_record_52.gemfile
             db: sqlite3

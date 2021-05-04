@@ -45,6 +45,12 @@ matrix:
     - rvm: ruby-head
       gemfile: gemfiles/active_record_edge.gemfile
       env: DB=sqlite3
+    - rvm: ruby-head
+      gemfile: gemfiles/active_record_edge.gemfile
+      env: DB=postgresql
+    - rvm: ruby-head
+      gemfile: gemfiles/active_record_edge.gemfile
+      env: DB=mysql
     - rvm: 2.4.10
       gemfile: gemfiles/active_record_52.gemfile
       env: DB=sqlite3
