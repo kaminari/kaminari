@@ -8,7 +8,7 @@ postgresql: &postgresql
   adapter: postgresql
   host: localhost
   username: postgres
-  password: <%= ENV['POSTGRES_PASSWORD'] %>
+  password: postgres
   database: kaminari_test
 
 mysql: &mysql
