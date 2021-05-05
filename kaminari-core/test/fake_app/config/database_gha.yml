@@ -15,7 +15,7 @@ mysql: &mysql
   adapter: mysql2
   host: localhost
   username: root
-  password: root
+  password: <%= ENV['MYSQL_PASSWORD'] %>
   database: kaminari_test
 
 test:
