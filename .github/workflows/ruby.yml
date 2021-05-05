@@ -95,6 +95,5 @@ jobs:
           ruby-version: ${{ matrix.ruby_version }}
           bundler-cache: true
         continue-on-error: ${{ matrix.ruby_version == 'ruby-head' || matrix.ruby_version == 'jruby-9.2.17.0' || matrix.gemfile == 'gemfiles/active_record_edge.gemfile' }}
-      - run: mv kaminari-core/test/fake_app/config/database_gha.yml kaminari-core/test/fake_app/config/database.yml
       - run: bundle exec rake test
         continue-on-error: ${{ matrix.ruby_version == 'ruby-head' || matrix.ruby_version == 'jruby-9.2.17.0' || matrix.gemfile == 'gemfiles/active_record_edge.gemfile' }}

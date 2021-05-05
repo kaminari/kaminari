@@ -8,14 +8,14 @@ postgresql: &postgresql
   adapter: postgresql
   host: localhost
   username: postgres
-  password:
+  password: <%= ENV['POSTGRES_PASSWORD'] %>
   database: kaminari_test
 
 mysql: &mysql
   adapter: mysql2
   host: localhost
   username: root
-  password:
+  password: <%= ENV['MYSQL_PASSWORD'] %>
   database: kaminari_test
 
 test:
