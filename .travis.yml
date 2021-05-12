@@ -2,29 +2,6 @@ language: ruby
 
 dist: xenial
 
-services:
-  - postgresql
-  - mysql
-
-rvm:
-  - 2.7.3
-  - 2.6.7
-  - 2.5.9
-  - jruby-9.2.17.0
-  # - rbx-3
-
-gemfile:
-  - gemfiles/active_record_60.gemfile
-  - gemfiles/active_record_52.gemfile
-  - gemfiles/active_record_51.gemfile
-  - gemfiles/active_record_50.gemfile
-  - gemfiles/active_record_edge.gemfile
-
-env:
-  - DB=sqlite3
-  - DB=postgresql
-  - DB=mysql
-
 before_install:
   # install older versions of rubygems and bundler only on Ruby < 2.7
   - if [ `echo "${TRAVIS_RUBY_VERSION:0:3} < 2.7" | bc` == 1 ]; then gem i rubygems-update -v '<3' && update_rubygems; fi;
@@ -34,47 +11,7 @@ script: 'bundle exec rake test'
 cache: bundler
 
 matrix:
-  exclude:
-    - rvm: 2.7.3
-      gemfile: gemfiles/active_record_52.gemfile
-    - rvm: 2.7.3
-      gemfile: gemfiles/active_record_51.gemfile
-    - rvm: 2.7.3
-      gemfile: gemfiles/active_record_50.gemfile
   include:
-    - rvm: ruby-head
-      gemfile: gemfiles/active_record_edge.gemfile
-      env: DB=sqlite3
-    - rvm: ruby-head
-      gemfile: gemfiles/active_record_edge.gemfile
-      env: DB=postgresql
-    - rvm: ruby-head
-      gemfile: gemfiles/active_record_edge.gemfile
-      env: DB=mysql
-    - rvm: 2.4.10
-      gemfile: gemfiles/active_record_52.gemfile
-      env: DB=sqlite3
-    - rvm: 2.3.8
-      gemfile: gemfiles/active_record_52.gemfile
-      env: DB=sqlite3
-    - rvm: 2.3.8
-      gemfile: gemfiles/active_record_42.gemfile
-      env: DB=sqlite3
-    - rvm: 2.3.8
-      gemfile: gemfiles/active_record_41.gemfile
-      env: DB=sqlite3
-    - rvm: 2.2.10
-      gemfile: gemfiles/active_record_52.gemfile
-      env: DB=sqlite3
-    - rvm: 2.1.10
-      gemfile: gemfiles/active_record_42.gemfile
-      env: DB=sqlite3
     - rvm: 2.0.0
       gemfile: gemfiles/active_record_42.gemfile
       env: DB=sqlite3
-  allow_failures:
-    - rvm: ruby-head
-    - rvm: jruby-9.2.17.0
-    # - rvm: rbx-3
-    - gemfile: gemfiles/active_record_edge.gemfile
-  fast_finish: true
