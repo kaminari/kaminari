@@ -52,6 +52,35 @@ if defined?(::Rails::Railtie) && defined?(ActionView)
         end
       end
 
+      sub_test_case "with a custom route setting" do
+        include CustomRoutesHelper
+
+        setup do
+          self.params[:controller] = nil
+          self.params[:action] = nil
+          self.params[:page] = 3
+        end
+
+        sub_test_case 'for first page' do
+          test 'by default' do
+            assert_equal('/posts', Kaminari::Helpers::Tag.new(self, route: :posts_path).page_url_for(1))
+          end
+
+          test 'config.params_on_first_page == false' do
+            begin
+              Kaminari.config.params_on_first_page = true
+              assert_equal('/posts/page/1', Kaminari::Helpers::Tag.new(self, route: :posts_path).page_url_for(1))
+            ensure
+              Kaminari.config.params_on_first_page = false
+            end
+          end
+        end
+
+        test 'for other page' do
+          assert_equal('/posts/page/5', Kaminari::Helpers::Tag.new(self, route: :posts_path).page_url_for(5))
+        end
+      end
+
       sub_test_case "with param_name = 'user[page]' option" do
         setup do
           self.params[:user] = {page: '3', scope: 'active'}

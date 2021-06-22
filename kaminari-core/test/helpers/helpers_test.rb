@@ -44,4 +44,9 @@ class PaginatorHelperTest < ActiveSupport::TestCase
     paginator = Paginator.new(template, param_name: :pagina)
     assert_equal :pagina, paginator.page_tag(template).instance_variable_get('@param_name')
   end
+
+  test '#route' do
+    paginator = Paginator.new(template, route: :users_path)
+    assert_equal :users_path, paginator.page_tag(template).instance_variable_get('@route')
+  end
 end
