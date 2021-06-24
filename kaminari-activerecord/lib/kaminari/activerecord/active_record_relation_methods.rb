@@ -28,7 +28,7 @@ module Kaminari
       # #count overrides the #select which could include generated columns referenced in #order, so skip #order here, where it's irrelevant to the result anyway
       c = except(:offset, :limit, :order)
       # Remove includes only if they are irrelevant
-      c = c.except(:includes) unless references_eager_loaded_tables?
+      c = c.except(:includes, :eager_load, :preload) unless references_eager_loaded_tables?
 
       c = c.limit(max_pages * limit_value) if max_pages && max_pages.respond_to?(:*)
 
