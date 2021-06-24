@@ -238,8 +238,8 @@ module Kaminari
         prev_page = path_to_prev_page(scope, options)
 
         output = String.new
-        output << %Q|<link rel="next" href="#{next_page}">| if next_page
-        output << %Q|<link rel="prev" href="#{prev_page}">| if prev_page
+        output << %|<link rel="next" href="#{next_page}">| if next_page
+        output << %|<link rel="prev" href="#{prev_page}">| if prev_page
         output.html_safe
       end
     end

@@ -119,14 +119,14 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
         users = User.page(1)
 
         assert_nil view.link_to_previous_page(users, 'Previous', params: {controller: 'users', action: 'index'})
-        assert_equal 'At the Beginning', (view.link_to_previous_page(users, 'Previous', params: {controller: 'users', action: 'index'}) do 'At the Beginning' end)
+        assert_equal 'At the Beginning', (view.link_to_previous_page(users, 'Previous', params: {controller: 'users', action: 'index'}) { 'At the Beginning' })
       end
 
       test 'out of range' do
         users = User.page(5)
 
         assert_nil view.link_to_previous_page(users, 'Previous', params: {controller: 'users', action: 'index'})
-        assert_equal 'At the Beginning', (view.link_to_previous_page(users, 'Previous', params: {controller: 'users', action: 'index'}) do 'At the Beginning' end)
+        assert_equal 'At the Beginning', (view.link_to_previous_page(users, 'Previous', params: {controller: 'users', action: 'index'}) { 'At the Beginning' })
       end
 
       test '#link_to_previous_page accepts ActionController::Parameters' do
