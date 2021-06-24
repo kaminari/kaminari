@@ -83,6 +83,16 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
         assert_not_match(/Last/, html)
         assert_not_match(/Next/, html)
       end
+
+      test 'scope without count' do
+        users = User.page(7).without_count
+
+        html = view.paginate users, params: {controller: 'users', action: 'index'}
+        assert_match(/<a [^>]*>&lsaquo; Prev<\/a>/, html)
+        assert_match(/<a [^>]*>Next &rsaquo;<\/a>/, html)
+        assert_not_match(/First/, html)
+        assert_not_match(/Last/, html)
+      end
     end
 
     sub_test_case '#link_to_previous_page' do
@@ -467,6 +477,109 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
               addresses = User::Address.page(2).per(25)
               assert_equal 'Displaying places <b>26&nbsp;-&nbsp;50</b> of <b>50</b> in total', view.page_entries_info(addresses, entry_name: 'place')
             end
+          end
+        end
+      end
+
+      sub_test_case 'on a scope without count' do
+        sub_test_case 'having no entries' do
+          test 'with default entry name' do
+            users = User.page(1).per(25).without_count
+            assert_equal 'No users found', view.page_entries_info(users)
+          end
+
+          test 'setting the entry name option to "member"' do
+            users = User.page(1).per(25).without_count
+            assert_equal 'No members found', view.page_entries_info(users, entry_name: 'member')
+          end
+        end
+
+        sub_test_case 'having 1 entry' do
+          setup do
+            User.create! name: 'user1'
+          end
+
+          test 'with default entry name' do
+            users = User.page(1).per(25).without_count
+            assert_equal 'Displaying <b>1</b> user', view.page_entries_info(users)
+          end
+
+          test 'setting the entry name option to "member"' do
+            users = User.page(1).per(25).without_count
+            assert_equal 'Displaying <b>1</b> member', view.page_entries_info(users, entry_name: 'member')
+          end
+        end
+
+        sub_test_case 'having more than 1 but less than a page of entries' do
+          setup do
+            10.times {|i| User.create! name: "user#{i}"}
+          end
+
+          test 'with default entry name' do
+            users = User.page(1).per(25).without_count
+            assert_equal 'Displaying <b>all 10</b> users', view.page_entries_info(users)
+          end
+
+          test 'setting the entry name option to "member"' do
+            users = User.page(1).per(25).without_count
+            assert_equal 'Displaying <b>all 10</b> members', view.page_entries_info(users, entry_name: 'member')
+          end
+        end
+
+        sub_test_case 'having more than one page of entries' do
+          setup do
+            50.times {|i| User.create! name: "user#{i}"}
+          end
+
+          sub_test_case 'the first page' do
+            test 'with default entry name' do
+              users = User.page(1).per(25).without_count
+              assert_equal 'Displaying users <b>1&nbsp;-&nbsp;25</b>', view.page_entries_info(users)
+            end
+
+            test 'setting the entry name option to "member"' do
+              users = User.page(1).per(25).without_count
+              assert_equal 'Displaying members <b>1&nbsp;-&nbsp;25</b>', view.page_entries_info(users, entry_name: 'member')
+            end
+          end
+
+          sub_test_case 'the next page' do
+            test 'with default entry name' do
+              users = User.page(2).per(25).without_count
+              assert_equal 'Displaying users <b>26&nbsp;-&nbsp;50</b>', view.page_entries_info(users)
+            end
+
+            test 'setting the entry name option to "member"' do
+              users = User.page(2).per(25).without_count
+              assert_equal 'Displaying members <b>26&nbsp;-&nbsp;50</b>', view.page_entries_info(users, entry_name: 'member')
+            end
+          end
+
+          sub_test_case 'the last page' do
+            test 'with default entry name' do
+              begin
+                User.max_pages 4
+                users = User.page(4).per(10).without_count
+
+                assert_equal 'Displaying users <b>31&nbsp;-&nbsp;40</b>', view.page_entries_info(users)
+              ensure
+                User.max_pages nil
+              end
+            end
+          end
+
+          test 'it accepts a decorated object' do
+            page_info_presenter = Class.new(SimpleDelegator) do
+              include ActionView::Helpers::NumberHelper
+
+              def total_count
+                number_with_delimiter(1_000)
+              end
+            end
+
+            users = page_info_presenter.new(User.page(1).per(25).without_count)
+
+            assert_equal 'Displaying users <b>1&nbsp;-&nbsp;25</b>', view.page_entries_info(users)
           end
         end
       end
