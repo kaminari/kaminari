@@ -26,6 +26,10 @@ class PaginatableArrayTest < ActiveSupport::TestCase
       assert_equal 0, arr.count
     end
 
+    test 'page nil' do
+      assert_first_page_of_array @array.page(nil)
+    end
+
     test 'page 1' do
       assert_first_page_of_array @array.page(1)
     end
