@@ -1,4 +1,5 @@
-# Kaminari [![Build Status](https://travis-ci.org/kaminari/kaminari.svg)](http://travis-ci.org/kaminari/kaminari) [![Code Climate](https://codeclimate.com/github/kaminari/kaminari/badges/gpa.svg)](https://codeclimate.com/github/kaminari/kaminari) [![Inch CI](http://inch-ci.org/github/kaminari/kaminari.svg)](http://inch-ci.org/github/kaminari/kaminari)
+# Kaminari [![Build Status](https://github.com/kaminari/kaminari/actions/workflows/main.yml/badge.svg)](https://github.com/kaminari/kaminari/actions) [![Code Climate](https://codeclimate.com/github/kaminari/kaminari/badges/gpa.svg)](https://codeclimate.com/github/kaminari/kaminari) [![Inch CI](http://inch-ci.org/github/kaminari/kaminari.svg)](http://inch-ci.org/github/kaminari/kaminari)
+
 
 A Scope & Engine based, clean, powerful, customizable and sophisticated paginator for modern web app frameworks and ORMs
 
