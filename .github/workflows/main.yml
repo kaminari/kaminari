@@ -1,4 +1,4 @@
-name: Ruby
+name: build
 
 on:
   - push
