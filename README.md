@@ -69,10 +69,12 @@ If you're building non-Rails of non-ActiveRecord app and want the pagination fea
 To fetch the 7th page of users (default `per_page` is 25)
 
 ```ruby
-User.page(7)
+User.order(id: :desc).page(7)
 ```
 
-Note: pagination starts at page 1, not at page 0 (page(0) will return the same results as page(1)).
+Note that the `order` must be because SQL does not promise to deliver the results of a query in any particular order unless `ORDER BY` is used to constrain the order. It can lead to unpredictable results on pages.
+
+**Note**: pagination starts at page 1, not at page 0 (page(0) will return the same results as page(1)).
 
 You can get page numbers or page conditions by using below methods.
 ```ruby
@@ -92,7 +94,7 @@ User.page(100).out_of_range?   #=> true
 To show a lot more users per each page (change the `per_page` value)
 
 ```ruby
-User.page(7).per(50)
+User.order(id: :desc).page(7).per(50)
 ```
 
 Note that the `per` scope is not directly defined on the models but is just a method defined on the page scope.
@@ -113,7 +115,7 @@ a.page(1).per(20).total_count  #=> 1000
 Occasionally you need to pad a number of records that is not a multiple of the page size.
 
 ```ruby
-User.page(7).per(50).padding(3)
+User.order(id: :desc).page(7).per(50).padding(3)
 ```
 
 Note that the `padding` scope also is not directly defined on the models.
