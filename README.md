@@ -74,6 +74,12 @@ User.page(7)
 
 Note: pagination starts at page 1, not at page 0 (page(0) will return the same results as page(1)).
 
+Kaminari does not add an `order` to queries. To avoid surprises, you should generally include an order in paginated queries. For example:
+
+```ruby
+User.order(:name).page(7)
+```
+
 You can get page numbers or page conditions by using below methods.
 ```ruby
 User.count                     #=> 1000
@@ -89,14 +95,14 @@ User.page(100).out_of_range?   #=> true
 
 ### The `per` Scope
 
-To show a lot more users per each page (change the `per_page` value)
+To show a lot more users per each page (change the `per` value)
 
 ```ruby
-User.page(7).per(50)
+User.order(:name).page(7).per(50)
 ```
 
 Note that the `per` scope is not directly defined on the models but is just a method defined on the page scope.
-This is absolutely reasonable because you will never actually use `per_page` without specifying the `page` number.
+This is absolutely reasonable because you will never actually use `per` without specifying the `page` number.
 
 Keep in mind that `per` internally utilizes `limit` and so it will override any `limit` that was set previously.
 And if you want to get the size for all request records you can use `total_count` method:
@@ -113,7 +119,7 @@ a.page(1).per(20).total_count  #=> 1000
 Occasionally you need to pad a number of records that is not a multiple of the page size.
 
 ```ruby
-User.page(7).per(50).padding(3)
+User.order(:name).page(7).per(50).padding(3)
 ```
 
 Note that the `padding` scope also is not directly defined on the models.
@@ -123,7 +129,7 @@ Note that the `padding` scope also is not directly defined on the models.
 If for some reason you need to unscope `page` and `per` methods you can call `except(:limit, :offset)`
 
 ```ruby
-users = User.page(7).per(50)
+users = User.order(:name).page(7).per(50)
 unpaged_users = users.except(:limit, :offset) # unpaged_users will not use the kaminari scopes
 ```
 
