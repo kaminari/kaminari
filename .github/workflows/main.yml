@@ -22,6 +22,7 @@ jobs:
           - '2.6'
           - '2.5'
           - 'jruby-9.2.17.0'
+          - truffleruby-head
         gemfile:
           - gemfiles/active_record_60.gemfile
           - gemfiles/active_record_52.gemfile
