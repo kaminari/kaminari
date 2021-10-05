@@ -2,11 +2,11 @@
 
 require 'test_helper'
 
-if defined? ::Kaminari::ActionView
+if defined? ::Kaminari::Actionview
   class PaginatorTagsTest < ActionView::TestCase
     # A test paginator that can detect instantiated tags inside
     class TagSpy < Kaminari::Helpers::Paginator
-      def initialize(*)
+      def initialize(*, **)
         super
         @tags = []
       end

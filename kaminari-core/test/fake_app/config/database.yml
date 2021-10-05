@@ -1,6 +1,6 @@
 sqlite3: &sqlite3
   adapter: sqlite3
-  database: <%= File.expand_path '../test/fake_app/kaminari_test.sqlite3', __FILE__ %>
+  database: <%= File.join Dir.pwd, 'test/kaminari_test.sqlite3' %>
   pool: 5
   timeout: 5000
 
@@ -8,14 +8,14 @@ postgresql: &postgresql
   adapter: postgresql
   host: localhost
   username: postgres
-  password:
+  password: <%= ENV['POSTGRES_PASSWORD'] %>
   database: kaminari_test
 
 mysql: &mysql
   adapter: mysql2
   host: localhost
   username: root
-  password:
+  password: <%= ENV['MYSQL_PASSWORD'] %>
   database: kaminari_test
 
 test:

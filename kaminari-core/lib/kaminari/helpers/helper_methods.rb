@@ -41,7 +41,12 @@ module Kaminari
       def next_page_url(scope, options = {})
         "#{request.base_url}#{next_page_path(scope, options)}" if scope.next_page
       end
-      alias path_to_next_url next_page_url
+      alias url_to_next_page next_page_url
+
+      def path_to_next_url(scope, options = {})
+        ActiveSupport::Deprecation.warn 'path_to_next_url is deprecated. Use next_page_url or url_to_next_page instead.'
+        next_page_url(scope, options)
+      end
 
       # A helper that calculates the url to the previous page.
       #
@@ -228,15 +233,15 @@ module Kaminari
       #     <%= rel_next_prev_link_tags @items %>
       #   <% end %>
       #
-      #   #-> <link rel="next" href="/items/page/3" /><link rel="prev" href="/items/page/1" />
+      #   #-> <link rel="next" href="/items/page/3"><link rel="prev" href="/items/page/1">
       #
       def rel_next_prev_link_tags(scope, options = {})
         next_page = path_to_next_page(scope, options)
         prev_page = path_to_prev_page(scope, options)
 
         output = String.new
-        output << %Q|<link rel="next" href="#{next_page}"></link>| if next_page
-        output << %Q|<link rel="prev" href="#{prev_page}"></link>| if prev_page
+        output << %Q|<link rel="next" href="#{next_page}">| if next_page
+        output << %Q|<link rel="prev" href="#{prev_page}">| if prev_page
         output.html_safe
       end
     end

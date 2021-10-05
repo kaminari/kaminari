@@ -1,4 +1,4 @@
-# Kaminari [![Build Status](https://travis-ci.org/kaminari/kaminari.svg)](http://travis-ci.org/kaminari/kaminari) [![Code Climate](https://codeclimate.com/github/kaminari/kaminari/badges/gpa.svg)](https://codeclimate.com/github/kaminari/kaminari) [![Inch CI](http://inch-ci.org/github/kaminari/kaminari.svg)](http://inch-ci.org/github/kaminari/kaminari)
+# Kaminari [![Build Status](https://github.com/kaminari/kaminari/actions/workflows/main.yml/badge.svg)](https://github.com/kaminari/kaminari/actions) [![Code Climate](https://codeclimate.com/github/kaminari/kaminari/badges/gpa.svg)](https://codeclimate.com/github/kaminari/kaminari)
 
 A Scope & Engine based, clean, powerful, customizable and sophisticated paginator for modern web app frameworks and ORMs
 
@@ -30,7 +30,7 @@ The pagination helper outputs the HTML5 `<nav>` tag by default. Plus, the helper
 
 ## Supported Versions
 
-* Ruby 2.0.0, 2.1.x, 2.2.x, 2.3.x, 2.4.x, 2.5.x, 2.6.x, 2.7.x, 2.8
+* Ruby 2.1.x, 2.2.x, 2.3.x, 2.4.x, 2.5.x, 2.6.x, 2.7.x, 3.0.x
 
 * Rails 4.1, 4.2, 5.0, 5.1, 5.2, 6.0, 6.1
 
@@ -74,6 +74,12 @@ User.page(7)
 
 Note: pagination starts at page 1, not at page 0 (page(0) will return the same results as page(1)).
 
+Kaminari does not add an `order` to queries. To avoid surprises, you should generally include an order in paginated queries. For example:
+
+```ruby
+User.order(:name).page(7)
+```
+
 You can get page numbers or page conditions by using below methods.
 ```ruby
 User.count                     #=> 1000
@@ -89,14 +95,14 @@ User.page(100).out_of_range?   #=> true
 
 ### The `per` Scope
 
-To show a lot more users per each page (change the `per_page` value)
+To show a lot more users per each page (change the `per` value)
 
 ```ruby
-User.page(7).per(50)
+User.order(:name).page(7).per(50)
 ```
 
 Note that the `per` scope is not directly defined on the models but is just a method defined on the page scope.
-This is absolutely reasonable because you will never actually use `per_page` without specifying the `page` number.
+This is absolutely reasonable because you will never actually use `per` without specifying the `page` number.
 
 Keep in mind that `per` internally utilizes `limit` and so it will override any `limit` that was set previously.
 And if you want to get the size for all request records you can use `total_count` method:
@@ -113,7 +119,7 @@ a.page(1).per(20).total_count  #=> 1000
 Occasionally you need to pad a number of records that is not a multiple of the page size.
 
 ```ruby
-User.page(7).per(50).padding(3)
+User.order(:name).page(7).per(50).padding(3)
 ```
 
 Note that the `padding` scope also is not directly defined on the models.
@@ -123,7 +129,7 @@ Note that the `padding` scope also is not directly defined on the models.
 If for some reason you need to unscope `page` and `per` methods you can call `except(:limit, :offset)`
 
 ```ruby
-users = User.page(7).per(50)
+users = User.order(:name).page(7).per(50)
 unpaged_users = users.except(:limit, :offset) # unpaged_users will not use the kaminari scopes
 ```
 
@@ -194,6 +200,9 @@ Kaminari.configure do |config|
 end
 ```
 
+### Configuring params_on_first_page when using ransack_memory
+
+If you are using [the `ransack_memory` gem](https://github.com/richardrails/ransack_memory) and experience problems navigating back to the previous or first page, set the `params_on_first_page` setting to `true`.
 
 ## Controllers
 
