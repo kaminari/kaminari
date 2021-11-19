@@ -59,7 +59,7 @@ module Kaminari
       refine ::ActiveRecord::Relation do
         private
 
-        # Update multiple instance variables that holds `limit` to a given value
+        # Update multiple instance variables that hold `limit` to a given value
         def set_limit_value(new_limit)
           @values[:limit] = new_limit
 
