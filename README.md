@@ -288,6 +288,12 @@ This option makes it easier to do things like A/B testing pagination templates/t
 
 This simply renders a link to the next page. This would be helpful for creating a Twitter-like pagination feature.
 
+The helper methods support a `params` option to further specify the link. If `format` needs to be set, inlude it in the `params` hash.
+
+```erb
+<%= link_to_next_page @items, 'Next Page', params: {controller: 'foo', action: 'bar', format: :turbo_stream} %>
+```
+
 ### The `page_entries_info` Helper Method
 
 ```erb
