@@ -258,7 +258,7 @@ This would modify the query parameter name on each links.
 ### Extra Parameters (`:params`) for the Links
 
 ```erb
-<%= paginate @users, params: {controller: 'foo', action: 'bar'} %>
+<%= paginate @users, params: {controller: 'foo', action: 'bar', format: :turbo_stream} %>
 ```
 
 This would modify each link's `url_option`. :`controller` and :`action` might be the keys in common.
