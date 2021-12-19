@@ -71,19 +71,19 @@ if defined? ActiveRecord
     end
 
     test 'regression: call arel first' do
-      @user = User.page(1).without_count
-      @user.arel
+      @users = User.page(1).without_count
+      @users.arel
 
-      assert_equal false, @user.last_page?
+      assert_equal false, @users.last_page?
     end
 
     test 'regression: call last page first' do
-      @user = User.page(1).without_count
+      @users = User.page(1).without_count
 
-      @user.last_page?
-      @user.arel
+      @users.last_page?
+      @users.arel
 
-      assert_equal false, @user.last_page?
+      assert_equal false, @users.last_page?
     end
 
     def assert_no_queries
