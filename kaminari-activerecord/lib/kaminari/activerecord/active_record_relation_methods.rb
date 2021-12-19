@@ -67,6 +67,8 @@ module Kaminari
             case @arel.limit
             when Integer
               @arel.limit = new_limit
+            when ActiveModel::Attribute::WithCastValue
+              @arel.limit = build_cast_value 'LIMIT', new_limit
             when Arel::Nodes::BindParam
               if @arel.limit.respond_to?(:value)
                 @arel.limit = Arel::Nodes::BindParam.new(@arel.limit.value.with_cast_value(new_limit))
