@@ -66,7 +66,7 @@ module Kaminari
          "kaminari",
          @theme,
          self.class.name.demodulize.underscore
-        ].compact.join("/")
+        ].compact.join("/").gsub('//', '/')
       end
     end
 
