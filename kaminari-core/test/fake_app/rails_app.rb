@@ -14,6 +14,7 @@ class KaminariTestApp < Rails::Application
   config.eager_load = false
   # Rails.root
   config.root = File.dirname(__FILE__)
+  config.active_record.belongs_to_required_by_default = false if (Rails::VERSION::MAJOR >= 5) && defined?(ActiveRecord)
 end
 Rails.backtrace_cleaner.remove_silencers!
 Rails.application.initialize!
