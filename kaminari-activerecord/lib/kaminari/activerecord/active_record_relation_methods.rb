@@ -65,7 +65,7 @@ module Kaminari
 
           if @arel
             case @arel.limit.class.name
-            when 'Integer'
+            when 'Integer', 'Fixnum'
               @arel.limit = new_limit
             when 'ActiveModel::Attribute::WithCastValue'  # comparing by class name because ActiveModel::Attribute::WithCastValue is a private constant
               @arel.limit = build_cast_value 'LIMIT', new_limit
