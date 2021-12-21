@@ -21,9 +21,11 @@ jobs:
           - '2.7'
           - '2.6'
           - '2.5'
-          - 'jruby-9.2.17.0'
+          - 'jruby-9.3.2.0'
           - truffleruby-head
         gemfile:
+          - gemfiles/active_record_70.gemfile
+          - gemfiles/active_record_61.gemfile
           - gemfiles/active_record_60.gemfile
           - gemfiles/active_record_52.gemfile
           - gemfiles/active_record_51.gemfile
@@ -48,9 +50,13 @@ jobs:
             gemfile: gemfiles/active_record_50.gemfile
           - ruby_version: '2.6'
             gemfile: gemfiles/active_record_edge.gemfile
+          - ruby_version: '2.6'
+            gemfile: gemfiles/active_record_70.gemfile
           - ruby_version: '2.5'
             gemfile: gemfiles/active_record_edge.gemfile
-          - ruby_version: 'jruby-9.2.17.0'
+          - ruby_version: '2.5'
+            gemfile: gemfiles/active_record_70.gemfile
+          - ruby_version: 'jruby-9.3.2.0'
             gemfile: gemfiles/active_record_edge.gemfile
         include:
           - ruby_version: 'ruby-head'
@@ -97,6 +103,6 @@ jobs:
         with:
           ruby-version: ${{ matrix.ruby_version }}
           bundler-cache: true
-        continue-on-error: ${{ matrix.ruby_version == 'ruby-head' || matrix.ruby_version == 'jruby-9.2.17.0' || matrix.gemfile == 'gemfiles/active_record_edge.gemfile' }}
+        continue-on-error: ${{ matrix.ruby_version == 'ruby-head' || matrix.ruby_version == 'jruby-9.3.2.0' || matrix.gemfile == 'gemfiles/active_record_edge.gemfile' }}
       - run: bundle exec rake test
-        continue-on-error: ${{ matrix.ruby_version == 'ruby-head' || matrix.ruby_version == 'jruby-9.2.17.0' || matrix.gemfile == 'gemfiles/active_record_edge.gemfile' }}
+        continue-on-error: ${{ matrix.ruby_version == 'ruby-head' || matrix.ruby_version == 'jruby-9.3.2.0' || matrix.gemfile == 'gemfiles/active_record_edge.gemfile' }}

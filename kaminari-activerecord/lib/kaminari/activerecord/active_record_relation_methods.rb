@@ -59,15 +59,17 @@ module Kaminari
       refine ::ActiveRecord::Relation do
         private
 
-        # Update multiple instance variables that holds `limit` to a given value
+        # Update multiple instance variables that hold `limit` to a given value
         def set_limit_value(new_limit)
           @values[:limit] = new_limit
 
           if @arel
-            case @arel.limit
-            when Integer
+            case @arel.limit.class.name
+            when 'Integer', 'Fixnum'
               @arel.limit = new_limit
-            when Arel::Nodes::BindParam
+            when 'ActiveModel::Attribute::WithCastValue'  # comparing by class name because ActiveModel::Attribute::WithCastValue is a private constant
+              @arel.limit = build_cast_value 'LIMIT', new_limit
+            when 'Arel::Nodes::BindParam'
               if @arel.limit.respond_to?(:value)
                 @arel.limit = Arel::Nodes::BindParam.new(@arel.limit.value.with_cast_value(new_limit))
               end

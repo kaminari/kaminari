@@ -4,14 +4,14 @@ module Kaminari
   module Helpers
 
     # The Kaminari::Helpers::UrlHelper module provides useful methods for
-    # generating a path or url to a particlar page. A class must implement the
+    # generating a path or url to a particular page. A class must implement the
     # following methods:
     #
     #   * <tt>url_for</tt>: A method that generates an actual path
     #   * <tt>params</tt>: A method that returns query string parameters
     #   * <tt>request</tt>: A method that returns a Rack::Request object
     #
-    # A normal Rails controller implements all the methods, which makes it
+    # A normal Rails controller implements all the methods, which make it
     # trivial to use this module:
     #
     # ==== Examples
@@ -20,10 +20,10 @@ module Kaminari
     #     include Kaminari::Helpers::UrlHelper
     #
     #     def index
-    #      @users = User.page(1)
+    #       @users = User.page(1)
     #
-    #      path_to_next_page(@items)
-    #      # => /items?page=2
+    #       path_to_next_page(@items)
+    #       # => /items?page=2
     #     end
     #   end
     #

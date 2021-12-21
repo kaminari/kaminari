@@ -13,7 +13,7 @@ module Kaminari
     # class, so _tag partial is not needed).
     #   e.g.)  PrevLink  ->  app/views/kaminari/_prev_link.html.erb
     #
-    # When no matching template were found in your app, the engine's pre
+    # When no matching templates were found in your app, the engine's pre
     # installed template will be used.
     #   e.g.)  Paginator  ->  $GEM_HOME/kaminari-x.x.x/app/views/kaminari/_paginator.html.erb
     class Tag
@@ -66,7 +66,7 @@ module Kaminari
          "kaminari",
          @theme,
          self.class.name.demodulize.underscore
-        ].compact.join("/")
+        ].compact.join("/").gsub('//', '/')
       end
     end
 

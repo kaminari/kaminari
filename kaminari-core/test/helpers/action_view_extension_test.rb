@@ -526,6 +526,11 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
         users = User.page(2).per(1)
         assert_nil view.path_to_next_page(users, params: {controller: 'users', action: 'index'})
       end
+
+      test 'format option' do
+        users = User.page(1).per(1)
+        assert_equal '/users.turbo_stream?page=2', view.path_to_next_page(users, params: {controller: 'users', action: 'index', format: :turbo_stream})
+      end
     end
 
     sub_test_case '#path_to_prev_page' do

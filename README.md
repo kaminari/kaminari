@@ -30,9 +30,9 @@ The pagination helper outputs the HTML5 `<nav>` tag by default. Plus, the helper
 
 ## Supported Versions
 
-* Ruby 2.1.x, 2.2.x, 2.3.x, 2.4.x, 2.5.x, 2.6.x, 2.7.x, 3.0.x
+* Ruby 2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7, 3.0, 3.1
 
-* Rails 4.1, 4.2, 5.0, 5.1, 5.2, 6.0, 6.1
+* Rails 4.1, 4.2, 5.0, 5.1, 5.2, 6.0, 6.1, 7.0, 7.1
 
 * Sinatra 1.4, 2.0
 
@@ -258,7 +258,7 @@ This would modify the query parameter name on each links.
 ### Extra Parameters (`:params`) for the Links
 
 ```erb
-<%= paginate @users, params: {controller: 'foo', action: 'bar'} %>
+<%= paginate @users, params: {controller: 'foo', action: 'bar', format: :turbo_stream} %>
 ```
 
 This would modify each link's `url_option`. :`controller` and :`action` might be the keys in common.
@@ -287,6 +287,12 @@ This option makes it easier to do things like A/B testing pagination templates/t
 ```
 
 This simply renders a link to the next page. This would be helpful for creating a Twitter-like pagination feature.
+
+The helper methods support a `params` option to further specify the link. If `format` needs to be set, inlude it in the `params` hash.
+
+```erb
+<%= link_to_next_page @items, 'Next Page', params: {controller: 'foo', action: 'bar', format: :turbo_stream} %>
+```
 
 ### The `page_entries_info` Helper Method
 

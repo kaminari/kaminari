@@ -7,12 +7,14 @@ require 'active_record/railtie' if defined? ActiveRecord
 
 # config
 class KaminariTestApp < Rails::Application
+  config.load_defaults "#{Rails::VERSION::MAJOR}.#{Rails::VERSION::MINOR}" if config.respond_to? :load_defaults
   config.secret_key_base = config.secret_token = '3b7cd727ee24e8444053437c36cc66c4'
   config.session_store :cookie_store, key: '_myapp_session'
   config.active_support.deprecation = :log
   config.eager_load = false
   # Rails.root
   config.root = File.dirname(__FILE__)
+  config.active_record.belongs_to_required_by_default = false if (Rails::VERSION::MAJOR >= 5) && defined?(ActiveRecord)
 end
 Rails.backtrace_cleaner.remove_silencers!
 Rails.application.initialize!
