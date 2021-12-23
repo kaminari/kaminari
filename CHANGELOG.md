@@ -1,3 +1,18 @@
+## 1.2.2
+
+### Enhancements:
+
+* Rails 7 support!
+
+
+### Bug Fixes:
+
+* Restored `path_to_next_url` helper that was accidentally deleted in v1.2.0 #1027 [@ryym]
+* Fixed invalid link tag HTML output from `rel_next_prev_link_tags` helper #1045 [@dlackty]
+* Fixed Errno::ENOENT error for views generator on Ruby 3 #1050 [@ar31an]
+* Suppress warnings about keyword args on Ruby 2.7 #1053 [@mishina]
+
+
 ## 1.2.1
 
 ### Security Fixes:
