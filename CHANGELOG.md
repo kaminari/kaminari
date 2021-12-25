@@ -2,8 +2,7 @@
 
 ### Enhancements:
 
-* Rails 7 support!
-
+* Rails 7 support via [dbac7d4](https://github.com/kaminari/kaminari/commit/dbac7d476f39f8a17a35aba7e528aec7c589b3e5) and [07fafc0](https://github.com/kaminari/kaminari/commit/07fafc0561b307b6fbf40e9ec6ab52a6ec5102b4)
 
 ### Bug Fixes:
 
