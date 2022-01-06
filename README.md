@@ -184,6 +184,17 @@ class User < ActiveRecord::Base
 end
 ```
 
+### Configuring max_pages Value for Each Model by `max_pages`
+
+You can specify `max_pages` value per each model using the following declarative DSL.
+This value restricts the total number of pages that can be returned.  Useful for setting limits on large collections.
+
+```ruby
+class User < ActiveRecord::Base
+  max_pages 100
+end
+```
+
 ### Configuring params_on_first_page when using ransack_memory
 
 If you are using [the `ransack_memory` gem](https://github.com/richardrails/ransack_memory) and experience problems navigating back to the previous or first page, set the `params_on_first_page` setting to `true`.
