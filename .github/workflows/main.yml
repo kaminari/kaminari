@@ -18,83 +18,78 @@ jobs:
 
       matrix:
         ruby_version: ['3.1', '3.0', '2.7', '2.6', '2.5', 'jruby-9.3.2.0']
-        gemfile:
-          - gemfiles/active_record_70.gemfile
-          - gemfiles/active_record_61.gemfile
-          - gemfiles/active_record_60.gemfile
-          - gemfiles/active_record_52.gemfile
-          - gemfiles/active_record_edge.gemfile
+        rails_version: [edge, '7.0', '6.1', '6.0', '5.2']
         db: ['sqlite3', 'postgresql', 'mysql']
 
         exclude:
           - ruby_version: '3.1'
-            gemfile: gemfiles/active_record_60.gemfile
+            rails_version: '6.0'
           - ruby_version: '3.1'
-            gemfile: gemfiles/active_record_52.gemfile
+            rails_version: '5.2'
           - ruby_version: '3.0'
-            gemfile: gemfiles/active_record_52.gemfile
+            rails_version: '5.2'
           - ruby_version: '2.7'
-            gemfile: gemfiles/active_record_52.gemfile
+            rails_version: '5.2'
           - ruby_version: '2.6'
-            gemfile: gemfiles/active_record_edge.gemfile
+            rails_version: 'edge'
           - ruby_version: '2.6'
-            gemfile: gemfiles/active_record_70.gemfile
+            rails_version: '7.0'
           - ruby_version: '2.5'
-            gemfile: gemfiles/active_record_edge.gemfile
+            rails_version: 'edge'
           - ruby_version: '2.5'
-            gemfile: gemfiles/active_record_70.gemfile
+            rails_version: '7.0'
           - ruby_version: 'jruby-9.3.2.0'
-            gemfile: gemfiles/active_record_edge.gemfile
+            rails_version: 'edge'
 
         include:
           - ruby_version: 'ruby-head'
-            gemfile: gemfiles/active_record_edge.gemfile
+            rails_version: 'edge'
             db: sqlite3
           - ruby_version: 'ruby-head'
-            gemfile: gemfiles/active_record_edge.gemfile
+            rails_version: 'edge'
             db: postgresql
           - ruby_version: 'ruby-head'
-            gemfile: gemfiles/active_record_edge.gemfile
+            rails_version: 'edge'
             db: mysql
 
           - ruby_version: '2.6'
-            gemfile: gemfiles/active_record_51.gemfile
+            rails_version: '5.1'
             db: sqlite3
           - ruby_version: '2.6'
-            gemfile: gemfiles/active_record_50.gemfile
+            rails_version: '5.0'
             db: sqlite3
 
           - ruby_version: '2.5'
-            gemfile: gemfiles/active_record_51.gemfile
+            rails_version: '5.1'
             db: sqlite3
           - ruby_version: '2.5'
-            gemfile: gemfiles/active_record_50.gemfile
+            rails_version: '5.0'
             db: sqlite3
 
           - ruby_version: '2.4'
-            gemfile: gemfiles/active_record_52.gemfile
+            rails_version: '5.2'
             db: sqlite3
 
           - ruby_version: '2.3'
-            gemfile: gemfiles/active_record_52.gemfile
+            rails_version: '5.2'
             db: sqlite3
           - ruby_version: '2.3'
-            gemfile: gemfiles/active_record_42.gemfile
+            rails_version: '4.2'
             db: sqlite3
           - ruby_version: '2.3'
-            gemfile: gemfiles/active_record_41.gemfile
+            rails_version: '4.1'
             db: sqlite3
 
           - ruby_version: '2.2'
-            gemfile: gemfiles/active_record_52.gemfile
+            rails_version: '5.2'
             db: sqlite3
 
           - ruby_version: '2.1'
-            gemfile: gemfiles/active_record_42.gemfile
+            rails_version: '4.2'
             db: sqlite3
 
     env:
-      BUNDLE_GEMFILE: ${{ matrix.gemfile }}
+      RAILS_VERSION: ${{ matrix.rails_version }}
       DB: ${{ matrix.db }}
       POSTGRES_PASSWORD: postgres  # for passing the password to the Rails process
       MYSQL_PASSWORD: root  # for passing the password to the Rails process
@@ -112,6 +107,6 @@ jobs:
         with:
           ruby-version: ${{ matrix.ruby_version }}
           bundler-cache: true
-        continue-on-error: ${{ matrix.ruby_version == 'ruby-head' || matrix.ruby_version == 'jruby-9.3.2.0' || matrix.gemfile == 'gemfiles/active_record_edge.gemfile' }}
+        continue-on-error: ${{ (matrix.ruby_version == 'ruby-head') || (matrix.ruby_version == 'jruby-9.3.2.0') || (matrix.rails_version == 'edge') }}
       - run: bundle exec rake test
-        continue-on-error: ${{ matrix.ruby_version == 'ruby-head' || matrix.ruby_version == 'jruby-9.3.2.0' || matrix.gemfile == 'gemfiles/active_record_edge.gemfile' }}
+        continue-on-error: ${{ (matrix.ruby_version == 'ruby-head') || (matrix.ruby_version == 'jruby-9.3.2.0') || (matrix.rails_version == 'edge') }}
