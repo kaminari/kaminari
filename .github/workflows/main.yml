@@ -17,6 +17,7 @@ jobs:
       fail-fast: true
       matrix:
         ruby_version:
+          - '3.1'
           - '3.0'
           - '2.7'
           - '2.6'
@@ -35,6 +36,14 @@ jobs:
           - postgresql
           - mysql
         exclude:
+          - ruby_version: '3.1'
+            gemfile: gemfiles/active_record_60.gemfile
+          - ruby_version: '3.1'
+            gemfile: gemfiles/active_record_52.gemfile
+          - ruby_version: '3.1'
+            gemfile: gemfiles/active_record_51.gemfile
+          - ruby_version: '3.1'
+            gemfile: gemfiles/active_record_50.gemfile
           - ruby_version: '3.0'
             gemfile: gemfiles/active_record_52.gemfile
           - ruby_version: '3.0'
