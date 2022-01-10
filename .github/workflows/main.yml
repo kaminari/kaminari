@@ -23,7 +23,6 @@ jobs:
           - gemfiles/active_record_61.gemfile
           - gemfiles/active_record_60.gemfile
           - gemfiles/active_record_52.gemfile
-          - gemfiles/active_record_51.gemfile
           - gemfiles/active_record_edge.gemfile
         db: ['sqlite3', 'postgresql', 'mysql']
 
@@ -32,16 +31,10 @@ jobs:
             gemfile: gemfiles/active_record_60.gemfile
           - ruby_version: '3.1'
             gemfile: gemfiles/active_record_52.gemfile
-          - ruby_version: '3.1'
-            gemfile: gemfiles/active_record_51.gemfile
           - ruby_version: '3.0'
             gemfile: gemfiles/active_record_52.gemfile
-          - ruby_version: '3.0'
-            gemfile: gemfiles/active_record_51.gemfile
           - ruby_version: '2.7'
             gemfile: gemfiles/active_record_52.gemfile
-          - ruby_version: '2.7'
-            gemfile: gemfiles/active_record_51.gemfile
           - ruby_version: '2.6'
             gemfile: gemfiles/active_record_edge.gemfile
           - ruby_version: '2.6'
@@ -65,9 +58,15 @@ jobs:
             db: mysql
 
           - ruby_version: '2.6'
+            gemfile: gemfiles/active_record_51.gemfile
+            db: sqlite3
+          - ruby_version: '2.6'
             gemfile: gemfiles/active_record_50.gemfile
             db: sqlite3
 
+          - ruby_version: '2.5'
+            gemfile: gemfiles/active_record_51.gemfile
+            db: sqlite3
           - ruby_version: '2.5'
             gemfile: gemfiles/active_record_50.gemfile
             db: sqlite3
