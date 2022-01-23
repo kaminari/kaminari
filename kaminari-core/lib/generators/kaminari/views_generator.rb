@@ -9,8 +9,9 @@ module Kaminari
       class_option :template_engine, type: :string, aliases: '-e', desc: 'Template engine for the views. Available options are "erb", "haml", and "slim".'
       class_option :views_prefix, type: :string, desc: 'Prefix for path to put views in.'
 
-      def self.banner #:nodoc:
-        <<-BANNER.chomp
+      class << self
+        def banner #:nodoc:
+          <<-BANNER.chomp
 rails g kaminari:views THEME [options]
 
     Copies all paginator partial templates to your application.
@@ -21,6 +22,17 @@ rails g kaminari:views THEME [options]
             This one is used internally while you don't override the partials.
 #{themes.map {|t| "        - #{t.name}\n#{t.description}"}.join("\n")}
 BANNER
+        end
+
+        private
+
+        def themes
+          @themes ||= GitHubApiHelper.get_files_in_master.group_by {|fn, _| fn[0...(fn.index('/') || 0)]}.delete_if {|fn, _| fn.blank?}.map do |name, files|
+            Theme.new name, files
+          end
+        rescue SocketError
+          []
+        end
       end
 
       desc ''
@@ -34,15 +46,6 @@ BANNER
         else
           say "no such theme: #{file_name}\n  available themes: #{self.class.themes.map(&:name).join ', '}"
         end
-      end
-
-      private
-      def self.themes
-        @themes ||= GitHubApiHelper.get_files_in_master.group_by {|fn, _| fn[0...(fn.index('/') || 0)]}.delete_if {|fn, _| fn.blank?}.map do |name, files|
-          Theme.new name, files
-        end
-      rescue SocketError
-        []
       end
 
       def download_templates(theme)
