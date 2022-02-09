@@ -455,7 +455,7 @@ User.page(3).without_count
 In your view file, you can only use simple helpers like the following instead of the full-featured `paginate` helper:
 
 ```erb
-<%= link_to_prev_page @users, 'Previous Page' %>
+<%= link_to_previous_page @users, 'Previous Page' %>  [//]: # "There is one change for link_to_previous_page insted of link_to_prev_page"
 <%= link_to_next_page @users, 'Next Page' %>
 ```
 
