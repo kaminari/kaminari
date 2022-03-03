@@ -25,6 +25,11 @@ gem 'selenium-webdriver'
 
 rails_version = ENV['RAILS_VERSION'] || '∞'
 
+# test-unit-activesupport 1.1.1 introduces a Ruby <= 2.2 incompatibility
+if RUBY_VERSION[/\d+\.\d+/] <= '2.2'
+  gem 'test-unit-activesupport', '1.1.0'
+end
+
 platforms :ruby do
   gem 'sqlite3', rails_version >= '5.1' ? '>= 1.4' : '< 1.4', require: false
   gem 'pg', rails_version >= '5.1' ? '>= 1.0.0' : '< 1.0.0', require: false
