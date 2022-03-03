@@ -9,6 +9,10 @@ if ENV['RAILS_VERSION'] == 'edge'
   gem 'railties', git: 'https://github.com/rails/rails.git'
   gem 'activerecord', git: 'https://github.com/rails/rails.git', require: 'active_record'
   gem 'actionview', git: 'https://github.com/rails/rails.git', require: 'action_view'
+elsif ENV['RAILS_VERSION'] == '5.2'
+  gem 'railties', git: 'https://github.com/rails/rails.git', branch: '5-2-stable'
+  gem 'activerecord', git: 'https://github.com/rails/rails.git', require: 'active_record', branch: '5-2-stable'
+  gem 'actionview', git: 'https://github.com/rails/rails.git', require: 'action_view', branch: '5-2-stable'
 elsif ENV['RAILS_VERSION']
   gem 'railties', "~> #{ENV['RAILS_VERSION']}.0"
   gem 'activerecord', "~> #{ENV['RAILS_VERSION']}.0", require: 'active_record'
