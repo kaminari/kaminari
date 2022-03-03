@@ -25,9 +25,9 @@ gem 'selenium-webdriver'
 
 rails_version = ENV['RAILS_VERSION'] || '∞'
 
-# test-unit-activesupport 1.1.1 introduces a Ruby <= 2.2 incompatibility
+# test-unit-activesupport 1.1.0 introduces a Ruby <= 2.2 incompatibility
 if RUBY_VERSION[/\d+\.\d+/] <= '2.2'
-  gem 'test-unit-activesupport', '1.1.0'
+  gem 'test-unit-activesupport', '1.0.9'
 end
 
 platforms :ruby do
