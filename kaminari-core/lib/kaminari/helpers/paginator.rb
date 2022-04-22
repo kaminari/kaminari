@@ -89,6 +89,11 @@ module Kaminari
 
         def initialize(options, page, last) #:nodoc:
           @options, @page, @last = options, page, last
+          @current_page = @options[:current_page]
+          @total_pages = @options[:total_pages]
+          @left = @options[:left]
+          @right = @options[:right]
+          @window = @options[:window]
         end
 
         # the page number
@@ -98,7 +103,7 @@ module Kaminari
 
         # current page or not
         def current?
-          @page == @options[:current_page]
+          @page == @current_page
         end
 
         # the first page or not
@@ -108,17 +113,17 @@ module Kaminari
 
         # the last page or not
         def last?
-          @page == @options[:total_pages]
+          @page == @total_pages
         end
 
         # the previous page or not
         def prev?
-          @page == @options[:current_page] - 1
+          @page == @current_page - 1
         end
 
         # the next page or not
         def next?
-          @page == @options[:current_page] + 1
+          @page == @current_page + 1
         end
 
         # relationship with the current page
@@ -132,28 +137,28 @@ module Kaminari
 
         # within the left outer window or not
         def left_outer?
-          @page <= @options[:left]
+          @page <= @left
         end
 
         # within the right outer window or not
         def right_outer?
-          @options[:total_pages] - @page < @options[:right]
+          @total_pages - @page < @right
         end
 
         # inside the inner window or not
         def inside_window?
-          (@options[:current_page] - @page).abs <= @options[:window]
+          (@current_page - @page).abs <= @window
         end
 
         # Current page is an isolated gap or not
         def single_gap?
-          ((@page == @options[:current_page] - @options[:window] - 1) && (@page == @options[:left] + 1)) ||
-            ((@page == @options[:current_page] + @options[:window] + 1) && (@page == @options[:total_pages] - @options[:right]))
+          ((@page == @current_page - @window - 1) && (@page == @left + 1)) ||
+            ((@page == @current_page + @window + 1) && (@page == @total_pages - @right))
         end
 
         # The page number exceeds the range of pages or not
         def out_of_range?
-          @page > @options[:total_pages]
+          @page > @total_pages
         end
 
         # The last rendered tag was "truncated" or not
