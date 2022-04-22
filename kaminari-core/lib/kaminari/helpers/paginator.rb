@@ -88,12 +88,13 @@ module Kaminari
         include Comparable
 
         def initialize(options, page, last) #:nodoc:
-          @options, @page, @last = options, page, last
+          @options, @page = options, page
           @current_page = @options[:current_page]
           @total_pages = @options[:total_pages]
           @left = @options[:left]
           @right = @options[:right]
           @window = @options[:window]
+          @was_truncated = last.is_a? Gap
         end
 
         # the page number
@@ -163,7 +164,7 @@ module Kaminari
 
         # The last rendered tag was "truncated" or not
         def was_truncated?
-          @last.is_a? Gap
+          @was_truncated
         end
 
         #Should we display the link tag?
