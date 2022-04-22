@@ -67,12 +67,7 @@ module Kaminari
       end
 
       def partial_path
-        [
-         @views_prefix,
-         "kaminari",
-         @theme,
-         self.class.name.demodulize.underscore
-        ].compact.join("/").gsub('//', '/')
+        "#{@views_prefix}/kaminari/#{@theme}/#{self.class.name.demodulize.underscore}".gsub('//', '/')
       end
     end
 
