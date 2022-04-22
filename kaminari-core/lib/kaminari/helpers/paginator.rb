@@ -88,12 +88,12 @@ module Kaminari
         include Comparable
 
         def initialize(options, page, last) #:nodoc:
-          @options, @page = options, page
-          @current_page = @options[:current_page]
-          @total_pages = @options[:total_pages]
-          @left = @options[:left]
-          @right = @options[:right]
-          @window = @options[:window]
+          @page = page
+          @current_page = options[:current_page]
+          @total_pages = options[:total_pages]
+          @left = options[:left]
+          @right = options[:right]
+          @window = options[:window]
           @was_truncated = last.is_a? Gap
         end
 
