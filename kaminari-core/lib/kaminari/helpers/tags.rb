@@ -29,7 +29,8 @@ module Kaminari
       end
 
       def to_s(locals = {}) #:nodoc:
-        formats = (@template.respond_to?(:formats) ? @template.formats : Array(@template.params[:format])) + [:html]
+        formats = @template.respond_to?(:formats) ? @template.formats : Array(@template.params[:format])
+        formats += [:html] unless formats.include? :html
         @template.render partial: partial_path, locals: @options.merge(locals), formats: formats
       end
 
