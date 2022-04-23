@@ -53,7 +53,8 @@ module Kaminari
       def params_for(page)
         if (@param_name == :page) || !@param_name.include?('[')
           page_val = !Kaminari.config.params_on_first_page && (page <= 1) ? nil : page
-          @params.merge(@param_name => page_val)
+          @params[@param_name] = page_val
+          @params
         else
           page_params = Rack::Utils.parse_nested_query("#{@param_name}=#{page}")
           page_params = @params.deep_merge(page_params)
