@@ -17,18 +17,23 @@ module Kaminari
     # installed template will be used.
     #   e.g.)  Paginator  ->  $GEM_HOME/kaminari-x.x.x/app/views/kaminari/_paginator.html.erb
     class Tag
-      def initialize(template, params: nil, param_name: nil, theme: nil, views_prefix: nil, **options) #:nodoc:
+      def initialize(template, params: nil, param_name: nil, theme: nil, views_prefix: nil, internal_params: nil, **options) #:nodoc:
         @template, @theme, @views_prefix, @options = template, theme, views_prefix, options
         @param_name = param_name || Kaminari.config.param_name
-        @params = template.params
-        # @params in Rails 5 no longer inherits from Hash
-        @params = if @params.respond_to?(:to_unsafe_h)
-          @params.to_unsafe_h
+
+        if internal_params
+          @params = internal_params
         else
-          @params.with_indifferent_access
+          @params = template.params
+          # @params in Rails 5 no longer inherits from Hash
+          @params = if @params.respond_to?(:to_unsafe_h)
+            @params.to_unsafe_h
+          else
+            @params.with_indifferent_access
+          end
+          @params.except!(*PARAM_KEY_EXCEPT_LIST)
+          @params.merge! params if params
         end
-        @params.except!(*PARAM_KEY_EXCEPT_LIST)
-        @params.merge! params if params
       end
 
       def to_s(locals = {}) #:nodoc:
