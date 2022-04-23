@@ -22,8 +22,11 @@ module Kaminari
         @param_name = param_name || Kaminari.config.param_name
         @params = template.params
         # @params in Rails 5 no longer inherits from Hash
-        @params = @params.to_unsafe_h if @params.respond_to?(:to_unsafe_h)
-        @params = @params.with_indifferent_access
+        @params = if @params.respond_to?(:to_unsafe_h)
+          @params.to_unsafe_h
+        else
+          @params.with_indifferent_access
+        end
         @params.except!(*PARAM_KEY_EXCEPT_LIST)
         @params.merge! params
       end
