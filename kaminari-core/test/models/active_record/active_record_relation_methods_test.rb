@@ -39,6 +39,7 @@ if defined? ActiveRecord
         assert_equal 7, User.page(2).load.total_count
         assert_equal 7, User.page(2).per(10).load.total_count
         assert_equal 7, User.page(2).per(2).load.total_count
+        assert_equal 7, User.page(1).padding(7).load.total_count
 
         old_max_per_page = User.max_per_page
         User.max_paginates_per(5)
