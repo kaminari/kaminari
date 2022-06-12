@@ -59,7 +59,7 @@
 * Now the `page_entries_info` method respects the `I18n.locale` value when pluralizing the `entry_name` option #899 [@hundred]
 * `require 'kaminari/core'` is no longer necessary when using `require 'kaminari/activerecord'` #896 [@yhara]
 * Added the `#current_per_page` method to inspect current value of `per_page` #875 [#bfad]
-* Better accesibility support by adding accessibility roles to pagination nav #848 [@frrrances]
+* Better accessibility support by adding accessibility roles to pagination nav #848 [@frrrances]
 
 ### Bug Fixes:
 
@@ -100,7 +100,7 @@
 
 * Extracted Grape support to kaminari-grape gem and removed it from the core
 
-* Splitted the gem into 3 internal gems:
+* Split the gem into 3 internal gems:
   * The core pagination logic (kaminari-core)
   * Active Record adapter (kaminari-activerecord)
   * Action View adapter (kaminari-actionview)
@@ -311,7 +311,7 @@
 
 * Fixed displayed number of items on each page w/ Mongoid 2.4.x and MongoMapper #194 [@dblock]
 
-* Removed a unused local variable from templates from default tamplate #245 [@juno]
+* Removed an unused local variable from templates from default template #245 [@juno]
 
 * Fixed `page_entry_info` to use the value of `entry_name` option when given collection is empty or a PaginatableArray #265, #277 [@eitoball]
 
