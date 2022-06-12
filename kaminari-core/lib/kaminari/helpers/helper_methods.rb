@@ -193,7 +193,7 @@ module Kaminari
       #
       # By default, the message will use the humanized class name of objects
       # in collection: for instance, "project types" for ProjectType models.
-      # The namespace will be cutted out and only the last name will be used.
+      # The namespace will be cut out and only the last name will be used.
       # Override this with the <tt>:entry_name</tt> parameter:
       #
       #   <%= page_entries_info @posts, entry_name: 'item' %>
