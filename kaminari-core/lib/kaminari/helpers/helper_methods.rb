@@ -209,7 +209,13 @@ module Kaminari
           t('helpers.page_entries_info.one_page.display_entries', entry_name: entry_name, count: collection.total_count)
         else
           from = collection.offset_value + 1
-          to   = collection.offset_value + (collection.respond_to?(:records) ? collection.records : collection.to_a).size
+          records = collection.respond_to?(:records) ? collection.records : collection.to_a
+          to =
+            if records.empty?
+              [collection.offset_value + collection.limit_value, collection.total_count].min
+            else
+              collection.offset_value + records.size
+            end
 
           t('helpers.page_entries_info.more_pages.display_entries', entry_name: entry_name, first: from, last: to, total: collection.total_count)
         end.html_safe
