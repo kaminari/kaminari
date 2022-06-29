@@ -20,6 +20,7 @@ module Kaminari
       def initialize(template, params: {}, param_name: nil, theme: nil, views_prefix: nil, **options) #:nodoc:
         @template, @theme, @views_prefix, @options = template, theme, views_prefix, options
         @param_name = param_name || Kaminari.config.param_name
+        @route  = @options.delete(:route)
         @params = template.params
         # @params in Rails 5 no longer inherits from Hash
         @params = @params.to_unsafe_h if @params.respond_to?(:to_unsafe_h)
@@ -36,8 +37,12 @@ module Kaminari
 
       def page_url_for(page)
         params = params_for(page)
-        params[:only_path] = true
-        @template.url_for params
+        if @route
+          @template.send(@route, params)
+        else
+          params[:only_path] = true
+          @template.url_for params
+        end
       end
 
       private

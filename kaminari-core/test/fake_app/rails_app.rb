@@ -65,3 +65,14 @@ end
 
 # helpers
 Object.const_set(:ApplicationHelper, Module.new)
+
+module CustomRoutesHelper
+  def posts_path(params={})
+    page = params.delete(:page)
+    if page
+      "/posts/page/#{page}"
+    else
+      "/posts"
+    end
+  end
+end
