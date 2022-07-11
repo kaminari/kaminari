@@ -364,7 +364,7 @@ en:
     page_entries_info:
       one_page:
         display_entries:
-          zero: "No %{entry_name} found"
+          "0": "No %{entry_name} found"
           one: "Displaying <b>1</b> %{entry_name}"
           other: "Displaying <b>all %{count}</b> %{entry_name}"
       more_pages:
