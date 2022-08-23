@@ -158,6 +158,82 @@ module Kaminari
       end
     end
 
+    module CursorLink
+      include Link
+
+      def url
+        page_url_for cursor
+      end
+
+      private
+
+      def params_for(cursor)
+        if (@param_name == :before_cursor) || (@param_name == :after_cursor) || !@param_name.include?('[')
+          @params.merge(@param_name => cursor)
+        else
+          page_params = Rack::Utils.parse_nested_query("#{@param_name}=#{cursor}")
+          page_params = @params.deep_merge(page_params)
+
+          if !Kaminari.config.params_on_first_page && !cursor
+            # This converts a hash:
+            #   from: {other: "params", page: 1}
+            #     to: {other: "params", page: nil}
+            #   (when @param_name == "page")
+            #
+            #   from: {other: "params", user: {name: "yuki", page: 1}}
+            #     to: {other: "params", user: {name: "yuki", page: nil}}
+            #   (when @param_name == "user[page]")
+            @param_name.to_s.scan(/[\w\.]+/)[0..-2].inject(page_params){|h, k| h[k] }[$&] = nil
+          end
+
+          page_params
+        end
+      end
+
+    end
+
+    class PageBefore < Tag
+      include CursorLink
+
+      def initialize(template, params: {}, param_name: nil, theme: nil, views_prefix: nil, **options) #:nodoc:
+        # params in Rails 5 may not be a Hash either,
+        # so it must be converted to a Hash to be merged into @params
+        if params && params.respond_to?(:to_unsafe_h)
+          ActiveSupport::Deprecation.warn 'Explicitly passing params to helpers could be omitted.'
+          params = params.to_unsafe_h
+        end
+
+        super(template, params: params, param_name: param_name, theme: theme, views_prefix: views_prefix, **options)
+
+        @param_name = param_name || Kaminari.config.before_cursor_param_name
+      end
+
+      def cursor
+        @options[:before_cursor]
+      end
+    end
+
+    class PageAfter < Tag
+      include CursorLink
+
+      def initialize(template, params: {}, param_name: nil, theme: nil, views_prefix: nil, **options) #:nodoc:
+        # params in Rails 5 may not be a Hash either,
+        # so it must be converted to a Hash to be merged into @params
+        if params && params.respond_to?(:to_unsafe_h)
+          ActiveSupport::Deprecation.warn 'Explicitly passing params to helpers could be omitted.'
+          params = params.to_unsafe_h
+        end
+
+        super(template, params: params, param_name: param_name, theme: theme, views_prefix: views_prefix, **options)
+
+        @param_name = param_name || Kaminari.config.after_cursor_param_name
+      end
+
+      def cursor
+        @options[:after_cursor]
+      end
+    end
+
     # Non-link tag that stands for skipped pages...
     class Gap < Tag
     end

@@ -123,3 +123,94 @@ module Kaminari
     end
   end
 end
+
+module Kaminari
+  module CursorPaginatable
+    # Overwrite AR::Relation#load to filter relative to cursor, reversing queried sort order is retrieving records
+    # before the cursor. Loads an extra record to peek ahead and performs an additional query to peek behind one record,
+    # using this information to set @_has_prev and @_has_next ivars
+    def load peek: false
+      if loaded? || limit_value.nil? || peek
+        super()
+      else
+        # Normalize order to strings formatted as '(table.)?<column_name> (asc|desc)'
+        order_strings = order_values
+                          .map { |o| o.is_a?(Arel::Nodes::Ascending) ? "#{o.expr.relation.name}.#{o.expr.name} asc" : o }
+                          .map { |o| o.is_a?(Arel::Nodes::Descending) ? "#{o.expr.relation.name}.#{o.expr.name} desc" : o }
+                          .map { |o| o.split(',') }.flatten
+                          .map { |o| o.downcase.strip }
+                          .map { |o| o.end_with?('asc', 'desc') ? o : o + ' asc' }
+        order_columns = order_strings.map(&:split).map(&:first).map{|o| o.split('.').last}
+        order_dirs = order_strings.map(&:split).map(&:second)
+
+        # Assert that ActiveRecord order columns come directly from model. (ordering by association columns
+        # not supported).
+        raise "Cursor pagination does not support ordering by associated columns" if order_values.map{|o| o.is_a?(Arel::Nodes::Ordering) ? o.expr.relation.name : nil}.compact.any?{|relation| relation != table_name}
+
+        if !@_cursor
+          condition = nil
+          values = []
+          has_peekback_record = false
+        else
+          # Assert that ActiveRecord order is in agreement with cursor
+          column_disagreement = @_cursor.columns.pluck(:name).zip(order_columns).any? {|a, b| a != b }
+          raise if column_disagreement
+
+          # Generate condition to query `after`
+          preceding_columns_per_column = @_cursor.columns.each_index.map{ |i| @_cursor.columns[0, i]}
+          condition = @_cursor.columns.zip(preceding_columns_per_column, order_dirs)
+                        .map { |column, preceding_columns, dir|
+                          [preceding_columns.pluck(:name).map {|c| "#{c} = ?"} + [{'asc' => "#{column.name} > ?", 'desc' => "#{column.name} < ?"}.fetch(dir)]]
+                            .join(' and ')
+                        }
+                        .map {|c| '(' + c + ')'}
+                        .join(' or ')
+          values = @_cursor.columns.zip(preceding_columns_per_column)
+                     .map { |column, preceding_columns| preceding_columns.pluck(:value).append(column.value) }
+                     .flatten
+
+          # Reverse inequality signs if querying `before`
+          reverse_inequalities = Proc.new { |condition| condition.gsub(/[<>]/, {'<' => '>', '>' => '<'})}
+          condition = reverse_inequalities[condition] if @_querying_before_cursor
+
+          # Peek back to detect any result in opposite direction
+          peekback_condition = "(#{reverse_inequalities[condition]}) or (#{(@_cursor.columns.map {|c| c.name + ' = ? '}).join(' and ')})"
+          peekback_values = values + @_cursor.columns.pluck(:value)
+          peekback_relation = where(peekback_condition, *peekback_values).limit(1)
+          order_strings.each { |o| peekback_relation.reorder!(o.gsub(/asc|desc/, {'asc' => 'desc', 'desc' => 'asc'})) }
+          order_strings.each { |o| peekback_relation.reorder!(o.gsub(/asc|desc/, {'asc' => 'desc', 'desc' => 'asc'})) } if @_querying_before_cursor
+          has_peekback_record = peekback_relation.load(peek: true).records.any?
+        end
+
+        # Apply condition
+        where!(condition, *values) if condition
+
+        # Reverse sort order if querying `before`
+        order_strings.each { |o| reorder!(o.gsub(/asc|desc/, {'asc' => 'desc', 'desc' => 'asc'})) } if @_querying_before_cursor
+
+        set_limit_value limit_value + 1
+        super()
+        set_limit_value limit_value - 1
+
+        if @records.any?
+          # Use extra and peekback to determine whether has next/prev page.
+          # Re-reverse sort order if querying `before`.
+          @records = @records.dup if (frozen = @records.frozen?)
+          has_extra_record = !!@records.delete_at(limit_value)
+          @records = @records.reverse if @_querying_before_cursor
+          @_has_next = @_querying_before_cursor ? has_peekback_record : has_extra_record
+          @_has_prev = @_querying_before_cursor ? has_extra_record : has_peekback_record
+          @records.freeze if frozen
+
+          # Generate start/end cursors for further paging
+          start_cursor_values = order_columns.map { |c| @records.first.send(c) }
+          end_cursor_values = order_columns.map { |c| @records.last.send(c) }
+          @_page_start_cursor = Base64.encode64({'columns': order_columns.zip(order_dirs, start_cursor_values) .map { |name, dir, value| { 'name': name, 'dir': dir, 'value': value }} }.to_json)
+          @_page_end_cursor = Base64.encode64({'columns': order_columns.zip(order_dirs, end_cursor_values) .map { |name, dir, value| { 'name': name, 'dir': dir, 'value': value }} }.to_json)
+        end
+
+        self
+      end
+    end
+  end
+end

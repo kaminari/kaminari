@@ -64,6 +64,14 @@ module Kaminari
       alias url_to_prev_page      prev_page_url
       alias url_to_previous_page  prev_page_url
 
+      def page_before_url(scope, options = {})
+        "#{request.base_url}#{page_before_path(scope, options)}" if !scope.first_page?
+      end
+
+      def page_after_url(scope, options = {})
+        "#{request.base_url}#{page_after_path(scope, options)}" if !scope.last_page?
+      end
+
       # A helper that calculates the path to the next page.
       #
       # ==== Examples
@@ -93,6 +101,16 @@ module Kaminari
       alias previous_page_path     prev_page_path
       alias path_to_previous_page  prev_page_path
       alias path_to_prev_page      prev_page_path
+
+      def page_before_path(scope, options = {})
+        Kaminari::Helpers::PageBefore.new(self, **options.reverse_merge(before_cursor: scope.page_start_cursor)).url if !scope.first_page?
+      end
+      alias path_to_page_before page_before_path
+
+      def page_after_path(scope, options = {})
+        Kaminari::Helpers::PageAfter.new(self, **options.reverse_merge(after_cursor: scope.page_end_cursor)).url if !scope.last_page?
+      end
+      alias path_to_page_after page_after_path
     end
 
     module HelperMethods
@@ -177,6 +195,32 @@ module Kaminari
 
         if next_page
           link_to name, next_page, options
+        elsif block_given?
+          yield
+        end
+      end
+
+      def link_to_page_before(scope, name, **options)
+        page_before = path_to_page_before(scope, options)
+
+        options.except! :params, :param_name
+        options[:rel] ||= 'prev'
+
+        if page_before
+          link_to name, page_before, options
+        elsif block_given?
+          yield
+        end
+      end
+
+      def link_to_page_after(scope, name, **options)
+        page_after = path_to_page_after(scope, options)
+
+        options.except! :params, :param_name
+        options[:rel] ||= 'next'
+
+        if page_after
+          link_to name, page_after, options
         elsif block_given?
           yield
         end
