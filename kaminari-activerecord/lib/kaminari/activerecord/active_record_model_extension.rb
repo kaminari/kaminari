@@ -55,8 +55,6 @@ module Kaminari
             cursor_columns = cursor.columns.map { |c| c.name }
             model_columns = columns.map { |c| c.name }
             raise 'Cursor has columns that are not on model.' if (cursor_columns - model_columns).any?
-
-            # TODO Assert that cursor is unique, e.g. any column is unique or any subset of columns is unique.
           end
           
           limit(per_page).extending do
