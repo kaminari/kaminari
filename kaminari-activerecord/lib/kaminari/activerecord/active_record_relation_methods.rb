@@ -133,19 +133,15 @@ module Kaminari
       if loaded? || limit_value.nil? || peek
         super()
       else
-        # Normalize order to strings formatted as '(table.)?<column_name> (asc|desc)'
-        order_strings = order_values
-                          .map { |o| o.is_a?(Arel::Nodes::Ascending) ? "#{o.expr.relation.name}.#{o.expr.name} asc" : o }
-                          .map { |o| o.is_a?(Arel::Nodes::Descending) ? "#{o.expr.relation.name}.#{o.expr.name} desc" : o }
-                          .map { |o| o.split(',') }.flatten
-                          .map { |o| o.downcase.strip }
-                          .map { |o| o.end_with?('asc', 'desc') ? o : o + ' asc' }
-        order_columns = order_strings.map(&:split).map(&:first).map{|o| o.split('.').last}
-        order_dirs = order_strings.map(&:split).map(&:second)
 
-        # Assert that ActiveRecord order columns come directly from model. (ordering by association columns
-        # not supported).
-        raise "Cursor pagination does not support ordering by associated columns" if order_values.map{|o| o.is_a?(Arel::Nodes::Ordering) ? o.expr.relation.name : nil}.compact.any?{|relation| relation != table_name}
+        order_columns, order_dirs, explicit_null_position_per_column = normalize_order_info
+        if !order_columns.include? primary_key
+          order!("#{primary_key} asc")
+          order_columns, order_dirs, explicit_null_position_per_column = normalize_order_info
+        end
+
+        # Assert that ActiveRecord order columns come directly from model. (ordering by association columns not supported)
+        raise "Cursor pagination does not support ordering by associated columns" if ordered_by_unsupported_columns
 
         if !@_cursor
           condition = nil
@@ -157,36 +153,71 @@ module Kaminari
           raise if column_disagreement
 
           # Generate condition to query `after`
-          preceding_columns_per_column = @_cursor.columns.each_index.map{ |i| @_cursor.columns[0, i]}
-          condition = @_cursor.columns.zip(preceding_columns_per_column, order_dirs)
-                        .map { |column, preceding_columns, dir|
-                          [preceding_columns.pluck(:name).map {|c| "#{c} = ?"} + [{'asc' => "#{column.name} > ?", 'desc' => "#{column.name} < ?"}.fetch(dir)]]
-                            .join(' and ')
-                        }
-                        .map {|c| '(' + c + ')'}
-                        .join(' or ')
-          values = @_cursor.columns.zip(preceding_columns_per_column)
-                     .map { |column, preceding_columns| preceding_columns.pluck(:value).append(column.value) }
-                     .flatten
+          preceding_columns_per_column = @_cursor.columns.each_index.map{|i| @_cursor.columns[0, i]}
+          nulls_after_per_column = explicit_null_position_per_column.zip(order_dirs).map {|explicit_null_position, dir|
+            case explicit_null_position
+            when 'first'
+              false
+            when 'last'
+              true
+            else
+              (dir == 'asc' and db_defaults_to_large_nulls) or (dir == 'desc' and !db_defaults_to_large_nulls)
+            end
+          }
+          after_condition = @_cursor.columns.zip(preceding_columns_per_column, order_dirs, nulls_after_per_column)
+                              .map { |column, preceding_columns, dir, nulls_after|
+                                if column.value.nil?
+                                  inequality = nulls_after ? nil : "#{column.name} is not null"
+                                else
+                                  inequality = {'asc' => "#{column.name} > ?", 'desc' => "#{column.name} < ?"}.fetch(dir)
+                                  inequality += " or #{column.name} is null" if nulls_after
+                                end
+                                inequality.nil? ? nil : (preceding_columns.pluck(:name, :value).map {|c, v| v.nil? ? "#{c} is null" : "#{c} = ?" } + ['(' + inequality + ')']).join(' and ')
+                              }
+                              .compact
+                              .map {|c| '(' + c + ')'}
+                              .join(' or ')
+          before_condition = @_cursor.columns.zip(preceding_columns_per_column, order_dirs, nulls_after_per_column)
+                                     .map { |column, preceding_columns, dir, nulls_after|
+                                      if column.value.nil?
+                                        inequality = !nulls_after ? nil : "#{column.name} is not null"
+                                      else
+                                        inequality = {'asc' => "#{column.name} < ?", 'desc' => "#{column.name} > ?"}.fetch(dir)
+                                        inequality += " or #{column.name} is null" if !nulls_after
+                                      end
+                                      inequality.nil? ? nil : (preceding_columns.pluck(:name, :value).map {|c, v| v.nil? ? "#{c} is null" : "#{c} = ?" } + ['(' + inequality + ')']).join(' and ')
+                                    }
+                                    .compact
+                                    .map {|c| '(' + c + ')'}
+                                    .join(' or ')
+          after_values = @_cursor.columns.zip(preceding_columns_per_column, nulls_after_per_column)
+                           .map { |column, preceding_columns, nulls_after|
+                             (column.value.nil? and nulls_after) ? nil : (preceding_columns.pluck(:value) + [column.value])
+                           }
+                           .flatten
+                           .compact
+          before_values = @_cursor.columns.zip(preceding_columns_per_column, nulls_after_per_column)
+                                 .map { |column, preceding_columns, nulls_after|
+                                   (column.value.nil? and !nulls_after) ? nil : (preceding_columns.pluck(:value) + [column.value])
+                                 }
+                                 .flatten
+                                 .compact
 
           # Reverse inequality signs if querying `before`
-          reverse_inequalities = Proc.new { |condition| condition.gsub(/[<>]/, {'<' => '>', '>' => '<'})}
-          condition = reverse_inequalities[condition] if @_querying_before_cursor
+          condition = @_querying_before_cursor ? before_condition : after_condition
+          values = @_querying_before_cursor ? before_values : after_values
 
           # Peek back to detect any result in opposite direction
-          peekback_condition = "(#{reverse_inequalities[condition]}) or (#{(@_cursor.columns.map {|c| c.name + ' = ? '}).join(' and ')})"
-          peekback_values = values + @_cursor.columns.pluck(:value)
+          peekback_condition = (@_querying_before_cursor ? after_condition : before_condition) + " or (#{(@_cursor.columns.map {|c| c.value.nil? ? (c.name + ' is null ') : (c.name + ' = ? ')}).join(' and ')})"
+          peekback_values = (@_querying_before_cursor? after_values : before_values) + @_cursor.columns.map{|c| c.value}.compact
           peekback_relation = where(peekback_condition, *peekback_values).limit(1)
-          order_strings.each { |o| peekback_relation.reorder!(o.gsub(/asc|desc/, {'asc' => 'desc', 'desc' => 'asc'})) }
-          order_strings.each { |o| peekback_relation.reorder!(o.gsub(/asc|desc/, {'asc' => 'desc', 'desc' => 'asc'})) } if @_querying_before_cursor
+          peekback_relation.reverse_order!
+          peekback_relation.reverse_order! if @_querying_before_cursor
           has_peekback_record = peekback_relation.load(peek: true).records.any?
         end
 
-        # Apply condition
         where!(condition, *values) if condition
-
-        # Reverse sort order if querying `before`
-        order_strings.each { |o| reorder!(o.gsub(/asc|desc/, {'asc' => 'desc', 'desc' => 'asc'})) } if @_querying_before_cursor
+        reverse_order! if @_querying_before_cursor
 
         set_limit_value limit_value + 1
         super()
@@ -210,6 +241,39 @@ module Kaminari
         end
 
         self
+      end
+    end
+
+    private
+
+    def normalize_order_info
+      # Normalize order to strings formatted as '(table.)?<column_name> (asc|desc)( nulls (first|last))?'
+      order_strings = order_values
+        .map { |o| o.is_a?(Arel::Nodes::Ascending) ? "#{o.expr.relation.name}.#{o.expr.name} asc" : o }
+        .map { |o| o.is_a?(Arel::Nodes::Descending) ? "#{o.expr.relation.name}.#{o.expr.name} desc" : o }
+        .map { |o| o.split(',') }.flatten
+        .map { |o| o.downcase.strip }
+        .map { |o| o.match?(/\s+(asc|desc)(\s+nulls\s+(first|last))?/) ? o : o.sub(/(\s+nulls\s+(first|last))?$/, ' asc\0') }
+      order_columns = order_strings.map(&:split).map(&:first).map{|o| o.split('.').last}
+      order_dirs = order_strings.map{|o| o.match(/\s+(asc|desc)(\s+nulls\s+(first|last))?/)}.map{|o| o[1]}
+      explicit_null_positions = order_strings.map{|o| o.match(/\s+(asc|desc)(\s+nulls\s+(first|last))?/)}.map{|o| o[3]}
+      return order_columns, order_dirs, explicit_null_positions
+    end
+
+    def ordered_by_unsupported_columns
+      order_values.map{|o| (o.is_a?(Arel::Nodes::Ascending) or o.is_a?(Arel::Nodes::Descending)) ? o.expr.relation.name : nil}.compact.any?{|relation| relation != table_name}
+    end
+
+    def db_defaults_to_large_nulls
+      case adapter_type = connection.adapter_name.downcase.to_sym
+      when :mysql, :mysql2
+        false
+      when :sqlite
+        false
+      when :postgresql
+        true
+      else
+        raise NotImplementedError, "Unknown adapter type '#{adapter_type}'"
       end
     end
   end
