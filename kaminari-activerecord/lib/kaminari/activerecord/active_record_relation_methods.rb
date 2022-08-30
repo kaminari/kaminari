@@ -146,9 +146,9 @@ module Kaminari
           values = []
           has_peekback_record = false
         else
-          # Assert that ActiveRecord order is in agreement with cursor
-          column_disagreement = @_cursor.columns.pluck(:name).zip(order_columns).any? {|a, b| a != b }
-          raise if column_disagreement
+          # Coerce cursor column order into agreement with ActiveRecord order
+          @_cursor.columns.filter! { |c| order_columns.include? c.name }
+          @_cursor.columns.sort_by! { |c| order_columns.index(c.name) }
 
           # Generate condition to query `after`
           after_condition, after_values = build_cursor_condition(:after)
@@ -187,8 +187,8 @@ module Kaminari
           # Generate start/end cursors for further paging
           start_cursor_values = order_columns.map { |c| @records.first.send(c) }
           end_cursor_values = order_columns.map { |c| @records.last.send(c) }
-          @_page_start_cursor = Base64.strict_encode64({columns: order_columns.zip(start_cursor_values) .map { |name, value| {name: name, value: value }} }.to_json)
-          @_page_end_cursor = Base64.strict_encode64({columns: order_columns.zip(end_cursor_values) .map { |name, value| {name: name, value: value }} }.to_json)
+          @_page_start_cursor = Base64.strict_encode64(Hash[order_columns.zip(start_cursor_values)].to_json)
+          @_page_end_cursor = Base64.strict_encode64(Hash[order_columns.zip(end_cursor_values)].to_json)
         end
 
         self
@@ -215,7 +215,7 @@ module Kaminari
       }
       condition = @_cursor.columns.zip(preceding_columns_per_column, order_dirs, nulls_after_per_column)
                           .map { |column, preceding_columns, dir, nulls_after|
-                          nulls_last = (nulls_after and search_direction == :after) or (!nulls_after and search_direction == :before)
+                          nulls_last = (nulls_after and search_direction == :after) || (!nulls_after and search_direction == :before)
                           if column.value.nil?
                             inequality = nulls_last ? nil : "#{column.name} is not null"
                           else
@@ -229,7 +229,7 @@ module Kaminari
                         .join(' or ')
       values = @_cursor.columns.zip(preceding_columns_per_column, nulls_after_per_column)
                        .map { |column, preceding_columns, nulls_after|
-                         nulls_last = (nulls_after and search_direction == :after) or (!nulls_after and search_direction == :before)
+                         nulls_last = (nulls_after and search_direction == :after) || (!nulls_after and search_direction == :before)
                          (column.value.nil? and nulls_last) ? nil : (preceding_columns.pluck(:value) + [column.value])
                        }
                        .flatten

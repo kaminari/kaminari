@@ -45,9 +45,10 @@ module Kaminari
           per_page = max_per_page && (default_per_page > max_per_page) ? max_per_page : default_per_page
 
           # Decode cursor for `before` or `after` query
-          after_h = JSON.parse(Base64.decode64(after), object_class: OpenStruct) if after
-          before_h = JSON.parse(Base64.decode64(before), object_class: OpenStruct) if before
-          cursor = before_h || after_h
+          after_h = JSON.parse(Base64.decode64(after)) if after
+          before_h = JSON.parse(Base64.decode64(before)) if before
+          cursor_h = before_h || after_h
+          cursor = cursor_h ? JSON.parse({columns: cursor_h.each_pair.map{|name,value|{name: name.to_s, value: value&.to_s}}}.to_json, object_class:OpenStruct) : nil
           querying_before_cursor = before.present?
 
           if cursor

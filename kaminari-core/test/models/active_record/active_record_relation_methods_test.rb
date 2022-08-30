@@ -143,5 +143,82 @@ if defined? ActiveRecord
         end
       end
     end
+    sub_test_case '::CursorPaginatable' do
+      setup do
+        @newborn = User.create! name: nil, age: 0
+        @baby = User.create! name: 'Alex', age: 1
+        @toddler = User.create! name: 'Pat', age: 2
+        @child = User.create! name: 'Alex', age: 5
+        @teen = User.create! name: 'Pat', age: 17
+        @adult = User.create! name: 'Alex', age: 35
+        @elder = User.create! name: 'Pat', age: 79
+        @werewolf = User.create! name: nil, age: 151
+        @vampire = User.create! name: 'Alex', age: 710
+        @another_vampire = User.create! name: 'Alex', age: 710
+        @god = User.create! name: 'Pat', age: nil
+
+        3.times.each{@adult.books_authored << (Book.create! title: nil)}
+        1.times.each{@elder.books_authored << (Book.create! title: nil)}
+        1.times.each{@vampire.books_authored << (Book.create! title: nil)}
+
+        @books = Book.order(:id).all.to_a
+
+        @large_nulls = {
+          mysql: false,
+          mysql2: false,
+          sqlite: false,
+          postgresql: true
+        }.fetch(User.connection.adapter_name.downcase.to_sym)
+      end
+      teardown do
+        User.delete_all
+      end
+
+      test 'page after nil should give first records' do
+        first_expected = @large_nulls ? @newborn : @god
+        assert [first_expected] == User.order('age').page_after(nil).per(1).to_a
+      end
+
+      test 'page before nil should also give first records' do
+        first_expected = @large_nulls ? @newborn : @god
+        assert [first_expected] == User.order('age').page_before(nil).per(1).to_a
+      end
+
+      test 'page after cursor with null valued column should give next results' do
+        cursor = Base64.encode64({name: @newborn.name, age: @newborn.age, id: @newborn.id}.to_json)
+        assert [@werewolf] == User.order('name, age').page_after(cursor).per(1).to_a
+      end
+
+      test 'page after should resolve ambiguity with primary key' do
+        cursor = Base64.encode64({name: @vampire.name, age: @vampire.age, id: @vampire.id}.to_json)
+        assert [@another_vampire] == User.order('name, age').page_after(cursor).per(1).to_a
+      end
+
+      test 'cursor paging should include remaining records with null values' do
+        cursor = Base64.encode64({name: @baby.name, age: @baby.age, id: @baby.id}.to_json)
+        page_method = @large_nulls ? :page_after : :page_before
+        results = User.order('name').send(page_method, cursor).per(100)
+        assert results.include? @werewolf
+        assert results.include? @newborn
+      end
+
+      test 'cursor paging should exclude prior records with null values' do
+        cursor = Base64.encode64({name: @baby.name, age: @baby.age, id: @baby.id}.to_json)
+        page_method = @large_nulls ? :page_before : :page_after
+        results = User.order('name').send(page_method, cursor).per(100)
+        assert !results.include?(@werewolf)
+        assert !results.include?(@newborn)
+      end
+
+      test 'page after cursor works based on primary key alone' do
+        cursor = Base64.encode64({id: @books.second.id}.to_json)
+        assert [@books.third, @books.fourth, @books.fifth] == Book.page_after(cursor).per(5).to_a
+      end
+
+      test 'page before cursor works based on primary key alone' do
+        cursor = Base64.encode64({id: @books.fourth.id}.to_json)
+        assert [@books.first, @books.second, @books.third] == Book.page_before(cursor).per(5).to_a
+      end
+    end
   end
 end
