@@ -185,17 +185,17 @@ if defined? ActiveRecord
       end
 
       test 'page after cursor with null valued column should give next results' do
-        cursor = Base64.encode64({name: @newborn.name, age: @newborn.age, id: @newborn.id}.to_json)
+        cursor = Base64.strict_encode64({name: @newborn.name, age: @newborn.age, id: @newborn.id}.to_json)
         assert [@werewolf] == User.order('name, age').page_after(cursor).per(1).to_a
       end
 
       test 'page after should resolve ambiguity with primary key' do
-        cursor = Base64.encode64({name: @vampire.name, age: @vampire.age, id: @vampire.id}.to_json)
+        cursor = Base64.strict_encode64({name: @vampire.name, age: @vampire.age, id: @vampire.id}.to_json)
         assert [@another_vampire] == User.order('name, age').page_after(cursor).per(1).to_a
       end
 
       test 'cursor paging should include remaining records with null values' do
-        cursor = Base64.encode64({name: @baby.name, age: @baby.age, id: @baby.id}.to_json)
+        cursor = Base64.strict_encode64({name: @baby.name, age: @baby.age, id: @baby.id}.to_json)
         page_method = @large_nulls ? :page_after : :page_before
         results = User.order('name').send(page_method, cursor).per(100)
         assert results.include? @werewolf
@@ -203,7 +203,7 @@ if defined? ActiveRecord
       end
 
       test 'cursor paging should exclude prior records with null values' do
-        cursor = Base64.encode64({name: @baby.name, age: @baby.age, id: @baby.id}.to_json)
+        cursor = Base64.strict_encode64({name: @baby.name, age: @baby.age, id: @baby.id}.to_json)
         page_method = @large_nulls ? :page_before : :page_after
         results = User.order('name').send(page_method, cursor).per(100)
         assert !results.include?(@werewolf)
@@ -211,13 +211,11 @@ if defined? ActiveRecord
       end
 
       test 'page after cursor works based on primary key alone' do
-        cursor = Base64.encode64({id: @books.second.id}.to_json)
-        assert [@books.third, @books.fourth, @books.fifth] == Book.page_after(cursor).per(5).to_a
+        assert [@books.third, @books.fourth, @books.fifth] == Book.page_after({id: @books.second.id}).per(5).to_a
       end
 
       test 'page before cursor works based on primary key alone' do
-        cursor = Base64.encode64({id: @books.fourth.id}.to_json)
-        assert [@books.first, @books.second, @books.third] == Book.page_before(cursor).per(5).to_a
+        assert [@books.first, @books.second, @books.third] == Book.page_before({id: @books.fourth.id}).per(5).to_a
       end
     end
   end

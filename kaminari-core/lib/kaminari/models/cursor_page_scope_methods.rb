@@ -28,28 +28,22 @@ module Kaminari
     #def padding(num)
     #end
 
-    # Total number of pages
-    def total_pages
-      count_without_padding = total_count
-      count_without_padding -= @_padding if defined?(@_padding) && @_padding
-      count_without_padding = 0 if count_without_padding < 0
-
-      total_pages_count = (count_without_padding.to_f / limit_value).ceil
-      max_pages && (max_pages < total_pages_count) ? max_pages : total_pages_count
-    rescue FloatDomainError
-      raise ZeroPerPageOperation, "The number of total pages was incalculable. Perhaps you called .per(0)?"
-    end
+    # Intentionally undefined
+    #def total_pages
+    #end
 
     # Intentionally undefined
     #def current_page
     #end
 
-    def page_start_cursor
-      @_page_start_cursor
+    def start_cursor
+      load unless loaded?
+      Base64.strict_encode64(@_start_cursor.to_json)
     end
 
-    def page_end_cursor
-      @_page_end_cursor
+    def end_cursor
+      load unless loaded?
+      Base64.strict_encode64(@_end_cursor.to_json)
     end
 
     # Intentionally undefined

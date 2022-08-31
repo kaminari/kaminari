@@ -17,7 +17,7 @@ module Kaminari
 
   class Config
     attr_accessor :default_per_page, :max_per_page, :window, :outer_window, :left, :right, :page_method_name, :max_pages, :params_on_first_page
-    attr_accessor :page_by_cursor_method_name, :page_before_method_name, :page_after_method_name, :page_start_cursor_attr_name, :page_end_cursor_attr_name
+    attr_accessor :page_by_cursor_method_name, :page_before_method_name, :page_after_method_name, :cursor_param_name, :page_direction_attr_name
     attr_writer :param_name
     attr_accessor :before_cursor_param_name, :after_cursor_param_name
 
@@ -33,8 +33,8 @@ module Kaminari
       @page_before_method_name = :page_before
       @page_after_method_name = :page_after
       @param_name = :page
-      @before_cursor_param_name = :before_cursor
-      @after_cursor_param_name = :after_cursor
+      @cursor_param_name = :cursor
+      @page_direction_attr_name = :page_direction
       @max_pages = nil
       @params_on_first_page = false
     end

@@ -168,7 +168,7 @@ module Kaminari
       private
 
       def params_for(cursor)
-        if (@param_name == :before_cursor) || (@param_name == :after_cursor) || !@param_name.include?('[')
+        if (@param_name == :cursor) || !@param_name.include?('[')
           @params.merge(@param_name => cursor)
         else
           page_params = Rack::Utils.parse_nested_query("#{@param_name}=#{cursor}")
@@ -192,7 +192,7 @@ module Kaminari
 
     end
 
-    class PageBefore < Tag
+    class PageByCursor < Tag
       include CursorLink
 
       def initialize(template, params: {}, param_name: nil, theme: nil, views_prefix: nil, **options) #:nodoc:
@@ -205,33 +205,18 @@ module Kaminari
 
         super(template, params: params, param_name: param_name, theme: theme, views_prefix: views_prefix, **options)
 
-        @param_name = param_name || Kaminari.config.before_cursor_param_name
+        @param_name = param_name || Kaminari.config.cursor_param_name
       end
 
       def cursor
-        @options[:before_cursor]
+        @options[:cursor]
       end
     end
 
-    class PageAfter < Tag
-      include CursorLink
+    class PageBefore < PageByCursor
+    end
 
-      def initialize(template, params: {}, param_name: nil, theme: nil, views_prefix: nil, **options) #:nodoc:
-        # params in Rails 5 may not be a Hash either,
-        # so it must be converted to a Hash to be merged into @params
-        if params && params.respond_to?(:to_unsafe_h)
-          ActiveSupport::Deprecation.warn 'Explicitly passing params to helpers could be omitted.'
-          params = params.to_unsafe_h
-        end
-
-        super(template, params: params, param_name: param_name, theme: theme, views_prefix: views_prefix, **options)
-
-        @param_name = param_name || Kaminari.config.after_cursor_param_name
-      end
-
-      def cursor
-        @options[:after_cursor]
-      end
+    class PageAfter < PageByCursor
     end
 
     # Non-link tag that stands for skipped pages...

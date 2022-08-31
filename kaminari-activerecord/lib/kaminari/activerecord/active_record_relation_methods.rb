@@ -152,12 +152,20 @@ module Kaminari
           # Generate start/end cursors for further paging
           start_cursor_values = @_order_columns.map { |c| @records.first.send(c) }
           end_cursor_values = @_order_columns.map { |c| @records.last.send(c) }
-          @_page_start_cursor = Base64.strict_encode64(Hash[@_order_columns.zip(start_cursor_values)].to_json)
-          @_page_end_cursor = Base64.strict_encode64(Hash[@_order_columns.zip(end_cursor_values)].to_json)
+          @_start_cursor = Hash[@_order_columns.zip(start_cursor_values)]
+          @_start_cursor[Kaminari.config.page_direction_attr_name] = 'before'
+          @_end_cursor = Hash[@_order_columns.zip(end_cursor_values)]
+          @_end_cursor[Kaminari.config.page_direction_attr_name] = 'after'
         end
 
         self
       end
+    end
+
+    # Force to raise an exception if #total_count is called explicitly.
+    def total_count
+      raise "This scope is marked as a cursor paginable scope and can't be used in combination " \
+            "with `#paginate' or `#page_entries_info'. Use #link_to_page_after or #link_to_page_before instead."
     end
 
     def build_cursor_condition(search_direction)

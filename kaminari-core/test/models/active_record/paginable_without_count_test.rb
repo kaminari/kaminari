@@ -26,15 +26,17 @@ if defined? ActiveRecord
       end
     end
 
-    test 'it does not make count queries after calling #each (page_after)' do
-      @scope = User.page_after(nil).without_count
-      @scope.each
+    [:page_after, :page_before].each do|method|
+      test "it does not make count queries after calling #each (#{method})" do
+        @scope = User.send(method).without_count
+        @scope.each
 
-      assert_no_queries do
-        assert_not @scope.last_page?
-      end
-      assert_no_queries do
-        assert_not @scope.out_of_range?
+        assert_no_queries do
+          assert_not @scope.last_page?
+        end
+        assert_no_queries do
+          assert_not @scope.out_of_range?
+        end
       end
     end
 
@@ -46,12 +48,14 @@ if defined? ActiveRecord
       assert_no_queries { @scope.each }
     end
 
-    test 'it does not make count queries after calling #last_page? or #out_of_range? _page_aafter' do
-      @scope = User.page_after(nil).without_count
+    [:page_after, :page_before].each do |method|
+      test "it does not make count queries after calling #last_page? or #out_of_range? (#{method})" do
+        @scope = User.send(method).without_count
 
-      assert_not @scope.last_page?
-      assert_not @scope.out_of_range?
-      assert_no_queries { @scope.each }
+        assert_not @scope.last_page?
+        assert_not @scope.out_of_range?
+        assert_no_queries { @scope.each }
+      end
     end
 
     test '#last_page? returns false when total count == 26 and page size == 25' do
@@ -63,13 +67,15 @@ if defined? ActiveRecord
       assert_not @users.out_of_range?
     end
 
-    test '#last_page? returns false when total count == 26 and page size == 25 (page_after)' do
-      @users = User.page_after(nil).without_count
+    [:page_after, :page_before].each do |method|
+      test "#last_page? returns false when total count == 26 and page size == 25 (#{method})" do
+        @users = User.send(method).without_count
 
-      assert_equal 25, @users.size
-      assert_equal 25, @users.each.size
-      assert_not @users.last_page?
-      assert_not @users.out_of_range?
+        assert_equal 25, @users.size
+        assert_equal 25, @users.each.size
+        assert_not @users.last_page?
+        assert_not @users.out_of_range?
+      end
     end
 
     test '#last_page? returns true when total count == page size' do
@@ -118,18 +124,13 @@ if defined? ActiveRecord
       assert_equal false, @users.last_page?
     end
 
-    test 'regression: call arel first (page_after)' do
-      @users = User.page_after(nil).without_count
-      @users.arel
+    [:page_after, :page_before].each do |method|
+      test "regression: call arel first (#{method})" do
+        @users = User.send(method).without_count
+        @users.arel
 
-      assert_equal false, @users.last_page?
-    end
-
-    test 'regression: call arel first (page_before)' do
-      @users = User.page_before(nil).without_count
-      @users.arel
-
-      assert_equal false, @users.last_page?
+        assert_equal false, @users.last_page?
+      end
     end
 
     test 'regression: call last page first' do
@@ -141,22 +142,15 @@ if defined? ActiveRecord
       assert_equal false, @users.last_page?
     end
 
-    test 'regression: call last page first (page_after)' do
-      @users = User.page_after(nil).without_count
+    [:page_after, :page_before].each do |method|
+      test "regression: call last page first (#{method})" do
+        @users = User.send(method).without_count
 
-      @users.last_page?
-      @users.arel
+        @users.last_page?
+        @users.arel
 
-      assert_equal false, @users.last_page?
-    end
-
-    test 'regression: call last page first (page_before)' do
-      @users = User.page_before(nil).without_count
-
-      @users.last_page?
-      @users.arel
-
-      assert_equal false, @users.last_page?
+        assert_equal false, @users.last_page?
+      end
     end
 
     def assert_no_queries

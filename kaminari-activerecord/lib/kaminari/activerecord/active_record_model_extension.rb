@@ -24,32 +24,34 @@ module Kaminari
       # Fetch the values after cursor
       #   Model.page_after(cursor: cursor)
       eval <<-RUBY, nil, __FILE__, __LINE__ + 1
-        def self.#{Kaminari.config.page_after_method_name}(cursor = nil)
-          self.#{Kaminari.config.page_by_cursor_method_name}(after: cursor)
+        def self.#{Kaminari.config.page_after_method_name}(cursor = {})
+          cursor = decode_cursor(cursor) || {}
+          cursor[:#{Kaminari.config.page_direction_attr_name}] = :after
+          self.#{Kaminari.config.page_by_cursor_method_name}(cursor)
         end
       RUBY
 
       # Fetch the values before cursor
       #   Model.page_before(cursor: cursor)
       eval <<-RUBY, nil, __FILE__, __LINE__ + 1
-        def self.#{Kaminari.config.page_before_method_name}(cursor = nil)
-          self.#{Kaminari.config.page_by_cursor_method_name}(before: cursor)
+        def self.#{Kaminari.config.page_before_method_name}(cursor = {})
+          cursor = decode_cursor(cursor) || {}
+          cursor[:#{Kaminari.config.page_direction_attr_name}] = :before
+          self.#{Kaminari.config.page_by_cursor_method_name}(cursor)
         end
       RUBY
 
-      # Fetch the values after or before cursor
-      # If both after and before are provided, use before.
-      #   Model.page_by_cursor(after: cursor)
+      # Fetch the values after or before cursor, depending on included page_direction.
+      # Direction defaults to after if direction is not provided or cursor values are not provided.
+      #   Model.page_by_cursor(cursor)
       eval <<-RUBY, nil, __FILE__, __LINE__ + 1
-        def self.#{Kaminari.config.page_by_cursor_method_name}(after: nil, before: nil)
+        def self.#{Kaminari.config.page_by_cursor_method_name}(directed_cursor = {})
           per_page = max_per_page && (default_per_page > max_per_page) ? max_per_page : default_per_page
 
-          # Decode cursor for `before` or `after` query
-          after_h = JSON.parse(Base64.decode64(after)) if after
-          before_h = JSON.parse(Base64.decode64(before)) if before
-          cursor_h = before_h || after_h
-          cursor = cursor_h ? JSON.parse({columns: cursor_h.each_pair.map{|name,value|{name: name.to_s, value: value&.to_s}}}.to_json, object_class:OpenStruct) : nil
-          querying_before_cursor = before.present?
+          # Convert cursor to OpenStruct with .columns, each having .name and .value
+          cursor = decode_cursor(directed_cursor)
+          querying_before_cursor = cursor.delete(:#{Kaminari.config.page_direction_attr_name})&.to_sym == :before && cursor.any?
+          cursor = cursor.empty? ? nil : JSON.parse({columns: cursor.each_pair.map{|name,value|{name: name.to_s, value: value&.to_s}}}.to_json, object_class:OpenStruct)
 
           if cursor
             # Validate cursor columns against model
@@ -83,11 +85,9 @@ module Kaminari
             cursor.columns.filter! { |c| order_columns.include? c.name }
             cursor.columns.sort_by! { |c| order_columns.index(c.name) }
 
-            # Generate condition to query `after`
+            # Generate condition for cursor-based filter
             after_condition, after_values = relation.build_cursor_condition(:after)
             before_condition, before_values = relation.build_cursor_condition(:before)
-
-            # Reverse inequality signs if querying `before`
             condition = querying_before_cursor ? before_condition : after_condition
             values = querying_before_cursor ? before_values : after_values
 

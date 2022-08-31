@@ -55,6 +55,12 @@ module Kaminari
         ActiveSupport::Deprecation.warn 'max_pages_per is deprecated. Use max_pages instead.'
         max_pages val
       end
+
+      private
+
+      def decode_cursor(cursor)
+        cursor.is_a?(String) ? JSON.parse(Base64.decode64(cursor)) : cursor.clone
+      end
     end
   end
 end

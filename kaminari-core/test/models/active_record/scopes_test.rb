@@ -73,6 +73,39 @@ if defined? ActiveRecord
 
             assert_equal ['id'], relation.order_values.uniq
           end
+
+          test 'page 2 by cursor' do
+            relation = model_class.page_after({id: model_class.offset(24).first.id})
+
+            assert_equal 25, relation.count
+            assert_equal 'user026', relation.first.name
+          end
+
+          test 'page by cursor without argument' do
+            assert_first_page model_class.page_by_cursor
+          end
+
+          test 'page after without argument' do
+            assert_first_page model_class.page_after
+          end
+
+          test 'page before without argument' do
+            assert_first_page model_class.page_before
+          end
+
+          test 'page > max page by cursor' do
+            assert_blank_page model_class.page_after({id: model_class.order('id desc').first.id})
+          end
+
+          test 'page < min page by cursor' do
+            assert_blank_page model_class.page_before({id: 0})
+          end
+
+          test 'assert #order_values is not preserved when paging before' do
+            relation = model_class.order('id').page_before({id: 10})
+
+            assert_equal ['id desc'], relation.order_values.uniq.map(&:downcase)
+          end
         end
 
         sub_test_case '#per' do
@@ -83,10 +116,28 @@ if defined? ActiveRecord
             assert_equal 'user001', relation.first.name
           end
 
+          test 'page 1 by cursor per 5' do
+            relation = model_class.page_by_cursor.per(5)
+
+            assert_equal 5, relation.count
+            assert_equal 'user001', relation.first.name
+          end
+
           test 'page 1 per 5 with max_per_page < 5' do
             begin
               model_class.max_paginates_per 4
               relation = model_class.page(1).per(5)
+
+              assert_equal 4, relation.count
+            ensure
+              model_class.max_paginates_per nil
+            end
+          end
+
+          test 'page 1 by cursor per 5 with max_per_page < 5' do
+            begin
+              model_class.max_paginates_per 4
+              relation = model_class.page_after.per(5)
 
               assert_equal 4, relation.count
             ensure
@@ -120,6 +171,10 @@ if defined? ActiveRecord
 
           test 'page 1 per 0' do
             assert_equal 0, model_class.page(1).per(0).count
+          end
+
+          test 'page 1 by cursor per 0' do
+            assert_equal 0, model_class.page_by_cursor.per(0).count
           end
 
           # I know it's a bit strange to have this here, but I couldn't find any better place for this case
@@ -201,6 +256,11 @@ if defined? ActiveRecord
             assert_equal 'user002', relation.first.name
           end
 
+          test 'page by cursor does not support padding' do
+            relation = model_class.page_by_cursor.per(5)
+            assert !relation.respond_to?(:padding)
+          end
+
           test 'page 1 per 5 padding "1" (as string)' do
             relation = model_class.page(1).per(5).padding('1')
 
@@ -223,6 +283,10 @@ if defined? ActiveRecord
         sub_test_case '#total_pages' do
           test 'per 25 (default)' do
             assert_equal 4, model_class.page.total_pages
+          end
+
+          test 'page_by_cursor does not support total_pages' do
+            assert !model_class.page_by_cursor.respond_to?(:total_pages)
           end
 
           test 'per 7' do
@@ -340,6 +404,14 @@ if defined? ActiveRecord
           test 'not on first page' do
             assert_false model_class.page(5).per(10).first_page?
           end
+
+          test 'on first page by cursor' do
+            assert_true model_class.page_by_cursor.per(10).first_page?
+          end
+
+          test 'not on first page by cursor' do
+            assert_false model_class.page_after({id: model_class.first.id}).per(10).first_page?
+          end
         end
 
         sub_test_case '#last_page?' do
@@ -353,6 +425,18 @@ if defined? ActiveRecord
 
           test 'out of range' do
             assert_false model_class.page(11).per(10).last_page?
+          end
+
+          test 'on last page by cursor' do
+            assert_true model_class.page_after({id: model_class.second_to_last.id}).per(10).last_page?
+          end
+
+          test 'within range by cursor' do
+            assert_false model_class.page_after({id: model_class.second.id}).per(10).last_page?
+          end
+
+          test 'out of range by cursor' do
+            assert_false model_class.page_after({id: model_class.last.id}).per(10).last_page?
           end
         end
 
@@ -368,6 +452,18 @@ if defined? ActiveRecord
           test 'out of range' do
             assert_true model_class.page(11).per(10).out_of_range?
           end
+
+          test 'on last page by cursor' do
+            assert_false model_class.page_after({id: model_class.second_to_last.id}).per(10).out_of_range?
+          end
+
+          test 'within range by cursor' do
+            assert_false model_class.page_after({id: model_class.second.id}).per(10).out_of_range?
+          end
+
+          test 'out of range by cursor' do
+            assert_true model_class.page_after({id: model_class.last.id}).per(10).out_of_range?
+          end
         end
 
         sub_test_case '#count' do
@@ -377,6 +473,38 @@ if defined? ActiveRecord
 
           test 'page 2' do
             assert_equal 25, model_class.page(2).count
+          end
+
+          test 'page 1 by cursor' do
+            assert_equal 25, model_class.page_by_cursor.count
+          end
+
+          test 'page 2 by cursor' do
+            assert_equal 25, model_class.page_after({id: model_class.offset(24).first.id}).count
+          end
+        end
+
+        sub_test_case '#start_cursor' do
+          test 'page 1 by cursor' do
+            expected_cursor = Base64.strict_encode64({id: model_class.first.id, page_direction: 'before'}.to_json)
+            assert_equal expected_cursor, model_class.page_by_cursor.start_cursor
+          end
+
+          test 'page 2 by cursor' do
+            expected_cursor = Base64.strict_encode64({id: model_class.fifth.id, page_direction: 'before'}.to_json)
+            assert_equal expected_cursor, model_class.page_after({id: model_class.fourth.id}).start_cursor
+          end
+        end
+
+        sub_test_case '#end_cursor' do
+          test 'page 1 by cursor' do
+            expected_cursor = Base64.strict_encode64({id: model_class.third.id, page_direction: 'after'}.to_json)
+            assert_equal expected_cursor, model_class.page_by_cursor.per(3).end_cursor
+          end
+
+          test 'page 2 by cursor' do
+            expected_cursor = Base64.strict_encode64({id: model_class.fifth.id, page_direction: 'after'}.to_json)
+            assert_equal expected_cursor, model_class.page_after({id: model_class.second.id}).per(3).end_cursor
           end
         end
 

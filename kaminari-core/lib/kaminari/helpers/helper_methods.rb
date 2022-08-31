@@ -103,12 +103,12 @@ module Kaminari
       alias path_to_prev_page      prev_page_path
 
       def page_before_path(scope, options = {})
-        Kaminari::Helpers::PageBefore.new(self, **options.reverse_merge(before_cursor: scope.page_start_cursor)).url if !scope.first_page?
+        Kaminari::Helpers::PageBefore.new(self, **options.reverse_merge(cursor: scope.start_cursor)).url if !scope.first_page?
       end
       alias path_to_page_before page_before_path
 
       def page_after_path(scope, options = {})
-        Kaminari::Helpers::PageAfter.new(self, **options.reverse_merge(after_cursor: scope.page_end_cursor)).url if !scope.last_page?
+        Kaminari::Helpers::PageAfter.new(self, **options.reverse_merge(cursor: scope.end_cursor)).url if !scope.last_page?
       end
       alias path_to_page_after page_after_path
     end

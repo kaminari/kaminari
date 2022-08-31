@@ -6,6 +6,7 @@ if defined? ActiveRecord
   class ActiveRecordModelExtensionTest < ActiveSupport::TestCase
     test 'An AR model responds to Kaminari defined methods' do
       assert_respond_to Class.new(ActiveRecord::Base), :page
+      assert_respond_to Class.new(ActiveRecord::Base), :page_by_cursor
     end
 
     test "Kaminari doesn't prevent other AR extension gems to define a method" do
