@@ -133,42 +133,7 @@ module Kaminari
       if loaded? || limit_value.nil? || peek
         super()
       else
-        # Assert that ActiveRecord order columns come directly from model. (ordering by association columns not supported)
-        raise "Cursor pagination does not support ordering by associated columns" if ordered_by_unsupported_columns
-
-        # Ensure that primary key is part of ordering
-        order!("#{primary_key} asc") unless normalized_order_info[:columns].include? primary_key
-
-        order_columns = normalized_order_info[:columns]
-
-        if !@_cursor
-          condition = nil
-          values = []
-          has_peekback_record = false
-        else
-          # Coerce cursor column order into agreement with ActiveRecord order
-          @_cursor.columns.filter! { |c| order_columns.include? c.name }
-          @_cursor.columns.sort_by! { |c| order_columns.index(c.name) }
-
-          # Generate condition to query `after`
-          after_condition, after_values = build_cursor_condition(:after)
-          before_condition, before_values = build_cursor_condition(:before)
-
-          # Reverse inequality signs if querying `before`
-          condition = @_querying_before_cursor ? before_condition : after_condition
-          values = @_querying_before_cursor ? before_values : after_values
-
-          # Peek back to detect any result in opposite direction
-          peekback_condition = (@_querying_before_cursor ? after_condition : before_condition) + " or (#{(@_cursor.columns.map {|c| c.value.nil? ? (c.name + ' is null ') : (c.name + ' = ? ')}).join(' and ')})"
-          peekback_values = (@_querying_before_cursor? after_values : before_values) + @_cursor.columns.map{|c| c.value}.compact
-          peekback_relation = where(peekback_condition, *peekback_values).limit(1)
-          peekback_relation.reverse_order!
-          peekback_relation.reverse_order! if @_querying_before_cursor
-          has_peekback_record = peekback_relation.load(peek: true).records.any?
-        end
-
-        where!(condition, *values) if condition
-        reverse_order! if @_querying_before_cursor
+        has_peekback_record = @_peekback_relation ? @_peekback_relation.load(peek: true).records.any? : false
 
         set_limit_value limit_value + 1
         super()
@@ -185,17 +150,15 @@ module Kaminari
           @records.freeze if frozen
 
           # Generate start/end cursors for further paging
-          start_cursor_values = order_columns.map { |c| @records.first.send(c) }
-          end_cursor_values = order_columns.map { |c| @records.last.send(c) }
-          @_page_start_cursor = Base64.strict_encode64(Hash[order_columns.zip(start_cursor_values)].to_json)
-          @_page_end_cursor = Base64.strict_encode64(Hash[order_columns.zip(end_cursor_values)].to_json)
+          start_cursor_values = @_order_columns.map { |c| @records.first.send(c) }
+          end_cursor_values = @_order_columns.map { |c| @records.last.send(c) }
+          @_page_start_cursor = Base64.strict_encode64(Hash[@_order_columns.zip(start_cursor_values)].to_json)
+          @_page_end_cursor = Base64.strict_encode64(Hash[@_order_columns.zip(end_cursor_values)].to_json)
         end
 
         self
       end
     end
-
-    private
 
     def build_cursor_condition(search_direction)
       order_dirs = normalized_order_info[:dirs]
