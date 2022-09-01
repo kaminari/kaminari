@@ -228,6 +228,10 @@ if defined? ActiveRecord
         assert [@books.first, @books.second, @books.third] == Book.page_before({id: @books.fourth.id}).per(5).to_a
       end
 
+      test 'page by cursor does not change explicit descending id' do
+        assert [@another_vampire, @vampire] == User.order(:age).order(id: :desc).page_after({age: @werewolf.age, id: @werewolf.id}).per(2).to_a
+      end
+
       if (Rails.version >= '6.1.0' && ENV['DB'] == 'postgresql') || (Rails.version >= '7.0.0' && ENV['DB'] == 'sqlite3')
         test 'page after cursor works with nulls first (ascending)' do
           users = User.order(User.arel_table[:name].asc.nulls_first).page_after
