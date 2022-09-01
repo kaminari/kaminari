@@ -49,8 +49,8 @@ module Kaminari
           per_page = max_per_page && (default_per_page > max_per_page) ? max_per_page : default_per_page
 
           # Convert cursor to OpenStruct with .columns, each having .name and .value
-          cursor = decode_cursor(directed_cursor)
-          querying_before_cursor = cursor.delete(:#{Kaminari.config.page_direction_attr_name})&.to_sym == :before && cursor.any?
+          cursor = decode_cursor(directed_cursor) || {}
+          querying_before_cursor = (cursor.delete(:#{Kaminari.config.page_direction_attr_name}) || cursor.delete('#{Kaminari.config.page_direction_attr_name}'))&.to_sym == :before && cursor.any?
           cursor = cursor.empty? ? nil : JSON.parse({columns: cursor.each_pair.map{|name,value|{name: name.to_s, value: value&.to_s}}}.to_json, object_class:OpenStruct)
 
           if cursor

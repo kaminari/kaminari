@@ -77,4 +77,26 @@ class NavigationTest < Test::Unit::TestCase
       assert page.has_text? 'Displaying users 1'
     end
   end
+
+  test 'navigating by cursor pagination links' do
+    visit '/users/by_cursor'
+
+    assert page.has_no_content? '‹ Prev'
+    assert page.has_content? 'Next ›'
+
+    click_link 'Next ›'
+
+    assert page.has_content? '‹ Prev'
+    assert page.has_content? 'Next ›'
+
+    click_link 'Next ›'
+
+    assert page.has_content? '‹ Prev'
+    assert page.has_content? 'Next ›'
+
+    click_link 'Next ›'
+
+    assert page.has_content? '‹ Prev'
+    assert page.has_no_content? 'Next ›'
+  end
 end
