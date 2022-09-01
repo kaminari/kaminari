@@ -211,10 +211,10 @@ module Kaminari
     def normalized_order_info
       # Normalize order to strings formatted as '(table.)?<column_name> (asc|desc)( nulls (first|last))?'
       order_strings = order_values
-        .map { |o| o.is_a?(Arel::Nodes::Ascending) ? "#{o.expr.relation.name}.#{o.expr.name} asc" : o }
-        .map { |o| o.is_a?(Arel::Nodes::Descending) ? "#{o.expr.relation.name}.#{o.expr.name} desc" : o }
+        .map { |o| o.is_a?(Arel::Nodes::Ordering) ? o.to_sql : o }
         .map { |o| o.split(',') }.flatten
         .map { |o| o.downcase.strip }
+        .map { |o| o.gsub(/(?<!")"(([^"]|"")+)"(?!")/, '\1') }
         .map { |o| o.match?(/\s+(asc|desc)(\s+nulls\s+(first|last))?/) ? o : o.sub(/(\s+nulls\s+(first|last))?$/, ' asc\0') }
       return {
         columns: order_strings.map(&:split).map(&:first).map{|o| o.split('.').last},

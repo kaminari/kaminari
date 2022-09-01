@@ -174,19 +174,29 @@ if defined? ActiveRecord
         User.delete_all
       end
 
+      test 'page by cursor should give first records' do
+        first_expected = @large_nulls ? @newborn : @god
+        assert [first_expected] == User.order(:age).page_by_cursor.per(1).to_a
+      end
+
+      test 'page by cursor should give first records in descending order' do
+        first_expected = @large_nulls ? @god : @vampire
+        assert [first_expected] == User.order(age: :desc).page_by_cursor.per(1).to_a
+      end
+
       test 'page after nil should give first records' do
         first_expected = @large_nulls ? @newborn : @god
-        assert [first_expected] == User.order('age').page_after(nil).per(1).to_a
+        assert [first_expected] == User.order(:age).page_after.per(1).to_a
       end
 
       test 'page before nil should also give first records' do
         first_expected = @large_nulls ? @newborn : @god
-        assert [first_expected] == User.order('age').page_before(nil).per(1).to_a
+        assert [first_expected] == User.order(:age).page_before.per(1).to_a
       end
 
       test 'page after cursor with null valued column should give next results' do
         cursor = Base64.strict_encode64({name: @newborn.name, age: @newborn.age, id: @newborn.id}.to_json)
-        assert [@werewolf] == User.order('name, age').page_after(cursor).per(1).to_a
+        assert [@werewolf] == User.order(:name).order(:age).page_after(cursor).per(1).to_a
       end
 
       test 'page after should resolve ambiguity with primary key' do
@@ -216,6 +226,28 @@ if defined? ActiveRecord
 
       test 'page before cursor works based on primary key alone' do
         assert [@books.first, @books.second, @books.third] == Book.page_before({id: @books.fourth.id}).per(5).to_a
+      end
+
+      if (Rails.version >= '6.1.0' && ENV['DB'] == 'postgresql') || (Rails.version >= '7.0.0' && ENV['DB'] == 'sqlite3')
+        test 'page after cursor works with nulls first (ascending)' do
+          users = User.order(User.arel_table[:name].asc.nulls_first).page_after
+          assert [@newborn, @werewolf] == users.per(2).to_a
+        end
+
+        test 'page after cursor works with nulls first (descending)' do
+          users = User.order(User.arel_table[:name].desc.nulls_first).page_after
+          assert [@newborn, @werewolf] == users.per(2).to_a
+        end
+
+        test 'page after cursor works with nulls last (ascending)' do
+          users = User.order(User.arel_table[:name].asc.nulls_last).page_after({name: @god.name, id: @god.id})
+          assert [@newborn, @werewolf] == users.per(2).to_a
+        end
+
+        test 'page after cursor works with nulls last (descending)' do
+          users = User.order(User.arel_table[:name].desc.nulls_last).page_after({name: @another_vampire.name, id: @another_vampire.id})
+          assert [@newborn, @werewolf] == users.per(2).to_a
+        end
       end
     end
   end
