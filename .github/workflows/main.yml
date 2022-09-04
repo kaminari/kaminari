@@ -51,6 +51,16 @@ jobs:
           - ruby_version: 'ruby-head'
             rails_version: 'edge'
             db: mysql
+            
+          - ruby_version: 'truffleruby-head'
+            rails_version: 'edge'
+            db: sqlite3
+          - ruby_version: 'truffleruby-head'
+            rails_version: 'edge'
+            db: postgresql
+          - ruby_version: 'truffleruby-head'
+            rails_version: 'edge'
+            db: mysql
 
           - ruby_version: '2.6'
             rails_version: '5.1'
