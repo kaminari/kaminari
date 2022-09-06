@@ -163,6 +163,14 @@ if defined? ActiveRecord
 
         @books = Book.order(:id).all.to_a
 
+        t = Time.at(Time.now.to_f.floor)
+        @events = []
+        @events << (Event.create! time: t - 5e-6.seconds)
+        @events << (Event.create! time: t - 1e-6.seconds)
+        @events << (Event.create! time: t)
+        @events << (Event.create! time: t + 1e-6.seconds)
+        @events << (Event.create! time: t + 5e-6.seconds)
+
         @large_nulls = {
           mysql: false,
           mysql2: false,
@@ -230,6 +238,12 @@ if defined? ActiveRecord
 
       test 'page by cursor does not change explicit descending id' do
         assert [@another_vampire, @vampire] == User.order(:age).order(id: :desc).page_after({age: @werewolf.age, id: @werewolf.id}).per(2).to_a
+      end
+
+      test 'page by cursor uses microsecond precision for timestamp field' do
+        events = Event.order(:time).order(:id)
+        cursor = events.page_after.per(2).end_cursor
+        assert [@events.third, @events.fourth, @events.fifth] == events.page_after(cursor).per(5).to_a
       end
 
       if (Rails.version >= '6.1.0' && ENV['DB'] == 'postgresql') || (Rails.version >= '7.0.0' && ENV['DB'] == 'sqlite3')

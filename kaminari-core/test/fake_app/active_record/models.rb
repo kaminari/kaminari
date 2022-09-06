@@ -62,6 +62,9 @@ end
 class Device < Product
 end
 
+class Event < ActiveRecord::Base
+end
+
 # migrations
 ActiveRecord::Migration.verbose = false
 ActiveRecord::Tasks::DatabaseTasks.root = Dir.pwd
@@ -78,6 +81,7 @@ class CreateAllTables < ActiveRecord::VERSION::MAJOR >= 5 ? ActiveRecord::Migrat
     create_table(:user_addresses) {|t| t.string :street; t.integer :user_id }
     create_table(:devices) {|t| t.string :name; t.integer :age}
     create_table(:animals) {|t| t.string :type; t.string :name}
+    create_table(:events) {|t| t.datetime :time}
   end
 end
 CreateAllTables.up

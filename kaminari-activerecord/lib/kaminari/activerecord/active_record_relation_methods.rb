@@ -150,11 +150,9 @@ module Kaminari
           @records.freeze if frozen
 
           # Generate start/end cursors for further paging
-          start_cursor_values = @_order_columns.map { |c| @records.first.send(c) }
-          end_cursor_values = @_order_columns.map { |c| @records.last.send(c) }
-          @_start_cursor = Hash[@_order_columns.zip(start_cursor_values)]
+          @_start_cursor = build_cursor_from_record @records.first
           @_start_cursor[Kaminari.config.page_direction_attr_name] = 'before'
-          @_end_cursor = Hash[@_order_columns.zip(end_cursor_values)]
+          @_end_cursor = build_cursor_from_record @records.last
           @_end_cursor[Kaminari.config.page_direction_attr_name] = 'after'
         end
 
@@ -166,6 +164,26 @@ module Kaminari
     def total_count
       raise "This scope is marked as a cursor paginable scope and can't be used in combination " \
             "with `#paginate' or `#page_entries_info'. Use #link_to_page_after or #link_to_page_before instead."
+    end
+
+    def build_cursor_from_record(record)
+      cursor_values = @_order_columns.map { |c| record.read_attribute_before_type_cast(c) }
+
+      # Serialize timestamps with microseconds.
+      # In case of Postgresql connection, read_attribute_before_type_cast returns a Time instead
+      # of the native database String, so the cursor time precision must meet or exceed the database precision.
+      # At present, Postgresql and Mysql smallest time unit is microseconds, so '6' fractional digits suffice.
+      cursor_values.each do |value|
+        if [ActiveSupport::TimeWithZone, Time, DateTime].any? {|klass| value.is_a? klass }
+          class << value
+            def as_json(options = nil)
+              xmlschema(6)
+            end
+          end
+        end
+      end
+
+      Hash[@_order_columns.zip(cursor_values)]
     end
 
     def build_cursor_condition(search_direction)

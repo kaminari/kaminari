@@ -26,6 +26,8 @@ module Kaminari
       eval <<-RUBY, nil, __FILE__, __LINE__ + 1
         def self.#{Kaminari.config.page_after_method_name}(cursor = {})
           cursor = decode_cursor(cursor) || {}
+          cursor.delete(:#{Kaminari.config.page_direction_attr_name})
+          cursor.delete('#{Kaminari.config.page_direction_attr_name}')
           cursor[:#{Kaminari.config.page_direction_attr_name}] = :after
           self.#{Kaminari.config.page_by_cursor_method_name}(cursor)
         end
@@ -36,6 +38,8 @@ module Kaminari
       eval <<-RUBY, nil, __FILE__, __LINE__ + 1
         def self.#{Kaminari.config.page_before_method_name}(cursor = {})
           cursor = decode_cursor(cursor) || {}
+          cursor.delete(:#{Kaminari.config.page_direction_attr_name})
+          cursor.delete('#{Kaminari.config.page_direction_attr_name}')
           cursor[:#{Kaminari.config.page_direction_attr_name}] = :before
           self.#{Kaminari.config.page_by_cursor_method_name}(cursor)
         end
