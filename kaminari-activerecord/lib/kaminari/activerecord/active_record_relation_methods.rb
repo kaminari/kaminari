@@ -173,13 +173,11 @@ module Kaminari
       # In case of Postgresql connection, read_attribute_before_type_cast returns a Time instead
       # of the native database String, so the cursor time precision must meet or exceed the database precision.
       # At present, Postgresql and Mysql smallest time unit is microseconds, so '6' fractional digits suffice.
-      cursor_values.each do |value|
+      cursor_values = cursor_values.map do |value|
         if [ActiveSupport::TimeWithZone, Time, DateTime].any? {|klass| value.is_a? klass }
-          class << value
-            def as_json(options = nil)
-              xmlschema(6)
-            end
-          end
+          value.xmlschema(6)
+        else
+          value
         end
       end
 
