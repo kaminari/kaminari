@@ -55,7 +55,7 @@ module Kaminari
           # Convert cursor to OpenStruct with .columns, each having .name and .value
           cursor = decode_cursor(directed_cursor) || {}
           querying_before_cursor = (cursor.delete(:#{Kaminari.config.page_direction_attr_name}) || cursor.delete('#{Kaminari.config.page_direction_attr_name}'))&.to_sym == :before && cursor.any?
-          cursor = cursor.empty? ? nil : JSON.parse({columns: cursor.each_pair.map{|name,value|{name: name.to_s, value: value&.to_s}}}.to_json, object_class:OpenStruct)
+          cursor = cursor.empty? ? nil : JSON.parse({columns: cursor.each_pair.map{|name,value|{name: name.to_s, full_name: table_name + '.' + name.to_s, value: value&.to_s}}}.to_json, object_class:OpenStruct)
 
           if cursor
             # Validate cursor columns against model
@@ -96,7 +96,7 @@ module Kaminari
             values = querying_before_cursor ? before_values : after_values
 
             # Peek back to detect any result in opposite direction
-            peekback_condition = (querying_before_cursor ? after_condition : before_condition) + ' or (' + (cursor.columns.map {|c| c.value.nil? ? (c.name + ' is null ') : (c.name + ' = ? ')}).join(' and ') + ')'
+            peekback_condition = (querying_before_cursor ? after_condition : before_condition) + ' or (' + (cursor.columns.map {|c| c.value.nil? ? (c.full_name + ' is null ') : (c.full_name + ' = ? ')}).join(' and ') + ')'
             peekback_values = (querying_before_cursor ? after_values : before_values) + cursor.columns.map{|c| c.value}.compact
             peekback_relation = relation.where(peekback_condition, *peekback_values).limit(1)
             peekback_relation.reverse_order!

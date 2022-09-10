@@ -246,6 +246,12 @@ if defined? ActiveRecord
         assert [@events.third, @events.fourth, @events.fifth] == events.page_after(cursor).per(5).to_a
       end
 
+      test 'page by cursor works despite same-named columns on joined relations' do
+        books = Book.joins(:authors).order("#{Book.table_name}.created_at")
+        cursor = books.page_by_cursor.per(3).end_cursor
+        assert [@books.fourth, @books.fifth] == books.page_by_cursor(cursor).per(3).to_a
+      end
+
       if (Rails.version >= '6.1.0' && ENV['DB'] == 'postgresql') || (Rails.version >= '7.0.0' && ENV['DB'] == 'sqlite3')
         test 'page after cursor works with nulls first (ascending)' do
           users = User.order(User.arel_table[:name].asc.nulls_first).page_after

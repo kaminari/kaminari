@@ -204,12 +204,12 @@ module Kaminari
                           .map { |column, preceding_columns, dir, nulls_after|
                           nulls_last = (nulls_after and search_direction == :after) || (!nulls_after and search_direction == :before)
                           if column.value.nil?
-                            inequality = nulls_last ? nil : "#{column.name} is not null"
+                            inequality = nulls_last ? nil : "#{column.full_name} is not null"
                           else
-                            inequality = {asc: "#{column.name} #{asc_operator} ?", desc: "#{column.name} #{desc_operator} ?"}.fetch(dir)
-                            inequality += " or #{column.name} is null" if nulls_last
+                            inequality = {asc: "#{column.full_name} #{asc_operator} ?", desc: "#{column.full_name} #{desc_operator} ?"}.fetch(dir)
+                            inequality += " or #{column.full_name} is null" if nulls_last
                           end
-                          inequality.nil? ? nil : (preceding_columns.pluck(:name, :value).map {|c, v| v.nil? ? "#{c} is null" : "#{c} = ?" } + ['(' + inequality + ')']).join(' and ')
+                          inequality.nil? ? nil : (preceding_columns.pluck(:full_name, :value).map {|c, v| v.nil? ? "#{c} is null" : "#{c} = ?" } + ['(' + inequality + ')']).join(' and ')
                         }
                         .compact
                         .map {|c| '(' + c + ')'}
