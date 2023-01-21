@@ -138,6 +138,7 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.ruby_version }}
+          rubygems: ${{ matrix.ruby_version < '2.6' && 'default' || 'latest' }}
           bundler-cache: true
         continue-on-error: ${{ (matrix.ruby_version == 'ruby-head') || (matrix.ruby_version == 'jruby') || (matrix.rails_version == 'edge') }}
       - run: bundle exec rake test
