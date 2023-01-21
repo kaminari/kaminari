@@ -26,10 +26,13 @@ gem 'selenium-webdriver'
 rails_version = ENV['RAILS_VERSION'] || '∞'
 
 platforms :ruby do
-  gem 'sqlite3', rails_version >= '5.1' ? '>= 1.4' : '< 1.4', require: false
-  if RUBY_VERSION >= '2.4'
+  case ENV['DB']
+  when 'postgresql'
     gem 'pg', rails_version >= '5.1' ? '>= 1.0.0' : '< 1.0.0', require: false
+  when 'mysql'
     gem 'mysql2', rails_version >= '4.2' ? '>= 0.4' : '< 0.4', require: false
+  else
+    gem 'sqlite3', rails_version >= '5.1' ? '>= 1.4' : '< 1.4', require: false
   end
 end
 
