@@ -47,6 +47,12 @@ jobs:
           - ruby_version: '3.0'
             rails_version: '6.0'
             db: sqlite3
+          - ruby_version: '3.0'
+            rails_version: '6.0'
+            db: postgresql
+          - ruby_version: '3.0'
+            rails_version: '6.0'
+            db: mysql
 
           - ruby_version: '2.7'
             rails_version: '6.0'
@@ -61,6 +67,12 @@ jobs:
           - ruby_version: '2.6'
             rails_version: '5.2'
             db: sqlite3
+          - ruby_version: '2.6'
+            rails_version: '5.2'
+            db: postgresql
+          - ruby_version: '2.6'
+            rails_version: '5.2'
+            db: mysql
           - ruby_version: '2.6'
             rails_version: '5.1'
             db: sqlite3
@@ -80,6 +92,12 @@ jobs:
           - ruby_version: '2.5'
             rails_version: '5.1'
             db: sqlite3
+          - ruby_version: '2.5'
+            rails_version: '5.1'
+            db: postgresql
+          - ruby_version: '2.5'
+            rails_version: '5.1'
+            db: mysql
           - ruby_version: '2.5'
             rails_version: '5.0'
             db: sqlite3
