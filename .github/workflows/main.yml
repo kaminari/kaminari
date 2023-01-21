@@ -1,8 +1,10 @@
 name: build
 
 on:
-  - push
-  - pull_request
+  push:
+  pull_request:
+  schedule:
+    - cron: '58 23 * * *'
 
 jobs:
   build:
