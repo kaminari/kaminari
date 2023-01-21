@@ -18,22 +18,14 @@ jobs:
 
       matrix:
         ruby_version: ['3.2', '3.1', '3.0', '2.7', '2.6', 'jruby']
-        rails_version: [edge, '7.0', '6.1', '6.0', '5.2']
+        rails_version: [edge, '7.0', '6.1', '6.0']
         db: ['sqlite3', 'postgresql', 'mysql']
 
         exclude:
           - ruby_version: '3.2'
             rails_version: '6.0'
-          - ruby_version: '3.2'
-            rails_version: '5.2'
           - ruby_version: '3.1'
             rails_version: '6.0'
-          - ruby_version: '3.1'
-            rails_version: '5.2'
-          - ruby_version: '3.0'
-            rails_version: '5.2'
-          - ruby_version: '2.7'
-            rails_version: '5.2'
           - ruby_version: '2.6'
             rails_version: 'edge'
           - ruby_version: '2.6'
@@ -52,6 +44,9 @@ jobs:
             rails_version: 'edge'
             db: mysql
 
+          - ruby_version: '2.6'
+            rails_version: '5.2'
+            db: sqlite3
           - ruby_version: '2.6'
             rails_version: '5.1'
             db: sqlite3
