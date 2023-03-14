@@ -45,7 +45,14 @@ module Kaminari
       def page_url_for(page)
         params = params_for(page)
         params[:only_path] = true
-        @template.url_for params
+
+        # kaminari is having a difficult time with our efforts to move code out of the engine back into the main app. The issue is the url_for reverse lookup from controller/action to path when the engine and main app share the same initial part of the path (engine_mount/app/controllers/... vs app/controllers/engine_mount/...) - it's only searching the engine routes.
+        # The begin/rescue block below will catch this case and call the main app url_for which correctly resolves the main app route. This is a temporary measure while we're moving controllers out of the engine. Most pagination calls will use the default logic, but the engine controllers that we're moving back to the main app will fall into the rescue block.
+        begin
+          @template.url_for params
+        rescue ActionController::UrlGenerationError => e
+          Rails.application.routes.url_helpers.url_for params
+        end
       end
 
       private
