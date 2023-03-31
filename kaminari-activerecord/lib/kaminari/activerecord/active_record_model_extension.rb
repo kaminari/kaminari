@@ -86,7 +86,7 @@ module Kaminari
             peekback_relation = nil
           else
             # Coerce cursor column order into agreement with ActiveRecord order
-            cursor.columns.filter! { |c| order_columns.include? c.name }
+            cursor.columns.keep_if { |c| order_columns.include? c.name }
             cursor.columns.sort_by! { |c| order_columns.index(c.name) }
 
             # Generate condition for cursor-based filter
