@@ -45,7 +45,7 @@ module Kaminari
         end
       RUBY
 
-      # Fetch the values after or before cursor, depending on included page_direction.
+      # Fetch the values after or before cursor, depending on page direction embedded in cursor.
       # Direction defaults to after if direction is not provided or cursor values are not provided.
       #   Model.page_by_cursor(cursor)
       eval <<-RUBY, nil, __FILE__, __LINE__ + 1
@@ -54,8 +54,8 @@ module Kaminari
 
           # Convert cursor to OpenStruct with .columns, each having .name and .value
           cursor = decode_cursor(directed_cursor) || {}
-          querying_before_cursor = (cursor.delete(:#{Kaminari.config.page_direction_attr_name}) || cursor.delete('#{Kaminari.config.page_direction_attr_name}'))&.to_sym == :before && cursor.any?
-          cursor = cursor.empty? ? nil : JSON.parse({columns: cursor.each_pair.map{|name,value|{name: name.to_s, full_name: table_name + '.' + name.to_s, value: value&.to_s}}}.to_json, object_class:OpenStruct)
+          querying_before_cursor = (cursor.delete(:#{Kaminari.config.page_direction_attr_name}) || cursor.delete('#{Kaminari.config.page_direction_attr_name}')).try(:to_sym) == :before && cursor.any?
+          cursor = cursor.empty? ? nil : JSON.parse({columns: cursor.each_pair.map{|name,value|{name: name.to_s, full_name: table_name + '.' + name.to_s, value: value.try(:to_s)}}}.to_json, object_class:OpenStruct)
 
           if cursor
             # Validate cursor columns against model
