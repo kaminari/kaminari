@@ -126,9 +126,7 @@ end
 
 module Kaminari
   module CursorPaginatable
-    # Overwrite AR::Relation#load to filter relative to cursor, reversing queried sort order is retrieving records
-    # before the cursor. Loads an extra record to peek ahead and performs an additional query to peek behind one record,
-    # using this information to set @_has_prev and @_has_next ivars
+    # Overwrite AR::Relation#load to filter relative to cursor and peek ahead/behind.
     def load peek: false
       if loaded? || limit_value.nil? || peek
         super()
@@ -140,7 +138,7 @@ module Kaminari
         set_limit_value limit_value - 1
 
         if @records.any?
-          # Use extra and peekback to determine whether has next/prev page.
+          # Use extra record and peekback record to determine whether has next/prev page.
           # Re-reverse sort order if querying `before`.
           @records = @records.dup if (frozen = @records.frozen?)
           has_extra_record = !!@records.delete_at(limit_value)
@@ -169,13 +167,10 @@ module Kaminari
     def build_cursor_from_record(record)
       cursor_values = @_order_columns.map { |c| record.read_attribute_before_type_cast(c) }
 
-      # Serialize timestamps with microseconds.
-      # In case of Postgresql connection, read_attribute_before_type_cast returns a Time instead
-      # of the native database String, so the cursor time precision must meet or exceed the database precision.
-      # At present, Postgresql and Mysql smallest time unit is microseconds, so '6' fractional digits suffice.
+      # Serialize timestamps with nanoseconds.
       cursor_values = cursor_values.map do |value|
-        if [ActiveSupport::TimeWithZone, Time, DateTime].any? {|klass| value.is_a? klass }
-          value.xmlschema(6)
+        if value.respond_to?(:xmlschema)
+          value.xmlschema(9)  # nanoseconds
         else
           value
         end
