@@ -226,7 +226,7 @@ module Kaminari
         .map { |o| o.split(',') }.flatten
         .map { |o| o.downcase.strip }
         .map { |o| o.gsub(/(?<!")"(([^"]|"")+)"(?!")/, '\1') }
-        .map { |o| o.match?(/\s+(asc|desc)(\s+nulls\s+(first|last))?/) ? o : o.sub(/(\s+nulls\s+(first|last))?$/, ' asc\0') }
+        .map { |o| o.match(/\s+(asc|desc)(\s+nulls\s+(first|last))?/) ? o : o.sub(/(\s+nulls\s+(first|last))?$/, ' asc\0') }
       return {
         columns: order_strings.map(&:split).map(&:first).map{|o| o.split('.').last},
         dirs: order_strings.map{|o| o.match(/\s+(asc|desc)(\s+nulls\s+(first|last))?/)}.map{|o| o[1].to_sym},
