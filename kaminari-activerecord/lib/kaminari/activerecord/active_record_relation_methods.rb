@@ -228,10 +228,35 @@ module Kaminari
         .map { |o| o.gsub(/(?<!")"(([^"]|"")+)"(?!")/, '\1') }
         .map { |o| o.match(/\s+(asc|desc)(\s+nulls\s+(first|last))?/) ? o : o.sub(/(\s+nulls\s+(first|last))?$/, ' asc\0') }
       return {
-        columns: order_strings.map(&:split).map(&:first).map{|o| o.split('.').last},
+        columns: order_strings.map(&:split).map(&:first).map{|o| split_and_unquote_identifiers(o).last},
         dirs: order_strings.map{|o| o.match(/\s+(asc|desc)(\s+nulls\s+(first|last))?/)}.map{|o| o[1].to_sym},
         explicit_null_positions: order_strings.map{|o| o.match(/\s+(asc|desc)(\s+nulls\s+(first|last))?/)}.map{|o| o[3]}
       }
+    end
+
+    def split_and_unquote_identifiers fully_qualified_identifier
+
+      # Split identifiers that may be quoted or unquoted
+      grave_quoted_identifier = '(?=`(?:[^`]|`{2})*`)'
+      double_quoted_identifier = '(?="(?:[^"]|"{2})*")'
+      non_quoted_identifier_terminated_by_dot = '(?=(?:[^"`]+\.))'
+      non_quoted_identifier_terminated_by_end = '(?=(?:[^"`]+$))'
+
+      adapter_type = connection.adapter_name.downcase.to_sym
+      identifiers = [non_quoted_identifier_terminated_by_dot, non_quoted_identifier_terminated_by_end]
+      identifiers += [grave_quoted_identifier] if [:mysql, :mysql2, :sqlite].include? adapter_type
+      identifiers += [double_quoted_identifier] if [:postgresql, :sqlite].include? adapter_type
+
+      quoted_identifiers = fully_qualified_identifier.split(/\.(?:#{identifiers.join('|')})/)
+
+      # Unquote identifiers
+      unquoted_identifiers = (
+        quoted_identifiers
+          .map{|s| s[ /`(([^`]|`{2})*)`/, 1] || s}  # Unquote grave quoted identifiers
+          .map{|s| s[/"(([^"]|"{2})*)"/, 1] || s}  # Unquote double quoted identifiers
+      )
+      return unquoted_identifiers
+
     end
 
     def ordered_by_unsupported_columns

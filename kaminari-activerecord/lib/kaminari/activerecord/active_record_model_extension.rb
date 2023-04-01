@@ -61,7 +61,7 @@ module Kaminari
             # Validate cursor columns against model
             cursor_columns = cursor.columns.map { |c| c.name }
             model_columns = columns.map { |c| c.name }
-            raise 'Cursor has columns that are not on model.' if (cursor_columns - model_columns).any?
+            raise "Cursor has columns that are not on model: \#{cursor_columns - model_columns}" if (cursor_columns - model_columns).any?
           end
           
           relation = limit(per_page).extending do
