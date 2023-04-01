@@ -204,7 +204,7 @@ module Kaminari
                             inequality = {asc: "#{column.full_name} #{asc_operator} ?", desc: "#{column.full_name} #{desc_operator} ?"}.fetch(dir)
                             inequality += " or #{column.full_name} is null" if nulls_last
                           end
-                          inequality.nil? ? nil : (preceding_columns.pluck(:full_name, :value).map {|c, v| v.nil? ? "#{c} is null" : "#{c} = ?" } + ['(' + inequality + ')']).join(' and ')
+                          inequality.nil? ? nil : (preceding_columns.map{|c| [c.full_name, c.value]} .map {|c, v| v.nil? ? "#{c} is null" : "#{c} = ?" } + ['(' + inequality + ')']).join(' and ')
                         }
                         .compact
                         .map {|c| '(' + c + ')'}
@@ -212,7 +212,7 @@ module Kaminari
       values = @_cursor.columns.zip(preceding_columns_per_column, nulls_after_per_column)
                        .map { |column, preceding_columns, nulls_after|
                          nulls_last = (nulls_after and search_direction == :after) || (!nulls_after and search_direction == :before)
-                         (column.value.nil? and nulls_last) ? nil : (preceding_columns.pluck(:value) + [column.value])
+                         (column.value.nil? and nulls_last) ? nil : (preceding_columns.map{|c| c.value} + [column.value])
                        }
                        .flatten
                        .compact
