@@ -21,3 +21,29 @@ en:
           other: "Displaying <b>all %{count}</b> %{entry_name}"
       more_pages:
         display_entries: "Displaying %{entry_name} <b>%{first}&nbsp;-&nbsp;%{last}</b> of <b>%{total}</b> in total"
+
+gd:
+  views:
+    pagination:
+      first: "&laquo; Dhan toiseach"
+      last: "Dhan deireadh &raquo;"
+      previous: "&lsaquo; Air ais"
+      next: "Air adhart &rsaquo;"
+      truncate: "&hellip;"
+  helpers:
+    page_entries_info:
+      entry:
+        zero: "innteart"
+        one: "innteart"
+        two: "innteart"
+        few: "innteartan"
+        other: "innteart"
+      one_page:
+        display_entries:
+          zero: "Cha deach %{entry_name} a lorg"
+          one: "A’ sealltainn <b>a h-uile</b> %{entry_name} (<b>%{count}</b>)"
+          two: "A’ sealltainn <b>a h-uile</b> %{entry_name} (<b>%{count}</b>)"
+          few: "A’ sealltainn <b>a h-uile</b> %{entry_name} (<b>%{count}</b>)"
+          other: "A’ sealltainn <b>a h-uile</b> %{entry_name} (<b>%{count}</b>)"
+      more_pages:
+        display_entries: "A’ sealltainn %{entry_name} <b>%{first}&nbsp;-&nbsp;%{last}</b> à <b>%{total}</b> uile gu lèir"
