@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 module Kaminari
+  def self.deprecator
+    @deprecator ||= ActiveSupport::Deprecation.new("2.0", "kaminari-core")
+  end
 end
 
 # load Rails/Railtie
