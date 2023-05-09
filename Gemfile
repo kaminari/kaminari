@@ -21,6 +21,7 @@ else
   gem 'rails'
 end
 
+gem 'rake', RUBY_VERSION < '2.2' ? '< 13' : '>= 0'
 gem 'concurrent-ruby', RUBY_VERSION < '2.3' ? '~> 1.1.0' : '>= 1.2'
 gem 'selenium-webdriver'
 
