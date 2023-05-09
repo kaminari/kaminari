@@ -26,6 +26,7 @@ gem 'concurrent-ruby', RUBY_VERSION < '2.2' ? '< 1.1.10' : RUBY_VERSION < '2.3' 
 gem 'mini_portile2', RUBY_VERSION < '2.3' ? '< 2.5.1' : '>= 0'
 gem 'i18n', RUBY_VERSION < '2.3' ? '< 1.5.2' : '>= 0'
 gem 'selenium-webdriver', RUBY_VERSION < '2.7' ? '< 4.2.0' : '>= 0'
+gem 'minitest', RUBY_VERSION < '2.6' ? '< 5.16' : '>= 0'
 
 rails_version = ENV['RAILS_VERSION'] || '∞'
 
