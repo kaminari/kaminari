@@ -21,6 +21,7 @@ else
   gem 'rails'
 end
 
+gem 'concurrent-ruby', RUBY_VERSION < '2.3' ? '~> 1.1.0' : '>= 1.2'
 gem 'selenium-webdriver'
 
 rails_version = ENV['RAILS_VERSION'] || '∞'
