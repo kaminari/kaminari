@@ -23,6 +23,7 @@ end
 
 gem 'rake', RUBY_VERSION < '2.2' ? '< 13' : '>= 0'
 gem 'concurrent-ruby', RUBY_VERSION < '2.3' ? '~> 1.1.0' : '>= 1.2'
+gem 'mini_portile2', RUBY_VERSION < '2.3' ? '< 2.5.1' : '>= 0'
 gem 'selenium-webdriver'
 
 rails_version = ENV['RAILS_VERSION'] || '∞'
