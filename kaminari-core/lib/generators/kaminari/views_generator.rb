@@ -48,6 +48,8 @@ BANNER
         end
       end
 
+      private
+
       def download_templates(theme)
         theme.templates_for(template_engine).each do |template|
           say "      downloading #{template.name} from kaminari_themes..."
