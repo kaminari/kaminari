@@ -44,7 +44,7 @@ module Kaminari
       alias url_to_next_page next_page_url
 
       def path_to_next_url(scope, options = {})
-        ActiveSupport::Deprecation.warn 'path_to_next_url is deprecated. Use next_page_url or url_to_next_page instead.'
+        Kaminari.deprecator.warn 'path_to_next_url is deprecated. Use next_page_url or url_to_next_page instead.'
         next_page_url(scope, options)
       end
 
