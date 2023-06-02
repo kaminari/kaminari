@@ -47,16 +47,10 @@ The pagination helper outputs the HTML5 `<nav>` tag by default. Plus, the helper
 
 ## Installation
 
-To install kaminari on the default Rails stack, just put this line in your Gemfile:
+To install kaminari on the default Rails stack, run:
 
 ```ruby
-gem 'kaminari'
-```
-
-Then bundle:
-
-```sh
-% bundle
+bundle add kaminari
 ```
 
 If you're building non-Rails of non-ActiveRecord app and want the pagination feature on it, please take a look at [Other Framework/Library Support](#other-frameworklibrary-support) section.
