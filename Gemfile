@@ -28,6 +28,7 @@ gem 'loofah', RUBY_VERSION < '2.5' ? '< 2.21.0' : '>= 0'
 gem 'i18n', RUBY_VERSION < '2.3' ? '< 1.5.2' : '>= 0'
 gem 'selenium-webdriver', RUBY_VERSION < '2.7' ? '< 4.2.0' : '>= 0'
 gem 'minitest', RUBY_VERSION < '2.6' ? '< 5.16' : '>= 0'
+gem 'nokogiri', '>= 1.10.10'
 
 rails_version = ENV['RAILS_VERSION'] || '∞'
 
