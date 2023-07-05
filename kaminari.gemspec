@@ -15,7 +15,8 @@ Gem::Specification.new do |spec|
 
   spec.metadata = {
     'changelog_uri' => 'https://github.com/kaminari/kaminari/blob/master/CHANGELOG.md',
-    'source_code_uri' => 'https://github.com/kaminari/kaminari/'
+    'source_code_uri' => 'https://github.com/kaminari/kaminari/',
+    'rubygems_mfa_required' => 'true'
   }
 
   spec.files         = `git ls-files | egrep -v 'kaminari-(core|actionview|activerecord)' | grep -v '^test'`.split("\n")
