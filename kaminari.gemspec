@@ -13,6 +13,11 @@ Gem::Specification.new do |spec|
   spec.description = 'Kaminari is a Scope & Engine based, clean, powerful, agnostic, customizable and sophisticated paginator for Rails 4+'
   spec.license       = "MIT"
 
+  spec.metadata = {
+    'changelog_uri' => 'https://github.com/kaminari/kaminari/blob/master/CHANGELOG.md',
+    'source_code_uri' => 'https://github.com/kaminari/kaminari/'
+  }
+
   spec.files         = `git ls-files | egrep -v 'kaminari-(core|actionview|activerecord)' | grep -v '^test'`.split("\n")
   spec.require_paths = ['lib']
 
