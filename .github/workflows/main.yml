@@ -46,6 +46,16 @@ jobs:
             rails_version: 'edge'
             db: mysql
 
+          - ruby_version: 'truffleruby-head'
+            rails_version: 'edge'
+            db: sqlite3
+          - ruby_version: 'truffleruby-head'
+            rails_version: 'edge'
+            db: postgresql
+          - ruby_version: 'truffleruby-head'
+            rails_version: 'edge'
+            db: mysql
+
           - ruby_version: '3.0'
             rails_version: '6.0'
             db: sqlite3
@@ -140,7 +150,7 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.ruby_version }}
-          rubygems: ${{ matrix.ruby_version < '2.6' && 'default' || 'latest' }}
+          rubygems: ${{ (matrix.ruby_version < '2.3' && '2.7.11') || (matrix.ruby_version < '2.6' && '3.3.26') || 'latest' }}
           bundler-cache: true
         continue-on-error: ${{ (matrix.ruby_version == 'ruby-head') || (matrix.ruby_version == 'jruby') || (matrix.rails_version == 'edge') }}
       - run: bundle exec rake test

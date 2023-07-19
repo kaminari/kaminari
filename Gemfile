@@ -21,6 +21,11 @@ else
   gem 'rails'
 end
 
+gem 'rake', RUBY_VERSION < '2.2' ? '< 13' : '>= 0'
+gem 'concurrent-ruby', RUBY_VERSION < '2.2' ? '< 1.1.10' : RUBY_VERSION < '2.3' ? '< 1.2' : '>= 1.2'
+gem 'mini_portile2', RUBY_VERSION < '2.3' ? '< 2.5.1' : '>= 0'
+gem 'loofah', RUBY_VERSION < '2.5' ? '< 2.21.0' : '>= 0'
+gem 'i18n', RUBY_VERSION < '2.3' ? '< 1.5.2' : '>= 0'
 gem 'selenium-webdriver'
 
 rails_version = ENV['RAILS_VERSION'] || '∞'
@@ -46,7 +51,6 @@ if RUBY_ENGINE == 'rbx'
   platforms :rbx do
     gem 'rubysl', '~> 2.0'
     gem 'racc'
-    gem 'minitest'
     gem 'rubinius-developer_tools'
   end
 end

@@ -68,7 +68,7 @@ module Kaminari
             #   from: {other: "params", user: {name: "yuki", page: 1}}
             #     to: {other: "params", user: {name: "yuki", page: nil}}
             #   (when @param_name == "user[page]")
-            @param_name.to_s.scan(/[\w\.]+/)[0..-2].inject(page_params){|h, k| h[k] }[$&] = nil
+            @param_name.to_s.scan(/[\w.]+/)[0..-2].inject(page_params){|h, k| h[k] }[$&] = nil
           end
 
           page_params
@@ -134,7 +134,7 @@ module Kaminari
         # params in Rails 5 may not be a Hash either,
         # so it must be converted to a Hash to be merged into @params
         if params && params.respond_to?(:to_unsafe_h)
-          ActiveSupport::Deprecation.warn 'Explicitly passing params to helpers could be omitted.'
+          Kaminari.deprecator.warn 'Explicitly passing params to helpers could be omitted.'
           params = params.to_unsafe_h
         end
 
@@ -155,7 +155,7 @@ module Kaminari
         # params in Rails 5 may not be a Hash either,
         # so it must be converted to a Hash to be merged into @params
         if params && params.respond_to?(:to_unsafe_h)
-          ActiveSupport::Deprecation.warn 'Explicitly passing params to helpers could be omitted.'
+          Kaminari.deprecator.warn 'Explicitly passing params to helpers could be omitted.'
           params = params.to_unsafe_h
         end
 
