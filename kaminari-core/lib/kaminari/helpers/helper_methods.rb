@@ -212,7 +212,7 @@ module Kaminari
         else
           from = collection.offset_value + 1
           to =
-            if records.empty?
+            if collection.is_a? ::Kaminari::PaginatableArray
               [collection.offset_value + collection.limit_value, collection.total_count].min
             else
               collection.offset_value + page_size
