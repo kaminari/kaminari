@@ -56,8 +56,8 @@ module Kaminari
 
     # Current per-page number
     def current_per_page
-      ActiveSupport::Deprecation.warn '#current_per_page is deprecated and will be removed in the next major ' \
-                                      'version. Please use #limit_value instead.'
+      Kaminari.deprecator.warn '#current_per_page is deprecated and will be removed in the next major ' \
+        'version. Please use #limit_value instead.'
 
       limit_value
       # (defined?(@_per) && @_per) || default_per_page

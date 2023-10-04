@@ -13,7 +13,7 @@ postgresql: &postgresql
 
 mysql: &mysql
   adapter: mysql2
-  host: localhost
+  host: 127.0.0.1
   username: root
   password: <%= ENV['MYSQL_PASSWORD'] %>
   database: kaminari_test

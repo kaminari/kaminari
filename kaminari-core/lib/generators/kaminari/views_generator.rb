@@ -48,6 +48,8 @@ BANNER
         end
       end
 
+      private
+
       def download_templates(theme)
         theme.templates_for(template_engine).each do |template|
           say "      downloading #{template.name} from kaminari_themes..."
@@ -74,8 +76,8 @@ BANNER
         engine = options[:template_engine].try(:to_s).try(:downcase)
 
         if engine == 'haml' || engine == 'slim'
-          ActiveSupport::Deprecation.warn 'The -e option is deprecated and will be removed in the near future. Please use the html2slim gem or the html2haml gem ' \
-                                          'to convert erb templates manually.'
+          Kaminari.deprecator.warn 'The -e option is deprecated and will be removed in the near future. Please use the html2slim gem or the html2haml gem ' \
+            'to convert erb templates manually.'
         end
 
         engine || 'erb'

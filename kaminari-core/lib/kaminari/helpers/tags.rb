@@ -17,15 +17,23 @@ module Kaminari
     # installed template will be used.
     #   e.g.)  Paginator  ->  $GEM_HOME/kaminari-x.x.x/app/views/kaminari/_paginator.html.erb
     class Tag
-      def initialize(template, params: {}, param_name: nil, theme: nil, views_prefix: nil, **options) #:nodoc:
+      def initialize(template, params: nil, param_name: nil, theme: nil, views_prefix: nil, internal_params: nil, **options) #:nodoc:
         @template, @theme, @views_prefix, @options = template, theme, views_prefix, options
         @param_name = param_name || Kaminari.config.param_name
-        @params = template.params
-        # @params in Rails 5 no longer inherits from Hash
-        @params = @params.to_unsafe_h if @params.respond_to?(:to_unsafe_h)
-        @params = @params.with_indifferent_access
-        @params.except!(*PARAM_KEY_EXCEPT_LIST)
-        @params.merge! params
+
+        if internal_params
+          @params = internal_params
+        else
+          @params = template.params
+          # @params in Rails 5 no longer inherits from Hash
+          @params = if @params.respond_to?(:to_unsafe_h)
+            @params.to_unsafe_h
+          else
+            @params.with_indifferent_access
+          end
+          @params.except!(*PARAM_KEY_EXCEPT_LIST)
+          @params.merge! params if params
+        end
       end
 
       def to_s(locals = {}) #:nodoc:
@@ -45,7 +53,8 @@ module Kaminari
       def params_for(page)
         if (@param_name == :page) || !@param_name.include?('[')
           page_val = !Kaminari.config.params_on_first_page && (page <= 1) ? nil : page
-          @params.merge(@param_name => page_val)
+          @params[@param_name] = page_val
+          @params
         else
           page_params = Rack::Utils.parse_nested_query("#{@param_name}=#{page}")
           page_params = @params.deep_merge(page_params)
@@ -59,7 +68,7 @@ module Kaminari
             #   from: {other: "params", user: {name: "yuki", page: 1}}
             #     to: {other: "params", user: {name: "yuki", page: nil}}
             #   (when @param_name == "user[page]")
-            @param_name.to_s.scan(/[\w\.]+/)[0..-2].inject(page_params){|h, k| h[k] }[$&] = nil
+            @param_name.to_s.scan(/[\w.]+/)[0..-2].inject(page_params){|h, k| h[k] }[$&] = nil
           end
 
           page_params
@@ -125,7 +134,7 @@ module Kaminari
         # params in Rails 5 may not be a Hash either,
         # so it must be converted to a Hash to be merged into @params
         if params && params.respond_to?(:to_unsafe_h)
-          ActiveSupport::Deprecation.warn 'Explicitly passing params to helpers could be omitted.'
+          Kaminari.deprecator.warn 'Explicitly passing params to helpers could be omitted.'
           params = params.to_unsafe_h
         end
 
@@ -146,7 +155,7 @@ module Kaminari
         # params in Rails 5 may not be a Hash either,
         # so it must be converted to a Hash to be merged into @params
         if params && params.respond_to?(:to_unsafe_h)
-          ActiveSupport::Deprecation.warn 'Explicitly passing params to helpers could be omitted.'
+          Kaminari.deprecator.warn 'Explicitly passing params to helpers could be omitted.'
           params = params.to_unsafe_h
         end
 

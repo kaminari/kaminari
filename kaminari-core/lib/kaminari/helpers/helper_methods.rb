@@ -44,7 +44,7 @@ module Kaminari
       alias url_to_next_page next_page_url
 
       def path_to_next_url(scope, options = {})
-        ActiveSupport::Deprecation.warn 'path_to_next_url is deprecated. Use next_page_url or url_to_next_page instead.'
+        Kaminari.deprecator.warn 'path_to_next_url is deprecated. Use next_page_url or url_to_next_page instead.'
         next_page_url(scope, options)
       end
 
@@ -199,10 +199,11 @@ module Kaminari
       #   <%= page_entries_info @posts, entry_name: 'item' %>
       #   #-> Displaying items 6 - 10 of 26 in total
       def page_entries_info(collection, entry_name: nil)
+        page_size = (collection.respond_to?(:records) ? collection.records : collection.to_a).size
         entry_name = if entry_name
-                       entry_name.pluralize(collection.size, I18n.locale)
+                       entry_name.pluralize(page_size, I18n.locale)
                      else
-                       collection.entry_name(count: collection.size).downcase
+                       collection.entry_name(count: page_size).downcase
                      end
 
         if collection.total_pages < 2

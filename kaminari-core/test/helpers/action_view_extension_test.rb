@@ -39,24 +39,26 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
       test 'accepts :theme option' do
         users = User.page(1)
         begin
+          view_paths_was = controller.view_paths.paths
           controller.append_view_path File.join(Gem.loaded_specs['kaminari-core'].gem_dir, 'test/fake_app/views')
 
           html = view.paginate users, theme: 'bootstrap', params: {controller: 'users', action: 'index'}
           assert_match(/bootstrap-paginator/, html)
           assert_match(/bootstrap-page-link/, html)
         ensure
-          controller.view_paths.pop
+          controller.view_paths.instance_variable_set :@paths, view_paths_was
         end
       end
 
       test 'accepts :views_prefix option' do
         users = User.page(1)
         begin
+          view_paths_was = controller.view_paths.paths
           controller.append_view_path File.join(Gem.loaded_specs['kaminari-core'].gem_dir, 'test/fake_app/views')
 
           assert_equal "  <b>1</b>\n", view.paginate(users, views_prefix: 'alternative/', params: {controller: 'users', action: 'index'})
         ensure
-          controller.view_paths.pop
+          controller.view_paths.instance_variable_set :@paths, view_paths_was
         end
       end
 
