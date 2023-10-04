@@ -199,7 +199,8 @@ module Kaminari
       #   <%= page_entries_info @posts, entry_name: 'item' %>
       #   #-> Displaying items 6 - 10 of 26 in total
       def page_entries_info(collection, entry_name: nil)
-        page_size = (collection.respond_to?(:records) ? collection.records : collection.to_a).size
+        records = collection.respond_to?(:records) ? collection.records : collection.to_a
+        page_size = records.size
         entry_name = if entry_name
                        entry_name.pluralize(page_size, I18n.locale)
                      else
@@ -210,12 +211,11 @@ module Kaminari
           t('helpers.page_entries_info.one_page.display_entries', entry_name: entry_name, count: collection.total_count)
         else
           from = collection.offset_value + 1
-          records = collection.respond_to?(:records) ? collection.records : collection.to_a
           to =
             if records.empty?
               [collection.offset_value + collection.limit_value, collection.total_count].min
             else
-              collection.offset_value + records.size
+              collection.offset_value + page_size
             end
 
           t('helpers.page_entries_info.more_pages.display_entries', entry_name: entry_name, first: from, last: to, total: collection.total_count)
