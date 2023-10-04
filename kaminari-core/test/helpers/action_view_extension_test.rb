@@ -473,10 +473,17 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
         end
       end
 
-      test 'on a PaginatableArray' do
-        numbers = Kaminari.paginate_array(%w{one two three}).page(1)
+      sub_test_case 'on a PaginatableArray' do
+        test 'with a non-empty array' do
+          numbers = Kaminari.paginate_array(%w{one two three}).page(1)
 
-        assert_equal 'Displaying <b>all 3</b> entries', view.page_entries_info(numbers)
+          assert_equal 'Displaying <b>all 3</b> entries', view.page_entries_info(numbers)
+        end
+
+        test 'with an empty array and total_count option' do
+          users = Kaminari.paginate_array([], total_count: 50).page(1).per(1)
+          assert_equal 'Displaying users <b>1&nbsp;-&nbsp;1</b> of <b>50</b> in total', view.page_entries_info(users, entry_name: 'user')
+        end
       end
     end
 
