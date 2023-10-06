@@ -68,6 +68,14 @@ if defined? ActiveRecord
             assert_blank_page model_class.page(5)
           end
 
+          test 'invalid page as a Hash' do
+            assert_first_page model_class.page(page: { hacked: 100 })
+          end
+
+          test 'invalid page as a Array' do
+            assert_first_page model_class.page(page: [2, 3])
+          end
+
           test 'ensure #order_values is preserved' do
             relation = model_class.order('id').page 1
 
