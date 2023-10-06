@@ -22,13 +22,13 @@ module Kaminari
         # Total count has to be 0 if loaded records are 0
         return @total_count = 0 if (current_page == 1) && @records.empty?
         # Total count is calculable at the last page
-        return @total_count = (current_page - 1) * limit_value + @records.length if @records.any? && (@records.length < limit_value)
+        return @total_count = offset_value + @records.length if @records.any? && (@records.length < limit_value)
       end
 
       # #count overrides the #select which could include generated columns referenced in #order, so skip #order here, where it's irrelevant to the result anyway
       c = except(:offset, :limit, :order)
       # Remove includes only if they are irrelevant
-      c = c.except(:includes) unless references_eager_loaded_tables?
+      c = c.except(:includes, :eager_load, :preload) unless references_eager_loaded_tables?
 
       c = c.limit(max_pages * limit_value) if max_pages && max_pages.respond_to?(:*)
 
@@ -78,13 +78,8 @@ module Kaminari
         end
       end
     end
-  end
-end
-# NOTE: ending all modules and reopening again because using has to be called from the toplevel in Ruby 2.0
-using Kaminari::PaginatableWithoutCount::LimitValueSetter
+    using Kaminari::PaginatableWithoutCount::LimitValueSetter
 
-module Kaminari
-  module PaginatableWithoutCount
     # Overwrite AR::Relation#load to actually load one more record to judge if the page has next page
     # then store the result in @_has_next ivar
     def load

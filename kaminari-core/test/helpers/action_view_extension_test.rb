@@ -39,24 +39,26 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
       test 'accepts :theme option' do
         users = User.page(1)
         begin
+          view_paths_was = controller.view_paths.paths
           controller.append_view_path File.join(Gem.loaded_specs['kaminari-core'].gem_dir, 'test/fake_app/views')
 
           html = view.paginate users, theme: 'bootstrap', params: {controller: 'users', action: 'index'}
           assert_match(/bootstrap-paginator/, html)
           assert_match(/bootstrap-page-link/, html)
         ensure
-          controller.view_paths.pop
+          controller.view_paths.instance_variable_set :@paths, view_paths_was
         end
       end
 
       test 'accepts :views_prefix option' do
         users = User.page(1)
         begin
+          view_paths_was = controller.view_paths.paths
           controller.append_view_path File.join(Gem.loaded_specs['kaminari-core'].gem_dir, 'test/fake_app/views')
 
           assert_equal "  <b>1</b>\n", view.paginate(users, views_prefix: 'alternative/', params: {controller: 'users', action: 'index'})
         ensure
-          controller.view_paths.pop
+          controller.view_paths.instance_variable_set :@paths, view_paths_was
         end
       end
 
@@ -471,10 +473,17 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
         end
       end
 
-      test 'on a PaginatableArray' do
-        numbers = Kaminari.paginate_array(%w{one two three}).page(1)
+      sub_test_case 'on a PaginatableArray' do
+        test 'with a non-empty array' do
+          numbers = Kaminari.paginate_array(%w{one two three}).page(1)
 
-        assert_equal 'Displaying <b>all 3</b> entries', view.page_entries_info(numbers)
+          assert_equal 'Displaying <b>all 3</b> entries', view.page_entries_info(numbers)
+        end
+
+        test 'with an empty array and total_count option' do
+          users = Kaminari.paginate_array([], total_count: 50).page(1).per(1)
+          assert_equal 'Displaying users <b>1&nbsp;-&nbsp;1</b> of <b>50</b> in total', view.page_entries_info(users, entry_name: 'user')
+        end
       end
     end
 
