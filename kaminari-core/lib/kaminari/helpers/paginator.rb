@@ -74,7 +74,7 @@ module Kaminari
 
       def to_s #:nodoc:
         Thread.current[:kaminari_rendering] = true
-        super @window_options.merge paginator: self
+        super @window_options.merge(paginator: self)
       ensure
         Thread.current[:kaminari_rendering] = false
       end

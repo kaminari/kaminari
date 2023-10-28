@@ -20,7 +20,6 @@ module Kaminari
       def initialize(template, params: nil, param_name: nil, theme: nil, views_prefix: nil, internal_params: nil, **options) #:nodoc:
         @template, @theme, @views_prefix, @options = template, theme, views_prefix, options
         @param_name = param_name || Kaminari.config.param_name
-
         if internal_params
           @params = internal_params
         else
