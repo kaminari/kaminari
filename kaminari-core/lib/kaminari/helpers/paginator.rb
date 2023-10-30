@@ -80,8 +80,8 @@ module Kaminari
       end
 
       # delegates view helper methods to @template
-      def method_missing(name, *args, &block)
-        @template.respond_to?(name) ? @template.send(name, *args, &block) : super
+      def method_missing(name, *args, **kwargs, &block)
+        @template.respond_to?(name) ? @template.send(name, *args, **kwargs, &block) : super
       end
       private :method_missing
 
