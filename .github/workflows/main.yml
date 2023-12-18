@@ -150,7 +150,7 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.ruby_version }}
-          rubygems: ${{ (matrix.ruby_version < '2.3' && '2.7.11') || (matrix.ruby_version < '2.6' && '3.3.26') || 'latest' }}
+          rubygems: ${{ (matrix.ruby_version < '2.3' && '2.7.11') || (matrix.ruby_version < '2.6' && '3.3.26') || (matrix.ruby_version < '3.0' && '3.4.22') || 'latest' }}
           bundler-cache: true
         continue-on-error: ${{ (matrix.ruby_version == 'ruby-head') || (matrix.ruby_version == 'jruby') || (matrix.rails_version == 'edge') }}
       - run: bundle exec rake test
