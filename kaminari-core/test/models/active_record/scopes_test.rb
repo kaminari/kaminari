@@ -378,6 +378,20 @@ if defined? ActiveRecord
           end
         end
 
+        sub_test_case '#paginated?' do
+          test 'before calling page' do
+            assert_false model_class.paginated?
+          end
+
+          test 'after calling page' do
+            assert_true model_class.page(1).paginated?
+          end
+
+          test 'after calling page and unscoping limit' do
+            assert_false model_class.page(1).unscope(:limit).paginated?
+          end
+        end
+
         sub_test_case '#count' do
           test 'page 1' do
             assert_equal 25, model_class.page.count
