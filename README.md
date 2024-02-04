@@ -91,6 +91,8 @@ User.page(2).prev_page         #=> 1
 User.page(1).first_page?       #=> true
 User.page(50).last_page?       #=> true
 User.page(100).out_of_range?   #=> true
+User.all.paginated?            #=> false
+User.page(1).paginated?        #=> true
 ```
 
 ### The `per` Scope
