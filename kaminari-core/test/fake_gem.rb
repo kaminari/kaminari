@@ -14,7 +14,7 @@ module Kaminari
 end
 
 ActiveSupport.on_load :active_record do
-  ActiveRecord::Base.send :include, Kaminari::FakeGem
+  ActiveRecord::Base.include Kaminari::FakeGem
 
   # Simulate a gem providing a subclass of ActiveRecord::Base before the Railtie is loaded.
   class GemDefinedModel < ActiveRecord::Base
