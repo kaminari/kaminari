@@ -482,7 +482,7 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
 
         test 'with an empty array and total_count option' do
           users = Kaminari.paginate_array([], total_count: 50).page(1).per(1)
-          assert_equal 'Displaying users <b>1&nbsp;-&nbsp;1</b> of <b>50</b> in total', view.page_entries_info(users, entry_name: 'user')
+          assert_equal 'Displaying users <b>1–1</b> of <b>50</b> in total', view.page_entries_info(users, entry_name: 'user')
         end
       end
     end
