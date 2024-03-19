@@ -81,6 +81,12 @@ if defined?(::Rails::Railtie) && defined?(ActionView)
           assert_match(/foo\.page=\d+/, Kaminari::Helpers::Tag.new(self, param_name: 'foo.page').page_url_for(2))
         end
       end
+
+      sub_test_case "with param_name = :symbol_param option" do
+        test 'using a symbol as param_name' do
+          assert_match(/symbol_param=\d+/, Kaminari::Helpers::Tag.new(self, param_name: :symbol_param).page_url_for(2))
+        end
+      end
     end
   end
 
