@@ -22,7 +22,7 @@ As the whole pagination helper is basically just a collection of links and non-l
 So, you can easily modify their behaviour, style or whatever by overriding partial templates.
 
 ### ORM & Template Engine Agnostic
-Kaminari supports multiple ORMs (ActiveRecord, DataMapper, Mongoid, MongoMapper) multiple web frameworks (Rails, Sinatra, Grape), and multiple template engines (ERB, Haml, Slim).
+Kaminari supports multiple ORMs (ActiveRecord, DataMapper, Mongoid, MongoMapper), multiple web frameworks (Rails, Sinatra, Grape), and multiple template engines (ERB, Haml, Slim).
 
 ### Modern
 The pagination helper outputs the HTML5 `<nav>` tag by default. Plus, the helper supports Rails unobtrusive Ajax.
@@ -59,7 +59,7 @@ Then bundle:
 % bundle
 ```
 
-If you're building non-Rails of non-ActiveRecord app and want the pagination feature on it, please take a look at [Other Framework/Library Support](#other-frameworklibrary-support) section.
+If you're building non-Rails or non-ActiveRecord app and want the pagination feature on it, please take a look at [Other Framework/Library Support](#other-frameworklibrary-support) section.
 
 
 ## Query Basics
@@ -231,7 +231,7 @@ This will render several `?page=N` pagination links surrounded by an HTML5 `<nav
 <%= paginate @users %>
 ```
 
-This would output several pagination links such as `« First ‹ Prev ... 2 3 4 5 6 7 8 9 10 ... Next › Last »`
+This would output several pagination links such as `« First ‹ Prev ... 2 3 4 5 6 7 8 9 10 ... Next › Last »`.
 
 ### Specifying the "inner window" Size (4 by default)
 
@@ -272,7 +272,7 @@ This would modify the query parameter name on each links.
 <%= paginate @users, params: {controller: 'foo', action: 'bar', format: :turbo_stream} %>
 ```
 
-This would modify each link's `url_option`. :`controller` and :`action` might be the keys in common.
+This would modify each link's `url_option`. `:controller` and `:action` might be the keys in common.
 
 ### Ajax Links (crazy simple, but works perfectly!)
 
