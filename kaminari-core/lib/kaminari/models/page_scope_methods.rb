@@ -87,5 +87,9 @@ module Kaminari
     def out_of_range?
       current_page > total_pages
     end
+
+    def paginated?
+      limit_value.present?
+    end
   end
 end
