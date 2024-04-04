@@ -44,6 +44,14 @@ class PaginatorHelperTest < ActiveSupport::TestCase
 
       assert_equal({'controller' => 'foo', 'action' => 'bar'}, @paginator.page_tag(template).instance_variable_get('@params'))
     end
+
+    test 'when params has special path_params key' do
+      stub(template).params do
+        {path_params: 'exclude'}
+      end
+
+      assert_equal({'controller' => 'foo', 'action' => 'bar'}, @paginator.page_tag(template).instance_variable_get('@params'))
+    end
   end
 
   test '#param_name' do
