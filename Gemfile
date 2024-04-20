@@ -39,7 +39,7 @@ platforms :ruby do
     gem 'pg', rails_version >= '5.1' ? '>= 1.0.0' : '< 1.0.0', require: false
   when 'mysql'
     gem 'mysql2', rails_version >= '4.2' ? '>= 0.4' : '< 0.4', require: false
-  else
+  when 'sqlite3', nil
     if rails_version <= '5.0'
       gem 'sqlite3', '< 1.4', require: false
     elsif (rails_version <= '8') || (RUBY_VERSION < '3')
@@ -47,6 +47,8 @@ platforms :ruby do
     else
       gem 'sqlite3', require: false
     end
+  else
+    raise "Unknown DB: #{ENV['DB']}"
   end
 end
 
