@@ -40,7 +40,13 @@ platforms :ruby do
   when 'mysql'
     gem 'mysql2', rails_version >= '4.2' ? '>= 0.4' : '< 0.4', require: false
   else
-    gem 'sqlite3', rails_version >= '5.1' ? '>= 1.4' : '< 1.4', require: false
+    if rails_version <= '5.0'
+      gem 'sqlite3', '< 1.4', require: false
+    elsif (rails_version <= '8') || (RUBY_VERSION < '3')
+      gem 'sqlite3', '< 2', require: false
+    else
+      gem 'sqlite3', require: false
+    end
   end
 end
 
