@@ -4,7 +4,7 @@ module Kaminari
   module Generators
     # rails g kaminari:views THEME
     class ViewsGenerator < Rails::Generators::NamedBase # :nodoc:
-      source_root File.expand_path('../../../../app/views/kaminari', __FILE__)
+      source_root File.expand_path('../../../app/views/kaminari', __dir__)
 
       class_option :template_engine, type: :string, aliases: '-e', desc: 'Template engine for the views. Available options are "erb", "haml", and "slim".'
       class_option :views_prefix, type: :string, desc: 'Prefix for path to put views in.'
