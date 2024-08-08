@@ -3,11 +3,11 @@
 en:
   views:
     pagination:
-      first: "&laquo; First"
-      last: "Last &raquo;"
-      previous: "&lsaquo; Prev"
-      next: "Next &rsaquo;"
-      truncate: "&hellip;"
+      first_html: "&laquo; First"
+      last_html: "Last &raquo;"
+      previous_html: "&lsaquo; Prev"
+      next_html: "Next &rsaquo;"
+      truncate_html: "&hellip;"
   helpers:
     page_entries_info:
       entry:
@@ -17,7 +17,7 @@ en:
       one_page:
         display_entries:
           zero: "No %{entry_name} found"
-          one: "Displaying <b>1</b> %{entry_name}"
-          other: "Displaying <b>all %{count}</b> %{entry_name}"
+          one_html: "Displaying <b>1</b> %{entry_name}"
+          other_html: "Displaying <b>all %{count}</b> %{entry_name}"
       more_pages:
-        display_entries: "Displaying %{entry_name} <b>%{first}–%{last}</b> of <b>%{total}</b> in total"
+        display_entries_html: "Displaying %{entry_name} <b>%{first}–%{last}</b> of <b>%{total}</b> in total"
