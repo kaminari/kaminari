@@ -208,7 +208,7 @@ module Kaminari
                      end
 
         if collection.total_pages < 2
-          t('helpers.page_entries_info.one_page.display_entries', entry_name: entry_name, count: collection.total_count)
+          t('helpers.page_entries_info.one_page.display_entries_html', entry_name: entry_name, count: collection.total_count)
         else
           from = collection.offset_value + 1
           to =
@@ -218,8 +218,8 @@ module Kaminari
               collection.offset_value + page_size
             end
 
-          t('helpers.page_entries_info.more_pages.display_entries', entry_name: entry_name, first: from, last: to, total: collection.total_count)
-        end.html_safe
+          t('helpers.page_entries_info.more_pages.display_entries_html', entry_name: entry_name, first: from, last: to, total: collection.total_count)
+        end
       end
 
       # Renders rel="next" and rel="prev" links to be used in the head.
