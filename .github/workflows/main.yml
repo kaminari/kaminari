@@ -124,72 +124,6 @@ jobs:
             rails_version: '6.0'
             db: sqlite3
 
-          - ruby_version: '2.6'
-            rails_version: '6.1'
-            db: sqlite3
-          - ruby_version: '2.6'
-            rails_version: '6.0'
-            db: sqlite3
-          - ruby_version: '2.6'
-            rails_version: '5.2'
-            db: sqlite3
-          - ruby_version: '2.6'
-            rails_version: '5.2'
-            db: postgresql
-          - ruby_version: '2.6'
-            rails_version: '5.2'
-            db: mysql
-          - ruby_version: '2.6'
-            rails_version: '5.1'
-            db: sqlite3
-          - ruby_version: '2.6'
-            rails_version: '5.0'
-            db: sqlite3
-
-          - ruby_version: '2.5'
-            rails_version: '6.1'
-            db: sqlite3
-          - ruby_version: '2.5'
-            rails_version: '6.0'
-            db: sqlite3
-          - ruby_version: '2.5'
-            rails_version: '5.2'
-            db: sqlite3
-          - ruby_version: '2.5'
-            rails_version: '5.1'
-            db: sqlite3
-          - ruby_version: '2.5'
-            rails_version: '5.1'
-            db: postgresql
-          - ruby_version: '2.5'
-            rails_version: '5.1'
-            db: mysql
-          - ruby_version: '2.5'
-            rails_version: '5.0'
-            db: sqlite3
-
-          - ruby_version: '2.4'
-            rails_version: '5.2'
-            db: sqlite3
-
-          - ruby_version: '2.3'
-            rails_version: '5.2'
-            db: sqlite3
-          - ruby_version: '2.3'
-            rails_version: '4.2'
-            db: sqlite3
-          - ruby_version: '2.3'
-            rails_version: '4.1'
-            db: sqlite3
-
-          - ruby_version: '2.2'
-            rails_version: '5.2'
-            db: sqlite3
-
-          - ruby_version: '2.1'
-            rails_version: '4.2'
-            db: sqlite3
-
     env:
       RAILS_VERSION: ${{ matrix.rails_version }}
       DB: ${{ matrix.db }}
@@ -204,7 +138,7 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.ruby_version }}
-          rubygems: ${{ (matrix.ruby_version < '2.3' && '2.7.11') || (matrix.ruby_version < '2.6' && '3.3.26') || (matrix.ruby_version < '3.0' && '3.4.22') || 'latest' }}
+          rubygems: ${{ (matrix.ruby_version < '3.0' && '3.4.22') || 'latest' }}
           bundler-cache: true
         continue-on-error: ${{ (matrix.ruby_version == 'ruby-head') || (matrix.ruby_version == 'jruby') || (matrix.rails_version == 'edge') }}
       - run: bundle exec rake test
