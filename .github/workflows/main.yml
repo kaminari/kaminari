@@ -27,33 +27,29 @@ jobs:
       fail-fast: true
 
       matrix:
-        ruby_version: [ruby-head, '3.3', '3.2', '3.1', 'jruby']
+        ruby_version: [ruby-head, '3.3', '3.2', '3.1']
         rails_version: [edge, '7.2', '7.1', '7.0', '6.1']
         db: ['sqlite3', 'postgresql', 'mysql']
 
-        exclude:
-          - ruby_version: 'jruby'
-            rails_version: 'edge'
-
         include:
-          - ruby_version: 'ruby-head'
+          - ruby_version: 'truffleruby-head'
             rails_version: 'edge'
             db: sqlite3
-          - ruby_version: 'ruby-head'
+          - ruby_version: 'truffleruby-head'
             rails_version: 'edge'
             db: postgresql
-          - ruby_version: 'ruby-head'
+          - ruby_version: 'truffleruby-head'
             rails_version: 'edge'
             db: mysql
 
-          - ruby_version: 'truffleruby-head'
-            rails_version: 'edge'
+          - ruby_version: 'jruby'
+            rails_version: '7.2'
             db: sqlite3
-          - ruby_version: 'truffleruby-head'
-            rails_version: 'edge'
+          - ruby_version: 'jruby'
+            rails_version: '7.2'
             db: postgresql
-          - ruby_version: 'truffleruby-head'
-            rails_version: 'edge'
+          - ruby_version: 'jruby'
+            rails_version: '7.2'
             db: mysql
 
           - ruby_version: '3.0'
@@ -150,23 +146,11 @@ jobs:
             rails_version: '6.1'
             db: sqlite3
           - ruby_version: '2.5'
-            rails_version: '6.0'
-            db: sqlite3
-          - ruby_version: '2.5'
-            rails_version: '5.2'
-            db: sqlite3
-          - ruby_version: '2.5'
-            rails_version: '5.1'
-            db: sqlite3
-          - ruby_version: '2.5'
             rails_version: '5.1'
             db: postgresql
           - ruby_version: '2.5'
             rails_version: '5.1'
             db: mysql
-          - ruby_version: '2.5'
-            rails_version: '5.0'
-            db: sqlite3
 
           - ruby_version: '2.4'
             rails_version: '5.2'
@@ -174,9 +158,6 @@ jobs:
 
           - ruby_version: '2.3'
             rails_version: '5.2'
-            db: sqlite3
-          - ruby_version: '2.3'
-            rails_version: '4.2'
             db: sqlite3
           - ruby_version: '2.3'
             rails_version: '4.1'
