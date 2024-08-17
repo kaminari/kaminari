@@ -42,6 +42,8 @@ platforms :ruby do
   when 'sqlite3', nil
     if rails_version <= '5.0'
       gem 'sqlite3', '< 1.4', require: false
+    elsif RUBY_VERSION < '2.5'
+      gem 'sqlite3', '1.5.1'
     elsif (rails_version <= '8') || (RUBY_VERSION < '3')
       gem 'sqlite3', '< 2', require: false
     else
