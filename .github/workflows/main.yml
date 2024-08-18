@@ -43,13 +43,13 @@ jobs:
             db: mysql
 
           - ruby_version: 'jruby'
-            rails_version: '7.2'
+            rails_version: '6.1'
             db: sqlite3
           - ruby_version: 'jruby'
-            rails_version: '7.2'
+            rails_version: '6.1'
             db: postgresql
           - ruby_version: 'jruby'
-            rails_version: '7.2'
+            rails_version: '6.1'
             db: mysql
 
           - ruby_version: '3.0'
