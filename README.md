@@ -274,7 +274,7 @@ This would modify the query parameter name on each links.
 
 This would modify each link's `url_option`. `:controller` and `:action` might be the keys in common.
 
-### Ajax Links (crazy simple, but works perfectly!)
+### Ajax Links (via rails-ujs, works with Rails < 7.2)
 
 ```erb
 <%= paginate @users, remote: true %>
