@@ -31,6 +31,10 @@ jobs:
         rails_version: [edge, '7.2', '7.1', '7.0', '6.1']
         db: ['sqlite3', 'postgresql', 'mysql']
 
+        exclude:
+          - ruby_version: '3.1'
+            rails_version: 'edge'
+
         include:
           - ruby_version: 'truffleruby-head'
             rails_version: 'edge'
