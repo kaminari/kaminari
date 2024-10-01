@@ -76,7 +76,7 @@ BANNER
         engine = options[:template_engine].try(:to_s).try(:downcase)
 
         if engine == 'haml' || engine == 'slim'
-          Kaminari.deprecator.warn 'The -e option is deprecated and will be removed in the near future. Please use the html2slim gem or the html2haml gem ' \
+          Kaminari.deprecator.notify 'The -e option is deprecated and will be removed in the near future. Please use the html2slim gem or the html2haml gem ' \
             'to convert erb templates manually.'
         end
 
