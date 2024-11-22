@@ -197,4 +197,13 @@ class PaginatableArrayTest < ActiveSupport::TestCase
       assert_equal 15, arr.total_count
     end
   end
+
+  test 'limit un-zeroed' do
+    arr = Kaminari::PaginatableArray.new([]).page(1).per(0).per(10)
+
+    assert_equal 0, arr.count
+    assert_equal 0, arr.total_count
+    assert_equal 1, arr.current_page
+    assert_equal 0, arr.total_pages
+  end
 end

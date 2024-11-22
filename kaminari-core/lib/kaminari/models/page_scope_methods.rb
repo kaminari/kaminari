@@ -11,10 +11,16 @@ module Kaminari
         self
       elsif n.zero?
         limit(n)
-      elsif max_per_page && (max_per_page < n)
-        limit(max_per_page).offset(offset_value / limit_value * max_per_page)
       else
-        limit(n).offset(offset_value / limit_value * n)
+        if max_per_page && (max_per_page < n)
+          n = max_per_page
+        end
+
+        if limit_value.zero?
+          limit(n).offset(0)
+        else
+          limit(n).offset(offset_value / limit_value * n)
+        end
       end
     end
 
