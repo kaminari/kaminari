@@ -51,7 +51,7 @@ module Kaminari
       private
 
       def params_for(page)
-        if (@param_name == :page) || !@param_name.include?('[')
+        if (@param_name == :page) || !@param_name.to_s.include?('[')
           page_val = !Kaminari.config.params_on_first_page && (page <= 1) ? nil : page
           @params[@param_name] = page_val
           @params

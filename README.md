@@ -22,7 +22,7 @@ As the whole pagination helper is basically just a collection of links and non-l
 So, you can easily modify their behaviour, style or whatever by overriding partial templates.
 
 ### ORM & Template Engine Agnostic
-Kaminari supports multiple ORMs (ActiveRecord, DataMapper, Mongoid, MongoMapper) multiple web frameworks (Rails, Sinatra, Grape), and multiple template engines (ERB, Haml, Slim).
+Kaminari supports multiple ORMs (ActiveRecord, DataMapper, Mongoid, MongoMapper), multiple web frameworks (Rails, Sinatra, Grape), and multiple template engines (ERB, Haml, Slim).
 
 ### Modern
 The pagination helper outputs the HTML5 `<nav>` tag by default. Plus, the helper supports Rails unobtrusive Ajax.
@@ -32,7 +32,7 @@ The pagination helper outputs the HTML5 `<nav>` tag by default. Plus, the helper
 
 * Ruby 2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7, 3.0, 3.1, 3.2, 3.3
 
-* Rails 4.1, 4.2, 5.0, 5.1, 5.2, 6.0, 6.1, 7.0, 7.1
+* Rails 4.1, 4.2, 5.0, 5.1, 5.2, 6.0, 6.1, 7.0, 7.1, 7.2, 8.0
 
 * Sinatra 1.4, 2.0
 
@@ -59,7 +59,7 @@ Then bundle:
 % bundle
 ```
 
-If you're building non-Rails of non-ActiveRecord app and want the pagination feature on it, please take a look at [Other Framework/Library Support](#other-frameworklibrary-support) section.
+If you're building non-Rails or non-ActiveRecord app and want the pagination feature on it, please take a look at [Other Framework/Library Support](#other-frameworklibrary-support) section.
 
 
 ## Query Basics
@@ -233,7 +233,7 @@ This will render several `?page=N` pagination links surrounded by an HTML5 `<nav
 <%= paginate @users %>
 ```
 
-This would output several pagination links such as `« First ‹ Prev ... 2 3 4 5 6 7 8 9 10 ... Next › Last »`
+This would output several pagination links such as `« First ‹ Prev ... 2 3 4 5 6 7 8 9 10 ... Next › Last »`.
 
 ### Specifying the "inner window" Size (4 by default)
 
@@ -274,9 +274,9 @@ This would modify the query parameter name on each links.
 <%= paginate @users, params: {controller: 'foo', action: 'bar', format: :turbo_stream} %>
 ```
 
-This would modify each link's `url_option`. :`controller` and :`action` might be the keys in common.
+This would modify each link's `url_option`. `:controller` and `:action` might be the keys in common.
 
-### Ajax Links (crazy simple, but works perfectly!)
+### Ajax Links (via rails-ujs, works with Rails < 7.2)
 
 ```erb
 <%= paginate @users, remote: true %>
@@ -370,7 +370,7 @@ en:
           one: "Displaying <b>1</b> %{entry_name}"
           other: "Displaying <b>all %{count}</b> %{entry_name}"
       more_pages:
-        display_entries: "Displaying %{entry_name} <b>%{first}&nbsp;-&nbsp;%{last}</b> of <b>%{total}</b> in total"
+        display_entries: "Displaying %{entry_name} <b>%{first}–%{last}</b> of <b>%{total}</b> in total"
 ```
 
 If you use non-English localization see [i18n rules](https://github.com/svenfuchs/i18n/blob/master/test/test_data/locales/plurals.rb) for changing

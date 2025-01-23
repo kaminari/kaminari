@@ -8,4 +8,4 @@ pkg/*
 doc
 log
 *.sqlite3
-*.sqlite3-journal
+*.sqlite3-*

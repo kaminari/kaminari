@@ -249,24 +249,24 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
           sub_test_case 'the first page' do
             test 'with default entry name' do
               users = User.page(1).per(25)
-              assert_equal 'Displaying users <b>1&nbsp;-&nbsp;25</b> of <b>50</b> in total', view.page_entries_info(users)
+              assert_equal 'Displaying users <b>1–25</b> of <b>50</b> in total', view.page_entries_info(users)
             end
 
             test 'setting the entry name option to "member"' do
               users = User.page(1).per(25)
-              assert_equal 'Displaying members <b>1&nbsp;-&nbsp;25</b> of <b>50</b> in total', view.page_entries_info(users, entry_name: 'member')
+              assert_equal 'Displaying members <b>1–25</b> of <b>50</b> in total', view.page_entries_info(users, entry_name: 'member')
             end
           end
 
           sub_test_case 'the next page' do
             test 'with default entry name' do
               users = User.page(2).per(25)
-              assert_equal 'Displaying users <b>26&nbsp;-&nbsp;50</b> of <b>50</b> in total', view.page_entries_info(users)
+              assert_equal 'Displaying users <b>26–50</b> of <b>50</b> in total', view.page_entries_info(users)
             end
 
             test 'setting the entry name option to "member"' do
               users = User.page(2).per(25)
-              assert_equal 'Displaying members <b>26&nbsp;-&nbsp;50</b> of <b>50</b> in total', view.page_entries_info(users, entry_name: 'member')
+              assert_equal 'Displaying members <b>26–50</b> of <b>50</b> in total', view.page_entries_info(users, entry_name: 'member')
             end
           end
 
@@ -276,7 +276,7 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
                 User.max_pages 4
                 users = User.page(4).per(10)
 
-                assert_equal 'Displaying users <b>31&nbsp;-&nbsp;40</b> of <b>40</b> in total', view.page_entries_info(users)
+                assert_equal 'Displaying users <b>31–40</b> of <b>40</b> in total', view.page_entries_info(users)
               ensure
                 User.max_pages nil
               end
@@ -294,7 +294,7 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
 
             users = page_info_presenter.new(User.page(1).per(25))
 
-            assert_equal 'Displaying users <b>1&nbsp;-&nbsp;25</b> of <b>1,000</b> in total', view.page_entries_info(users)
+            assert_equal 'Displaying users <b>1–25</b> of <b>1,000</b> in total', view.page_entries_info(users)
           end
         end
       end
@@ -309,7 +309,7 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
           begin
             I18n.backend.store_translations(:en, User.i18n_scope => { models: { user: { one: "person", other: "people" } } })
 
-            assert_equal 'Displaying people <b>1&nbsp;-&nbsp;25</b> of <b>50</b> in total', view.page_entries_info(users)
+            assert_equal 'Displaying people <b>1–25</b> of <b>50</b> in total', view.page_entries_info(users)
           ensure
             I18n.backend.reload!
           end
@@ -333,7 +333,7 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
                       }
                     },
                     more_pages: {
-                      display_entries: "Displaying %{entry_name} <b>%{first}&nbsp;-&nbsp;%{last}</b> of <b>%{total}</b> in total"
+                      display_entries: "Displaying %{entry_name} <b>%{first}–%{last}</b> of <b>%{total}</b> in total"
                     }
                   }
                 }
@@ -347,7 +347,7 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
 
             test 'the last page with default entry name' do
               users = User.page(5).per(10)
-              assert_equal 'Displaying Benutzer <b>41&nbsp;-&nbsp;50</b> of <b>50</b> in total', view.page_entries_info(users,  entry_name: 'Benutzer')
+              assert_equal 'Displaying Benutzer <b>41–50</b> of <b>50</b> in total', view.page_entries_info(users,  entry_name: 'Benutzer')
             end
           end
         end
@@ -369,7 +369,7 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
                     }
                   },
                   more_pages: {
-                    display_entries: "Displaying %{entry_name} <b>%{first}&nbsp;-&nbsp;%{last}</b> of <b>%{total}</b> in total"
+                    display_entries: "Displaying %{entry_name} <b>%{first}–%{last}</b> of <b>%{total}</b> in total"
                   }
                 }
               }
@@ -395,7 +395,7 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
 
           test 'the last page with default entry name' do
             users = User.page(5).per(10)
-            assert_equal 'Displaying utilisateurs <b>41&nbsp;-&nbsp;50</b> of <b>50</b> in total', view.page_entries_info(users,  entry_name: 'utilisateur')
+            assert_equal 'Displaying utilisateurs <b>41–50</b> of <b>50</b> in total', view.page_entries_info(users,  entry_name: 'utilisateur')
           end
         end
       end
@@ -450,24 +450,24 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
           sub_test_case 'the first page' do
             test 'with default entry name' do
               addresses = User::Address.page(1).per(25)
-              assert_equal 'Displaying addresses <b>1&nbsp;-&nbsp;25</b> of <b>50</b> in total', view.page_entries_info(addresses)
+              assert_equal 'Displaying addresses <b>1–25</b> of <b>50</b> in total', view.page_entries_info(addresses)
             end
 
             test 'setting the entry name option to "place"' do
               addresses = User::Address.page(1).per(25)
-              assert_equal 'Displaying places <b>1&nbsp;-&nbsp;25</b> of <b>50</b> in total', view.page_entries_info(addresses, entry_name: 'place')
+              assert_equal 'Displaying places <b>1–25</b> of <b>50</b> in total', view.page_entries_info(addresses, entry_name: 'place')
             end
           end
 
           sub_test_case 'the next page' do
             test 'with default entry name' do
               addresses = User::Address.page(2).per(25)
-              assert_equal 'Displaying addresses <b>26&nbsp;-&nbsp;50</b> of <b>50</b> in total', view.page_entries_info(addresses)
+              assert_equal 'Displaying addresses <b>26–50</b> of <b>50</b> in total', view.page_entries_info(addresses)
             end
 
             test 'setting the entry name option to "place"' do
               addresses = User::Address.page(2).per(25)
-              assert_equal 'Displaying places <b>26&nbsp;-&nbsp;50</b> of <b>50</b> in total', view.page_entries_info(addresses, entry_name: 'place')
+              assert_equal 'Displaying places <b>26–50</b> of <b>50</b> in total', view.page_entries_info(addresses, entry_name: 'place')
             end
           end
         end
@@ -482,7 +482,7 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
 
         test 'with an empty array and total_count option' do
           users = Kaminari.paginate_array([], total_count: 50).page(1).per(1)
-          assert_equal 'Displaying users <b>1&nbsp;-&nbsp;1</b> of <b>50</b> in total', view.page_entries_info(users, entry_name: 'user')
+          assert_equal 'Displaying users <b>1–1</b> of <b>50</b> in total', view.page_entries_info(users, entry_name: 'user')
         end
       end
     end
