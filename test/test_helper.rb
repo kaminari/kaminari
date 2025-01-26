@@ -7,6 +7,8 @@ $LOAD_PATH.unshift(File.dirname(__FILE__))
 ENV['RAILS_ENV'] ||= 'test'
 ENV['DB'] ||= 'sqlite3'
 
+# require logger before requiring rails, or Rails 6 fails to boot
+require 'logger'
 require 'rails'
 require 'active_record'
 
