@@ -27,7 +27,7 @@ jobs:
       fail-fast: true
 
       matrix:
-        ruby_version: [ruby-head, '3.3', '3.2', '3.1']
+        ruby_version: [ruby-head, '3.4', '3.3', '3.2', '3.1']
         rails_version: [edge, '8.0', '7.2', '7.1', '7.0', '6.1']
         db: ['sqlite3', 'postgresql', 'mysql']
 
