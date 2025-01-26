@@ -34,6 +34,8 @@ jobs:
         exclude:
           - ruby_version: '3.1'
             rails_version: 'edge'
+          - ruby_version: '3.1'
+            rails_version: '8.0'
 
         include:
           - ruby_version: 'truffleruby-head'
