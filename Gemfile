@@ -30,6 +30,7 @@ gem 'selenium-webdriver'
 
 gem 'bigdecimal'
 gem 'mutex_m'
+gem 'benchmark' if RUBY_VERSION >= '3.5'
 
 rails_version = ENV['RAILS_VERSION'] || '∞'
 
