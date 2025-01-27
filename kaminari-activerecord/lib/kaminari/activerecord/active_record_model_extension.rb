@@ -15,10 +15,17 @@ module Kaminari
         def self.#{Kaminari.config.page_method_name}(num = nil)
           num = num.respond_to?(:to_i) ? num.to_i : 1
           per_page = max_per_page && (default_per_page > max_per_page) ? max_per_page : default_per_page
-          limit(per_page).offset(per_page * ((num = num.to_i - 1) < 0 ? 0 : num)).extending do
+          scope = limit(per_page).offset(per_page * ((num = num.to_i - 1) < 0 ? 0 : num)).extending do
             include Kaminari::ActiveRecordRelationMethods
             include Kaminari::PageScopeMethods
           end
+          # Using limit and offset is unreliable without ordering
+          # Warn the developers using paginatin wihout the order clause
+          if scope.order_values.empty?
+            warn "WARNING: It seems you're using pagination without an ORDER BY clause."
+            warn "This might result in unexpected or random records on paginated results."
+          end
+          scope
         end
       RUBY
     end
