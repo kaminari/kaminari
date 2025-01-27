@@ -114,6 +114,7 @@ module Kaminari
       # * <tt>:template</tt> - Specify a custom template renderer for rendering the Paginator (receiver by default)
       # * <tt>:ANY_OTHER_VALUES</tt> - Any other hash key & values would be directly passed into each tag as :locals value.
       def paginate(scope, paginator_class: Kaminari::Helpers::Paginator, template: nil, **options)
+        options[:data] ||= {}
         options[:total_pages] ||= scope.total_pages
         options.reverse_merge! current_page: scope.current_page, per_page: scope.limit_value, remote: false
 
