@@ -64,7 +64,7 @@ module Kaminari
         @last = Page.new @template, param_name: @param_name, theme: @theme, views_prefix: @views_prefix, internal_params: @params, **@options.merge(page: page)
       end
 
-      %w[first_page prev_page next_page last_page gap].each do |tag|
+      %w[first_page prev_page next_page last_page gap page_after page_before].each do |tag|
         eval <<-DEF, nil, __FILE__, __LINE__ + 1
           def #{tag}_tag
             @last = #{tag.classify}.new @template, param_name: @param_name, theme: @theme, views_prefix: @views_prefix, internal_params: @params, **@options

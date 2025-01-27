@@ -144,5 +144,136 @@ if defined? ActiveRecord
         end
       end
     end
+    sub_test_case '::CursorPaginatable' do
+      setup do
+        @newborn = User.create! name: nil, age: 0
+        @baby = User.create! name: 'Alex', age: 1
+        @toddler = User.create! name: 'Pat', age: 2
+        @child = User.create! name: 'Alex', age: 5
+        @teen = User.create! name: 'Pat', age: 17
+        @adult = User.create! name: 'Alex', age: 35
+        @elder = User.create! name: 'Pat', age: 79
+        @werewolf = User.create! name: nil, age: 151
+        @vampire = User.create! name: 'Alex', age: 710
+        @another_vampire = User.create! name: 'Alex', age: 710
+        @god = User.create! name: 'Pat', age: nil
+
+        3.times.each{@adult.books_authored << (Book.create! title: nil)}
+        1.times.each{@elder.books_authored << (Book.create! title: nil)}
+        1.times.each{@vampire.books_authored << (Book.create! title: nil)}
+
+        @books = Book.order(:id).all.to_a
+
+        t = Time.at(Time.now.to_f.floor)
+        @events = []
+        @events << (Event.create! time: t - 5e-6.seconds)
+        @events << (Event.create! time: t - 1e-6.seconds)
+        @events << (Event.create! time: t)
+        @events << (Event.create! time: t + 1e-6.seconds)
+        @events << (Event.create! time: t + 5e-6.seconds)
+
+        @large_nulls = {
+          mysql: false,
+          mysql2: false,
+          sqlite: false,
+          postgresql: true
+        }.fetch(User.connection.adapter_name.downcase.to_sym)
+      end
+      teardown do
+        User.delete_all
+      end
+
+      test 'page by cursor should give first records' do
+        first_expected = @large_nulls ? @newborn : @god
+        assert [first_expected] == User.order(:age).page_by_cursor.per(1).to_a
+      end
+
+      test 'page by cursor should give first records in descending order' do
+        first_expected = @large_nulls ? @god : @vampire
+        assert [first_expected] == User.order(age: :desc).page_by_cursor.per(1).to_a
+      end
+
+      test 'page after nil should give first records' do
+        first_expected = @large_nulls ? @newborn : @god
+        assert [first_expected] == User.order(:age).page_after.per(1).to_a
+      end
+
+      test 'page before nil should also give first records' do
+        first_expected = @large_nulls ? @newborn : @god
+        assert [first_expected] == User.order(:age).page_before.per(1).to_a
+      end
+
+      test 'page after cursor with null valued column should give next results' do
+        cursor = Base64.strict_encode64({name: @newborn.name, age: @newborn.age, id: @newborn.id}.to_json)
+        assert [@werewolf] == User.order(:name).order(:age).page_after(cursor).per(1).to_a
+      end
+
+      test 'page after should resolve ambiguity with primary key' do
+        cursor = Base64.strict_encode64({name: @vampire.name, age: @vampire.age, id: @vampire.id}.to_json)
+        assert [@another_vampire] == User.order('name, age').page_after(cursor).per(1).to_a
+      end
+
+      test 'cursor paging should include remaining records with null values' do
+        cursor = Base64.strict_encode64({name: @baby.name, age: @baby.age, id: @baby.id}.to_json)
+        page_method = @large_nulls ? :page_after : :page_before
+        results = User.order('name').send(page_method, cursor).per(100)
+        assert results.include? @werewolf
+        assert results.include? @newborn
+      end
+
+      test 'cursor paging should exclude prior records with null values' do
+        cursor = Base64.strict_encode64({name: @baby.name, age: @baby.age, id: @baby.id}.to_json)
+        page_method = @large_nulls ? :page_before : :page_after
+        results = User.order('name').send(page_method, cursor).per(100)
+        assert !results.include?(@werewolf)
+        assert !results.include?(@newborn)
+      end
+
+      test 'page after cursor works based on primary key alone' do
+        assert [@books.third, @books.fourth, @books.fifth] == Book.page_after({id: @books.second.id}).per(5).to_a
+      end
+
+      test 'page before cursor works based on primary key alone' do
+        assert [@books.first, @books.second, @books.third] == Book.page_before({id: @books.fourth.id}).per(5).to_a
+      end
+
+      test 'page by cursor does not change explicit descending id' do
+        assert [@another_vampire, @vampire] == User.order(:age).order(id: :desc).page_after({age: @werewolf.age, id: @werewolf.id}).per(2).to_a
+      end
+
+      test 'page by cursor uses microsecond precision for timestamp field' do
+        events = Event.order(:time).order(:id)
+        cursor = events.page_after.per(2).end_cursor
+        assert [@events.third, @events.fourth, @events.fifth] == events.page_after(cursor).per(5).to_a
+      end
+
+      test 'page by cursor works despite same-named columns on joined relations' do
+        books = Book.joins(:authors).order("#{Book.table_name}.created_at")
+        cursor = books.page_by_cursor.per(3).end_cursor
+        assert [@books.fourth, @books.fifth] == books.page_by_cursor(cursor).per(3).to_a
+      end
+
+      if (Rails.version >= '6.1.0' && ENV['DB'] == 'postgresql') || (Rails.version >= '7.0.0' && ENV['DB'] == 'sqlite3')
+        test 'page after cursor works with nulls first (ascending)' do
+          users = User.order(User.arel_table[:name].asc.nulls_first).page_after
+          assert [@newborn, @werewolf] == users.per(2).to_a
+        end
+
+        test 'page after cursor works with nulls first (descending)' do
+          users = User.order(User.arel_table[:name].desc.nulls_first).page_after
+          assert [@newborn, @werewolf] == users.per(2).to_a
+        end
+
+        test 'page after cursor works with nulls last (ascending)' do
+          users = User.order(User.arel_table[:name].asc.nulls_last).page_after({name: @god.name, id: @god.id})
+          assert [@newborn, @werewolf] == users.per(2).to_a
+        end
+
+        test 'page after cursor works with nulls last (descending)' do
+          users = User.order(User.arel_table[:name].desc.nulls_last).page_after({name: @another_vampire.name, id: @another_vampire.id})
+          assert [@newborn, @werewolf] == users.per(2).to_a
+        end
+      end
+    end
   end
 end
