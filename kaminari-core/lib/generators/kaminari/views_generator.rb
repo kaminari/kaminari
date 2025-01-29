@@ -80,7 +80,7 @@ BANNER
             'to convert erb templates manually.'
         end
 
-        engine || 'erb'
+        %w[erb haml slim].include?(engine) ? engine : 'erb'
       end
     end
 
