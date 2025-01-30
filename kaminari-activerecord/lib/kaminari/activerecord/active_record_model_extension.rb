@@ -9,6 +9,10 @@ module Kaminari
     included do
       include Kaminari::ConfigurationMethods
 
+      def self.paginated?
+        false
+      end
+
       # Fetch the values at the specified page number
       #   Model.page(5)
       eval <<-RUBY, nil, __FILE__, __LINE__ + 1
