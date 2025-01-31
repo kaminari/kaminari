@@ -348,6 +348,12 @@ if defined? ActiveRecord
           test 'not on first page' do
             assert_false model_class.page(5).per(10).first_page?
           end
+
+          test 'on first page with no record' do
+            model_class.delete_all
+
+            assert_false model_class.page(1).first_page?
+          end
         end
 
         sub_test_case '#last_page?' do
