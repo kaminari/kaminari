@@ -26,7 +26,7 @@ module Kaminari
       end
 
       # #count overrides the #select which could include generated columns referenced in #order, so skip #order here, where it's irrelevant to the result anyway
-      c = except(:offset, :limit, :order)
+      c = except(:select, :offset, :limit, :order)
       # Remove includes only if they are irrelevant
       c = c.except(:includes, :eager_load, :preload) unless references_eager_loaded_tables?
 
