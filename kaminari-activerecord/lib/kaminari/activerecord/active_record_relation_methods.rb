@@ -32,15 +32,22 @@ module Kaminari
 
       c = c.limit(max_pages * limit_value) if max_pages && max_pages.respond_to?(:*)
 
-      # .group returns an OrderedHash that responds to #count
-      c = c.count(column_name)
-      @total_count = if c.is_a?(Hash) || c.is_a?(ActiveSupport::OrderedHash)
-                       c.count
-                     elsif c.respond_to? :count
-                       c.count(column_name)
-                     else
-                       c
-                     end
+      # Handle grouping with a subquery
+      @total_count = if c.group_values.any?
+        # Only count non-null values of column_name if supplied
+        c = c.where.not column_name => nil unless column_name.nil? || column_name == :all
+
+        subquery = c.except(:select).select('1')
+        if ActiveRecord::VERSION::MAJOR >= 5
+          subquery = subquery.arel.as('subquery')
+          c.connection.select_value Arel::SelectManager.new.from(subquery).project(Arel.star.count)
+        else
+          # Arel::SelectManager.new without args is unsupported in ActiveRecord < 5
+          c.connection.select_value("SELECT count(*) FROM (#{subquery.to_sql}) subquery").to_i
+        end
+      else
+        c.count(column_name)
+      end
     end
 
     # Turn this Relation to a "without count mode" Relation.
