@@ -333,7 +333,7 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
                       }
                     },
                     more_pages: {
-                      display_entries: "Displaying %{entry_name} <b>%{first}–%{last}</b> of <b>%{total}</b> in total"
+                      display_entries_html: "Displaying %{entry_name} <b>%{first}–%{last}</b> of <b>%{total}</b> in total"
                     }
                   }
                 }
@@ -369,7 +369,7 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
                     }
                   },
                   more_pages: {
-                    display_entries: "Displaying %{entry_name} <b>%{first}–%{last}</b> of <b>%{total}</b> in total"
+                    display_entries_html: "Displaying %{entry_name} <b>%{first}–%{last}</b> of <b>%{total}</b> in total"
                   }
                 }
               }
