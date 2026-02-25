@@ -19,6 +19,7 @@ require 'kaminari/exceptions'
 require 'kaminari/helpers/paginator'
 require 'kaminari/helpers/helper_methods'
 require 'kaminari/models/page_scope_methods'
+require 'kaminari/models/cursor_page_scope_methods'
 require 'kaminari/models/configuration_methods'
 require 'kaminari/models/array_extension'
 

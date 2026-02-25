@@ -1,0 +1,10 @@
+/ Link to the "Previous" page for cursor-based pagination
+  - available local variables
+    url          : url to the previous page
+    first_page?:   indicates there are no earlier results
+    last_page?:    indicates there are no later results
+    per_page     : number of items to fetch per page
+    remote       : data-remote
+span.prev
+  == link_to_unless first_page?, t('views.pagination.previous').html_safe, url, rel: 'prev', remote: remote
+'

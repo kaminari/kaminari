@@ -23,6 +23,7 @@ Rails.application.initialize!
 Rails.application.routes.draw do
   resources :users do
     get 'index_text(.:format)', action: :index_text, on: :collection
+    get 'by_cursor', action: :index_by_cursor, on: :collection
   end
   resources :addresses do
     get 'page/:page', action: :index, on: :collection
@@ -48,6 +49,15 @@ ERB
 
   def index_text
     @users = User.page params[:page]
+  end
+
+  def index_by_cursor
+    @users = User.page_by_cursor params[:cursor]
+    render inline: <<-ERB
+<%= @users.map(&:name).join("\n") %>
+<%= link_to_page_before @users, '‹ Prev' %>
+<%= link_to_page_after @users, 'Next ›' %>
+ERB
   end
 end
 
