@@ -44,6 +44,19 @@ class PaginatorHelperTest < ActiveSupport::TestCase
 
       assert_equal({'controller' => 'foo', 'action' => 'bar'}, @paginator.page_tag(template).instance_variable_get('@params'))
     end
+
+    test 'page_url_for excludes route constraint params' do
+      tmpl = template
+      stub(tmpl).params { {controller: 'foo', action: 'bar', subdomain: 'admin', domain: 'example.com'} }
+      stub(tmpl).url_for {|h| h.to_query }
+
+      paginator = Paginator.new(tmpl, params: {})
+      url = paginator.page_tag(tmpl).page_url_for(2)
+
+      assert_match(/page=2/, url)
+      assert_no_match(/subdomain/, url)
+      assert_no_match(/domain/, url)
+    end
   end
 
   test '#param_name' do

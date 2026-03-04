@@ -2,7 +2,8 @@
 
 module Kaminari
   module Helpers
-    PARAM_KEY_EXCEPT_LIST = [:authenticity_token, :commit, :utf8, :_method, :script_name, :original_script_name].freeze
+    PARAM_KEY_EXCEPT_LIST = [:authenticity_token, :commit, :utf8, :_method, :script_name, :original_script_name,
+                             :subdomain, :domain, :host, :port, :protocol, :anchor, :trailing_slash, :path_params].freeze
 
     # A tag stands for an HTML tag inside the paginator.
     # Basically, a tag has its own partial template file, so every tag can be
