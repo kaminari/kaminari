@@ -6,6 +6,17 @@ if defined?(::Rails::Railtie) && ENV['GENERATOR_SPEC']
   require 'rails/generators'
   require 'generators/kaminari/views_generator'
 
+  class ViewsGeneratorTest < ::Test::Unit::TestCase
+    test '.themes is a public class method' do
+      assert Kaminari::Generators::ViewsGenerator.respond_to?(:themes),
+        '`themes` must be a public class method so that `self.class.themes` works from instance methods'
+    end
+
+    test '.banner does not raise' do
+      assert_nothing_raised { Kaminari::Generators::ViewsGenerator.banner }
+    end
+  end
+
   class GitHubApiHelperTest < ::Test::Unit::TestCase
     test '.get_files_in_master' do
       assert_include Kaminari::Generators::GitHubApiHelper.get_files_in_master, %w(README.md 7f712676aac6bcd912981a9189c110303a1ee266)
