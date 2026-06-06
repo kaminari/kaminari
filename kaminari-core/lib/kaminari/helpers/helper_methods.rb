@@ -109,7 +109,7 @@ module Kaminari
       # * <tt>:right</tt> - The "right outer window" size (0 by default).
       # * <tt>:params</tt> - url_for parameters for the links (:controller, :action, etc.)
       # * <tt>:param_name</tt> - parameter name for page number in the links (:page by default)
-      # * <tt>:remote</tt> - Ajax? (false by default)
+      # * <tt>:remote</tt> - Deprecated. Use data: {turbo: true} instead for Turbo (Rails 7.2+)
       # * <tt>:paginator_class</tt> - Specify a custom Paginator (Kaminari::Helpers::Paginator by default)
       # * <tt>:template</tt> - Specify a custom template renderer for rendering the Paginator (receiver by default)
       # * <tt>:ANY_OTHER_VALUES</tt> - Any other hash key & values would be directly passed into each tag as :locals value.
@@ -130,7 +130,7 @@ module Kaminari
       #
       # Ajax:
       #
-      #   <%= link_to_previous_page @items, 'Previous Page', remote: true %>
+      #   <%= link_to_previous_page @items, 'Previous Page', data: { turbo: true } %>
       #
       # By default, it renders nothing if there are no more results on the previous page.
       # You can customize this output by passing a block.
@@ -161,7 +161,7 @@ module Kaminari
       #
       # Ajax:
       #
-      #   <%= link_to_next_page @items, 'Next Page', remote: true %>
+      #   <%= link_to_next_page @items, 'Next Page', data: { turbo: true } %>
       #
       # By default, it renders nothing if there are no more results on the next page.
       # You can customize this output by passing a block.

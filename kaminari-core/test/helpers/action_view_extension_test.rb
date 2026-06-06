@@ -75,7 +75,7 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
 
       test 'total_pages: 3' do
         users = User.page(1)
-        assert_match(/<a href="\/users\?page=3">Last/, view.paginate(users, total_pages: 3, params: {controller: 'users', action: 'index'}))
+        assert_match(/<a data-turbo="false" href="\/users\?page=3">Last/, view.paginate(users, total_pages: 3, params: {controller: 'users', action: 'index'}))
       end
 
       test "page: 20 (out of range)" do
