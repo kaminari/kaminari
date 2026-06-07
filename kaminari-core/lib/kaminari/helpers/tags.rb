@@ -42,11 +42,12 @@ module Kaminari
         @template.render partial: partial_path, locals: @options.merge(locals), formats: formats
       end
 
-      def page_url_for(page)
-        params = params_for(page)
-        params[:only_path] = true
-        @template.url_for params
-      end
+       def page_url_for(page)
+  	params = params_for(page)
+  	params[:only_path] = true
+	params[:format] = @options[:format] if @options[:format]
+	@template.url_for params
+       end
 
       private
 
