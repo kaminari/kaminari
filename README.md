@@ -25,7 +25,7 @@ So, you can easily modify their behaviour, style or whatever by overriding parti
 Kaminari supports multiple ORMs (ActiveRecord, DataMapper, Mongoid, MongoMapper), multiple web frameworks (Rails, Sinatra, Grape), and multiple template engines (ERB, Haml, Slim).
 
 ### Modern
-The pagination helper outputs the HTML5 `<nav>` tag by default. Plus, the helper supports Rails unobtrusive Ajax.
+The pagination helper outputs the HTML5 `<nav>` tag by default. Plus, the helper supports Turbo (Rails 7.2+) and Rails unobtrusive Ajax (Rails < 7.2).
 
 
 ## Supported Versions
@@ -274,12 +274,17 @@ This would modify the query parameter name on each links.
 
 This would modify each link's `url_option`. `:controller` and `:action` might be the keys in common.
 
-### Ajax Links (via rails-ujs, works with Rails < 7.2)
+### Ajax Links
 
+#### With Turbo (Rails 7.2+)
+```erb
+<%= paginate @users, params: {format: :turbo_stream} %>
+```
+
+#### With rails-ujs (Rails < 7.2)
 ```erb
 <%= paginate @users, remote: true %>
 ```
-
 This would add `data-remote="true"` to all the links inside.
 
 ### Specifying an Alternative Views Directory (default is kaminari/)
@@ -299,7 +304,7 @@ This option makes it easier to do things like A/B testing pagination templates/t
 
 This simply renders a link to the next page. This would be helpful for creating a Twitter-like pagination feature.
 
-The helper methods support a `params` option to further specify the link. If `format` needs to be set, include it in the `params` hash.
+The helper methods support a `params` option to further specify the link. If `format` needs to be set, it can be passed directly as an option or included in the `params` hash.
 
 ```erb
 <%= link_to_next_page @items, 'Next Page', params: {controller: 'foo', action: 'bar', format: :turbo_stream} %>
