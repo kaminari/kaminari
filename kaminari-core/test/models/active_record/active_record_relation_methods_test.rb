@@ -48,6 +48,13 @@ if defined? ActiveRecord
         User.max_paginates_per(old_max_per_page)
       end
 
+      test 'total_count with per(0)' do
+        assert_equal 0, User.where('1 = 0').page.per(0).total_count
+        assert_equal 7, User.page.per(0).total_count
+        assert_equal 0, User.where('1 = 0').page.per(0).load.total_count
+        assert_equal 7, User.page.per(0).load.total_count
+      end
+
       test 'it should reset total_count memoization when the scope is cloned' do
         assert_equal 1, User.page.tap(&:total_count).where(name: 'author').total_count
       end
