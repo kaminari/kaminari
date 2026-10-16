@@ -33,6 +33,9 @@ module Kaminari
 
       c = c.limit(max_pages * limit_value) if max_pages && max_pages.respond_to?(:*)
 
+      # Count the groups in the database instead of fetching a row per group
+      return @total_count = count_groups(c) if c.group_values.any? && !c.eager_loading?
+
       # .group returns an OrderedHash that responds to #count
       c = c.count(column_name)
       @total_count = if c.is_a?(Hash) || c.is_a?(ActiveSupport::OrderedHash)
@@ -50,6 +53,28 @@ module Kaminari
     #   Con: unable to know the total number of records/pages
     def without_count
       extend ::Kaminari::PaginatableWithoutCount
+    end
+
+    private
+
+    # SELECT COUNT(*) FROM (SELECT 1 FROM ... GROUP BY ...) subquery_for_count
+    def count_groups(relation)
+      # Each group is one row unless DISTINCT collapses some of them
+      relation = relation.except(:distinct)
+      having = relation.respond_to?(:having_clause) ? !relation.having_clause.empty? : relation.having_values.any?
+      # The HAVING clause may refer to aliases in the custom SELECT clause. Otherwise, SELECT 1 is valid with any GROUP BY clause.
+      relation = relation.except(:select).select('1') unless having && relation.select_values.any?
+
+      sql = relation.to_sql
+      return 0 if sql.blank?  # Relation#none on Active Record < 5
+
+      sql = "SELECT COUNT(*) FROM (#{sql}) subquery_for_count"
+      count = if klass.respond_to? :with_connection
+        klass.with_connection {|connection| connection.select_value sql, "#{klass.name} Count" }
+      else
+        klass.connection.select_value sql, "#{klass.name} Count"
+      end
+      count.to_i
     end
   end
 
