@@ -112,6 +112,46 @@ if defined? ActiveRecord
         assert_equal 2, CurrentAuthorship.group(:user_id).having("COUNT(book_id) >= 3").page(1).total_count
       end
 
+      test 'calculating total_count with GROUP BY ... HAVING clause and custom select clause' do
+        assert_equal 2, Authorship.select('user_id, COUNT(book_id)').group(:user_id).having('COUNT(book_id) >= 3').page(1).total_count
+      end
+
+      # PostgreSQL doesn't allow referring to select aliases in HAVING clauses
+      unless ENV['DB'] == 'postgresql'
+        test 'calculating total_count with GROUP BY ... HAVING clause that refers to a select alias' do
+          assert_equal 2, Authorship.select('user_id, COUNT(book_id) AS books_count').group(:user_id).having('books_count >= 3').page(1).total_count
+        end
+      end
+
+      test 'calculating total_count with DISTINCT and GROUP BY clause' do
+        assert_equal 4, User.distinct.group(:name).page(1).total_count
+        assert_equal 4, User.select(:name, :age).distinct.group(:name).page(1).total_count
+      end
+
+      test 'calculating total_count with GROUP BY clause and a column name' do
+        assert_equal 3, Authorship.group(:user_id).page(1).total_count(:book_id)
+      end
+
+      test 'calculating total_count with GROUP BY clause on an empty Relation' do
+        assert_equal 0, User.none.group(:name).page(1).total_count
+        assert_equal 0, User.where('1 = 0').group(:name).page(1).total_count
+      end
+
+      test 'calculating total_count with GROUP BY clause counts the groups in the database' do
+        begin
+          queries = []
+          subscriber = ActiveSupport::Notifications.subscribe 'sql.active_record' do |_, __, ___, ____, payload|
+            queries << payload[:sql] unless payload[:name] == 'SCHEMA'
+          end
+
+          assert_equal 4, User.group(:name).page(1).total_count
+          assert_equal 1, queries.size
+          assert_match(/\ASELECT COUNT\(\*\) FROM \(SELECT 1 .* GROUP BY .*\) subquery_for_count\z/m, queries.first)
+        ensure
+          ActiveSupport::Notifications.unsubscribe subscriber
+        end
+      end
+
       test 'calculating STI total_count with GROUP BY clause' do
         [
           ['Fenton',   Dog],
