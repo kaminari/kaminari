@@ -71,14 +71,21 @@ BANNER
       end
 
       def template_engine
-        engine = options[:template_engine].try(:to_s).try(:downcase)
+        @template_engine ||= begin
+          engine = options[:template_engine].try(:to_s).try(:downcase).presence || 'erb'
 
-        if engine == 'haml' || engine == 'slim'
-          Kaminari.deprecator.warn 'The -e option is deprecated and will be removed in the near future. Please use the html2slim gem or the html2haml gem ' \
-            'to convert erb templates manually.'
+          if engine == 'haml' || engine == 'slim'
+            Kaminari.deprecator.warn 'The -e option is deprecated and will be removed in the near future. Please use the html2slim gem or the html2haml gem ' \
+              'to convert erb templates manually.'
+          end
+
+          if %w[erb haml slim].include?(engine)
+            engine
+          else
+            say "template_engine: #{engine} is not supported. Falling back to erb."
+            'erb'
+          end
         end
-
-        %w[erb haml slim].include?(engine) ? engine : 'erb'
       end
     end
 
