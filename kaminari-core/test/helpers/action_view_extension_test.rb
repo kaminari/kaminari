@@ -36,6 +36,26 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
         assert_match '/users?page=2', view.paginate(users, params: { controller: 'users', action: 'index' })
       end
 
+      test 'ignores request params that are reserved url_for options' do
+        users = User.page(1)
+        expected = view.paginate(users, params: {controller: 'users', action: 'index'})
+
+        %w(host protocol port subdomain domain tld_length trailing_slash anchor params path_params).each do |key|
+          begin
+            view.params[key] = 'x'
+            assert_equal expected, view.paginate(users, params: {controller: 'users', action: 'index'}), "?#{key}=x should not affect the links"
+          ensure
+            view.params.delete key
+          end
+        end
+      end
+
+      test 'accepts reserved url_for options given via the :params option' do
+        users = User.page(1)
+
+        assert_match '/users?page=2#list', view.paginate(users, params: {controller: 'users', action: 'index', anchor: 'list'})
+      end
+
       test 'accepts :theme option' do
         users = User.page(1)
         begin
