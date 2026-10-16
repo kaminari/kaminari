@@ -282,6 +282,15 @@ This would modify each link's `url_option`. `:controller` and `:action` might be
 
 This would add `data-remote="true"` to all the links inside.
 
+### Data Attributes (e.g. for Turbo Frames and Stimulus)
+
+```erb
+<%= paginate @users, data: {turbo_frame: 'users', turbo_action: 'advance'} %>
+```
+
+This would add `data-turbo-frame="users"` and `data-turbo-action="advance"` to all the links inside.
+If you have customized the views with `rails g kaminari:views` before this option was added, your templates will silently ignore it. Add `data: data` to the `link_to` calls in them to enable it.
+
 ### Specifying an Alternative Views Directory (default is kaminari/)
 
 ```erb

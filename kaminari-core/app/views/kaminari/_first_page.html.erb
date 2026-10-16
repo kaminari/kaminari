@@ -5,7 +5,7 @@
     total_pages:   total number of pages
     per_page:      number of items to fetch per page
     remote:        data-remote
-    data:          data html options
+    data:          data-* attributes
 -%>
 <span class="first">
   <%= link_to_unless current_page.first?, t('views.pagination.first').html_safe, url, remote: remote, data: data %>

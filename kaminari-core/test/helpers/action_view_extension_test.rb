@@ -78,6 +78,34 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
         assert_match(/<a href="\/users\?page=3">Last/, view.paginate(users, total_pages: 3, params: {controller: 'users', action: 'index'}))
       end
 
+      test 'accepts :data option' do
+        users = User.page(3).per(10)
+
+        html = view.paginate users, data: {turbo_frame: 'users', action: 'click->pagination#go'}, params: {controller: 'users', action: 'index'}
+        links = html.scan(/<a [^>]*>/)
+        assert_equal 8, links.size  # first, prev, 1, 2, 4, 5, next, last
+        links.each do |link|
+          assert_match(/data-turbo-frame="users"/, link)
+          assert_match(/data-action="click-&gt;pagination#go"/, link)
+        end
+      end
+
+      test 'does not render data attributes by default' do
+        users = User.page(3).per(10)
+
+        assert_not_match(/data-/, view.paginate(users, params: {controller: 'users', action: 'index'}))
+      end
+
+      test 'accepts :data option together with :remote option' do
+        users = User.page(3).per(10)
+
+        html = view.paginate users, remote: true, data: {turbo_frame: 'users'}, params: {controller: 'users', action: 'index'}
+        html.scan(/<a [^>]*>/).each do |link|
+          assert_match(/data-remote="true"/, link)
+          assert_match(/data-turbo-frame="users"/, link)
+        end
+      end
+
       test "page: 20 (out of range)" do
         users = User.page(20)
 

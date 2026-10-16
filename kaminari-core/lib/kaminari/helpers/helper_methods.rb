@@ -110,6 +110,7 @@ module Kaminari
       # * <tt>:params</tt> - url_for parameters for the links (:controller, :action, etc.)
       # * <tt>:param_name</tt> - parameter name for page number in the links (:page by default)
       # * <tt>:remote</tt> - Ajax? (false by default)
+      # * <tt>:data</tt> - data-* attributes for the links (e.g. <tt>{turbo_frame: 'users'}</tt>)
       # * <tt>:paginator_class</tt> - Specify a custom Paginator (Kaminari::Helpers::Paginator by default)
       # * <tt>:template</tt> - Specify a custom template renderer for rendering the Paginator (receiver by default)
       # * <tt>:ANY_OTHER_VALUES</tt> - Any other hash key & values would be directly passed into each tag as :locals value.
