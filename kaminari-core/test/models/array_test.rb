@@ -15,6 +15,24 @@ class PaginatableArrayTest < ActiveSupport::TestCase
     assert_equal 3, Kaminari::PaginatableArray.new((1..100).to_a, limit: 10, offset: 20).current_page
   end
 
+  sub_test_case '#paginated?' do
+    test 'before calling page' do
+      assert_false @array.paginated?
+    end
+
+    test 'after calling page' do
+      assert_true @array.page(1).paginated?
+    end
+
+    test 'after calling per' do
+      assert_true @array.page(1).per(5).paginated?
+    end
+
+    test 'specifying limit and offset when initializing' do
+      assert_true Kaminari.paginate_array((1..100).to_a, limit: 10, offset: 20).paginated?
+    end
+  end
+
   sub_test_case '#page' do
     def assert_first_page_of_array(arr)
       assert_equal 25, arr.count

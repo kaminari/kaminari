@@ -383,6 +383,11 @@ if defined? ActiveRecord
             assert_false model_class.paginated?
           end
 
+          test 'on a relation without calling page' do
+            assert_false model_class.where(id: 1).paginated?
+            assert_false model_class.limit(10).paginated?
+          end
+
           test 'after calling page' do
             assert_true model_class.page(1).paginated?
           end

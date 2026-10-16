@@ -50,6 +50,11 @@ module Kaminari
       self.class.new @_original_array, limit: num, offset: @_offset_value, total_count: @_total_count, padding: @_padding
     end
 
+    # overridden by Kaminari::PageScopeMethods once paginated
+    def paginated?
+      false
+    end
+
     # total item numbers of the original array
     def total_count
       @_total_count || @_original_array.length
