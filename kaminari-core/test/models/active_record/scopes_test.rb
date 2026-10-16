@@ -130,6 +130,24 @@ if defined? ActiveRecord
             assert_equal 0, model_class.page(1).per(0).count
           end
 
+          test 'page 3 per 0, then per 10 (back to the first page)' do
+            relation = model_class.page(3).per(0).per(10)
+
+            assert_equal 10, relation.count
+            assert_equal 1, relation.current_page
+            assert_equal 'user001', relation.first.name
+          end
+
+          test 'page 1 per 0, then per 30 with max_per_page' do
+            begin
+              model_class.max_paginates_per(10)
+
+              assert_equal 10, model_class.page(1).per(0).per(30).count
+            ensure
+              model_class.max_paginates_per(nil)
+            end
+          end
+
           # I know it's a bit strange to have this here, but I couldn't find any better place for this case
           sub_test_case 'when max_per_page is given via model class, and `per` is not actually called' do
             test 'with max_per_page > default_per_page' do
@@ -221,6 +239,21 @@ if defined? ActiveRecord
 
             assert_equal 19, relation.current_page
             assert_equal 19, relation.total_pages
+          end
+
+          test 'page 2 per 5 padding 3, then per 10' do
+            relation = model_class.page(2).per(5).padding(3).per(10)
+
+            assert_equal 2, relation.current_page
+            assert_equal 'user014', relation.first.name
+          end
+
+          test 'page 2 per 5 padding 3, then max_paginates_per 4' do
+            relation = model_class.page(2).per(5).padding(3).max_paginates_per(4)
+
+            assert_equal 4, relation.count
+            assert_equal 2, relation.current_page
+            assert_equal 'user008', relation.first.name
           end
 
           test 'Negative padding' do

@@ -104,6 +104,13 @@ class PaginatableArrayTest < ActiveSupport::TestCase
       assert_equal 19, arr.total_pages
     end
 
+    test 'page 2 per 5 padding 3, then per 10' do
+      arr = @array.page(2).per(5).padding(3).per(10)
+
+      assert_equal 2, arr.current_page
+      assert_equal 14, arr.first
+    end
+
     test 'per 25, padding 25' do
       assert_equal 3, @array.page(1).padding(25).total_pages
     end

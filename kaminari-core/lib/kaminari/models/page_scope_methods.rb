@@ -12,15 +12,11 @@ module Kaminari
       elsif n.zero?
         limit(n)
       else
-        if max_per_page && (max_per_page < n)
-          n = max_per_page
-        end
-
-        if limit_value.zero?
-          limit(n).offset(0)
-        else
-          limit(n).offset(offset_value / limit_value * n)
-        end
+        n = max_per_page if max_per_page && (max_per_page < n)
+        padding_value = (defined?(@_padding) && @_padding) || 0
+        # the current page is unknown after per(0), so go back to the first page
+        page_offset = limit_value.zero? ? 0 : (offset_value - padding_value) / limit_value * n
+        limit(n).offset(page_offset + padding_value)
       end
     end
 
