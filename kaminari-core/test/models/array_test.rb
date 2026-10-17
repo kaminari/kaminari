@@ -75,6 +75,14 @@ class PaginatableArrayTest < ActiveSupport::TestCase
     test 'invalid page as a Array' do
       assert_first_page_of_array @array.page([2, 3])
     end
+
+    test 'page with an offset too large for Array#[]' do
+      arr = @array.page(2**63)
+
+      assert_blank_array_page arr
+      assert_equal 4, arr.total_pages
+      assert_true arr.out_of_range?
+    end
   end
 
   sub_test_case '#per' do
