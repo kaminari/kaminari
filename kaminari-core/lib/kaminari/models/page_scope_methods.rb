@@ -17,7 +17,7 @@ module Kaminari
         padding_value = (defined?(@_padding) && @_padding) || 0
         # the current page is unknown after per(0), so go back to the first page
         page_offset = limit_value.zero? ? 0 : (offset_value - padding_value) / limit_value * n
-        limit(n).offset(page_offset + padding_value)
+        limit(n).offset([page_offset + padding_value, MAX_OFFSET].min)
       end.tap {|scope| scope.instance_variable_set :@_per, per_value }
     end
 
@@ -30,7 +30,7 @@ module Kaminari
     def padding(num)
       num = num.to_i
       raise ArgumentError, "padding must not be negative" if num < 0
-      offset(offset_value + num).tap {|scope| scope.instance_variable_set :@_padding, num }
+      offset([offset_value + num, MAX_OFFSET].min).tap {|scope| scope.instance_variable_set :@_padding, num }
     end
 
     # Total number of pages

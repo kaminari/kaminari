@@ -68,6 +68,25 @@ if defined? ActiveRecord
             assert_blank_page model_class.page(5)
           end
 
+          test 'page with an offset larger than the database can represent' do
+            relation = model_class.page(2**63)
+
+            assert_blank_page relation
+            assert_equal 4, relation.total_pages
+            assert_true relation.out_of_range?
+          end
+
+          test 'page with an offset larger than the database can represent, then per' do
+            relation = model_class.page(2**63).per(100)
+
+            assert_blank_page relation
+            assert_equal 1, relation.total_pages
+          end
+
+          test 'page with an offset larger than the database can represent, then padding' do
+            assert_blank_page model_class.page(2**63).padding(1)
+          end
+
           test 'invalid page as a Hash' do
             assert_first_page model_class.page(page: { hacked: 100 })
           end

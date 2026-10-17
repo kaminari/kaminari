@@ -16,7 +16,8 @@ module Kaminari
     # * <tt>:total_count</tt> - total_count
     # * <tt>:padding</tt> - padding
     def initialize(original_array = [], limit: nil, offset: nil, total_count: nil, padding: nil)
-      @_original_array, @_limit_value, @_offset_value, @_total_count, @_padding = original_array, (limit || default_per_page).to_i, offset.to_i, total_count, padding.to_i
+      @_original_array, @_limit_value, @_total_count, @_padding = original_array, (limit || default_per_page).to_i, total_count, padding.to_i
+      @_offset_value = [offset.to_i, MAX_OFFSET].min
 
       if limit && offset
         extend Kaminari::PageScopeMethods
