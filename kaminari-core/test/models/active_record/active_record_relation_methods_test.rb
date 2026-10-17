@@ -55,6 +55,17 @@ if defined? ActiveRecord
         assert_equal 7, User.page.per(0).load.total_count
       end
 
+      test 'total_count with per(0) and max_pages' do
+        begin
+          User.max_pages 10
+
+          assert_equal 7, User.page.per(0).total_count
+          assert_equal 7, User.page.per(0).load.total_count
+        ensure
+          User.max_pages nil
+        end
+      end
+
       test 'it should reset total_count memoization when the scope is cloned' do
         assert_equal 1, User.page.tap(&:total_count).where(name: 'author').total_count
       end

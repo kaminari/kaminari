@@ -31,7 +31,8 @@ module Kaminari
       # Remove includes only if they are irrelevant
       c = c.except(:includes, :eager_load, :preload) unless references_eager_loaded_tables?
 
-      c = c.limit(max_pages * limit_value) if max_pages && max_pages.respond_to?(:*)
+      # Count up to max_pages pages, except with per(0), where LIMIT 0 would make the total count 0
+      c = c.limit(max_pages * limit_value) if max_pages && max_pages.respond_to?(:*) && limit_value != 0
 
       # Count the groups in the database instead of fetching a row per group
       return @total_count = count_groups(c) if c.group_values.any? && !c.eager_loading?
