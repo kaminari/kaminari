@@ -148,6 +148,13 @@ if defined? ActiveRecord
             end
           end
 
+          test 'per does not change the receiver' do
+            relation = model_class.page(1)
+            relation.per(10)
+
+            assert_equal 25, relation.max_paginates_per(50).count
+          end
+
           # I know it's a bit strange to have this here, but I couldn't find any better place for this case
           sub_test_case 'when max_per_page is given via model class, and `per` is not actually called' do
             test 'with max_per_page > default_per_page' do
@@ -217,6 +224,13 @@ if defined? ActiveRecord
               assert_equal 25, model_class.page(1).max_paginates_per(30).count
             end
           end
+
+          test 'max_paginates_per does not change the receiver' do
+            relation = model_class.page(1)
+            relation.max_paginates_per(20)
+
+            assert_equal 10, relation.per(30).count
+          end
         end
 
         sub_test_case '#padding' do
@@ -254,6 +268,15 @@ if defined? ActiveRecord
             assert_equal 4, relation.count
             assert_equal 2, relation.current_page
             assert_equal 'user008', relation.first.name
+          end
+
+          test 'padding does not change the receiver' do
+            relation = model_class.page(2).per(5)
+            relation.padding(3)
+
+            assert_equal 2, relation.current_page
+            assert_equal 20, relation.total_pages
+            assert_equal 'user006', relation.first.name
           end
 
           test 'Negative padding' do

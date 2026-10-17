@@ -88,6 +88,32 @@ class PaginatableArrayTest < ActiveSupport::TestCase
     test 'page 1 per 0' do
       assert_equal 0, @array.page(1).per(0).count
     end
+
+    test 'per does not change the receiver' do
+      arr = @array.page(1)
+      arr.per(10)
+
+      assert_equal 25, arr.max_paginates_per(50).count
+    end
+  end
+
+  sub_test_case '#max_paginates_per' do
+    test 'calling max_paginates_per() after per()' do
+      assert_equal 15, @array.page(1).per(15).max_paginates_per(20).count
+      assert_equal 20, @array.page(1).per(30).max_paginates_per(20).count
+    end
+
+    test 'calling max_paginates_per() before per()' do
+      assert_equal 15, @array.page(1).max_paginates_per(20).per(15).count
+      assert_equal 20, @array.page(1).max_paginates_per(20).per(30).count
+    end
+
+    test 'max_paginates_per does not change the receiver' do
+      arr = @array.page(1)
+      arr.max_paginates_per(20)
+
+      assert_equal 30, arr.per(30).count
+    end
   end
 
   sub_test_case '#padding' do
@@ -117,6 +143,15 @@ class PaginatableArrayTest < ActiveSupport::TestCase
 
       assert_equal 2, arr.current_page
       assert_equal 14, arr.first
+    end
+
+    test 'padding does not change the receiver' do
+      arr = @array.page(2).per(5)
+      arr.padding(3)
+
+      assert_equal 2, arr.current_page
+      assert_equal 20, arr.total_pages
+      assert_equal 6, arr.first
     end
 
     test 'per 25, padding 25' do

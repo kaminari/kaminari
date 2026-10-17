@@ -48,7 +48,7 @@ module Kaminari
 
     # returns another chunk of the original array
     def limit(num)
-      self.class.new @_original_array, limit: num, offset: @_offset_value, total_count: @_total_count, padding: @_padding
+      spawn limit: num, offset: @_offset_value
     end
 
     # overridden by Kaminari::PageScopeMethods once paginated
@@ -63,7 +63,17 @@ module Kaminari
 
     # returns another chunk of the original array
     def offset(num)
-      self.class.new @_original_array, limit: @_limit_value, offset: num, total_count: @_total_count, padding: @_padding
+      spawn limit: @_limit_value, offset: num
+    end
+
+    private
+
+    # Builds another chunk of the original array, carrying over the per page settings given to this one
+    def spawn(limit:, offset:)
+      self.class.new(@_original_array, limit: limit, offset: offset, total_count: @_total_count, padding: @_padding).tap do |array|
+        array.instance_variable_set :@_per, @_per if defined?(@_per)
+        array.instance_variable_set :@_max_per_page, @_max_per_page if defined?(@_max_per_page)
+      end
     end
   end
 

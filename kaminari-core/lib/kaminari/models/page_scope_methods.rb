@@ -6,7 +6,7 @@ module Kaminari
     #   Model.page(3).per(10)
     def per(num, max_per_page: nil)
       max_per_page ||= ((defined?(@_max_per_page) && @_max_per_page) || self.max_per_page)
-      @_per = (num || default_per_page).to_i
+      per_value = (num || default_per_page).to_i
       if (n = num.to_i) < 0 || !(/^\d/ =~ num.to_s)
         self
       elsif n.zero?
@@ -17,20 +17,19 @@ module Kaminari
         # the current page is unknown after per(0), so go back to the first page
         page_offset = limit_value.zero? ? 0 : (offset_value - padding_value) / limit_value * n
         limit(n).offset(page_offset + padding_value)
-      end
+      end.tap {|scope| scope.instance_variable_set :@_per, per_value }
     end
 
     def max_paginates_per(new_max_per_page)
-      @_max_per_page = new_max_per_page
-
-      per (defined?(@_per) && @_per) || default_per_page, max_per_page: new_max_per_page
+      per((defined?(@_per) && @_per) || default_per_page, max_per_page: new_max_per_page).tap do |scope|
+        scope.instance_variable_set :@_max_per_page, new_max_per_page
+      end
     end
 
     def padding(num)
       num = num.to_i
       raise ArgumentError, "padding must not be negative" if num < 0
-      @_padding = num
-      offset(offset_value + @_padding)
+      offset(offset_value + num).tap {|scope| scope.instance_variable_set :@_padding, num }
     end
 
     # Total number of pages
