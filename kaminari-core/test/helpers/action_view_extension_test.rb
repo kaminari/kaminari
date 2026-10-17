@@ -172,6 +172,13 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
         assert_equal 'At the Beginning', (view.link_to_previous_page(users, 'Previous', params: {controller: 'users', action: 'index'}) do 'At the Beginning' end)
       end
 
+      test 'the first page with a block in an ERB template' do
+        users = User.page(1)
+        html = render inline: '<%= link_to_previous_page users, "Previous" do %><span>At the Beginning</span><% end %>', locals: {users: users}
+
+        assert_equal '<span>At the Beginning</span>', html
+      end
+
       test 'out of range' do
         users = User.page(5)
 
@@ -223,6 +230,13 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
         users = User.page(2)
 
         assert_nil view.link_to_next_page(users, 'More', params: {controller: 'users', action: 'index'})
+      end
+
+      test 'the last page with a block in an ERB template' do
+        users = User.page(2)
+        html = render inline: '<%= link_to_next_page users, "More" do %><span>No More Pages</span><% end %>', locals: {users: users}
+
+        assert_equal '<span>No More Pages</span>', html
       end
 
       test 'out of range' do
