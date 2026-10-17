@@ -344,6 +344,16 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
 
             assert_equal 'Displaying users <b>1–25</b> of <b>1,000</b> in total', view.page_entries_info(users)
           end
+
+          test 'escapes the entry name option' do
+            users = User.page(1).per(25)
+            assert_equal 'Displaying &lt;script&gt;alert(1)&lt;/script&gt;members <b>1–25</b> of <b>50</b> in total', view.page_entries_info(users, entry_name: '<script>alert(1)</script>member')
+          end
+
+          test 'does not escape an html_safe entry name option' do
+            users = User.page(1).per(25)
+            assert_equal 'Displaying <i>new</i> members <b>1–25</b> of <b>50</b> in total', view.page_entries_info(users, entry_name: '<i>new</i> member'.html_safe)
+          end
         end
       end
 
