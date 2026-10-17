@@ -67,6 +67,14 @@ class PaginatableArrayTest < ActiveSupport::TestCase
     test 'page > max page' do
       assert_blank_array_page @array.page(5)
     end
+
+    test 'invalid page as a Hash' do
+      assert_first_page_of_array @array.page(page: { hacked: 100 })
+    end
+
+    test 'invalid page as a Array' do
+      assert_first_page_of_array @array.page([2, 3])
+    end
   end
 
   sub_test_case '#per' do

@@ -41,6 +41,7 @@ module Kaminari
     # items at the specified "page"
     class_eval <<-RUBY, __FILE__, __LINE__ + 1
       def #{Kaminari.config.page_method_name}(num = 1)
+        num = num.respond_to?(:to_i) ? num.to_i : 1
         offset(limit_value * ((num = num.to_i - 1) < 0 ? 0 : num))
       end
     RUBY
