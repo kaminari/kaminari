@@ -6,10 +6,11 @@ module Kaminari
     #   Model.page(3).per(10)
     def per(num, max_per_page: nil)
       max_per_page ||= ((defined?(@_max_per_page) && @_max_per_page) || self.max_per_page)
-      per_value = (num || default_per_page).to_i
-      if (n = num.to_i) < 0 || !(/^\d/ =~ num.to_s)
-        self
-      elsif n.zero?
+      # ignore a negative or a non-numeric value, and keep the current per value
+      return self if (n = num.to_i) < 0 || !(/^\d/ =~ num.to_s)
+
+      per_value = n
+      if n.zero?
         limit(n)
       else
         n = max_per_page if max_per_page && (max_per_page < n)

@@ -103,6 +103,12 @@ class PaginatableArrayTest < ActiveSupport::TestCase
       assert_equal 20, @array.page(1).per(30).max_paginates_per(20).count
     end
 
+    test 'calling max_paginates_per() after per() with an invalid value' do
+      assert_equal 20, @array.page(1).per('aho').max_paginates_per(20).count
+      assert_equal 20, @array.page(1).per(-1).max_paginates_per(20).count
+      assert_equal 15, @array.page(1).per(15).per('aho').max_paginates_per(20).count
+    end
+
     test 'calling max_paginates_per() before per()' do
       assert_equal 15, @array.page(1).max_paginates_per(20).per(15).count
       assert_equal 20, @array.page(1).max_paginates_per(20).per(30).count

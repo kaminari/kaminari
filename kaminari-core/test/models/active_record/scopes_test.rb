@@ -199,6 +199,12 @@ if defined? ActiveRecord
             test 'when nil is given to #per and #max_paginates_per is specified' do
               assert_equal 20, model_class.page(1).per(nil).max_paginates_per(20).count
             end
+
+            test 'when an invalid value is given to #per and #max_paginates_per is specified' do
+              assert_equal 20, model_class.page(1).per('aho').max_paginates_per(20).count
+              assert_equal 20, model_class.page(1).per(-1).max_paginates_per(20).count
+              assert_equal 15, model_class.page(1).per(15).per('aho').max_paginates_per(20).count
+            end
           end
 
           sub_test_case 'calling max_paginates_per() before per()' do
