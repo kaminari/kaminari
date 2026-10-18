@@ -55,6 +55,22 @@ if defined? ActiveRecord
         assert_equal 7, User.page.per(0).load.total_count
       end
 
+      test 'total_count after unscoping limit' do
+        assert_equal 7, User.page(1).unscope(:limit).total_count
+        assert_equal 7, User.page(1).unscope(:limit).load.total_count
+        assert_equal 7, User.page(2).per(2).unscope(:limit).load.total_count
+      end
+
+      test 'total_count after unscoping limit with max_pages' do
+        begin
+          User.max_pages 10
+
+          assert_equal 7, User.page(1).unscope(:limit).total_count
+        ensure
+          User.max_pages nil
+        end
+      end
+
       test 'total_count with per(0) and max_pages' do
         begin
           User.max_pages 10

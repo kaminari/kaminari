@@ -18,8 +18,8 @@ module Kaminari
       return @total_count if defined?(@total_count) && @total_count
 
       # There are some cases that total count can be deduced from loaded records
-      # (except with per(0), where loaded records say nothing about the total count)
-      if loaded? && limit_value != 0
+      # (except with per(0) or without a limit, where loaded records say nothing about the total count)
+      if loaded? && limit_value.to_i != 0
         # Total count has to be 0 if loaded records are 0
         return @total_count = 0 if (current_page == 1) && @records.empty?
         # Total count is calculable at the last page
@@ -31,8 +31,8 @@ module Kaminari
       # Remove includes only if they are irrelevant
       c = c.except(:includes, :eager_load, :preload) unless references_eager_loaded_tables?
 
-      # Count up to max_pages pages, except with per(0), where LIMIT 0 would make the total count 0
-      c = c.limit(max_pages * limit_value) if max_pages && max_pages.respond_to?(:*) && limit_value != 0
+      # Count up to max_pages pages (not with per(0), where LIMIT 0 would make the total count 0, nor without a limit)
+      c = c.limit(max_pages * limit_value) if max_pages && max_pages.respond_to?(:*) && limit_value.to_i != 0
 
       # Count the groups in the database instead of fetching a row per group
       return @total_count = count_groups(c) if c.group_values.any? && !c.eager_loading?
