@@ -317,6 +317,10 @@ if defined? ActiveRecord
             assert_equal 4, model_class.page(5).per('aho').total_pages
           end
 
+          test 'per "String value that has a Number on the second line" (using default)' do
+            assert_equal 4, model_class.page(5).per("aho\n10").total_pages
+          end
+
           test 'with max_pages < total pages count from database' do
             begin
               model_class.max_pages 3

@@ -193,6 +193,10 @@ class PaginatableArrayTest < ActiveSupport::TestCase
     test 'per "String value that can not be converted into Number" (using default)' do
       assert_equal 4, @array.page(5).per('aho').total_pages
     end
+
+    test 'per "String value that has a Number on the second line" (using default)' do
+      assert_equal 4, @array.page(5).per("aho\n10").total_pages
+    end
   end
 
   sub_test_case '#current_page' do
