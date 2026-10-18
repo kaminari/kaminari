@@ -13,6 +13,8 @@ module Kaminari
         @window_options = {window: window || inner_window, left: left.zero? ? outer_window : left, right: right.zero? ? outer_window : right}
 
         @last = nil
+        # shared by all the tags in this paginator
+        @url_cache = {}
         @window_options.merge! @options
         @window_options[:current_page] = @options[:current_page] = PageProxy.new(@window_options, @options[:current_page], nil)
 
@@ -61,13 +63,13 @@ module Kaminari
       private :relevant_pages
 
       def page_tag(page)
-        @last = Page.new @template, param_name: @param_name, theme: @theme, views_prefix: @views_prefix, internal_params: @params, **@options.merge(page: page)
+        @last = Page.new @template, param_name: @param_name, theme: @theme, views_prefix: @views_prefix, internal_params: @params, internal_url_cache: @url_cache, **@options.merge(page: page)
       end
 
       %w[first_page prev_page next_page last_page gap].each do |tag|
         eval <<-DEF, nil, __FILE__, __LINE__ + 1
           def #{tag}_tag
-            @last = #{tag.classify}.new @template, param_name: @param_name, theme: @theme, views_prefix: @views_prefix, internal_params: @params, **@options
+            @last = #{tag.classify}.new @template, param_name: @param_name, theme: @theme, views_prefix: @views_prefix, internal_params: @params, internal_url_cache: @url_cache, **@options
           end
         DEF
       end

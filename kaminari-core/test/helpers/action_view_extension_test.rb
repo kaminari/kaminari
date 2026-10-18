@@ -56,6 +56,77 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
         assert_match '/users?page=2#list', view.paginate(users, params: {controller: 'users', action: 'index', anchor: 'list'})
       end
 
+      sub_test_case 'generating URLs' do
+        def hrefs(html)
+          html.scan(/href="([^"]*)"/).flatten.uniq.sort
+        end
+
+        # Wraps view.url_for with the given block for generating URLs from a Hash (not for link_to passing a String)
+        def wrap_url_for(&block)
+          view.singleton_class.send :prepend, Module.new { define_method(:url_for) {|*args| args.first.is_a?(Hash) ? block.call(args.first) { super(*args) } : super(*args) } }
+        end
+
+        test 'generates the URL for each page' do
+          users = User.page(3).per(5)
+
+          assert_equal %w(/users?page=10&amp;q=foo /users?page=2&amp;q=foo /users?page=4&amp;q=foo /users?page=5&amp;q=foo /users?page=6&amp;q=foo /users?page=7&amp;q=foo /users?q=foo),
+                       hrefs(view.paginate(users, params: {controller: 'users', action: 'index', q: 'foo'}))
+        end
+
+        test 'calls url_for only for the first page, the first other page, and the URL with the placeholder' do
+          count = 0
+          wrap_url_for {|_, &url_for| count += 1; url_for.call }
+
+          view.paginate User.page(3).per(5), params: {controller: 'users', action: 'index'}
+          assert_equal 3, count
+        end
+
+        test 'with a friendly route setting' do
+          users = User.page(3).per(5)
+
+          assert_equal %w(/addresses /addresses/page/10 /addresses/page/2 /addresses/page/4 /addresses/page/5 /addresses/page/6 /addresses/page/7),
+                       hrefs(view.paginate(users, params: {controller: 'addresses', action: 'index'}))
+        end
+
+        test 'with a nested param_name' do
+          users = User.page(3).per(5)
+
+          # (the URL for the first page varies with the Rails version)
+          assert_equal %w(/users?user%5Bpage%5D=10 /users?user%5Bpage%5D=2 /users?user%5Bpage%5D=4 /users?user%5Bpage%5D=5 /users?user%5Bpage%5D=6 /users?user%5Bpage%5D=7),
+                       hrefs(view.paginate(users, param_name: 'user[page]', params: {controller: 'users', action: 'index'})).grep(/=\d+\z/)
+        end
+
+        test 'config.params_on_first_page == true' do
+          begin
+            Kaminari.config.params_on_first_page = true
+            users = User.page(3).per(5)
+
+            assert_equal %w(/users?page=1 /users?page=10 /users?page=2 /users?page=4 /users?page=5 /users?page=6 /users?page=7),
+                         hrefs(view.paginate(users, params: {controller: 'users', action: 'index'}))
+          ensure
+            Kaminari.config.params_on_first_page = false
+          end
+        end
+
+        test 'falls back to url_for for each page when the URL with the placeholder does not build the same URL' do
+          # e.g. an app that formats the page numbers in the URLs
+          wrap_url_for {|_, &url_for| url_for.call.sub(/page=(\d+)/) { "page=#{$1.to_i.to_s(16)}" } }
+          users = User.page(3).per(5)
+
+          assert_equal %w(/users /users?page=2 /users?page=4 /users?page=5 /users?page=6 /users?page=7 /users?page=a),
+                       hrefs(view.paginate(users, params: {controller: 'users', action: 'index'}))
+        end
+
+        test 'falls back to url_for for each page when the URL with the placeholder cannot be generated' do
+          # e.g. routes that constrain the page numbers
+          wrap_url_for {|options, &url_for| raise ActionController::UrlGenerationError, 'no route' if options[:page].to_i > 1000; url_for.call }
+          users = User.page(3).per(5)
+
+          assert_equal %w(/users /users?page=10 /users?page=2 /users?page=4 /users?page=5 /users?page=6 /users?page=7),
+                       hrefs(view.paginate(users, params: {controller: 'users', action: 'index'}))
+        end
+      end
+
       test 'accepts :theme option' do
         users = User.page(1)
         begin

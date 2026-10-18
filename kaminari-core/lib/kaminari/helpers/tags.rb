@@ -18,9 +18,13 @@ module Kaminari
     # installed template will be used.
     #   e.g.)  Paginator  ->  $GEM_HOME/kaminari-x.x.x/app/views/kaminari/_paginator.html.erb
     class Tag
-      def initialize(template, params: nil, param_name: nil, theme: nil, views_prefix: nil, internal_params: nil, **options) #:nodoc:
+      # A page number that is unlikely to appear in any URL, which stands in for the actual page number in the cached URL
+      PAGE_PLACEHOLDER = rand(10**17...10**18)
+
+      def initialize(template, params: nil, param_name: nil, theme: nil, views_prefix: nil, internal_params: nil, internal_url_cache: nil, **options) #:nodoc:
         @template, @theme, @views_prefix, @options = template, theme, views_prefix, options
         @param_name = param_name || Kaminari.config.param_name
+        @url_cache = internal_url_cache
 
         if internal_params
           @params = internal_params
@@ -44,12 +48,40 @@ module Kaminari
       end
 
       def page_url_for(page)
+        @url_cache ? cached_page_url_for(page.to_i) : generate_page_url(page)
+      end
+
+      private
+
+      def generate_page_url(page)
         params = params_for(page)
         params[:only_path] = true
         @template.url_for params
       end
 
-      private
+      # Generating URLs is costly, so the paginator generates the URL only once with a placeholder page number,
+      # and then builds the URL for each page by replacing the placeholder
+      def cached_page_url_for(page)
+        @url_cache.fetch(page) do
+          url_template = @url_cache[:url_template]
+          @url_cache[page] = if url_template && (page > 1)
+            url_template.sub(PAGE_PLACEHOLDER.to_s, page.to_s)
+          else
+            generate_page_url(page).tap {|url| build_url_template(page, url) if url_template.nil? && (page > 1) }
+          end
+        end
+      end
+
+      # Use the URL with the placeholder only when it builds exactly the same URL as url_for does.
+      # Otherwise (e.g. when the routes constrain the page number), fall back to calling url_for for each page.
+      def build_url_template(page, url)
+        url_template = begin
+          generate_page_url PAGE_PLACEHOLDER
+        rescue StandardError
+          nil
+        end
+        @url_cache[:url_template] = url_template && (url_template.scan(PAGE_PLACEHOLDER.to_s).size == 1) && (url_template.sub(PAGE_PLACEHOLDER.to_s, page.to_s) == url) ? url_template : false
+      end
 
       def params_for(page)
         if (@param_name == :page) || !@param_name.to_s.include?('[')
