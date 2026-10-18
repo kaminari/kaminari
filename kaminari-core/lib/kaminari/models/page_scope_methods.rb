@@ -17,7 +17,7 @@ module Kaminari
         padding_value = (defined?(@_padding) && @_padding) || 0
         # the current page is unknown after per(0), so go back to the first page
         page_offset = limit_value.zero? ? 0 : (offset_value - padding_value) / limit_value * n
-        limit(n).offset(page_offset + padding_value)
+        limit_and_offset n, page_offset + padding_value
       end.tap {|scope| scope.instance_variable_set :@_per, per_value }
     end
 
@@ -92,6 +92,13 @@ module Kaminari
 
     def paginated?
       limit_value.present?
+    end
+
+    private
+
+    # Returns another scope with the given limit and offset
+    def limit_and_offset(new_limit, new_offset)
+      limit(new_limit).offset(new_offset)
     end
   end
 end

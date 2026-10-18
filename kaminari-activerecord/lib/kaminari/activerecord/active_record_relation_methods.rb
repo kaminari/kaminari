@@ -58,6 +58,11 @@ module Kaminari
 
     private
 
+    # Overrides PageScopeMethods#limit_and_offset not to copy the Relation twice via limit and offset
+    def limit_and_offset(new_limit, new_offset)
+      spawn.limit!(new_limit).offset!(new_offset)
+    end
+
     # SELECT COUNT(*) FROM (SELECT 1 FROM ... GROUP BY ...) subquery_for_count
     def count_groups(relation)
       # Each group is one row unless DISTINCT collapses some of them

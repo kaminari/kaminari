@@ -6,8 +6,9 @@ module Kaminari
   # Extends the Relation returned by Model.page.
   # Passing this module to `extending` rather than a block saves defining a new Module on each call.
   module ActiveRecordPageScope
-    include Kaminari::ActiveRecordRelationMethods
     include Kaminari::PageScopeMethods
+    # included after PageScopeMethods so that it can override PageScopeMethods#limit_and_offset
+    include Kaminari::ActiveRecordRelationMethods
   end
 
   module ActiveRecordModelExtension
