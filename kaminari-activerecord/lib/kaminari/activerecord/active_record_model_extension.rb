@@ -3,6 +3,13 @@
 require 'kaminari/activerecord/active_record_relation_methods'
 
 module Kaminari
+  # Extends the Relation returned by Model.page.
+  # Passing this module to `extending` rather than a block saves defining a new Module on each call.
+  module ActiveRecordPageScope
+    include Kaminari::ActiveRecordRelationMethods
+    include Kaminari::PageScopeMethods
+  end
+
   module ActiveRecordModelExtension
     extend ActiveSupport::Concern
 
@@ -19,10 +26,7 @@ module Kaminari
         def self.#{Kaminari.config.page_method_name}(num = nil)
           num = num.respond_to?(:to_i) ? num.to_i : 1
           per_page = max_per_page && (default_per_page > max_per_page) ? max_per_page : default_per_page
-          limit(per_page).offset(per_page * ((num = num.to_i - 1) < 0 ? 0 : num)).extending do
-            include Kaminari::ActiveRecordRelationMethods
-            include Kaminari::PageScopeMethods
-          end
+          limit(per_page).offset(per_page * ((num = num.to_i - 1) < 0 ? 0 : num)).extending(Kaminari::ActiveRecordPageScope)
         end
       RUBY
     end
