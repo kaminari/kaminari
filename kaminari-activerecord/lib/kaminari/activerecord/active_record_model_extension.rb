@@ -6,6 +6,8 @@ module Kaminari
   module ActiveRecordModelExtension
     extend ActiveSupport::Concern
 
+    MAX_OFFSET = (2**63) - 1
+
     included do
       include Kaminari::ConfigurationMethods
 
@@ -19,7 +21,15 @@ module Kaminari
         def self.#{Kaminari.config.page_method_name}(num = nil)
           num = num.respond_to?(:to_i) ? num.to_i : 1
           per_page = max_per_page && (default_per_page > max_per_page) ? max_per_page : default_per_page
-          limit(per_page).offset(per_page * ((num = num.to_i - 1) < 0 ? 0 : num)).extending do
+          offset = per_page * ((num = num.to_i - 1) < 0 ? 0 : num)
+          relation = limit(per_page)
+          relation =
+            if offset > Kaminari::ActiveRecordModelExtension::MAX_OFFSET
+              relation.none.limit(per_page).offset(0)
+            else
+              relation.offset(offset)
+            end
+          relation.extending do
             include Kaminari::ActiveRecordRelationMethods
             include Kaminari::PageScopeMethods
           end
