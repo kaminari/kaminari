@@ -287,6 +287,11 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
             users = User.page(1).per(25)
             assert_equal 'Displaying <b>all 10</b> members', view.page_entries_info(users, entry_name: 'member')
           end
+
+          test 'an out of range page' do
+            users = User.page(3).per(25)
+            assert_equal 'No users found', view.page_entries_info(users)
+          end
         end
 
         sub_test_case 'having more than one page of entries' do
@@ -329,6 +334,11 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
                 User.max_pages nil
               end
             end
+          end
+
+          test 'an out of range page' do
+            users = User.page(9).per(10)
+            assert_equal 'No users found', view.page_entries_info(users)
           end
 
           test 'it accepts a decorated object' do
@@ -541,6 +551,11 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
         test 'with an empty array and total_count option' do
           users = Kaminari.paginate_array([], total_count: 50).page(1).per(1)
           assert_equal 'Displaying users <b>1–1</b> of <b>50</b> in total', view.page_entries_info(users, entry_name: 'user')
+        end
+
+        test 'an out of range page' do
+          numbers = Kaminari.paginate_array((1..30).to_a).page(9).per(10)
+          assert_equal 'No entries found', view.page_entries_info(numbers)
         end
       end
     end

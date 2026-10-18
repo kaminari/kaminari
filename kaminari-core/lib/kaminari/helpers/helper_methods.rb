@@ -212,7 +212,10 @@ module Kaminari
         # the translated message is marked as html_safe, so the interpolated entry_name has to be escaped here
         entry_name = ERB::Util.html_escape entry_name
 
-        if collection.total_pages < 2
+        if collection.out_of_range?
+          # an out of range page displays no entries
+          t('helpers.page_entries_info.one_page.display_entries', entry_name: entry_name, count: 0)
+        elsif collection.total_pages < 2
           t('helpers.page_entries_info.one_page.display_entries', entry_name: entry_name, count: collection.total_count)
         else
           from = collection.offset_value + 1
