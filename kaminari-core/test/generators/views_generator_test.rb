@@ -29,6 +29,63 @@ if defined?(::Rails::Railtie)
       end
     end
   end
+
+  class ViewsGeneratorNetworkErrorTest < ::Test::Unit::TestCase
+    RATE_LIMIT_EXCEEDED = OpenURI::HTTPError.new('403 rate limit exceeded', StringIO.new)
+
+    # Replaces a GitHubApiHelper method with the given lambda while yielding
+    def stub_github_api(name, stub)
+      helper = Kaminari::Generators::GitHubApiHelper
+      original = helper.method(name)
+      helper.define_singleton_method name, stub
+      Kaminari::Generators::ViewsGenerator.instance_variable_set :@themes, nil
+      yield
+    ensure
+      helper.define_singleton_method name, original
+      Kaminari::Generators::ViewsGenerator.instance_variable_set :@themes, nil
+    end
+
+    def run_generator(*args)
+      Dir.mktmpdir do |dir|
+        out = capture_output { Kaminari::Generators::ViewsGenerator.start(args, destination_root: dir) }.first
+        yield out, Dir.glob(File.join(dir, 'app/views/kaminari/*'))
+      end
+    end
+
+    test 'the banner does not raise when the themes are not available' do
+      stub_github_api(:get_files_in_master, -> { raise RATE_LIMIT_EXCEEDED }) do
+        assert_match(/- default/, Kaminari::Generators::ViewsGenerator.banner)
+      end
+    end
+
+    test 'the banner does not raise when the theme descriptions are not available' do
+      stub_github_api(:get_files_in_master, -> { [['bootstrap4/DESCRIPTION', 'sha1'], ['bootstrap4/app/views/kaminari/_page.html.erb', 'sha2']] }) do
+        stub_github_api(:get_content_for, ->(_) { raise RATE_LIMIT_EXCEEDED }) do
+          assert_match(/- bootstrap4/, Kaminari::Generators::ViewsGenerator.banner)
+        end
+      end
+    end
+
+    test 'tells that the themes are not available' do
+      stub_github_api(:get_files_in_master, -> { raise RATE_LIMIT_EXCEEDED }) do
+        run_generator('bootstrap4') do |out, files|
+          assert_match(/could not fetch the themes from GitHub/, out)
+          assert_empty files
+        end
+      end
+    end
+
+    test 'tells that the templates could not be downloaded' do
+      stub_github_api(:get_files_in_master, -> { [['bootstrap4/app/views/kaminari/_page.html.erb', 'sha']] }) do
+        stub_github_api(:get_content_for, ->(_) { raise RATE_LIMIT_EXCEEDED }) do
+          run_generator('bootstrap4') do |out, files|
+            assert_match(/could not download the templates from GitHub \(403 rate limit exceeded\)/, out)
+            assert_empty files
+          end
+        end
+      end
+    end
+  end
 end
 
 if defined?(::Rails::Railtie) && ENV['GENERATOR_SPEC']
