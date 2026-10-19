@@ -21,10 +21,10 @@ module Kaminari
       # A page number that is unlikely to appear in any URL, which stands in for the actual page number in the cached URL
       PAGE_PLACEHOLDER = rand(10**17...10**18)
 
-      def initialize(template, params: nil, param_name: nil, theme: nil, views_prefix: nil, internal_params: nil, internal_url_cache: nil, **options) #:nodoc:
+      def initialize(template, params: nil, param_name: nil, theme: nil, views_prefix: nil, internal_params: nil, internal_url_cache: nil, internal_partial_cache: nil, **options) #:nodoc:
         @template, @theme, @views_prefix, @options = template, theme, views_prefix, options
         @param_name = param_name || Kaminari.config.param_name
-        @url_cache = internal_url_cache
+        @url_cache, @partial_cache = internal_url_cache, internal_partial_cache
 
         if internal_params
           @params = internal_params
@@ -43,8 +43,12 @@ module Kaminari
 
       def to_s(locals = {}) #:nodoc:
         formats = @template.respond_to?(:formats) ? @template.formats : Array(@template.params[:format])
-        formats += [:html] unless formats.include? :html
-        @template.render partial: partial_path, locals: @options.merge(locals), formats: formats
+        if @partial_cache && formats.include?(:html) && @template.respond_to?(:lookup_context)
+          render_cached_partial @options.merge(locals)
+        else
+          formats += [:html] unless formats.include? :html
+          @template.render partial: partial_path, locals: @options.merge(locals), formats: formats
+        end
       end
 
       def page_url_for(page)
@@ -52,6 +56,28 @@ module Kaminari
       end
 
       private
+
+      # Looking up a partial template is costly, so the paginator looks up each partial only once, and then renders the
+      # template directly in the same way as `render partial:` does.
+      # This is done only when the formats already include :html, which means the formats that `to_s` would pass to
+      # `render` are the same as the current ones, and so finding and rendering the template doesn't depend on the formats.
+      def render_cached_partial(locals)
+        path, keys = partial_path, locals.keys
+        cached_keys, template = @partial_cache[path]
+        unless template && (cached_keys == keys)
+          template = @template.lookup_context.find_template(path, [], true, keys)
+          @partial_cache[path] = [keys, template]
+        end
+        # `render partial:` in Action View 4 also puts the partial name into local_assigns (e.g. {gap: nil, ...})
+        if ActionView::VERSION::MAJOR < 5
+          name = File.basename(path).to_sym
+          locals[name] = nil unless locals.key? name
+        end
+
+        ActiveSupport::Notifications.instrument('render_partial.action_view', identifier: template.identifier, layout: nil, locals: locals) do
+          template.render(@template, locals) {|*name| @template._layout_for(*name) }
+        end
+      end
 
       def generate_page_url(page)
         params = params_for(page)

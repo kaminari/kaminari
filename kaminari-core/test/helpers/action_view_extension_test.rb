@@ -127,6 +127,35 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
         end
       end
 
+      sub_test_case 'rendering the partials' do
+        test 'looks up each partial template only once' do
+          paths = []
+          view.lookup_context.singleton_class.send :prepend, Module.new { define_method(:find_template) {|name, *args| paths << name; super(name, *args) } }
+
+          view.paginate User.page(3).per(5), params: {controller: 'users', action: 'index'}
+          assert_equal %w(/kaminari/first_page /kaminari/gap /kaminari/last_page /kaminari/next_page /kaminari/page /kaminari/paginator /kaminari/prev_page), paths.sort
+        end
+
+        test 'instruments rendering each partial' do
+          begin
+            partials = []
+            subscriber = ActiveSupport::Notifications.subscribe('render_partial.action_view') {|*, payload| partials << File.basename(payload[:identifier]) }
+
+            view.paginate User.page(3).per(5), params: {controller: 'users', action: 'index'}
+            assert_equal({'_paginator.html.erb' => 1, '_first_page.html.erb' => 1, '_prev_page.html.erb' => 1, '_page.html.erb' => 7, '_gap.html.erb' => 1, '_next_page.html.erb' => 1, '_last_page.html.erb' => 1},
+                         partials.each_with_object(Hash.new(0)) {|partial, h| h[partial] += 1 })
+          ensure
+            ActiveSupport::Notifications.unsubscribe subscriber
+          end
+        end
+
+        test 'renders the HTML partials when the formats do not include :html' do
+          view.lookup_context.formats = [:text]
+
+          assert_match(/<nav class="pagination"/, view.paginate(User.page(3).per(5), params: {controller: 'users', action: 'index'}))
+        end
+      end
+
       test 'accepts :theme option' do
         users = User.page(1)
         begin
