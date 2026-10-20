@@ -2,6 +2,6 @@
 
 module Kaminari
   module Core
-    VERSION = '1.2.2'
+    VERSION = '1.3.0'
   end
 end
