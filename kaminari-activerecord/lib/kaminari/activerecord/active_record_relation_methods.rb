@@ -29,7 +29,8 @@ module Kaminari
       # #count overrides the #select which could include generated columns referenced in #order, so skip #order here, where it's irrelevant to the result anyway
       c = except(:offset, :limit, :order)
       # Remove includes only if they are irrelevant
-      c = c.except(:includes, :eager_load, :preload) unless references_eager_loaded_tables?
+      # (but keep eager_load, which always joins the tables, and so the conditions may refer to them without references)
+      c = c.except(:includes, :preload) unless references_eager_loaded_tables?
 
       # Count up to max_pages pages (not with per(0), where LIMIT 0 would make the total count 0, nor without a limit)
       c = c.limit(max_pages * limit_value) if max_pages && max_pages.respond_to?(:*) && limit_value.to_i != 0

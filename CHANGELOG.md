@@ -1,3 +1,9 @@
+## 1.3.1
+
+### Bug Fixes:
+
+* `total_count` keeps `eager_load` in the count query again, which the conditions may need when they refer to the eager loaded tables without `references` (a regression in 1.3.0) #1160 [@r-uehara0219]
+
 ## 1.3.0
 
 ### Security Fixes:

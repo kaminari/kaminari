@@ -95,6 +95,17 @@ if defined? ActiveRecord
         assert_equal 2, User.includes(:books_authored).references(:books).where("books.title LIKE 'title00%'").page(1).total_count
       end
 
+      test 'it should keep eager_load and successfully count the results when the scope use conditions on eager_load without references' do
+        # eager_load always joins the tables, so conditions on them don't need to be registered via references
+        assert_equal 2, User.eager_load(:books_authored).where("books.title LIKE 'title00%'").page(1).total_count
+        assert_equal 2, User.eager_load(:books_authored).merge(Book.where("title LIKE 'title00%'")).page(1).total_count
+        assert_equal 2, Authorship.eager_load(:user).merge(User.where(name: 'author')).page(1).total_count
+      end
+
+      test 'it should count each record once with eager_load of a has_many association' do
+        assert_equal 7, User.eager_load(:books_authored).page(1).total_count
+      end
+
       test 'when the Relation has custom select clause' do
         assert_nothing_raised do
           User.select('*, 1 as one').page(1).total_count
