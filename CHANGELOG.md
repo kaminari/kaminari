@@ -3,6 +3,7 @@
 ### Bug Fixes:
 
 * `total_count` keeps `eager_load` in the count query again, which the conditions may need when they refer to the eager loaded tables without `references` (a regression in 1.3.0) #1160 [@r-uehara0219]
+* `total_count` keeps `includes` in the count query when they are joined along with `eager_load` or `joins`, which the conditions may need: [19c4c8b](https://github.com/kaminari/kaminari/commit/19c4c8b920e733282fa493dc5b49f6e7a5b63cc7)
 
 ## 1.3.0
 
