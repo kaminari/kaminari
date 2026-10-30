@@ -130,7 +130,7 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
       sub_test_case 'rendering the partials' do
         test 'looks up each partial template only once' do
           paths = []
-          view.lookup_context.singleton_class.send :prepend, Module.new { define_method(:find_template) {|name, *args| paths << name; super(name, *args) } }
+          view.lookup_context.singleton_class.send :prepend, Module.new { define_method(:find) {|name, *args| paths << name; super(name, *args) } }
 
           view.paginate User.page(3).per(5), params: {controller: 'users', action: 'index'}
           assert_equal %w(/kaminari/first_page /kaminari/gap /kaminari/last_page /kaminari/next_page /kaminari/page /kaminari/paginator /kaminari/prev_page), paths.sort

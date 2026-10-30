@@ -1,3 +1,9 @@
+## Unreleased
+
+### Bug Fixes:
+
+* `paginate` looks up each partial with `LookupContext#find`. Rails 8.2 removed `find_template`, which was an alias of `find`: [5ee0ba5](https://github.com/rails/rails/commit/5ee0ba5c48124e452459211f48b299366623a066)
+
 ## 1.3.1
 
 ### Bug Fixes:
