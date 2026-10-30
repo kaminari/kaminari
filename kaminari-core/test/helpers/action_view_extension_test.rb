@@ -130,7 +130,9 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
       sub_test_case 'rendering the partials' do
         test 'looks up each partial template only once' do
           paths = []
-          view.lookup_context.singleton_class.send :prepend, Module.new { define_method(:find) {|name, *args| paths << name; super(name, *args) } }
+          # find! since Rails 8.2, and find before that
+          finders = [:find, :find!].select {|finder| view.lookup_context.respond_to? finder }
+          view.lookup_context.singleton_class.send :prepend, Module.new { finders.each {|finder| define_method(finder) {|name, *args| paths << name; super(name, *args) } } }
 
           view.paginate User.page(3).per(5), params: {controller: 'users', action: 'index'}
           assert_equal %w(/kaminari/first_page /kaminari/gap /kaminari/last_page /kaminari/next_page /kaminari/page /kaminari/paginator /kaminari/prev_page), paths.sort
@@ -153,6 +155,12 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
           view.lookup_context.formats = [:text]
 
           assert_match(/<nav class="pagination"/, view.paginate(User.page(3).per(5), params: {controller: 'users', action: 'index'}))
+        end
+
+        test 'raises MissingTemplate when the theme has no partial' do
+          assert_raise ActionView::MissingTemplate do
+            view.paginate User.page(3).per(5), theme: 'no_such_theme', params: {controller: 'users', action: 'index'}
+          end
         end
       end
 

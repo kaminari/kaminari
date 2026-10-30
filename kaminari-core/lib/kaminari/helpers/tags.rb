@@ -65,7 +65,9 @@ module Kaminari
         path, keys = partial_path, locals.keys
         cached_keys, template = @partial_cache[path]
         unless template && (cached_keys == keys)
-          template = @template.lookup_context.find(path, [], true, keys)
+          lookup_context = @template.lookup_context
+          # LookupContext#find no longer raises MissingTemplate but returns nil since Rails 8.2, where find! raises instead
+          template = lookup_context.respond_to?(:find!) ? lookup_context.find!(path, [], true, keys) : lookup_context.find(path, [], true, keys)
           @partial_cache[path] = [keys, template]
         end
         # `render partial:` in Action View 4 also puts the partial name into local_assigns (e.g. {gap: nil, ...})
