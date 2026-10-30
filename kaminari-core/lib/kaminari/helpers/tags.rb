@@ -65,7 +65,7 @@ module Kaminari
         path, keys = partial_path, locals.keys
         cached_keys, template = @partial_cache[path]
         unless template && (cached_keys == keys)
-          template = @template.lookup_context.find_template(path, [], true, keys)
+          template = @template.lookup_context.find(path, [], true, keys)
           @partial_cache[path] = [keys, template]
         end
         # `render partial:` in Action View 4 also puts the partial name into local_assigns (e.g. {gap: nil, ...})
