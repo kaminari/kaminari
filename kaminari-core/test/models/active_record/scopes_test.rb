@@ -80,6 +80,32 @@ if defined? ActiveRecord
             assert_first_page model_class.page(page: [2, 3])
           end
 
+          test 'page on a Relation keeps its conditions' do
+            relation = model_class.where(name: %w(user001 user002 user030)).page(1).per(2)
+
+            assert_equal %w(user001 user002), relation.map(&:name)
+            assert_equal 3, relation.total_count
+          end
+
+          test 'page does not change the receiver' do
+            relation = model_class.where(name: %w(user001 user002 user030))
+            relation.page(2).per(2)
+
+            assert_nil relation.limit_value
+            assert_equal 3, relation.count
+          end
+
+          test 'page on a none Relation' do
+            relation = model_class.none.page(1)
+
+            assert_equal [], relation.to_a
+            assert_equal 0, relation.total_count
+          end
+
+          test 'page in a scoping block' do
+            assert_equal %w(user002), model_class.where(name: 'user002').scoping { model_class.page(1).map(&:name) }
+          end
+
           test 'ensure #order_values is preserved' do
             relation = model_class.order('id').page 1
 
@@ -134,6 +160,31 @@ if defined? ActiveRecord
             assert_equal 0, model_class.page(1).per(0).count
           end
 
+          test 'page 3 per 0, then per 10 (back to the first page)' do
+            relation = model_class.page(3).per(0).per(10)
+
+            assert_equal 10, relation.count
+            assert_equal 1, relation.current_page
+            assert_equal 'user001', relation.first.name
+          end
+
+          test 'page 1 per 0, then per 30 with max_per_page' do
+            begin
+              model_class.max_paginates_per(10)
+
+              assert_equal 10, model_class.page(1).per(0).per(30).count
+            ensure
+              model_class.max_paginates_per(nil)
+            end
+          end
+
+          test 'per does not change the receiver' do
+            relation = model_class.page(1)
+            relation.per(10)
+
+            assert_equal 25, relation.max_paginates_per(50).count
+          end
+
           # I know it's a bit strange to have this here, but I couldn't find any better place for this case
           sub_test_case 'when max_per_page is given via model class, and `per` is not actually called' do
             test 'with max_per_page > default_per_page' do
@@ -178,6 +229,12 @@ if defined? ActiveRecord
             test 'when nil is given to #per and #max_paginates_per is specified' do
               assert_equal 20, model_class.page(1).per(nil).max_paginates_per(20).count
             end
+
+            test 'when an invalid value is given to #per and #max_paginates_per is specified' do
+              assert_equal 20, model_class.page(1).per('aho').max_paginates_per(20).count
+              assert_equal 20, model_class.page(1).per(-1).max_paginates_per(20).count
+              assert_equal 15, model_class.page(1).per(15).per('aho').max_paginates_per(20).count
+            end
           end
 
           sub_test_case 'calling max_paginates_per() before per()' do
@@ -203,6 +260,13 @@ if defined? ActiveRecord
               assert_equal 25, model_class.page(1).max_paginates_per(30).count
             end
           end
+
+          test 'max_paginates_per does not change the receiver' do
+            relation = model_class.page(1)
+            relation.max_paginates_per(20)
+
+            assert_equal 10, relation.per(30).count
+          end
         end
 
         sub_test_case '#padding' do
@@ -225,6 +289,30 @@ if defined? ActiveRecord
 
             assert_equal 19, relation.current_page
             assert_equal 19, relation.total_pages
+          end
+
+          test 'page 2 per 5 padding 3, then per 10' do
+            relation = model_class.page(2).per(5).padding(3).per(10)
+
+            assert_equal 2, relation.current_page
+            assert_equal 'user014', relation.first.name
+          end
+
+          test 'page 2 per 5 padding 3, then max_paginates_per 4' do
+            relation = model_class.page(2).per(5).padding(3).max_paginates_per(4)
+
+            assert_equal 4, relation.count
+            assert_equal 2, relation.current_page
+            assert_equal 'user008', relation.first.name
+          end
+
+          test 'padding does not change the receiver' do
+            relation = model_class.page(2).per(5)
+            relation.padding(3)
+
+            assert_equal 2, relation.current_page
+            assert_equal 20, relation.total_pages
+            assert_equal 'user006', relation.first.name
           end
 
           test 'Negative padding' do
@@ -257,6 +345,10 @@ if defined? ActiveRecord
 
           test 'per "String value that can not be converted into Number" (using default)' do
             assert_equal 4, model_class.page(5).per('aho').total_pages
+          end
+
+          test 'per "String value that has a Number on the second line" (using default)' do
+            assert_equal 4, model_class.page(5).per("aho\n10").total_pages
           end
 
           test 'with max_pages < total pages count from database' do
@@ -379,6 +471,25 @@ if defined? ActiveRecord
 
           test 'out of range' do
             assert_true model_class.page(11).per(10).out_of_range?
+          end
+        end
+
+        sub_test_case '#paginated?' do
+          test 'before calling page' do
+            assert_false model_class.paginated?
+          end
+
+          test 'on a relation without calling page' do
+            assert_false model_class.where(id: 1).paginated?
+            assert_false model_class.limit(10).paginated?
+          end
+
+          test 'after calling page' do
+            assert_true model_class.page(1).paginated?
+          end
+
+          test 'after calling page and unscoping limit' do
+            assert_false model_class.page(1).unscope(:limit).paginated?
           end
         end
 

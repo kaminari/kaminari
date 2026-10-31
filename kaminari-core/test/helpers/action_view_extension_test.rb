@@ -36,6 +36,134 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
         assert_match '/users?page=2', view.paginate(users, params: { controller: 'users', action: 'index' })
       end
 
+      test 'ignores request params that are reserved url_for options' do
+        users = User.page(1)
+        expected = view.paginate(users, params: {controller: 'users', action: 'index'})
+
+        %w(host protocol port subdomain domain tld_length trailing_slash anchor params path_params).each do |key|
+          begin
+            view.params[key] = 'x'
+            assert_equal expected, view.paginate(users, params: {controller: 'users', action: 'index'}), "?#{key}=x should not affect the links"
+          ensure
+            view.params.delete key
+          end
+        end
+      end
+
+      test 'accepts reserved url_for options given via the :params option' do
+        users = User.page(1)
+
+        assert_match '/users?page=2#list', view.paginate(users, params: {controller: 'users', action: 'index', anchor: 'list'})
+      end
+
+      sub_test_case 'generating URLs' do
+        def hrefs(html)
+          html.scan(/href="([^"]*)"/).flatten.uniq.sort
+        end
+
+        # Wraps view.url_for with the given block for generating URLs from a Hash (not for link_to passing a String)
+        def wrap_url_for(&block)
+          view.singleton_class.send :prepend, Module.new { define_method(:url_for) {|*args| args.first.is_a?(Hash) ? block.call(args.first) { super(*args) } : super(*args) } }
+        end
+
+        test 'generates the URL for each page' do
+          users = User.page(3).per(5)
+
+          assert_equal %w(/users?page=10&amp;q=foo /users?page=2&amp;q=foo /users?page=4&amp;q=foo /users?page=5&amp;q=foo /users?page=6&amp;q=foo /users?page=7&amp;q=foo /users?q=foo),
+                       hrefs(view.paginate(users, params: {controller: 'users', action: 'index', q: 'foo'}))
+        end
+
+        test 'calls url_for only for the first page, the first other page, and the URL with the placeholder' do
+          count = 0
+          wrap_url_for {|_, &url_for| count += 1; url_for.call }
+
+          view.paginate User.page(3).per(5), params: {controller: 'users', action: 'index'}
+          assert_equal 3, count
+        end
+
+        test 'with a friendly route setting' do
+          users = User.page(3).per(5)
+
+          assert_equal %w(/addresses /addresses/page/10 /addresses/page/2 /addresses/page/4 /addresses/page/5 /addresses/page/6 /addresses/page/7),
+                       hrefs(view.paginate(users, params: {controller: 'addresses', action: 'index'}))
+        end
+
+        test 'with a nested param_name' do
+          users = User.page(3).per(5)
+
+          # (the URL for the first page varies with the Rails version)
+          assert_equal %w(/users?user%5Bpage%5D=10 /users?user%5Bpage%5D=2 /users?user%5Bpage%5D=4 /users?user%5Bpage%5D=5 /users?user%5Bpage%5D=6 /users?user%5Bpage%5D=7),
+                       hrefs(view.paginate(users, param_name: 'user[page]', params: {controller: 'users', action: 'index'})).grep(/=\d+\z/)
+        end
+
+        test 'config.params_on_first_page == true' do
+          begin
+            Kaminari.config.params_on_first_page = true
+            users = User.page(3).per(5)
+
+            assert_equal %w(/users?page=1 /users?page=10 /users?page=2 /users?page=4 /users?page=5 /users?page=6 /users?page=7),
+                         hrefs(view.paginate(users, params: {controller: 'users', action: 'index'}))
+          ensure
+            Kaminari.config.params_on_first_page = false
+          end
+        end
+
+        test 'falls back to url_for for each page when the URL with the placeholder does not build the same URL' do
+          # e.g. an app that formats the page numbers in the URLs
+          wrap_url_for {|_, &url_for| url_for.call.sub(/page=(\d+)/) { "page=#{$1.to_i.to_s(16)}" } }
+          users = User.page(3).per(5)
+
+          assert_equal %w(/users /users?page=2 /users?page=4 /users?page=5 /users?page=6 /users?page=7 /users?page=a),
+                       hrefs(view.paginate(users, params: {controller: 'users', action: 'index'}))
+        end
+
+        test 'falls back to url_for for each page when the URL with the placeholder cannot be generated' do
+          # e.g. routes that constrain the page numbers
+          wrap_url_for {|options, &url_for| raise ActionController::UrlGenerationError, 'no route' if options[:page].to_i > 1000; url_for.call }
+          users = User.page(3).per(5)
+
+          assert_equal %w(/users /users?page=10 /users?page=2 /users?page=4 /users?page=5 /users?page=6 /users?page=7),
+                       hrefs(view.paginate(users, params: {controller: 'users', action: 'index'}))
+        end
+      end
+
+      sub_test_case 'rendering the partials' do
+        test 'looks up each partial template only once' do
+          paths = []
+          # find! since Rails 8.2, and find before that
+          finders = [:find, :find!].select {|finder| view.lookup_context.respond_to? finder }
+          view.lookup_context.singleton_class.send :prepend, Module.new { finders.each {|finder| define_method(finder) {|name, *args| paths << name; super(name, *args) } } }
+
+          view.paginate User.page(3).per(5), params: {controller: 'users', action: 'index'}
+          assert_equal %w(/kaminari/first_page /kaminari/gap /kaminari/last_page /kaminari/next_page /kaminari/page /kaminari/paginator /kaminari/prev_page), paths.sort
+        end
+
+        test 'instruments rendering each partial' do
+          begin
+            partials = []
+            subscriber = ActiveSupport::Notifications.subscribe('render_partial.action_view') {|*, payload| partials << File.basename(payload[:identifier]) }
+
+            view.paginate User.page(3).per(5), params: {controller: 'users', action: 'index'}
+            assert_equal({'_paginator.html.erb' => 1, '_first_page.html.erb' => 1, '_prev_page.html.erb' => 1, '_page.html.erb' => 7, '_gap.html.erb' => 1, '_next_page.html.erb' => 1, '_last_page.html.erb' => 1},
+                         partials.each_with_object(Hash.new(0)) {|partial, h| h[partial] += 1 })
+          ensure
+            ActiveSupport::Notifications.unsubscribe subscriber
+          end
+        end
+
+        test 'renders the HTML partials when the formats do not include :html' do
+          view.lookup_context.formats = [:text]
+
+          assert_match(/<nav class="pagination"/, view.paginate(User.page(3).per(5), params: {controller: 'users', action: 'index'}))
+        end
+
+        test 'raises MissingTemplate when the theme has no partial' do
+          assert_raise ActionView::MissingTemplate do
+            view.paginate User.page(3).per(5), theme: 'no_such_theme', params: {controller: 'users', action: 'index'}
+          end
+        end
+      end
+
       test 'accepts :theme option' do
         users = User.page(1)
         begin
@@ -76,6 +204,34 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
       test 'total_pages: 3' do
         users = User.page(1)
         assert_match(/<a href="\/users\?page=3">Last/, view.paginate(users, total_pages: 3, params: {controller: 'users', action: 'index'}))
+      end
+
+      test 'accepts :data option' do
+        users = User.page(3).per(10)
+
+        html = view.paginate users, data: {turbo_frame: 'users', action: 'click->pagination#go'}, params: {controller: 'users', action: 'index'}
+        links = html.scan(/<a [^>]*>/)
+        assert_equal 8, links.size  # first, prev, 1, 2, 4, 5, next, last
+        links.each do |link|
+          assert_match(/data-turbo-frame="users"/, link)
+          assert_match(/data-action="click-&gt;pagination#go"/, link)
+        end
+      end
+
+      test 'does not render data attributes by default' do
+        users = User.page(3).per(10)
+
+        assert_not_match(/data-/, view.paginate(users, params: {controller: 'users', action: 'index'}))
+      end
+
+      test 'accepts :data option together with :remote option' do
+        users = User.page(3).per(10)
+
+        html = view.paginate users, remote: true, data: {turbo_frame: 'users'}, params: {controller: 'users', action: 'index'}
+        html.scan(/<a [^>]*>/).each do |link|
+          assert_match(/data-remote="true"/, link)
+          assert_match(/data-turbo-frame="users"/, link)
+        end
       end
 
       test "page: 20 (out of range)" do
@@ -239,6 +395,11 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
             users = User.page(1).per(25)
             assert_equal 'Displaying <b>all 10</b> members', view.page_entries_info(users, entry_name: 'member')
           end
+
+          test 'an out of range page' do
+            users = User.page(3).per(25)
+            assert_equal 'No users found', view.page_entries_info(users)
+          end
         end
 
         sub_test_case 'having more than one page of entries' do
@@ -283,6 +444,11 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
             end
           end
 
+          test 'an out of range page' do
+            users = User.page(9).per(10)
+            assert_equal 'No users found', view.page_entries_info(users)
+          end
+
           test 'it accepts a decorated object' do
             page_info_presenter = Class.new(SimpleDelegator) do
               include ActionView::Helpers::NumberHelper
@@ -295,6 +461,16 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
             users = page_info_presenter.new(User.page(1).per(25))
 
             assert_equal 'Displaying users <b>1–25</b> of <b>1,000</b> in total', view.page_entries_info(users)
+          end
+
+          test 'escapes the entry name option' do
+            users = User.page(1).per(25)
+            assert_equal 'Displaying &lt;script&gt;alert(1)&lt;/script&gt;members <b>1–25</b> of <b>50</b> in total', view.page_entries_info(users, entry_name: '<script>alert(1)</script>member')
+          end
+
+          test 'does not escape an html_safe entry name option' do
+            users = User.page(1).per(25)
+            assert_equal 'Displaying <i>new</i> members <b>1–25</b> of <b>50</b> in total', view.page_entries_info(users, entry_name: '<i>new</i> member'.html_safe)
           end
         end
       end
@@ -483,6 +659,11 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
         test 'with an empty array and total_count option' do
           users = Kaminari.paginate_array([], total_count: 50).page(1).per(1)
           assert_equal 'Displaying users <b>1–1</b> of <b>50</b> in total', view.page_entries_info(users, entry_name: 'user')
+        end
+
+        test 'an out of range page' do
+          numbers = Kaminari.paginate_array((1..30).to_a).page(9).per(10)
+          assert_equal 'No entries found', view.page_entries_info(numbers)
         end
       end
     end

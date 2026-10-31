@@ -55,6 +55,33 @@ if defined? ActiveRecord
         assert_equal 7, User.page.per(0).load.total_count
       end
 
+      test 'total_count after unscoping limit' do
+        assert_equal 7, User.page(1).unscope(:limit).total_count
+        assert_equal 7, User.page(1).unscope(:limit).load.total_count
+        assert_equal 7, User.page(2).per(2).unscope(:limit).load.total_count
+      end
+
+      test 'total_count after unscoping limit with max_pages' do
+        begin
+          User.max_pages 10
+
+          assert_equal 7, User.page(1).unscope(:limit).total_count
+        ensure
+          User.max_pages nil
+        end
+      end
+
+      test 'total_count with per(0) and max_pages' do
+        begin
+          User.max_pages 10
+
+          assert_equal 7, User.page.per(0).total_count
+          assert_equal 7, User.page.per(0).load.total_count
+        ensure
+          User.max_pages nil
+        end
+      end
+
       test 'it should reset total_count memoization when the scope is cloned' do
         assert_equal 1, User.page.tap(&:total_count).where(name: 'author').total_count
       end
@@ -66,6 +93,23 @@ if defined? ActiveRecord
       test 'it should keep includes and successfully count the results when the scope use conditions on includes' do
         # Only @author and @author2 have books titled with the title00x pattern
         assert_equal 2, User.includes(:books_authored).references(:books).where("books.title LIKE 'title00%'").page(1).total_count
+      end
+
+      test 'it should keep eager_load and successfully count the results when the scope use conditions on eager_load without references' do
+        # eager_load always joins the tables, so conditions on them don't need to be registered via references
+        assert_equal 2, User.eager_load(:books_authored).where("books.title LIKE 'title00%'").page(1).total_count
+        assert_equal 2, User.eager_load(:books_authored).merge(Book.where("title LIKE 'title00%'")).page(1).total_count
+        assert_equal 2, Authorship.eager_load(:user).merge(User.where(name: 'author')).page(1).total_count
+      end
+
+      test 'it should keep includes and successfully count the results when the scope use conditions on includes that are eager loaded along with eager_load' do
+        # includes are joined as well when the Relation has eager_load, so conditions on them don't need to be registered via references
+        assert_equal 2, User.eager_load(:addresses).includes(:books_authored).where("books.title LIKE 'title00%'").page(1).total_count
+        assert_equal 2, User.eager_load(:addresses).includes(:books_authored).merge(Book.where("title LIKE 'title00%'")).page(1).total_count
+      end
+
+      test 'it should count each record once with eager_load of a has_many association' do
+        assert_equal 7, User.eager_load(:books_authored).page(1).total_count
       end
 
       test 'when the Relation has custom select clause' do
@@ -110,6 +154,46 @@ if defined? ActiveRecord
 
       test 'calculating total_count with GROUP BY ... HAVING clause with model that has default scope' do
         assert_equal 2, CurrentAuthorship.group(:user_id).having("COUNT(book_id) >= 3").page(1).total_count
+      end
+
+      test 'calculating total_count with GROUP BY ... HAVING clause and custom select clause' do
+        assert_equal 2, Authorship.select('user_id, COUNT(book_id)').group(:user_id).having('COUNT(book_id) >= 3').page(1).total_count
+      end
+
+      # PostgreSQL doesn't allow referring to select aliases in HAVING clauses
+      unless ENV['DB'] == 'postgresql'
+        test 'calculating total_count with GROUP BY ... HAVING clause that refers to a select alias' do
+          assert_equal 2, Authorship.select('user_id, COUNT(book_id) AS books_count').group(:user_id).having('books_count >= 3').page(1).total_count
+        end
+      end
+
+      test 'calculating total_count with DISTINCT and GROUP BY clause' do
+        assert_equal 4, User.distinct.group(:name).page(1).total_count
+        assert_equal 4, User.select(:name, :age).distinct.group(:name).page(1).total_count
+      end
+
+      test 'calculating total_count with GROUP BY clause and a column name' do
+        assert_equal 3, Authorship.group(:user_id).page(1).total_count(:book_id)
+      end
+
+      test 'calculating total_count with GROUP BY clause on an empty Relation' do
+        assert_equal 0, User.none.group(:name).page(1).total_count
+        assert_equal 0, User.where('1 = 0').group(:name).page(1).total_count
+      end
+
+      test 'calculating total_count with GROUP BY clause counts the groups in the database' do
+        begin
+          queries = []
+          subscriber = ActiveSupport::Notifications.subscribe 'sql.active_record' do |_, __, ___, ____, payload|
+            queries << payload[:sql] unless payload[:name] == 'SCHEMA'
+          end
+
+          assert_equal 4, User.group(:name).page(1).total_count
+          assert_equal 1, queries.size
+          assert_match(/\ASELECT COUNT\(\*\) FROM \(SELECT 1 .* GROUP BY .*\) subquery_for_count\z/m, queries.first)
+        ensure
+          ActiveSupport::Notifications.unsubscribe subscriber
+        end
       end
 
       test 'calculating STI total_count with GROUP BY clause' do

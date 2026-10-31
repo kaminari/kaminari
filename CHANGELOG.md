@@ -1,3 +1,67 @@
+## 1.3.2
+
+### Bug Fixes:
+
+* Fixed `paginate` raising NoMethodError on Rails 8.2, which removed `LookupContext#find_template` #1161 [@thibaudgg]
+
+## 1.3.1
+
+### Bug Fixes:
+
+* `total_count` keeps `eager_load` in the count query again, which the conditions may need when they refer to the eager loaded tables without `references` (a regression in 1.3.0) #1160 [@r-uehara0219]
+* `total_count` keeps `includes` in the count query when they are joined along with `eager_load` or `joins`, which the conditions may need: [1462042](https://github.com/kaminari/kaminari/commit/146204262737340e0c83ba71e3182c6b12f1b9dc)
+
+## 1.3.0
+
+### Security Fixes:
+
+* `page` ignores a Hash or an Array page number (e.g. `?page[]=1`) instead of raising #1087 [@xiaohui-zhangxh]
+* `page_entries_info` escapes the `entry_name`, which could contain user input, while keeping an `html_safe` `entry_name` as is: [d599c37](https://github.com/kaminari/kaminari/commit/d599c3796b2d366c70712ce1c754b9d146749d49)
+
+### Incompatible Changes:
+
+* Dropped Ruby 2.0 support: [2f1f84b](https://github.com/kaminari/kaminari/commit/2f1f84ba48caf4ff1395f99a88faa6fb832f0024)
+* The default English `page_entries_info` message now separates the range with an en dash (e.g. "1–25") instead of `&nbsp;-&nbsp;` #1105 [@jdufresne]
+* `page_entries_info` displays "No entries found" on out of range pages, instead of an inverted range like "Displaying users 81–80 of 50 in total": [b712562](https://github.com/kaminari/kaminari/commit/b7125620b16c2b8f022f670e6b7ff45710563285)
+
+### Enhancements:
+
+* Rails 7.1, 7.2, 8.0, and 8.1 support
+* Ruby 3.1, 3.2, 3.3, 3.4, and 4.0 support
+* Added `paginated?` to models, relations, and paginatable arrays #1118 [@jarenas9539]
+* Added the `data:` option to `paginate` for the links' data attributes #1095 [@theforestvn88]
+* Registered Kaminari's deprecator to `Rails.application.deprecators` #1103 [@etiennebarrie]
+* `require 'kaminari'` also loads `Kaminari::VERSION` #1079 [@d-otis]
+* The views generator warns when it falls back to erb for an unsupported template engine: [4c2991e](https://github.com/kaminari/kaminari/commit/4c2991e5418cb974f62b8d66b4d69f33888727d5)
+* Improved performance of `total_count` for grouped relations by counting the groups in the database with a subquery #1157 (based on #1022 and #1023 [@bendilley])
+* Improved performance of `total_count` by removing irrelevant `eager_load` and `preload` that ran unwanted joins in the count query #1043 [@Viktor-Ivliev]
+* Improved performance of `paginate` by calling `url_for` only a few times per paginator: [7b5f079](https://github.com/kaminari/kaminari/commit/7b5f0799a07f5aa08fd9fa516df52d8c0bb7537c)
+* Improved performance of `paginate` by looking up each partial template only once per paginator: [c5cc1a1](https://github.com/kaminari/kaminari/commit/c5cc1a141b37d266c79a73d83de7d30583327366)
+* Improved performance of `paginate` by reducing object allocations: [1cc6f98](https://github.com/kaminari/kaminari/commit/1cc6f98a5005d8da259ddf4c9cc3245b339a4e9c), [ff07a28](https://github.com/kaminari/kaminari/commit/ff07a285215cfb8a5f70515e86decf4a16ff643c), [b951069](https://github.com/kaminari/kaminari/commit/b951069e6ae98ecc19f79ca32dc575ac34def157), [2e80453](https://github.com/kaminari/kaminari/commit/2e80453a838574dab48eb11cc3bb041b8ae42513), [794724e](https://github.com/kaminari/kaminari/commit/794724e5f485caa81437db7e299a25e67984b5eb), and [7f08863](https://github.com/kaminari/kaminari/commit/7f0886317d0630ba03d7d500bbf80c1aaa629d58)
+* Improved performance of `page` and `per` on Active Record by copying the Relation only once: [0cb494d](https://github.com/kaminari/kaminari/commit/0cb494d7d2c48566007331e9bc5ce5ff0eb470b3), [c35e5a1](https://github.com/kaminari/kaminari/commit/c35e5a11b644b8df2659cff2ca5af73e21bd1e4b), and [ae23bc6](https://github.com/kaminari/kaminari/commit/ae23bc6b7c88310b0d749c241d4e51c78cacab90)
+* Improved performance of `page_entries_info` #1109 [@jdufresne]
+
+### Bug Fixes:
+
+* Fixed `ActionController::UrlGenerationError` on Rails 8+ when the request params include route options such as `subdomain` or `host` #1147 [@hpanwar09]
+* Fixed view helpers called with keyword arguments inside the paginator templates on Ruby 3 #1114 [@diasjorge]
+* Fixed an error with a Symbol `param_name` other than `:page` #1121 [@magnum]
+* Fixed `NameError` when including `Kaminari::Helpers::UrlHelper` outside of the views #1100 [@hikonori07]
+* Fixed `page_entries_info` for a paginated empty array with `total_count` #1088 [@monfresh]
+* Fixed `total_count` on the last page of a loaded Relation with `padding`: [c7a46f1](https://github.com/kaminari/kaminari/commit/c7a46f17b2bc1d842a3fe4d0132709bc27e02402)
+* Fixed `ZeroDivisionError` from `per` after `per(0)` #1138 [@dpep]
+* Fixed `per` and `max_paginates_per` dropping the `padding`: [c149803](https://github.com/kaminari/kaminari/commit/c1498035e8bb98cdf8cf14c7a2419a0c197862be)
+* Fixed `per`, `max_paginates_per`, and `padding` changing the receiver's values instead of the returned scope's: [a9cbb2c](https://github.com/kaminari/kaminari/commit/a9cbb2cbeda86abe39f51db6712b2fd34d66faa3)
+* Fixed `max_paginates_per` returning no records after an ignored `per` value such as `per('abc')`: [0f2816a](https://github.com/kaminari/kaminari/commit/0f2816a4c5a6367e8582d0cc44906ca4815c63e5)
+* Fixed `per` treating a value like `"abc\n10"` as `per(0)` instead of ignoring it: [8298351](https://github.com/kaminari/kaminari/commit/8298351e2833209f65eb3f3327b52bbba0bbe401)
+* Fixed `Kaminari::ZeroPerPageOperation` from `total_count` on a loaded `per(0)` Relation #1155 [@andreyruby]
+* Fixed `total_count` returning 0 with `max_pages` after `per(0)`: [06e90d9](https://github.com/kaminari/kaminari/commit/06e90d901d196ea77d2d00d819b53826e538e6c6)
+* Fixed `TypeError` from `total_count` after `unscope(:limit)`: [4fd263b](https://github.com/kaminari/kaminari/commit/4fd263bececd472f779bc6b05de8b182f8b4c9f2)
+* Fixed the Haml and Slim paginators rendering the next and last links on out of range pages, as the erb paginator doesn't: [a44950d](https://github.com/kaminari/kaminari/commit/a44950d71fa03a6136088f9b01f7be1b81e131f6)
+* Fixed the views generator generating nothing for an unsupported template engine, such as one set via `config.generators.template_engine` #1108 [@Xavier-IV]
+* Fixed the views generator crashing on network errors other than `SocketError`: [6d91911](https://github.com/kaminari/kaminari/commit/6d919116edd2ad85bd3f9559d86ae4973242bf86)
+
+
 ## 1.2.2
 
 ### Enhancements:

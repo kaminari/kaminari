@@ -28,7 +28,7 @@ BANNER
           @themes ||= GitHubApiHelper.get_files_in_master.group_by {|fn, _| fn[0...(fn.index('/') || 0)]}.delete_if {|fn, _| fn.blank?}.map do |name, files|
             Theme.new name, files
           end
-        rescue SocketError
+        rescue *GitHubApiHelper::NETWORK_ERRORS
           []
         end
       end
@@ -37,13 +37,17 @@ BANNER
       def copy_or_fetch #:nodoc:
         return copy_default_views if file_name == 'default'
 
-        if (theme = self.class.themes.detect {|t| t.name == file_name})
+        if self.class.themes.empty?
+          say "could not fetch the themes from GitHub. Please try again later."
+        elsif (theme = self.class.themes.detect {|t| t.name == file_name})
           if download_templates(theme).empty?
             say "template_engine: #{template_engine} is not available for theme: #{file_name}"
           end
         else
           say "no such theme: #{file_name}\n  available themes: #{self.class.themes.map(&:name).join ', '}"
         end
+      rescue *GitHubApiHelper::NETWORK_ERRORS => e
+        say "could not download the templates from GitHub (#{e.message}). Please try again later."
       end
 
       private
@@ -113,6 +117,8 @@ BANNER
         file = @templates.detect(&:description?)
         return "#{' ' * 12}#{name}" unless file
         GitHubApiHelper.get_content_for("#{@name}/#{file.name}").chomp.gsub(/^/, ' ' * 12)
+      rescue *GitHubApiHelper::NETWORK_ERRORS
+        "#{' ' * 12}#{name}"
       end
 
       def templates_for(template_engine) #:nodoc:
@@ -122,6 +128,10 @@ BANNER
 
     module GitHubApiHelper
       require 'open-uri'
+      require 'net/http'
+
+      # e.g. offline, timed out, or exceeded the API rate limit
+      NETWORK_ERRORS = [SocketError, SystemCallError, Timeout::Error, OpenSSL::SSL::SSLError, OpenURI::HTTPError].freeze
 
       def get_files_in_master
         master_tree_sha = URI.open('https://api.github.com/repos/amatsuda/kaminari_themes/git/refs/heads/master') do |json|

@@ -110,6 +110,7 @@ module Kaminari
       # * <tt>:params</tt> - url_for parameters for the links (:controller, :action, etc.)
       # * <tt>:param_name</tt> - parameter name for page number in the links (:page by default)
       # * <tt>:remote</tt> - Ajax? (false by default)
+      # * <tt>:data</tt> - data-* attributes for the links (e.g. <tt>{turbo_frame: 'users'}</tt>)
       # * <tt>:paginator_class</tt> - Specify a custom Paginator (Kaminari::Helpers::Paginator by default)
       # * <tt>:template</tt> - Specify a custom template renderer for rendering the Paginator (receiver by default)
       # * <tt>:ANY_OTHER_VALUES</tt> - Any other hash key & values would be directly passed into each tag as :locals value.
@@ -203,12 +204,18 @@ module Kaminari
         records = collection.respond_to?(:records) ? collection.records : collection.to_a
         page_size = records.size
         entry_name = if entry_name
-                       entry_name.pluralize(page_size, I18n.locale)
+                       pluralized = entry_name.pluralize(page_size, I18n.locale)
+                       entry_name.html_safe? ? pluralized.html_safe : pluralized
                      else
                        collection.entry_name(count: page_size).downcase
                      end
+        # the translated message is marked as html_safe, so the interpolated entry_name has to be escaped here
+        entry_name = ERB::Util.html_escape entry_name
 
-        if collection.total_pages < 2
+        if collection.out_of_range?
+          # an out of range page displays no entries
+          t('helpers.page_entries_info.one_page.display_entries', entry_name: entry_name, count: 0)
+        elsif collection.total_pages < 2
           t('helpers.page_entries_info.one_page.display_entries', entry_name: entry_name, count: collection.total_count)
         else
           from = collection.offset_value + 1

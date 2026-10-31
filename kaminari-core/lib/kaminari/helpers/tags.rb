@@ -2,7 +2,8 @@
 
 module Kaminari
   module Helpers
-    PARAM_KEY_EXCEPT_LIST = [:authenticity_token, :commit, :utf8, :_method, :script_name, :original_script_name].freeze
+    PARAM_KEY_EXCEPT_LIST = [:authenticity_token, :commit, :utf8, :_method, :script_name, :original_script_name,
+                             :subdomain, :domain, :tld_length, :host, :port, :protocol, :anchor, :trailing_slash, :params, :path_params].freeze
 
     # A tag stands for an HTML tag inside the paginator.
     # Basically, a tag has its own partial template file, so every tag can be
@@ -17,9 +18,13 @@ module Kaminari
     # installed template will be used.
     #   e.g.)  Paginator  ->  $GEM_HOME/kaminari-x.x.x/app/views/kaminari/_paginator.html.erb
     class Tag
-      def initialize(template, params: nil, param_name: nil, theme: nil, views_prefix: nil, internal_params: nil, **options) #:nodoc:
+      # A page number that is unlikely to appear in any URL, which stands in for the actual page number in the cached URL
+      PAGE_PLACEHOLDER = rand(10**17...10**18)
+
+      def initialize(template, params: nil, param_name: nil, theme: nil, views_prefix: nil, internal_params: nil, internal_url_cache: nil, internal_partial_cache: nil, **options) #:nodoc:
         @template, @theme, @views_prefix, @options = template, theme, views_prefix, options
         @param_name = param_name || Kaminari.config.param_name
+        @url_cache, @partial_cache = internal_url_cache, internal_partial_cache
 
         if internal_params
           @params = internal_params
@@ -38,17 +43,73 @@ module Kaminari
 
       def to_s(locals = {}) #:nodoc:
         formats = @template.respond_to?(:formats) ? @template.formats : Array(@template.params[:format])
-        formats += [:html] unless formats.include? :html
-        @template.render partial: partial_path, locals: @options.merge(locals), formats: formats
+        if @partial_cache && formats.include?(:html) && @template.respond_to?(:lookup_context)
+          render_cached_partial @options.merge(locals)
+        else
+          formats += [:html] unless formats.include? :html
+          @template.render partial: partial_path, locals: @options.merge(locals), formats: formats
+        end
       end
 
       def page_url_for(page)
+        @url_cache ? cached_page_url_for(page.to_i) : generate_page_url(page)
+      end
+
+      private
+
+      # Looking up a partial template is costly, so the paginator looks up each partial only once, and then renders the
+      # template directly in the same way as `render partial:` does.
+      # This is done only when the formats already include :html, which means the formats that `to_s` would pass to
+      # `render` are the same as the current ones, and so finding and rendering the template doesn't depend on the formats.
+      def render_cached_partial(locals)
+        path, keys = partial_path, locals.keys
+        cached_keys, template = @partial_cache[path]
+        unless template && (cached_keys == keys)
+          lookup_context = @template.lookup_context
+          # LookupContext#find no longer raises MissingTemplate but returns nil since Rails 8.2, where find! raises instead
+          template = lookup_context.respond_to?(:find!) ? lookup_context.find!(path, [], true, keys) : lookup_context.find(path, [], true, keys)
+          @partial_cache[path] = [keys, template]
+        end
+        # `render partial:` in Action View 4 also puts the partial name into local_assigns (e.g. {gap: nil, ...})
+        if ActionView::VERSION::MAJOR < 5
+          name = File.basename(path).to_sym
+          locals[name] = nil unless locals.key? name
+        end
+
+        ActiveSupport::Notifications.instrument('render_partial.action_view', identifier: template.identifier, layout: nil, locals: locals) do
+          template.render(@template, locals) {|*name| @template._layout_for(*name) }
+        end
+      end
+
+      def generate_page_url(page)
         params = params_for(page)
         params[:only_path] = true
         @template.url_for params
       end
 
-      private
+      # Generating URLs is costly, so the paginator generates the URL only once with a placeholder page number,
+      # and then builds the URL for each page by replacing the placeholder
+      def cached_page_url_for(page)
+        @url_cache.fetch(page) do
+          url_template = @url_cache[:url_template]
+          @url_cache[page] = if url_template && (page > 1)
+            url_template.sub(PAGE_PLACEHOLDER.to_s, page.to_s)
+          else
+            generate_page_url(page).tap {|url| build_url_template(page, url) if url_template.nil? && (page > 1) }
+          end
+        end
+      end
+
+      # Use the URL with the placeholder only when it builds exactly the same URL as url_for does.
+      # Otherwise (e.g. when the routes constrain the page number), fall back to calling url_for for each page.
+      def build_url_template(page, url)
+        url_template = begin
+          generate_page_url PAGE_PLACEHOLDER
+        rescue StandardError
+          nil
+        end
+        @url_cache[:url_template] = url_template && (url_template.scan(PAGE_PLACEHOLDER.to_s).size == 1) && (url_template.sub(PAGE_PLACEHOLDER.to_s, page.to_s) == url) ? url_template : false
+      end
 
       def params_for(page)
         if (@param_name == :page) || !@param_name.to_s.include?('[')

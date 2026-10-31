@@ -15,6 +15,24 @@ class PaginatableArrayTest < ActiveSupport::TestCase
     assert_equal 3, Kaminari::PaginatableArray.new((1..100).to_a, limit: 10, offset: 20).current_page
   end
 
+  sub_test_case '#paginated?' do
+    test 'before calling page' do
+      assert_false @array.paginated?
+    end
+
+    test 'after calling page' do
+      assert_true @array.page(1).paginated?
+    end
+
+    test 'after calling per' do
+      assert_true @array.page(1).per(5).paginated?
+    end
+
+    test 'specifying limit and offset when initializing' do
+      assert_true Kaminari.paginate_array((1..100).to_a, limit: 10, offset: 20).paginated?
+    end
+  end
+
   sub_test_case '#page' do
     def assert_first_page_of_array(arr)
       assert_equal 25, arr.count
@@ -49,6 +67,14 @@ class PaginatableArrayTest < ActiveSupport::TestCase
     test 'page > max page' do
       assert_blank_array_page @array.page(5)
     end
+
+    test 'invalid page as a Hash' do
+      assert_first_page_of_array @array.page(page: { hacked: 100 })
+    end
+
+    test 'invalid page as a Array' do
+      assert_first_page_of_array @array.page([2, 3])
+    end
   end
 
   sub_test_case '#per' do
@@ -61,6 +87,38 @@ class PaginatableArrayTest < ActiveSupport::TestCase
 
     test 'page 1 per 0' do
       assert_equal 0, @array.page(1).per(0).count
+    end
+
+    test 'per does not change the receiver' do
+      arr = @array.page(1)
+      arr.per(10)
+
+      assert_equal 25, arr.max_paginates_per(50).count
+    end
+  end
+
+  sub_test_case '#max_paginates_per' do
+    test 'calling max_paginates_per() after per()' do
+      assert_equal 15, @array.page(1).per(15).max_paginates_per(20).count
+      assert_equal 20, @array.page(1).per(30).max_paginates_per(20).count
+    end
+
+    test 'calling max_paginates_per() after per() with an invalid value' do
+      assert_equal 20, @array.page(1).per('aho').max_paginates_per(20).count
+      assert_equal 20, @array.page(1).per(-1).max_paginates_per(20).count
+      assert_equal 15, @array.page(1).per(15).per('aho').max_paginates_per(20).count
+    end
+
+    test 'calling max_paginates_per() before per()' do
+      assert_equal 15, @array.page(1).max_paginates_per(20).per(15).count
+      assert_equal 20, @array.page(1).max_paginates_per(20).per(30).count
+    end
+
+    test 'max_paginates_per does not change the receiver' do
+      arr = @array.page(1)
+      arr.max_paginates_per(20)
+
+      assert_equal 30, arr.per(30).count
     end
   end
 
@@ -84,6 +142,22 @@ class PaginatableArrayTest < ActiveSupport::TestCase
 
       assert_equal 19, arr.current_page
       assert_equal 19, arr.total_pages
+    end
+
+    test 'page 2 per 5 padding 3, then per 10' do
+      arr = @array.page(2).per(5).padding(3).per(10)
+
+      assert_equal 2, arr.current_page
+      assert_equal 14, arr.first
+    end
+
+    test 'padding does not change the receiver' do
+      arr = @array.page(2).per(5)
+      arr.padding(3)
+
+      assert_equal 2, arr.current_page
+      assert_equal 20, arr.total_pages
+      assert_equal 6, arr.first
     end
 
     test 'per 25, padding 25' do
@@ -118,6 +192,10 @@ class PaginatableArrayTest < ActiveSupport::TestCase
 
     test 'per "String value that can not be converted into Number" (using default)' do
       assert_equal 4, @array.page(5).per('aho').total_pages
+    end
+
+    test 'per "String value that has a Number on the second line" (using default)' do
+      assert_equal 4, @array.page(5).per("aho\n10").total_pages
     end
   end
 
@@ -196,5 +274,14 @@ class PaginatableArrayTest < ActiveSupport::TestCase
       assert_equal 2, arr.current_page
       assert_equal 15, arr.total_count
     end
+  end
+
+  test 'limit un-zeroed' do
+    arr = Kaminari::PaginatableArray.new([]).page(1).per(0).per(10)
+
+    assert_equal 0, arr.count
+    assert_equal 0, arr.total_count
+    assert_equal 1, arr.current_page
+    assert_equal 0, arr.total_pages
   end
 end
