@@ -26,6 +26,9 @@ module Kaminari
       eval <<-RUBY, nil, __FILE__, __LINE__ + 1
         def self.#{Kaminari.config.page_method_name}(num = nil)
           num = num.respond_to?(:to_i) ? num.to_i : 1
+          if num > Kaminari::InvalidPage::MAX
+            raise Kaminari::InvalidPage, "page " + num.to_s + " is too large"
+          end
           per_page = max_per_page && (default_per_page > max_per_page) ? max_per_page : default_per_page
           # spawn only once rather than calling limit, offset, and extending, each of which copies the Relation
           all.spawn.limit!(per_page).offset!(per_page * ((num = num.to_i - 1) < 0 ? 0 : num)).extending!(Kaminari::ActiveRecordPageScope)
