@@ -143,7 +143,7 @@ module Kaminari
       def link_to_previous_page(scope, name, **options)
         prev_page = path_to_prev_page(scope, options)
 
-        options.except! :params, :param_name
+        options.except! :params, :param_name, :format
         options[:rel] ||= 'prev'
 
         if prev_page
@@ -174,7 +174,7 @@ module Kaminari
       def link_to_next_page(scope, name, **options)
         next_page = path_to_next_page(scope, options)
 
-        options.except! :params, :param_name
+        options.except! :params, :param_name, :format
         options[:rel] ||= 'next'
 
         if next_page

@@ -84,6 +84,7 @@ module Kaminari
       def generate_page_url(page)
         params = params_for(page)
         params[:only_path] = true
+        params[:format] = @options[:format] if @options[:format]
         @template.url_for params
       end
 
