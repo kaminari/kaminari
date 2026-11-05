@@ -73,6 +73,13 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
                        hrefs(view.paginate(users, params: {controller: 'users', action: 'index', q: 'foo'}))
         end
 
+        test 'format given as a top level option' do
+          users = User.page(3).per(5)
+
+          assert_equal %w(/users.turbo_stream /users.turbo_stream?page=10 /users.turbo_stream?page=2 /users.turbo_stream?page=4 /users.turbo_stream?page=5 /users.turbo_stream?page=6 /users.turbo_stream?page=7),
+                       hrefs(view.paginate(users, format: :turbo_stream, params: {controller: 'users', action: 'index'}))
+        end
+
         test 'calls url_for only for the first page, the first other page, and the URL with the placeholder' do
           count = 0
           wrap_url_for {|_, &url_for| count += 1; url_for.call }
@@ -263,6 +270,14 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
         test 'overriding rel=' do
           users = User.page(3)
           assert_match(/rel="external"/, view.link_to_previous_page(users, 'Previous', rel: 'external', params: {controller: 'users', action: 'index'}))
+        end
+
+        test 'format given as a top level option' do
+          users = User.page(3)
+          html = view.link_to_previous_page users, 'Previous', format: :turbo_stream, params: {controller: 'users', action: 'index'}
+
+          assert_match(%r{/users\.turbo_stream\?page=2}, html)
+          assert_no_match(/format=/, html)
         end
 
         test 'with params' do
@@ -767,6 +782,11 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
         assert_equal 'http://test.host/users?page=2', view.next_page_url(users, params: {controller: 'users', action: 'index'})
       end
 
+      test 'format given as a top level option' do
+        users = User.page(1).per(1)
+        assert_equal 'http://test.host/users.turbo_stream?page=2', view.next_page_url(users, format: :turbo_stream, params: {controller: 'users', action: 'index'})
+      end
+
       test 'the last page' do
         users = User.page(2).per(1)
         assert_nil view.next_page_url(users, params: {controller: 'users', action: 'index'})
@@ -791,6 +811,11 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
       test 'the last page' do
         users = User.page(3).per(1)
         assert_equal 'http://test.host/users?page=2', view.prev_page_url(users, params: {controller: 'users', action: 'index'})
+      end
+
+      test 'format given as a top level option' do
+        users = User.page(3).per(1)
+        assert_equal 'http://test.host/users.turbo_stream?page=2', view.prev_page_url(users, format: :turbo_stream, params: {controller: 'users', action: 'index'})
       end
     end
   end

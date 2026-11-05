@@ -109,6 +109,7 @@ module Kaminari
       # * <tt>:right</tt> - The "right outer window" size (0 by default).
       # * <tt>:params</tt> - url_for parameters for the links (:controller, :action, etc.)
       # * <tt>:param_name</tt> - parameter name for page number in the links (:page by default)
+      # * <tt>:format</tt> - format for the links (e.g. <tt>:turbo_stream</tt>), a shortcut for <tt>params: {format: ...}</tt>
       # * <tt>:remote</tt> - Ajax? (false by default)
       # * <tt>:data</tt> - data-* attributes for the links (e.g. <tt>{turbo_frame: 'users'}</tt>)
       # * <tt>:paginator_class</tt> - Specify a custom Paginator (Kaminari::Helpers::Paginator by default)

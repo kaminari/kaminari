@@ -276,6 +276,14 @@ This would modify the query parameter name on each links.
 
 This would modify each link's `url_option`. `:controller` and `:action` might be the keys in common.
 
+### Format (`:format`) for the Links
+
+```erb
+<%= paginate @users, format: :turbo_stream %>
+```
+
+This is a shortcut for `params: {format: :turbo_stream}`, and would add the format to each link's URL (e.g. `/users.turbo_stream?page=2`).
+
 ### Ajax Links (via rails-ujs, works with Rails < 7.2)
 
 ```erb
@@ -314,6 +322,7 @@ The helper methods support a `params` option to further specify the link. `forma
 
 ```erb
 <%= link_to_next_page @items, 'Next Page', params: {controller: 'foo', action: 'bar', format: :turbo_stream} %>
+<%= link_to_next_page @items, 'Next Page', format: :turbo_stream %>
 ```
 
 ### The `page_entries_info` Helper Method

@@ -1,3 +1,9 @@
+## Unreleased
+
+### Enhancements:
+
+* Added the `format:` option to the pagination helpers as a shortcut for `params: {format: ...}` #1164 [@ihamzatarar] (based on #1152 [@vitor-de-castro])
+
 ## 1.3.2
 
 ### Bug Fixes:
