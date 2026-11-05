@@ -319,6 +319,14 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
           assert_match(/rel="external"/, view.link_to_next_page(users, 'More', rel: 'external', params: {controller: 'users', action: 'index'}))
         end
 
+        test 'format given as a top level option' do
+          users = User.page(1)
+          html = view.link_to_next_page users, 'More', format: :turbo_stream, params: {controller: 'users', action: 'index'}
+
+          assert_match(%r{/users\.turbo_stream\?page=2}, html)
+          assert_no_match(/format=/, html)
+        end
+
         test 'with params' do
           users = User.page(1)
           params[:status] = 'active'
@@ -720,6 +728,11 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
       test 'format option' do
         users = User.page(1).per(1)
         assert_equal '/users.turbo_stream?page=2', view.path_to_next_page(users, params: {controller: 'users', action: 'index', format: :turbo_stream})
+      end
+
+      test 'format given as a top level option' do
+        users = User.page(1).per(1)
+        assert_equal '/users.turbo_stream?page=2', view.path_to_next_page(users, format: :turbo_stream, params: {controller: 'users', action: 'index'})
       end
     end
 
