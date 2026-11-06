@@ -112,6 +112,15 @@ if defined? ActiveRecord
         assert_equal 7, User.eager_load(:books_authored).page(1).total_count
       end
 
+      test 'total_count on a loaded Relation with eager_load and GROUP BY' do
+        # Active Record applies the limit to the joined rows here, and then collapses the two rows
+        # of the first author into a single record, so the loaded records say nothing about the total count
+        scope = User.eager_load(:books_authored).group('users.id', 'books.id').order('users.id')
+
+        assert_equal 13, scope.page(1).per(2).total_count
+        assert_equal 13, scope.page(1).per(2).load.total_count
+      end
+
       test 'when the Relation has custom select clause' do
         assert_nothing_raised do
           User.select('*, 1 as one').page(1).total_count
