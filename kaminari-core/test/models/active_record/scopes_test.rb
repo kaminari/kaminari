@@ -68,6 +68,15 @@ if defined? ActiveRecord
             assert_blank_page model_class.page(5)
           end
 
+          test 'page above a 32-bit integer raises InvalidPage' do
+            error = assert_raises(Kaminari::InvalidPage) { model_class.page(2_147_483_648) }
+            assert_match '2147483648', error.message
+          end
+
+          test 'page at the 32-bit integer max is a relation' do
+            assert_kind_of ActiveRecord::Relation, model_class.page(2_147_483_647)
+          end
+
           test 'invalid page as a Hash' do
             assert_first_page model_class.page(page: { hacked: 100 })
           end
