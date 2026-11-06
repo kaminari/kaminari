@@ -68,6 +68,10 @@ if defined? ActiveRecord
             assert_blank_page model_class.page(5)
           end
 
+          test 'page with offset beyond signed bigint range is empty' do
+            assert_equal [], model_class.page(2**63).per(25).to_a
+          end
+
           test 'invalid page as a Hash' do
             assert_first_page model_class.page(page: { hacked: 100 })
           end
