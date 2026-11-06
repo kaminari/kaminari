@@ -141,7 +141,7 @@ module Kaminari
       #   <%= link_to_previous_page @users, 'Previous Page' do %>
       #     <span>At the Beginning</span>
       #   <% end %>
-      def link_to_previous_page(scope, name, **options)
+      def link_to_previous_page(scope, name, **options, &block)
         prev_page = path_to_prev_page(scope, options)
 
         options.except! :params, :param_name, :format
@@ -149,8 +149,8 @@ module Kaminari
 
         if prev_page
           link_to name, prev_page, options
-        elsif block_given?
-          yield
+        elsif block
+          capture(&block)
         end
       end
       alias link_to_prev_page link_to_previous_page
@@ -172,7 +172,7 @@ module Kaminari
       #   <%= link_to_next_page @users, 'Next Page' do %>
       #     <span>No More Pages</span>
       #   <% end %>
-      def link_to_next_page(scope, name, **options)
+      def link_to_next_page(scope, name, **options, &block)
         next_page = path_to_next_page(scope, options)
 
         options.except! :params, :param_name, :format
@@ -180,8 +180,8 @@ module Kaminari
 
         if next_page
           link_to name, next_page, options
-        elsif block_given?
-          yield
+        elsif block
+          capture(&block)
         end
       end
 
