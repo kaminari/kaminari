@@ -18,8 +18,10 @@ module Kaminari
       return @total_count if defined?(@total_count) && @total_count
 
       # There are some cases that total count can be deduced from loaded records
-      # (except with per(0) or without a limit, where loaded records say nothing about the total count)
-      if loaded? && limit_value.to_i != 0
+      # (except with per(0) or without a limit, where loaded records say nothing about the total count,
+      # nor with eager_load and GROUP BY, where Active Record applies the limit to the joined rows but
+      # collapses several of them into one record, so there may be fewer records than the limit anyway)
+      if loaded? && limit_value.to_i != 0 && !(eager_loading? && group_values.any?)
         # Total count has to be 0 if loaded records are 0
         return @total_count = 0 if (current_page == 1) && @records.empty?
         # Total count is calculable at the last page
