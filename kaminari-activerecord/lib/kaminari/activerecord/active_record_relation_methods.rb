@@ -69,8 +69,9 @@ module Kaminari
       # Each group is one row unless DISTINCT collapses some of them
       relation = relation.except(:distinct)
       having = relation.respond_to?(:having_clause) ? !relation.having_clause.empty? : relation.having_values.any?
-      # The HAVING clause may refer to aliases in the custom SELECT clause. Otherwise, SELECT 1 is valid with any GROUP BY clause.
-      relation = relation.except(:select).select('1') unless having && relation.select_values.any?
+      # The HAVING clause may refer to aliases in the custom SELECT clause. Otherwise, SELECT 1 is valid with any GROUP BY clause
+      # (alias required for SQL Server derived tables).
+      relation = relation.except(:select).select('1 AS one') unless having && relation.select_values.any?
 
       sql = relation.to_sql
       return 0 if sql.blank?  # Relation#none on Active Record < 5
