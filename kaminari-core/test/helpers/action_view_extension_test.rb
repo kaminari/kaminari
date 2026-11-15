@@ -73,6 +73,13 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
                        hrefs(view.paginate(users, params: {controller: 'users', action: 'index', q: 'foo'}))
         end
 
+        test 'format given as a top level option' do
+          users = User.page(3).per(5)
+
+          assert_equal %w(/users.turbo_stream /users.turbo_stream?page=10 /users.turbo_stream?page=2 /users.turbo_stream?page=4 /users.turbo_stream?page=5 /users.turbo_stream?page=6 /users.turbo_stream?page=7),
+                       hrefs(view.paginate(users, format: :turbo_stream, params: {controller: 'users', action: 'index'}))
+        end
+
         test 'calls url_for only for the first page, the first other page, and the URL with the placeholder' do
           count = 0
           wrap_url_for {|_, &url_for| count += 1; url_for.call }
@@ -130,7 +137,9 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
       sub_test_case 'rendering the partials' do
         test 'looks up each partial template only once' do
           paths = []
-          view.lookup_context.singleton_class.send :prepend, Module.new { define_method(:find_template) {|name, *args| paths << name; super(name, *args) } }
+          # find! since Rails 8.2, and find before that
+          finders = [:find, :find!].select {|finder| view.lookup_context.respond_to? finder }
+          view.lookup_context.singleton_class.send :prepend, Module.new { finders.each {|finder| define_method(finder) {|name, *args| paths << name; super(name, *args) } } }
 
           view.paginate User.page(3).per(5), params: {controller: 'users', action: 'index'}
           assert_equal %w(/kaminari/first_page /kaminari/gap /kaminari/last_page /kaminari/next_page /kaminari/page /kaminari/paginator /kaminari/prev_page), paths.sort
@@ -153,6 +162,12 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
           view.lookup_context.formats = [:text]
 
           assert_match(/<nav class="pagination"/, view.paginate(User.page(3).per(5), params: {controller: 'users', action: 'index'}))
+        end
+
+        test 'raises MissingTemplate when the theme has no partial' do
+          assert_raise ActionView::MissingTemplate do
+            view.paginate User.page(3).per(5), theme: 'no_such_theme', params: {controller: 'users', action: 'index'}
+          end
         end
       end
 
@@ -257,6 +272,14 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
           assert_match(/rel="external"/, view.link_to_previous_page(users, 'Previous', rel: 'external', params: {controller: 'users', action: 'index'}))
         end
 
+        test 'format given as a top level option' do
+          users = User.page(3)
+          html = view.link_to_previous_page users, 'Previous', format: :turbo_stream, params: {controller: 'users', action: 'index'}
+
+          assert_match(%r{/users\.turbo_stream\?page=2}, html)
+          assert_no_match(/format=/, html)
+        end
+
         test 'with params' do
           users = User.page(3)
           params[:status] = 'active'
@@ -309,6 +332,14 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
           users = User.page(1)
 
           assert_match(/rel="external"/, view.link_to_next_page(users, 'More', rel: 'external', params: {controller: 'users', action: 'index'}))
+        end
+
+        test 'format given as a top level option' do
+          users = User.page(1)
+          html = view.link_to_next_page users, 'More', format: :turbo_stream, params: {controller: 'users', action: 'index'}
+
+          assert_match(%r{/users\.turbo_stream\?page=2}, html)
+          assert_no_match(/format=/, html)
         end
 
         test 'with params' do
@@ -713,6 +744,11 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
         users = User.page(1).per(1)
         assert_equal '/users.turbo_stream?page=2', view.path_to_next_page(users, params: {controller: 'users', action: 'index', format: :turbo_stream})
       end
+
+      test 'format given as a top level option' do
+        users = User.page(1).per(1)
+        assert_equal '/users.turbo_stream?page=2', view.path_to_next_page(users, format: :turbo_stream, params: {controller: 'users', action: 'index'})
+      end
     end
 
     sub_test_case '#path_to_prev_page' do
@@ -746,6 +782,11 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
         assert_equal 'http://test.host/users?page=2', view.next_page_url(users, params: {controller: 'users', action: 'index'})
       end
 
+      test 'format given as a top level option' do
+        users = User.page(1).per(1)
+        assert_equal 'http://test.host/users.turbo_stream?page=2', view.next_page_url(users, format: :turbo_stream, params: {controller: 'users', action: 'index'})
+      end
+
       test 'the last page' do
         users = User.page(2).per(1)
         assert_nil view.next_page_url(users, params: {controller: 'users', action: 'index'})
@@ -770,6 +811,11 @@ if defined?(::Rails::Railtie) && defined?(::ActionView)
       test 'the last page' do
         users = User.page(3).per(1)
         assert_equal 'http://test.host/users?page=2', view.prev_page_url(users, params: {controller: 'users', action: 'index'})
+      end
+
+      test 'format given as a top level option' do
+        users = User.page(3).per(1)
+        assert_equal 'http://test.host/users.turbo_stream?page=2', view.prev_page_url(users, format: :turbo_stream, params: {controller: 'users', action: 'index'})
       end
     end
   end

@@ -1,3 +1,15 @@
+## 1.3.3
+
+### Enhancements:
+
+* Added the `format:` option to the pagination helpers as a shortcut for `params: {format: ...}` #1164 [@ihamzatarar] (based on #1152 [@vitor-de-castro])
+
+## 1.3.2
+
+### Bug Fixes:
+
+* Fixed `paginate` raising NoMethodError on Rails 8.2, which removed `LookupContext#find_template` #1161 [@thibaudgg]
+
 ## 1.3.1
 
 ### Bug Fixes:
