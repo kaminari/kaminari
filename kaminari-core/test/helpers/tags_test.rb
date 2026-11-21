@@ -25,6 +25,13 @@ if defined?(::Rails::Railtie) && defined?(ActionView)
         end
       end
 
+      test 'ignores the Rails _recall parameter' do
+        self.params[:page] = '1'
+        self.params[:_recall] = 'invalid'
+
+        assert_equal '/users?page=2', Kaminari::Helpers::Tag.new(self).page_url_for(2)
+      end
+
       sub_test_case 'with a friendly route setting' do
         setup do
           self.params[:controller] = 'addresses'
